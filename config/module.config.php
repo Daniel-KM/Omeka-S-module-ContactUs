@@ -51,16 +51,26 @@ Your message:
 {message}', // @translate
                 'antispam' => true,
                 'questions' => [
-                    'How many are zero plus 1 (in number)?' => '1',
-                    'How many are one plus 1 (in number)?' => '2',
-                    'How many are one plus 2 (in number)?' => '3',
-                    'How many are one plus 3 (in number)?' => '4',
-                    'How many are two plus 1 (in number)?' => '3',
-                    'How many are two plus 2 (in number)?' => '4',
-                    'How many are two plus 3 (in number)?' => '5',
-                    'How many are three plus 1 (in number)?' => '4',
-                    'How many are three plus 2 (in number)?' => '5',
-                    'How many are three plus 3 (in number)?' => '6',
+                    'How many are zero plus 1 (in number)?' // @translate
+                        => '1',
+                    'How many are one plus 1 (in number)?' // @translate
+                        => '2',
+                    'How many are one plus 2 (in number)?' // @translate
+                        => '3',
+                    'How many are one plus 3 (in number)?' // @translate
+                        => '4',
+                    'How many are two plus 1 (in number)?' // @translate
+                        => '3',
+                    'How many are two plus 2 (in number)?' // @translate
+                        => '4',
+                    'How many are two plus 3 (in number)?' // @translate
+                        => '5',
+                    'How many are three plus 1 (in number)?' // @translate
+                        => '4',
+                    'How many are three plus 2 (in number)?' // @translate
+                        => '5',
+                    'How many are three plus 3 (in number)?' // @translate
+                        => '6',
                 ]
             ],
         ],

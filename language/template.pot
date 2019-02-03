@@ -21,32 +21,32 @@ msgstr ""
 msgid "Append a form to allow visitors to contact us."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:146
+#: src/Site/BlockLayout/ContactUs.php:145
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:165
+#: src/Site/BlockLayout/ContactUs.php:163
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:182
+#: src/Site/BlockLayout/ContactUs.php:181
 msgid "Sorry, we are not enable to send your email. Come back later."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:188
+#: src/Site/BlockLayout/ContactUs.php:187
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
 "you soon."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:207
+#: src/Site/BlockLayout/ContactUs.php:206
 msgid "Sorry, we are not enable to send the confirmation email."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:215
+#: src/Site/BlockLayout/ContactUs.php:214
 msgid "There is an error."
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Contact us"
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:263
+#: src/Site/BlockLayout/ContactUs.php:262
 msgid ""
 "To create antispam, each question must be separated from the answer by a \"="
 "\"."
@@ -121,4 +121,44 @@ msgid ""
 "Your message:\n"
 "\n"
 "{message}"
+msgstr ""
+
+#: config/module.config.php:54
+msgid "How many are zero plus 1 (in number)?"
+msgstr ""
+
+#: config/module.config.php:56
+msgid "How many are one plus 1 (in number)?"
+msgstr ""
+
+#: config/module.config.php:58
+msgid "How many are one plus 2 (in number)?"
+msgstr ""
+
+#: config/module.config.php:60
+msgid "How many are one plus 3 (in number)?"
+msgstr ""
+
+#: config/module.config.php:62
+msgid "How many are two plus 1 (in number)?"
+msgstr ""
+
+#: config/module.config.php:64
+msgid "How many are two plus 2 (in number)?"
+msgstr ""
+
+#: config/module.config.php:66
+msgid "How many are two plus 3 (in number)?"
+msgstr ""
+
+#: config/module.config.php:68
+msgid "How many are three plus 1 (in number)?"
+msgstr ""
+
+#: config/module.config.php:70
+msgid "How many are three plus 2 (in number)?"
+msgstr ""
+
+#: config/module.config.php:72
+msgid "How many are three plus 3 (in number)?"
 msgstr ""
