@@ -141,16 +141,14 @@ class ContactUs extends AbstractBlockLayout
                 $args = $form->getData();
                 $status = 'success';
                 // If spam, return a success message, but don't send email.
-                if ($isSpam) {
-                    $message = new Message(
-                        $translate('Thank you for your message %s. We will answer you soon.'),
-                        $args['name']
-                            ? sprintf('%s (%s)', $args['name'], $args['from'])
-                            : sprintf('(%s)', $args['from'])
-                    );
-                }
+                $message = new Message(
+                    $translate('Thank you for your message %s. We will answer you soon.'),
+                    $args['name']
+                        ? sprintf('%s (%s)', $args['name'], $args['from'])
+                        : sprintf('(%s)', $args['from'])
+                );
                 // Send the message to the administrator of the site.
-                else {
+                if (!$isSpam) {
                     // Add some keys to use as placeholders.
                     $args['email'] = $args['from'];
                     $args['site_title'] = $block->page()->site()->title();
