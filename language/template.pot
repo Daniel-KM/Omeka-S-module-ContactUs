@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-04 00:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Site/BlockLayout/ContactUs.php:99
+msgid "Append a form to allow visitors to contact us."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:146
+#, php-format
+msgid "Thank you for your message %s. We will answer you soon."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:165
+#, php-format
+msgid "[Contact] %s"
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:182
+msgid "Sorry, we are not enable to send your email. Come back later."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:188
+#, php-format
+msgid ""
+"Thank you for your message %s. Check your confirmation mail. We will answer "
+"you soon."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:207
+msgid "Sorry, we are not enable to send the confirmation email."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:215
+msgid "There is an error."
+msgstr ""
+
+#: src/Form/ContactUsForm.php:45
+msgid "Message"
+msgstr ""
+
+#: src/Form/ContactUsForm.php:80
+msgid "Send message"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:22
+msgid "Send a confirmation email"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:33
+msgid "Subject of the confirmation email"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:44
+msgid "Confirmation message"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:45
+msgid ""
+"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
+"{email}, {name}, {message}."
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:57
+msgid "Enable simple antispam for visitors"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:68
+msgid "List of antispam questions/answers"
+msgstr ""
+
+#: src/Form/ContactUsBlockForm.php:69
+msgid ""
+"Separate questions and answer with a \"=\". Questions may be translated."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:70
+msgid "Contact us"
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:263
+msgid ""
+"To create antispam, each question must be separated from the answer by a \"="
+"\"."
+msgstr ""
+
+#: config/module.config.php:35
+msgid "Confirmation contact"
+msgstr ""
+
+#: config/module.config.php:36
+msgid ""
+"Hi {name},\n"
+"\n"
+"Thanks to contact us!\n"
+"\n"
+"We will answer you soon.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{main_title}\n"
+"{main_url}\n"
+"\n"
+"--\n"
+"\n"
+"Your message:\n"
+"\n"
+"{message}"
+msgstr ""
