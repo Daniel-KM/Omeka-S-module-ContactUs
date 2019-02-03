@@ -12,6 +12,7 @@ use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\Mailer;
 use Omeka\Stdlib\Message;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Zend\Http\PhpEnvironment\RemoteAddress;
 use Zend\Log\Logger;
 use Zend\Session\Container;
 use Zend\View\Renderer\PhpRenderer;
@@ -95,7 +96,7 @@ class ContactUs extends AbstractBlockLayout
         $form->prepare();
 
         $html = '<p class="explanation">'
-            . $view->translate('Append a form to allow visitors to contact the site admin.')
+            . $view->translate('Append a form to allow visitors to contact us.')
             . '</p>';
         $html = $view->formCollection($form, false);
         return $html;
@@ -150,6 +151,11 @@ class ContactUs extends AbstractBlockLayout
                 }
                 // Send the message to the administrator of the site.
                 else {
+                    // Add some keys to use as placeholders.
+                    $args['email'] = $args['from'];
+                    $args['site_title'] = $block->page()->site()->title();
+                    $args['site_url'] = $block->page()->site()->siteUrl();
+
                     $mail = [];
                     $mail['from'] = $args['from'];
                     $mail['fromName'] = $args['name'] ?: null;
@@ -157,7 +163,18 @@ class ContactUs extends AbstractBlockLayout
                     $mail['to'] = $owner ? $owner->email() : $view->setting('administrator_email');
                     $mail['toName'] = $owner ? $owner->name() : null;
                     $mail['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
-                    $mail['body'] = $args['msg'];
+                    $body = <<<TXT
+A user has contacted you.
+
+email: {email}
+name: {name}
+ip: {ip}
+message:
+
+{message}
+TXT;
+                    $body = $translate($body);
+                    $mail['body'] = $this->fillMessage($body, $args);
 
                     $result = $this->sendEmail($mail);
                     if (!$result) {
@@ -167,7 +184,7 @@ class ContactUs extends AbstractBlockLayout
                         );
                     }
                     // Send the confirmation message to the visitor.
-                    else {
+                    elseif ($data['confirmation_enabled']) {
                         $message = new Message(
                             $translate('Thank you for your message %s. Check your confirmation mail. We will answer you soon.'),
                             $args['name']
@@ -179,16 +196,10 @@ class ContactUs extends AbstractBlockLayout
                         $mail['fromName'] = $owner ? $owner->name() : null;
                         $mail['to'] = $args['from'];
                         $mail['toName'] = $args['name'] ?: null;
-                        $mail['subject'] = sprintf($translate('[Confirmation] %s'), $this->mailer->getInstallationTitle());
-                        $mail['body'] = vsprintf(
-                            $translate("Hi%s,\n\nThanks to contact us!\n\nWe will answer you soon.\n\nSincerely,\n\n%s\n\n%s\n\nYour message:\n\n--\n\n%s"),
-                            [
-                                $args['name'] ? ' ' . $args['name'] : '',
-                                $this->mailer->getInstallationTitle(),
-                                $this->mailer->getSiteUrl(),
-                                $args['msg'],
-                            ]
-                        );
+                        $subject = $data['confirmation_subject'] ?: $this->defaultSettings['confirmation_subject'];
+                        $mail['subject'] = $this->fillMessage($translate($subject), $args);
+                        $body = $data['confirmation_body'] ?: $this->defaultSettings['confirmation_body'];
+                        $mail['body'] = $this->fillMessage($translate($body), $args);
 
                         $result = $this->sendEmail($mail);
                         if (!$result) {
@@ -282,6 +293,31 @@ class ContactUs extends AbstractBlockLayout
             || empty($params['check'])
             || substr(md5($question), 0, 16) !== $params['check'];
         return $isSpam;
+    }
+
+    /**
+     * Fill a message with placeholders (moustache style).
+     *
+     * @param string $message
+     * @param array $placeholders
+     * @return string
+     */
+    protected function fillMessage($message, array $placeholders)
+    {
+        $holders = [];
+        foreach ($placeholders as $placeholder => $value) {
+            $holders['{' . $placeholder . '}'] = $value;
+        }
+
+        $defaultPlaceholders = [
+            '{ip}' => (new RemoteAddress())->getIpAddress(),
+            '{main_title}' => $this->mailer->getInstallationTitle(),
+            '{main_url}' => $this->mailer->getSiteUrl(),
+        ];
+        $holders += $defaultPlaceholders;
+
+        $result = str_replace(array_keys($holders), array_values($holders), $message);
+        return $result;
     }
 
     /**

@@ -39,7 +39,7 @@ class ContactUsForm extends Form
         ]);
 
         $this->add([
-            'name' => 'msg',
+            'name' => 'message',
             'type' => Element\Textarea::class,
             'options' => [
                 'label' => 'Message', // @translate
@@ -83,7 +83,7 @@ class ContactUsForm extends Form
 
         $inputFilter = $this->getInputFilter();
         $inputFilter->add([
-            'name' => 'msg',
+            'name' => 'message',
             'required' => true,
             'filters' => [
                 ['name' => Filter\StringTrim::class],

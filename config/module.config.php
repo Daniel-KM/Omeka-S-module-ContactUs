@@ -31,6 +31,24 @@ return [
     'contactus' => [
         'block_settings' => [
             'contactUs' => [
+                'confirmation_enabled' => true,
+                'confirmation_subject' => 'Confirmation contact', // @translate
+                'confirmation_body' => 'Hi {name},
+
+Thanks to contact us!
+
+We will answer you soon.
+
+Sincerely,
+
+{main_title}
+{main_url}
+
+--
+
+Your message:
+
+{message}', // @translate
                 'antispam' => true,
                 'questions' => [
                     'How many are zero plus 1 (in number)?' => '1',
