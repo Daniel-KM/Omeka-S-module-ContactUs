@@ -70,6 +70,37 @@ class ContactUs extends AbstractBlockLayout
         return 'Contact us'; // @translate
     }
 
+    public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
+    {
+        $data = $block->getData();
+
+        // Check and normalize options.
+        $hasError = false;
+
+        $data['antispam'] = !empty($data['antispam']);
+
+        if (empty($data['questions'])) {
+            $data['questions'] = [];
+        } else {
+            $questions = $this->stringToList($data['questions']);
+            $data['questions'] = [];
+            foreach ($questions as $questionAnswer) {
+                list($question, $answer) = array_map('trim', explode('=', $questionAnswer, 2));
+                if ($answer === '') {
+                    $errorStore->addError('questions', 'To create antispam, each question must be separated from the answer by a "=".'); // @translate
+                    $hasError = true;
+                }
+                $data['questions'][$question] = $answer;
+            }
+        }
+
+        if ($hasError) {
+            return;
+        }
+
+        $block->setData($data);
+    }
+
     public function form(
         PhpRenderer $view,
         SiteRepresentation $site,
@@ -96,7 +127,7 @@ class ContactUs extends AbstractBlockLayout
         $form->prepare();
 
         $html = '<p class="explanation">'
-            . $view->translate('Append a form to allow visitors to contact us.')
+            . $view->translate('Append a form to allow visitors to contact us.') // @translate
             . '</p>';
         $html = $view->formCollection($form, false);
         return $html;
@@ -142,7 +173,7 @@ class ContactUs extends AbstractBlockLayout
                 $status = 'success';
                 // If spam, return a success message, but don't send email.
                 $message = new Message(
-                    $translate('Thank you for your message %s. We will answer you soon.'),
+                    $translate('Thank you for your message %s. We will answer you soon.'), // @translate
                     $args['name']
                         ? sprintf('%s (%s)', $args['name'], $args['from'])
                         : sprintf('(%s)', $args['from'])
@@ -178,13 +209,13 @@ TXT;
                     if (!$result) {
                         $status = 'error';
                         $message = new Message(
-                            $translate('Sorry, we are not enable to send your email. Come back later.')
+                            $translate('Sorry, we are not enable to send your email. Come back later.') // @translate
                         );
                     }
                     // Send the confirmation message to the visitor.
                     elseif ($data['confirmation_enabled']) {
                         $message = new Message(
-                            $translate('Thank you for your message %s. Check your confirmation mail. We will answer you soon.'),
+                            $translate('Thank you for your message %s. Check your confirmation mail. We will answer you soon.'), // @translate
                             $args['name']
                                 ? sprintf('%s (%s)', $args['name'], $args['from'])
                                 : sprintf('(%s)', $args['from'])
@@ -203,7 +234,7 @@ TXT;
                         if (!$result) {
                             $status = 'error';
                             $message = new Message(
-                                $translate('Sorry, we are not enable to send the confirmation email.')
+                                $translate('Sorry, we are not enable to send the confirmation email.') // @translate
                             );
                         }
                     }
@@ -240,37 +271,6 @@ TXT;
                 'status' => $status,
             ]
         );
-    }
-
-    public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
-    {
-        $data = $block->getData();
-
-        // Check and normalize options.
-        $hasError = false;
-
-        $data['antispam'] = !empty($data['antispam']);
-
-        if (empty($data['questions'])) {
-            $data['questions'] = [];
-        } else {
-            $questions = $this->stringToList($data['questions']);
-            $data['questions'] = [];
-            foreach ($questions as $questionAnswer) {
-                list($question, $answer) = array_map('trim', explode('=', $questionAnswer, 2));
-                if ($answer === '') {
-                    $errorStore->addError('questions', 'To create antispam, each question must be separated from the answer by a "=".'); // @translate
-                    $hasError = true;
-                }
-                $data['questions'][$question] = $answer;
-            }
-        }
-
-        if ($hasError) {
-            return;
-        }
-
-        $block->setData($data);
     }
 
     /**
@@ -348,7 +348,7 @@ TXT;
             $mailer->send($message);
         } catch (\Exception $e) {
             $this->logger->err(new Message(
-                "Error when sending email. Arguments:\n%s",
+                'Error when sending email. Arguments:\n%s', // @translate
                 json_encode($params, 448)
             ));
             return false;
@@ -371,7 +371,7 @@ TXT;
     /**
      * Clean the text area from end of lines.
      *
-     *This method fixes Windows and Apple copy/paste from a textarea input.
+     * This method fixes Windows and Apple copy/paste from a textarea input.
      *
      * @param string $string
      * @return string

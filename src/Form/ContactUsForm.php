@@ -13,73 +13,75 @@ class ContactUsForm extends Form
         $question = $this->getOption('question');
         $checkAnswer = $this->getOption('checkAnswer');
 
-        // "To" is used instead of "email" to avoid some basic spammers.
-        $this->add([
-            'name' => 'from',
-            'type' => Element\Email::class,
-            'options' => [
-                'label' => 'Email', // @translate
-            ],
-            'attributes' => [
-                'id' => 'from',
-                'required' => true,
-            ],
-        ]);
+        $this->setAttribute('class', 'contact-form');
 
-        $this->add([
-            'name' => 'name',
-            'type' => Element\Text::class,
-            'options' => [
-                'label' => 'Name', // @translate
-            ],
-            'attributes' => [
-                'id' => 'name',
-                'required' => false,
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'message',
-            'type' => Element\Textarea::class,
-            'options' => [
-                'label' => 'Message', // @translate
-            ],
-            'attributes' => [
-                'id' => 'message',
-                'required' => true,
-            ],
-        ]);
-
-        if ($question) {
-            $this->add([
-                'name' => 'answer',
-                'type' => Element\Text::class,
+        // "From" is used instead of "email" to avoid some basic spammers.
+        $this
+            ->add([
+                'name' => 'from',
+                'type' => Element\Email::class,
                 'options' => [
-                    'label' => $question,
+                    'label' => 'Email', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'answer',
+                    'id' => 'from',
+                    'required' => true,
+                ],
+            ])
+            ->add([
+                'name' => 'name',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Name', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'name',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'message',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'label' => 'Message', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'message',
                     'required' => true,
                 ],
             ]);
 
-            $this->add([
-                'name' => 'check',
-                'type' => Element\Hidden::class,
-                'attributes' => [
-                    'value' => substr(md5($question), 0, 16),
-                ],
-            ]);
+        if ($question) {
+            $this
+                ->add([
+                    'name' => 'answer',
+                    'type' => Element\Text::class,
+                    'options' => [
+                        'label' => $question,
+                    ],
+                    'attributes' => [
+                        'id' => 'answer',
+                        'required' => true,
+                    ],
+                ])
+                ->add([
+                    'name' => 'check',
+                    'type' => Element\Hidden::class,
+                    'attributes' => [
+                        'value' => substr(md5($question), 0, 16),
+                    ],
+                ]);
         }
 
-        $this->add([
-            'name' => 'submit',
-            'type' => Element\Submit::class,
-            'attributes' => [
-                'id' => 'submit',
-                'value' => 'Send message', // @translate
-            ],
-        ]);
+        $this
+            ->add([
+                'name' => 'submit',
+                'type' => Element\Submit::class,
+                'attributes' => [
+                    'id' => 'submit',
+                    'value' => 'Send message', // @translate
+                ],
+            ]);
 
         $inputFilter = $this->getInputFilter();
         $inputFilter->add([
