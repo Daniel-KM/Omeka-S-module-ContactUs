@@ -47,6 +47,7 @@ Sincerely,
 --
 
 Your message:
+Object: {object}
 
 {message}', // @translate
                 'antispam' => true,

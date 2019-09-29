@@ -198,6 +198,7 @@ A user has contacted you.
 email: {email}
 name: {name}
 ip: {ip}
+object: {object}
 message:
 
 {message}

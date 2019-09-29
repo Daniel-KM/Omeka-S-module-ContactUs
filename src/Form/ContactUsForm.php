@@ -40,6 +40,17 @@ class ContactUsForm extends Form
                 ],
             ])
             ->add([
+                'name' => 'object',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Object', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'object',
+                    'required' => false,
+                ],
+            ])
+            ->add([
                 'name' => 'message',
                 'type' => Element\Textarea::class,
                 'options' => [
