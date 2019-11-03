@@ -84,6 +84,26 @@ class ContactUs extends AbstractBlockLayout
 
         $data['antispam'] = !empty($data['antispam']);
 
+        if (empty($data['notify_recipients'])) {
+            $owner = $block->getPage()->getSite()->getOwner();
+            if (!$owner) {
+                $errorStore->addError('notify_recipients', 'An email or an owner is required to be notified.'); // @translate
+                $hasError = true;
+            }
+        } else {
+            $notifyRecipients = $this->stringToList($data['notify_recipients']);
+            $data['notify_recipients'] = [];
+            foreach ($notifyRecipients as $notifyRecipient) {
+                if (filter_var($notifyRecipient, FILTER_VALIDATE_EMAIL)) {
+                    $data['notify_recipients'][] = $notifyRecipients;
+                }
+            }
+            if (empty($data['notify_recipients'])) {
+                $errorStore->addError('notify_recipients', 'Check emails for notifications.'); // @translate
+                $hasError = true;
+            }
+        }
+
         if (empty($data['questions'])) {
             $data['questions'] = [];
         } else {
@@ -119,6 +139,13 @@ class ContactUs extends AbstractBlockLayout
         $blockFieldset = \ContactUs\Form\ContactUsFieldset::class;
 
         $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
+        if (is_array($data['notify_recipients'])) {
+            $values = $data['notify_recipients'];
+            $data['notify_recipients'] = '';
+            foreach ($values as $value) {
+                $data['notify_recipients'] .= $value . "\n";
+            }
+        }
         if (is_array($data['questions'])) {
             $questions = $data['questions'];
             $data['questions'] = '';
@@ -197,9 +224,14 @@ class ContactUs extends AbstractBlockLayout
                     $mail = [];
                     $mail['from'] = $args['from'];
                     $mail['fromName'] = $args['name'] ?: null;
-                    $owner = $block->page()->site()->owner();
-                    $mail['to'] = $owner ? $owner->email() : $view->setting('administrator_email');
-                    $mail['toName'] = $owner ? $owner->name() : null;
+                    // Keep compatibility with old versions.
+                    $to = $block->dataValue('notify_recipients') ?: [];
+                    if ($to) {
+                        $mail['to'] = $to;
+                    } else {
+                        $owner = $block->page()->site()->owner();
+                        $mail['to'] = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
+                    }
                     $mail['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $body = <<<TXT
 A user has contacted you.
@@ -219,7 +251,7 @@ TXT;
                     if (!$result) {
                         $status = 'error';
                         $message = new Message(
-                            $translate('Sorry, we are not enable to send your email. Come back later.') // @translate
+                            $translate('Sorry, we are not able to send email to notify the admin. Come back later.') // @translate
                         );
                     }
                     // Send the confirmation message to the visitor.
@@ -244,7 +276,7 @@ TXT;
                         if (!$result) {
                             $status = 'error';
                             $message = new Message(
-                                $translate('Sorry, we are not enable to send the confirmation email.') // @translate
+                                $translate('Sorry, we are not able to send the confirmation email.') // @translate
                             );
                         }
                     }
@@ -347,9 +379,12 @@ TXT;
         $mailer = $this->mailer;
         $message = $mailer->createMessage();
         $message
-            ->setTo($params['to'], $params['toName'])
             ->setSubject($params['subject'])
             ->setBody($params['body']);
+        $to = is_array($params['to']) ? $params['to'] : [$params['to']];
+        foreach ($to as $t) {
+            $message->addTo($t);
+        }
         if ($params['from']) {
             $message
                 ->setFrom($params['from'], $params['fromName']);

@@ -10,6 +10,17 @@ class ContactUsFieldset extends Fieldset
     {
         $this
             ->add([
+                'name' => 'notify_recipients',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'label' => 'List of recipients to notify', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'notify_recipients',
+                    'required' => true,
+                ],
+            ])
+            ->add([
                 'name' => 'confirmation_enabled',
                 'type' => Element\Checkbox::class,
                 'options' => [
