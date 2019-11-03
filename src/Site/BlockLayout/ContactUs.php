@@ -112,11 +112,13 @@ class ContactUs extends AbstractBlockLayout
         SitePageRepresentation $page = null,
         SitePageBlockRepresentation $block = null
     ) {
-        /** @var \ContactUs\Form\ContactUsForm $form */
-        $form = $this->formElementManager->get(ContactUsBlockForm::class);
+        // Factory is not used to make rendering simpler.
+        $services = $site->getServiceLocator();
+        $formElementManager = $services->get('FormElementManager');
+        $defaultSettings = $services->get('Config')['contactus']['block_settings']['contactUs'];
+        $blockFieldset = \ContactUs\Form\ContactUsFieldset::class;
 
-        $addedBlock = empty($block);
-        $data = $addedBlock ? $this->defaultSettings : $block->data() + $this->defaultSettings;
+        $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
         if (is_array($data['questions'])) {
             $questions = $data['questions'];
             $data['questions'] = '';
@@ -125,16 +127,17 @@ class ContactUs extends AbstractBlockLayout
             }
         }
 
-        $form->setData([
-            'o:block[__blockIndex__][o:data]' => $data,
-        ]);
-
-        $form->prepare();
+        $dataForm = [];
+        foreach ($data as $key => $value) {
+            $dataForm['o:block[__blockIndex__][o:data][' . $key . ']'] = $value;
+        }
+        $fieldset = $formElementManager->get($blockFieldset);
+        $fieldset->populateValues($dataForm);
 
         $html = '<p class="explanation">'
             . $view->translate('Append a form to allow visitors to contact us.') // @translate
             . '</p>';
-        $html .= $view->formCollection($form, false);
+        $html .= $view->formCollection($fieldset, false);
         return $html;
     }
 

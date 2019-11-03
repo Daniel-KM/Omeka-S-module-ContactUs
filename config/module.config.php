@@ -14,7 +14,7 @@ return [
     ],
     'form_elements' => [
         'factories' => [
-            Form\ContactUsBlockForm::class => Service\Form\FormFactory::class,
+            Form\ContactUsFieldset::class => Service\Form\FormFactory::class,
             Form\ContactUsForm::class => Service\Form\FormFactory::class,
         ],
     ],

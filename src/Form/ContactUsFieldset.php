@@ -3,19 +3,12 @@ namespace ContactUs\Form;
 
 use Zend\Form\Element;
 use Zend\Form\Fieldset;
-use Zend\Form\Form;
 
-class ContactUsBlockForm extends Form
+class ContactUsFieldset extends Fieldset
 {
     public function init()
     {
-        $this->add([
-            'name' => 'o:block[__blockIndex__][o:data]',
-            'type' => Fieldset::class,
-        ]);
-        $dataFieldset = $this->get('o:block[__blockIndex__][o:data]');
-
-        $dataFieldset
+        $this
             ->add([
                 'name' => 'confirmation_enabled',
                 'type' => Element\Checkbox::class,
@@ -70,11 +63,5 @@ class ContactUsBlockForm extends Form
                     'rows' => 5,
                 ],
             ]);
-
-        $inputFilter = $this->getInputFilter();
-        $inputFilter->add([
-            'name' => 'o:block[__blockIndex__][o:data]',
-            'required' => false,
-        ]);
     }
 }
