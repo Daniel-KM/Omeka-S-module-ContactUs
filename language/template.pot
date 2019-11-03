@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-04 00:00+0100\n"
+"POT-Creation-Date: 2019-11-04 00:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,93 +17,123 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Site/BlockLayout/ContactUs.php:99
+#: src/Site/BlockLayout/ContactUs.php:165
 msgid "Append a form to allow visitors to contact us."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:145
+#: src/Site/BlockLayout/ContactUs.php:212
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:163
+#: src/Site/BlockLayout/ContactUs.php:235
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:181
-msgid "Sorry, we are not enable to send your email. Come back later."
+#: src/Site/BlockLayout/ContactUs.php:254
+msgid ""
+"Sorry, we are not able to send email to notify the admin. Come back later."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:187
+#: src/Site/BlockLayout/ContactUs.php:260
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
 "you soon."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:206
-msgid "Sorry, we are not enable to send the confirmation email."
+#: src/Site/BlockLayout/ContactUs.php:279
+msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:214
+#: src/Site/BlockLayout/ContactUs.php:287
 msgid "There is an error."
 msgstr ""
 
-#: src/Form/ContactUsForm.php:45
+#: src/Form/ContactUsForm.php:24
+msgid "Block title"
+msgstr ""
+
+#: src/Form/ContactUsForm.php:25
+msgid "Heading for the block, if any."
+msgstr ""
+
+#: src/Form/ContactUsForm.php:54
+msgid "Object"
+msgstr ""
+
+#: src/Form/ContactUsForm.php:65
 msgid "Message"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:80
+#: src/Form/ContactUsForm.php:101
 msgid "Send message"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:22
+#: src/Form/ContactUsFieldset.php:16
+msgid "List of recipients to notify"
+msgstr ""
+
+#: src/Form/ContactUsFieldset.php:27
 msgid "Send a confirmation email"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:33
+#: src/Form/ContactUsFieldset.php:37
 msgid "Subject of the confirmation email"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:44
+#: src/Form/ContactUsFieldset.php:47
 msgid "Confirmation message"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:45
+#: src/Form/ContactUsFieldset.php:48
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {message}."
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:57
+#: src/Form/ContactUsFieldset.php:59
 msgid "Enable simple antispam for visitors"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:68
+#: src/Form/ContactUsFieldset.php:69
 msgid "List of antispam questions/answers"
 msgstr ""
 
-#: src/Form/ContactUsBlockForm.php:69
+#: src/Form/ContactUsFieldset.php:70
 msgid ""
 "Separate questions and answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:70
+#: src/Site/BlockLayout/ContactUs.php:75
 msgid "Contact us"
 msgstr ""
 
-#: src/Site/BlockLayout/ContactUs.php:262
+#: src/Site/BlockLayout/ContactUs.php:90
+msgid "An email or an owner is required to be notified."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:102
+msgid "Check emails for notifications."
+msgstr ""
+
+#: src/Site/BlockLayout/ContactUs.php:115
 msgid ""
 "To create antispam, each question must be separated from the answer by a \"="
 "\"."
 msgstr ""
 
-#: config/module.config.php:35
-msgid "Confirmation contact"
+#: src/Site/BlockLayout/ContactUs.php:397
+#, php-format
+msgid "Error when sending email. Arguments:\\n%s"
 msgstr ""
 
 #: config/module.config.php:36
+msgid "Confirmation contact"
+msgstr ""
+
+#: config/module.config.php:37
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -119,46 +149,47 @@ msgid ""
 "--\n"
 "\n"
 "Your message:\n"
+"Object: {object}\n"
 "\n"
 "{message}"
 msgstr ""
 
-#: config/module.config.php:54
+#: config/module.config.php:56
 msgid "How many are zero plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:56
+#: config/module.config.php:58
 msgid "How many are one plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:58
+#: config/module.config.php:60
 msgid "How many are one plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:60
+#: config/module.config.php:62
 msgid "How many are one plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:62
+#: config/module.config.php:64
 msgid "How many are two plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:64
+#: config/module.config.php:66
 msgid "How many are two plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:66
+#: config/module.config.php:68
 msgid "How many are two plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:68
+#: config/module.config.php:70
 msgid "How many are three plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:70
+#: config/module.config.php:72
 msgid "How many are three plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:72
+#: config/module.config.php:74
 msgid "How many are three plus 3 (in number)?"
 msgstr ""
