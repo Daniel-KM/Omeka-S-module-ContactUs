@@ -8,11 +8,12 @@
  */
 
 ?>
+
 <div class="contact-us-block">
     <?php if ($message): ?>
     <p class="explanation <?= $status ?>"><?= $message ?></p>
     <?php endif; ?>
     <?php if ($form): ?>
-    <?php echo $this->form($form); ?>
+    <?= $this->form($form) ?>
     <?php endif; ?>
 </div>

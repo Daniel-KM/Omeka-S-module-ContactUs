@@ -65,6 +65,11 @@ class ContactUs extends AbstractBlockLayout
         $this->logger = $logger;
     }
 
+    /**
+     * The default partial view script.
+     */
+    const PARTIAL_NAME = 'common/block-layout/contact-us';
+
     public function getLabel()
     {
         return 'Contact us'; // @translate
@@ -129,13 +134,14 @@ class ContactUs extends AbstractBlockLayout
         $html = '<p class="explanation">'
             . $view->translate('Append a form to allow visitors to contact us.') // @translate
             . '</p>';
-        $html = $view->formCollection($form, false);
+        $html .= $view->formCollection($form, false);
         return $html;
     }
 
     public function prepareRender(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->assetUrl('css/contact-us.css', 'ContactUs'));
+        $view->headLink()
+            ->appendStylesheet($view->assetUrl('css/contact-us.css', 'ContactUs'));
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
@@ -264,7 +270,7 @@ TXT;
         }
 
         return $view->partial(
-            'common/block-layout/contact-us',
+            self::PARTIAL_NAME,
             [
                 'block' => $block,
                 'form' => $form,
