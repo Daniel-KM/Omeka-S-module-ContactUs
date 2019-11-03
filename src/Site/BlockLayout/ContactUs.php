@@ -273,6 +273,7 @@ TXT;
             self::PARTIAL_NAME,
             [
                 'block' => $block,
+                'heading' => $block->dataValue('heading'),
                 'form' => $form,
                 'message' => $message,
                 'status' => $status,

@@ -3,6 +3,7 @@
  * @var \Zend\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var \ContactUs\Form\ContactUsForm $form
+ * @var string $heading
  * @var string $message
  * @var string $status "success" or "error"
  */
@@ -10,6 +11,10 @@
 ?>
 
 <div class="contact-us-block">
+    <?php if (!empty($heading)): ?>
+    <h2><?= $escape($heading) ?></h2>
+    <?php endif; ?>
+
     <?php if ($message): ?>
     <p class="explanation <?= $status ?>"><?= $message ?></p>
     <?php endif; ?>

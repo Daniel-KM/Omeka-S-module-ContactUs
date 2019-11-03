@@ -18,6 +18,14 @@ class ContactUsForm extends Form
         // "From" is used instead of "email" to avoid some basic spammers.
         $this
             ->add([
+                'name' => 'o:block[__blockIndex__][o:data][heading]',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Block title', // @translate
+                    'info' => 'Heading for the block, if any.', // @translate
+                ],
+            ])
+            ->add([
                 'name' => 'from',
                 'type' => Element\Email::class,
                 'options' => [
