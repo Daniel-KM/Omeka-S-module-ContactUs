@@ -95,7 +95,7 @@ class ContactUs extends AbstractBlockLayout
             $data['notify_recipients'] = [];
             foreach ($notifyRecipients as $notifyRecipient) {
                 if (filter_var($notifyRecipient, FILTER_VALIDATE_EMAIL)) {
-                    $data['notify_recipients'][] = $notifyRecipients;
+                    $data['notify_recipients'][] = $notifyRecipient;
                 }
             }
             if (empty($data['notify_recipients'])) {
