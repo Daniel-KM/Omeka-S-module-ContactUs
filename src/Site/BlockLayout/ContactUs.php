@@ -53,7 +53,7 @@ class ContactUs extends AbstractBlockLayout
             $data['questions'] = [];
             foreach ($questions as $questionAnswer) {
                 list($question, $answer) = array_map('trim', explode('=', $questionAnswer, 2));
-                if ($answer === '') {
+                if ($question === '' || $answer === '') {
                     $errorStore->addError('questions', 'To create antispam, each question must be separated from the answer by a "=".'); // @translate
                     $hasError = true;
                 }

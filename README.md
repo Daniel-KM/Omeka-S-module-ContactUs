@@ -8,6 +8,8 @@ a "Contact us" form.
 Installation
 ------------
 
+First, install the two optional modules [Generic] and [Blocks Disposition].
+
 Uncompress files and rename module folder `ContactUs`. Then install it like any
 other Omeka module and follow the config instructions.
 
@@ -17,9 +19,12 @@ See general end user documentation for [Installing a module].
 Quick start
 -----------
 
+The form can be placed anywhere in the site.
+
+# Static pages
+
 Create a site page and add the block "Contact us".
 
-By default, the email is the site admin one.
 The simple antispam is a simple list of questions and answers for the visitor.
 
 The block is themable: copy the file `common/block-layout/contact-us.phtml` in
@@ -30,6 +35,21 @@ will be sent to the visitor.
 
 If you want to use the "Contact us" page in all your sites, you can use the
 module [Next], that has a special block to duplicate a page in multiple places.
+
+# Resource pages
+
+The form is displayed automatically on item set, item or media show pages. The
+settings can be set for each site.
+
+To manage the display more precisely, use the module [Blocks Disposition], or
+add the following code in your theme:
+
+```php
+echo $this->contactUs(['resource' => $resource]);
+```
+
+The partial is themable: copy the file `common/helpers/contact-us.phtml` in your
+theme.
 
 
 Warning
@@ -78,6 +98,8 @@ Copyright
 
 [Contact us]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
+[Generic]: https://github.com/Daniel-KM/Omeka-S-module-Generic
+[BlocksDisposition]: https://github.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [Next]: https://github.com/Daniel-KM/Omeka-S-module-Next
 [module issues]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs/issues

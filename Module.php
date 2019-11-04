@@ -18,6 +18,22 @@ class Module extends AbstractModule
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
+            'Omeka\Controller\Site\Item',
+            'view.show.after',
+            [$this, 'handleViewShowAfterResource']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Site\Item',
+            'view.show.after',
+            [$this, 'handleViewShowAfterResource']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Site\Media',
+            'view.show.after',
+            [$this, 'handleViewShowAfterResource']
+        );
+
+        $sharedEventManager->attach(
             \Omeka\Form\SettingForm::class,
             'form.add_elements',
             [$this, 'handleMainSettings']
@@ -91,6 +107,15 @@ class Module extends AbstractModule
         $fieldset
             ->get('contactus_notify_recipients')
             ->setValue($value);
+
+        $questions = $settings->get('contactus_questions') ?: [];
+        $value = '';
+        foreach ($questions as $question => $answer) {
+            $value .= $question . ' = ' . $answer . "\n";
+        }
+        $fieldset
+            ->get('contactus_questions')
+            ->setValue($value);
     }
 
     public function handleSiteSettingsFilters(Event $event)
@@ -108,6 +133,38 @@ class Module extends AbstractModule
                         ],
                     ],
                 ],
-            ]);
+            ])
+            ->add([
+                'name' => 'contactus_questions',
+                'required' => false,
+                'filters' => [
+                    [
+                        'name' => \Zend\Filter\Callback::class,
+                        'options' => [
+                            'callback' => [$this, 'stringToKeyValues'],
+                        ],
+                    ],
+                ],
+            ])
+        ;
+    }
+
+    public function stringToKeyValues($string)
+    {
+        $result = [];
+        $questions = $this->stringToList($string);
+        foreach ($questions as $questionAnswer) {
+            list($question, $answer) = array_map('trim', explode('=', $questionAnswer, 2));
+            if ($question !== '' && $answer !== '') {
+                $result[$question] = $answer;
+            }
+        }
+        return $result;
+    }
+
+    public function handleViewShowAfterResource(Event $event)
+    {
+        $view = $event->getTarget();
+        echo $view->contactUs(['resource' => $view->resource]);
     }
 }

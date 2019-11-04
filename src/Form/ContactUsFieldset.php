@@ -84,6 +84,8 @@ class ContactUsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',
+                    'placeholder' => 'How many are zero plus 1 (in number)? = 1
+How many are one plus 1 (in number)? = 2',
                     'rows' => 5,
                 ],
             ])

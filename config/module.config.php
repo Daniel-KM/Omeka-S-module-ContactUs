@@ -43,6 +43,49 @@ return [
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
+            'contactus_text' => '',
+            'contactus_confirmation_enabled' => true,
+            'contactus_confirmation_subject' => 'Confirmation contact', // @translate
+            'contactus_confirmation_body' => 'Hi {name},
+
+Thanks to contact us!
+
+We will answer you soon.
+
+Sincerely,
+
+{main_title}
+{main_url}
+
+--
+
+Your message:
+Object: {object}
+
+{message}', // @translate
+            'contactus_antispam' => true,
+            'contactus_questions' => [
+                'How many are zero plus 1 (in number)?' // @translate
+                    => '1',
+                'How many are one plus 1 (in number)?' // @translate
+                    => '2',
+                'How many are one plus 2 (in number)?' // @translate
+                    => '3',
+                'How many are one plus 3 (in number)?' // @translate
+                    => '4',
+                'How many are two plus 1 (in number)?' // @translate
+                    => '3',
+                'How many are two plus 2 (in number)?' // @translate
+                    => '4',
+                'How many are two plus 3 (in number)?' // @translate
+                    => '5',
+                'How many are three plus 1 (in number)?' // @translate
+                    => '4',
+                'How many are three plus 2 (in number)?' // @translate
+                    => '5',
+                'How many are three plus 3 (in number)?' // @translate
+                    => '6',
+            ]
         ],
         'block_settings' => [
             'contactUs' => [
