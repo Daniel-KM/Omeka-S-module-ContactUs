@@ -31,6 +31,7 @@ return [
     'contactus' => [
         'block_settings' => [
             'contactUs' => [
+                'heading' => null,
                 'notify_recipients' => [],
                 'confirmation_enabled' => true,
                 'confirmation_subject' => 'Confirmation contact', // @translate
