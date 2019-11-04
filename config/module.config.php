@@ -13,6 +13,10 @@ return [
         ],
     ],
     'form_elements' => [
+        'invokables' => [
+            Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
+            Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
+        ],
         'factories' => [
             Form\ContactUsFieldset::class => Service\Form\FormFactory::class,
             Form\ContactUsForm::class => Service\Form\FormFactory::class,
@@ -29,6 +33,12 @@ return [
         ],
     ],
     'contactus' => [
+        'settings' => [
+            'contactus_notify_recipients' => [],
+        ],
+        'site_settings' => [
+            'contactus_notify_recipients' => [],
+        ],
         'block_settings' => [
             'contactUs' => [
                 'heading' => null,

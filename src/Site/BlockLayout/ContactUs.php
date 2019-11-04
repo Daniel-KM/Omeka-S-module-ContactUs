@@ -83,14 +83,10 @@ class ContactUs extends AbstractBlockLayout
 
         $data['antispam'] = !empty($data['antispam']);
 
-        if (empty($data['notify_recipients'])) {
-            $owner = $block->getPage()->getSite()->getOwner();
-            if (!$owner) {
-                $errorStore->addError('notify_recipients', 'An email or an owner is required to be notified.'); // @translate
-                $hasError = true;
-            }
+        $notifyRecipients = $this->stringToList($data['notify_recipients']);
+        if (empty($notifyRecipients)) {
+            $data['notify_recipients'] = $notifyRecipients;
         } else {
-            $notifyRecipients = $this->stringToList($data['notify_recipients']);
             $data['notify_recipients'] = [];
             foreach ($notifyRecipients as $notifyRecipient) {
                 if (filter_var($notifyRecipient, FILTER_VALIDATE_EMAIL)) {
@@ -98,7 +94,7 @@ class ContactUs extends AbstractBlockLayout
                 }
             }
             if (empty($data['notify_recipients'])) {
-                $errorStore->addError('notify_recipients', 'Check emails for notifications.'); // @translate
+                $errorStore->addError('notify_recipients', 'Check emails for notifications or remove them to use default ones.'); // @translate
                 $hasError = true;
             }
         }
@@ -225,12 +221,17 @@ class ContactUs extends AbstractBlockLayout
                     $mail['fromName'] = $args['name'] ?: null;
                     // Keep compatibility with old versions.
                     $to = $block->dataValue('notify_recipients') ?: [];
-                    if ($to) {
-                        $mail['to'] = $to;
-                    } else {
-                        $owner = $block->page()->site()->owner();
-                        $mail['to'] = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
+                    if (!$to) {
+                        $to = $view->siteSetting('contactus_notify_recipients');
+                        if (!$to) {
+                            $to = $view->setting('contactus_notify_recipients');
+                            if (!$to) {
+                                $owner = $block->page()->site()->owner();
+                                $to = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
+                            }
+                        }
                     }
+                    $mail['to'] = $to;
                     $mail['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $body = <<<TXT
 A user has contacted you.

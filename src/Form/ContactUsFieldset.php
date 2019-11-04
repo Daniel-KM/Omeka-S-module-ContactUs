@@ -25,10 +25,12 @@ class ContactUsFieldset extends Fieldset
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'List of recipients to notify', // @translate
+                    'info' => 'Let empty to use site settings.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
-                    'required' => true,
+                    'required' => false,
+                    'placeholder' => 'Let empty to use site settings.', // @translate
                 ],
             ])
             ->add([
