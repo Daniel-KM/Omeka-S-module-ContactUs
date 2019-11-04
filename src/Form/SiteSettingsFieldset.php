@@ -86,7 +86,7 @@ info@example2.org', // @translate
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'List of antispam questions/answers', // @translate
-                    'info' => 'Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'info' => 'See the block "Contact us" for a simple list. Separate questions and answer with a "=". Questions may be translated.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',

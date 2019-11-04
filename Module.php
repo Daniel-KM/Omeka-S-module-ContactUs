@@ -8,6 +8,7 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 }
 
 use Generic\AbstractModule;
+use Omeka\Settings\SettingsInterface;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 
@@ -147,6 +148,53 @@ class Module extends AbstractModule
                 ],
             ])
         ;
+    }
+
+    protected function initDataToPopulate(SettingsInterface $settings, $settingsType, $id = null)
+    {
+        // This method is not in the interface, but is set for config, site and
+        // user settings.
+        if (!method_exists($settings, 'getTableName')) {
+            return;
+        }
+
+        $config = $this->getConfig();
+        $space = strtolower(static::NAMESPACE);
+        if (empty($config[$space][$settingsType])) {
+            return;
+        }
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->getServiceLocator()->get('Omeka\Connection');
+        if ($id) {
+            if (!method_exists($settings, 'getTargetIdColumnName')) {
+                return;
+            }
+            $sql = sprintf('SELECT id, value FROM %s WHERE %s = :target_id', $settings->getTableName(), $settings->getTargetIdColumnName());
+            $stmt = $connection->executeQuery($sql, ['target_id' => $id]);
+        } else {
+            $sql = sprintf('SELECT id, value FROM %s', $settings->getTableName());
+            $stmt = $connection->query($sql);
+        }
+
+        $currentSettings = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $defaultSettings = $config[$space][$settingsType];
+        // Skip settings that are arrays, because the fields "multi-checkbox"
+        // and "multi-select" are removed when no value are selected, so it's
+        // not possible to determine if it's a new setting or an old empty
+        // setting currently. So fill them via upgrade in that case.
+        // TODO Find a way to save empty multi-checkboxes and multi-selects (core fix).
+
+        // In this form there is currently no select or radio.
+
+        // $defaultSettings = array_filter($defaultSettings, function ($v) {
+        //     return !is_array($v);
+        // });
+        $missingSettings = array_diff_key($defaultSettings, $currentSettings);
+
+        foreach ($missingSettings as $name => $value) {
+            $settings->set($name, $value);
+        }
     }
 
     public function stringToKeyValues($string)
