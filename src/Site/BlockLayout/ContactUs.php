@@ -1,7 +1,6 @@
 <?php
 namespace ContactUs\Site\BlockLayout;
 
-use ContactUs\Form\ContactUsBlockForm;
 use ContactUs\Form\ContactUsForm;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
