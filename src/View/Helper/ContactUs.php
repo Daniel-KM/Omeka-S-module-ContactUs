@@ -49,7 +49,12 @@ class ContactUs extends AbstractHelper
      */
     public function __invoke($options = [])
     {
-        $options += $this->defaultOptions + ['template' => null, 'resource' => null];
+        $options += $this->defaultOptions + [
+            'template' => null,
+            'resource' => null,
+            'heading' => null,
+            'html' => null,
+        ];
 
         $view = $this->getView();
 
@@ -104,18 +109,7 @@ class ContactUs extends AbstractHelper
                     $mail['from'] = $args['from'];
                     $mail['fromName'] = $args['name'] ?: null;
                     // Keep compatibility with old versions.
-                    $to = $options['notify_recipients'] ?: [];
-                    if (!$to) {
-                        $to = $view->siteSetting('contactus_notify_recipients');
-                        if (!$to) {
-                            $to = $view->setting('contactus_notify_recipients');
-                            if (!$to) {
-                                $owner = $site->owner();
-                                $to = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
-                            }
-                        }
-                    }
-                    $mail['to'] = $to;
+                    $mail['to'] = $this->getNotifyRecipients($options);
                     $mail['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $body = <<<TXT
 A user has contacted you.
@@ -146,9 +140,11 @@ TXT;
                                 ? sprintf('%s (%s)', $args['name'], $args['from'])
                                 : sprintf('(%s)', $args['from'])
                         );
+
+                        $notifyRecipients = $this->getNotifyRecipients($options);
+
                         $mail = [];
-                        $mail['from'] = $owner ? $owner->email() : $view->setting('administrator_email');
-                        $mail['fromName'] = $owner ? $owner->name() : null;
+                        $mail['from'] = reset($notifyRecipients);
                         $mail['to'] = $args['from'];
                         $mail['toName'] = $args['name'] ?: null;
                         $subject = $options['confirmation_subject'] ?: $this->defaultSettings['confirmation_subject'];
@@ -189,15 +185,14 @@ TXT;
         }
 
         $template = $options['template'] ?: self::PARTIAL_NAME;
-        unset($options['template']);
         return $view->partial(
             $template,
             [
                 'heading' => $options['heading'],
+                'html' => $options['html'],
                 'form' => $form,
                 'message' => $message,
                 'status' => $status,
-                'options' => $options,
             ]
         );
     }
@@ -241,6 +236,28 @@ TXT;
         $holders += $defaultPlaceholders;
 
         return str_replace(array_keys($holders), array_values($holders), $message);
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function getNotifyRecipients(array $options)
+    {
+        $view = $this->getView();
+        $list = $options['notify_recipients'] ?: [];
+        if (!$list) {
+            $list = $view->siteSetting('contactus_notify_recipients');
+            if (!$list) {
+                $list = $view->setting('contactus_notify_recipients');
+                if (!$list) {
+                    $site = $this->currentSite();
+                    $owner = $site->owner();
+                    $list = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
+                }
+            }
+        }
+        return $list;
     }
 
     /**

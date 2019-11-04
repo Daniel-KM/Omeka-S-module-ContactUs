@@ -16,13 +16,14 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Default emails to notify', // @translate
-                    'info' => 'The default list of recipients to notify, one by row.', // @translate
+                    'info' => 'The default list of recipients to notify, one by row. First email is used for confirmation.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
-                    'placeholder' => 'contact@example.org
-info@example2.org',
+                    'placeholder' => 'First email is used for confirmation.
+contact@example.org
+info@example2.org', // @translate
                     'rows' => 5,
                 ],
             ])

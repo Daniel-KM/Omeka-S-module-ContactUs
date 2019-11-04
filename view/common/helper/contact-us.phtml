@@ -3,9 +3,9 @@
  * @var \Zend\View\Renderer\PhpRenderer $this
  * @var \ContactUs\Form\ContactUsForm $form
  * @var string $heading
+ * @var string $html
  * @var string $message
  * @var string $status "success" or "error"
- * @var array $options
  */
 
 $escape = $this->plugin('escapeHtml');
@@ -22,6 +22,8 @@ $this->headStyle()->appendStyle($style);
     <?php if (!empty($heading)): ?>
     <h2><?= $escape($heading) ?></h2>
     <?php endif; ?>
+
+    <?= $html ?>
 
     <?php if ($message): ?>
     <p class="explanation <?= $status ?>"><?= $message ?></p>

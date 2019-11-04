@@ -43,7 +43,7 @@ return [
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
-            'contactus_text' => '',
+            'contactus_html' => '',
             'contactus_confirmation_enabled' => true,
             'contactus_confirmation_subject' => 'Confirmation contact', // @translate
             'contactus_confirmation_body' => 'Hi {name},

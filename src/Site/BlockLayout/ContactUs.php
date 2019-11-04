@@ -112,8 +112,10 @@ class ContactUs extends AbstractBlockLayout
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
+        $options = $block->data();
+        $options['html'] = '';
         return $view->partial(self::PARTIAL_NAME,[
-            'options' => $block->data(),
+            'options' => $options,
         ]);
     }
 

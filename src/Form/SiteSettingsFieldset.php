@@ -17,26 +17,26 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Emails to notify', // @translate
-                    'info' => 'The list of recipients to notify, one by row.', // @translate
+                    'info' => 'The list of recipients to notify, one by row. First email is used for confirmation.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
-                    'placeholder' => 'Let empty to use main settings.
+                    'placeholder' => 'Let empty to use main settings. First email is used for confirmation.
 contact@example.org
 info@example2.org', // @translate
                     'rows' => 5,
                 ],
             ])
             ->add([
-                'name' => 'contactus_text',
+                'name' => 'contactus_html',
                 'type' => CkeditorInline::class,
                 'options' => [
                     'label' => 'Text', // @translate
                     'info' => 'Text to use to explain the aim of the form.', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'contactus_heading',
+                    'id' => 'contactus_html',
                 ],
             ])
             ->add([
