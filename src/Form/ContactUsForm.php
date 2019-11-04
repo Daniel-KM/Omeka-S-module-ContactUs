@@ -25,7 +25,7 @@ class ContactUsForm extends Form
                 ],
                 'attributes' => [
                     'id' => 'from',
-                    'required' => true,
+                    'required' => false,
                 ],
             ])
             ->add([
@@ -95,13 +95,19 @@ class ContactUsForm extends Form
             ]);
 
         $inputFilter = $this->getInputFilter();
-        $inputFilter->add([
-            'name' => 'message',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
+        $inputFilter
+            ->add([
+                'name' => 'from',
+                'required' => false,
+            ])
+            ->add([
+                'name' => 'message',
+                'required' => true,
+                'filters' => [
+                    ['name' => Filter\StringTrim::class],
+                ],
+            ])
+        ;
         if ($question) {
             $inputFilter->add([
                 'name' => 'answer',

@@ -58,7 +58,8 @@ class ContactUs extends AbstractHelper
 
         $view = $this->getView();
 
-        $isAuthenticated = (bool) $view->identity();
+        $user = $view->identity();
+        $isAuthenticated = (bool) $user;
         $translate = $view->plugin('translate');
 
         $antispam = !$isAuthenticated && !empty($options['antispam']) && !empty($options['questions']);
@@ -84,11 +85,19 @@ class ContactUs extends AbstractHelper
                 }
             }
 
+            $params += ['from' => null, 'name' => null];
+            $hasEmail = $params['from'] || $user;
+
             /** @var \ContactUs\Form\ContactUsForm $form */
             $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
             $form->setData($params);
-            if ($form->isValid()) {
+            if ($hasEmail && $form->isValid()) {
                 $args = $form->getData();
+                if ($user) {
+                    $args['from'] = $user->getEmail();
+                    $args['name'] = $user->getName();
+                }
+
                 $status = 'success';
                 // If spam, return a success message, but don't send email.
                 $message = new Message(
@@ -184,6 +193,21 @@ TXT;
             $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
         }
 
+        if ($user):
+            $form->get('from')
+                ->setValue($user->getEmail())
+                ->setAttribute('disabled', 'disabled');
+            $form->get('name')
+                ->setValue($user->getName())
+                ->setAttribute('disabled' , 'disabled');
+        endif;
+
+        if ($options['resource']):
+            $answer = 'About resource %s (%s).'; // @translate
+            $form->get('message')
+                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)));
+        endif;
+
         $template = $options['template'] ?: self::PARTIAL_NAME;
         return $view->partial(
             $template,
@@ -193,6 +217,7 @@ TXT;
                 'form' => $form,
                 'message' => $message,
                 'status' => $status,
+                'resource' => $options['resource'],
             ]
         );
     }
