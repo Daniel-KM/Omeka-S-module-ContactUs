@@ -10,8 +10,12 @@
 
 $escape = $this->plugin('escapeHtml');
 
-$this->headLink()
-    ->appendStylesheet($this->assetUrl('css/contact-us.css', 'ContactUs'));
+$style = '
+.contact-us-block .error {
+    color: red;
+}
+';
+$this->headStyle()->appendStyle($style);
 ?>
 
 <div class="contact-us-block">

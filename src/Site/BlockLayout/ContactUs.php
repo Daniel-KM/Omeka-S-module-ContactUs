@@ -110,20 +110,11 @@ class ContactUs extends AbstractBlockLayout
         return $html;
     }
 
-    public function prepareRender(PhpRenderer $view)
-    {
-        $view->headLink()
-            ->appendStylesheet($view->assetUrl('css/contact-us.css', 'ContactUs'));
-    }
-
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
-        return $view->partial(
-            self::PARTIAL_NAME,
-            [
-                'options' => $block->data(),
-            ]
-        );
+        return $view->partial(self::PARTIAL_NAME,[
+            'options' => $block->data(),
+        ]);
     }
 
     /**
