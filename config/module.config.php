@@ -7,9 +7,14 @@ return [
             dirname(__DIR__) . '/view',
         ],
     ],
-    'block_layouts' => [
+    'view_helpers' => [
         'factories' => [
-            'contactUs' => Service\BlockLayout\ContactUsFactory::class,
+            'contactUs' => Service\ViewHelper\ContactUsFactory::class,
+        ],
+    ],
+    'block_layouts' => [
+        'invokables' => [
+            'contactUs' => Site\BlockLayout\ContactUs::class,
         ],
     ],
     'form_elements' => [
