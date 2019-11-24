@@ -67,6 +67,7 @@ class ContactUs extends AbstractHelper
         $message = null;
         $status = null;
         $formOptions = [];
+        $formOptions['isAuthenticated'] = $isAuthenticated;
         $defaultForm = true;
 
         $params = $view->params()->fromPost();
@@ -186,6 +187,7 @@ TXT;
                 $formOptions = [
                     'question' => $question,
                     'checkAnswer' => $answer,
+                    'isAuthenticated' => $isAuthenticated,
                 ];
                 $session = new Container('ContactUs');
                 $session->question = $question;
@@ -205,7 +207,7 @@ TXT;
         if ($options['resource']):
             $answer = 'About resource %s (%s).'; // @translate
             $form->get('message')
-                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)));
+                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
         endif;
 
         $template = $options['template'] ?: self::PARTIAL_NAME;

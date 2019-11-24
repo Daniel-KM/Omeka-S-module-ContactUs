@@ -12,6 +12,7 @@ class ContactUsForm extends Form
     {
         $question = $this->getOption('question');
         $checkAnswer = $this->getOption('checkAnswer');
+        $isAuthenticated = $this->getOption('isAuthenticated');
 
         $this->setAttribute('class', 'contact-form');
 
@@ -25,7 +26,7 @@ class ContactUsForm extends Form
                 ],
                 'attributes' => [
                     'id' => 'from',
-                    'required' => false,
+                    'required' => !$isAuthenticated,
                 ],
             ])
             ->add([
@@ -98,7 +99,7 @@ class ContactUsForm extends Form
         $inputFilter
             ->add([
                 'name' => 'from',
-                'required' => false,
+                'required' => !$isAuthenticated,
             ])
             ->add([
                 'name' => 'message',
