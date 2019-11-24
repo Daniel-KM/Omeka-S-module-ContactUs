@@ -93,13 +93,13 @@ altered, and that no provisions are either added or removed herefrom.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2018 (see [Daniel-KM] on GitHub)
+* Copyright Daniel Berthereau, 2018-2019 (see [Daniel-KM] on GitHub)
 
 
 [Contact us]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
 [Generic]: https://github.com/Daniel-KM/Omeka-S-module-Generic
-[BlocksDisposition]: https://github.com/Daniel-KM/Omeka-S-module-BlocksDisposition
+[Blocks Disposition]: https://github.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [Next]: https://github.com/Daniel-KM/Omeka-S-module-Next
 [module issues]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs/issues
