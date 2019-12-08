@@ -48,7 +48,7 @@ add the following code in your theme:
 echo $this->contactUs(['resource' => $resource]);
 ```
 
-The partial is themable: copy the file `common/helpers/contact-us.phtml` in your
+The partial is themable: copy the file `common/helper/contact-us.phtml` in your
 theme.
 
 
