@@ -1,0 +1,307 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-05 00:00+0100\n"
+"PO-Revision-Date: 2019-12-28 13:37+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it_IT\n"
+
+#: src/Generic/AbstractModule.php:518
+#, php-format
+msgid "This module requires the module \"%s\"."
+msgstr "Questo modulo richiede il modulo \"%s\"."
+
+#: src/Generic/AbstractModule.php:538
+#, php-format
+msgid "This module requires modules \"%s\"."
+msgstr "Questo modulo richiede i moduli \"%s\"."
+
+#: src/Generic/AbstractModule.php:606
+#, php-format
+msgid ""
+"The module \"%s\" was automatically deactivated because the dependencies are "
+"unavailable."
+msgstr ""
+"Il modulo \"%s\" è stato disattivato automaticamente perché le dipendenze "
+"non sono disponibili."
+
+#: src/Site/BlockLayout/ContactUs.php:107
+msgid "Append a form to allow visitors to contact us."
+msgstr "Allegare un modulo per consentire ai visitatori di contattarci."
+
+#: src/View/Helper/ContactUs.php:104
+#, php-format
+msgid "Thank you for your message %s. We will answer you soon."
+msgstr "Grazie per il vostro messaggio %s. Vi risponderemo presto."
+
+#: src/View/Helper/ContactUs.php:122
+#, php-format
+msgid "[Contact] %s"
+msgstr "[Contatto] %s"
+
+#: src/View/Helper/ContactUs.php:141
+msgid ""
+"Sorry, we are not able to send email to notify the admin. Come back later."
+msgstr ""
+"Siamo spiacenti, non siamo in grado di inviare e-mail per avvisare "
+"l'amministratore. Torna più tardi."
+
+#: src/View/Helper/ContactUs.php:147
+#, php-format
+msgid ""
+"Thank you for your message %s. Check your confirmation mail. We will answer "
+"you soon."
+msgstr ""
+"Grazie per il vostro messaggio %s. Controlli la sua mail di conferma. Vi "
+"risponderemo presto."
+
+#: src/View/Helper/ContactUs.php:168
+msgid "Sorry, we are not able to send the confirmation email."
+msgstr ""
+
+#: src/View/Helper/ContactUs.php:176
+msgid "There is an error."
+msgstr "Si è verificato un errore."
+
+#: src/Form/ContactUsForm.php:46
+msgid "Object"
+msgstr "Oggetto"
+
+#: src/Form/ContactUsForm.php:57
+msgid "Message"
+msgstr "Messaggio"
+
+#: src/Form/ContactUsForm.php:93
+msgid "Send message"
+msgstr "Invia messaggio"
+
+#: src/Form/ContactUsFieldset.php:16
+msgid "Block title"
+msgstr "Titolo del blocco"
+
+#: src/Form/ContactUsFieldset.php:17
+msgid "Heading for the block, if any."
+msgstr "Titolo del blocco, se esiste."
+
+#: src/Form/ContactUsFieldset.php:27
+msgid "List of recipients to notify"
+msgstr "Elenco dei destinatari delle notifiche"
+
+#: src/Form/ContactUsFieldset.php:28 src/Form/ContactUsFieldset.php:33
+msgid "Let empty to use site settings."
+msgstr "Lasciare vuoto per utilizzare le impostazioni del sito."
+
+#: src/Form/ContactUsFieldset.php:40 src/Form/SiteSettingsFieldset.php:46
+msgid "Send a confirmation email"
+msgstr "Invia una e-mail di conferma"
+
+#: src/Form/ContactUsFieldset.php:50 src/Form/SiteSettingsFieldset.php:56
+msgid "Subject of the confirmation email"
+msgstr "Oggetto dell'e-mail di conferma"
+
+#: src/Form/ContactUsFieldset.php:60 src/Form/SiteSettingsFieldset.php:66
+msgid "Confirmation message"
+msgstr "Messaggio di conferma"
+
+#: src/Form/ContactUsFieldset.php:61 src/Form/SiteSettingsFieldset.php:67
+msgid ""
+"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
+"{email}, {name}, {message}."
+msgstr ""
+"Possibili placeholders: {main_title}, {main_url}, {site_title}, "
+"{site_url}, {email}, {name}, {message}."
+
+#: src/Form/ContactUsFieldset.php:72 src/Form/SiteSettingsFieldset.php:78
+msgid "Enable simple antispam for visitors"
+msgstr "Attivare l'antispam semplice per i visitatori"
+
+#: src/Form/ContactUsFieldset.php:82 src/Form/SiteSettingsFieldset.php:88
+msgid "List of antispam questions/answers"
+msgstr "Elenco delle domande/risposte antispam"
+
+#: src/Form/ContactUsFieldset.php:83
+msgid ""
+"Separate questions and answer with a \"=\". Questions may be translated."
+msgstr ""
+"Separare le domande e rispondere con un \"=\". Le domande possono essere "
+"tradotte."
+
+#: src/Form/SettingsFieldset.php:9 src/Form/SiteSettingsFieldset.php:10
+#: src/Site/BlockLayout/ContactUs.php:21
+msgid "Contact us"
+msgstr "Contattaci"
+
+#: src/Form/SettingsFieldset.php:18
+msgid "Default emails to notify"
+msgstr "Email predefinite a cui recapitare le notifiche"
+
+#: src/Form/SettingsFieldset.php:19
+msgid ""
+"The default list of recipients to notify, one by row. First email is used "
+"for confirmation."
+msgstr ""
+"L'elenco predefinito dei destinatari a cui inviare la notifica, uno per "
+"riga. La prima e-mail viene utilizzata per la conferma."
+
+#: src/Form/SettingsFieldset.php:24
+msgid ""
+"First email is used for confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
+msgstr ""
+"La prima e-mail viene utilizzata per la conferma.\n"
+"contact@example.org\n"
+"info@example2.org"
+
+#: src/Form/SiteSettingsFieldset.php:19
+msgid "Emails to notify"
+msgstr "E-mail a cui inviare le notifiche"
+
+#: src/Form/SiteSettingsFieldset.php:20
+msgid ""
+"The list of recipients to notify, one by row. First email is used for "
+"confirmation."
+msgstr ""
+"L'elenco predefinito dei destinatari a cui inviare la notifica, uno per "
+"riga. La prima e-mail viene utilizzata per la conferma."
+
+#: src/Form/SiteSettingsFieldset.php:25
+msgid ""
+"Let empty to use main settings. First email is used for confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
+msgstr ""
+"Lasciare vuoto per utilizzare le impostazioni principali. La prima e-mail "
+"viene utilizzata per la conferma.\n"
+"contact@example.org\n"
+"info@example2.org"
+
+#: src/Form/SiteSettingsFieldset.php:36
+msgid "Text to use to explain the aim of the form."
+msgstr "Testo da utilizzare per spiegare lo scopo del modulo."
+
+#: src/Form/SiteSettingsFieldset.php:89
+msgid ""
+"See the block \"Contact us\" for a simple list. Separate questions and "
+"answer with a \"=\". Questions may be translated."
+msgstr ""
+"Vedi il blocco \"Contattaci\" per un semplice elenco. Separare le domande e "
+"le risposte con un \"=\". Le domande possono essere tradotte."
+
+#: src/View/Helper/ContactUs.php:206
+#, php-format
+msgid "About resource %s (%s)."
+msgstr "A proposito delle risorse %s (%s)."
+
+#: src/View/Helper/ContactUs.php:322
+#, php-format
+msgid "Error when sending email. Arguments:\\n%s"
+msgstr "Errore durante l'invio di e-mail. Argomenti:\\n%s"
+
+#: src/Site/BlockLayout/ContactUs.php:44
+msgid "Check emails for notifications or remove them to use default ones."
+msgstr ""
+"Controllare le e-mail per le notifiche o rimuoverle per utilizzare quelle "
+"predefinite."
+
+#: src/Site/BlockLayout/ContactUs.php:57
+msgid ""
+"To create antispam, each question must be separated from the answer by a \"="
+"\"."
+msgstr ""
+"Per creare l'antispam, ogni domanda deve essere separata dalla risposta con "
+"un \"=\"."
+
+#: config/module.config.php:48 config/module.config.php:95
+msgid "Confirmation contact"
+msgstr "Contatto di conferma"
+
+#: config/module.config.php:49 config/module.config.php:96
+msgid ""
+"Hi {name},\n"
+"\n"
+"Thanks to contact us!\n"
+"\n"
+"We will answer you soon.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{main_title}\n"
+"{main_url}\n"
+"\n"
+"--\n"
+"\n"
+"Your message:\n"
+"Object: {object}\n"
+"\n"
+"{message}"
+msgstr ""
+"Buongiorno {name},\n"
+"\n"
+"Grazie per averci contattato!\n"
+"\n"
+"Vi risponderemo presto.\n"
+"\n"
+"Cordiali saluti,\n"
+"\n"
+"{main_title}\n"
+"{main_url}\n"
+"\n"
+"--\n"
+"\n"
+"Il suo messaggio:\n"
+"Oggetto: {object}\n"
+"\n"
+"{message}"
+
+#: config/module.config.php:68 config/module.config.php:115
+msgid "How many are zero plus 1 (in number)?"
+msgstr "Quanto fa zero più 1 (in cifre)?"
+
+#: config/module.config.php:70 config/module.config.php:117
+msgid "How many are one plus 1 (in number)?"
+msgstr "Quanto fa uno più 1 (in cifre)?"
+
+#: config/module.config.php:72 config/module.config.php:119
+msgid "How many are one plus 2 (in number)?"
+msgstr "Quanto fa uno più 2 (in cifre)?"
+
+#: config/module.config.php:74 config/module.config.php:121
+msgid "How many are one plus 3 (in number)?"
+msgstr "Quanto fa uno più 3 (in cifre)?"
+
+#: config/module.config.php:76 config/module.config.php:123
+msgid "How many are two plus 1 (in number)?"
+msgstr "Quanto fa due più 1 (in cifre)?"
+
+#: config/module.config.php:78 config/module.config.php:125
+msgid "How many are two plus 2 (in number)?"
+msgstr "Quanto fa due più 2 (in cifre)?"
+
+#: config/module.config.php:80 config/module.config.php:127
+msgid "How many are two plus 3 (in number)?"
+msgstr "Quanto fa due più 3 (in cifre)?"
+
+#: config/module.config.php:82 config/module.config.php:129
+msgid "How many are three plus 1 (in number)?"
+msgstr "Quanto fa tre più 1 (in cifre)?"
+
+#: config/module.config.php:84 config/module.config.php:131
+msgid "How many are three plus 2 (in number)?"
+msgstr "Quanto fa tre più 2 (in cifre)?"
+
+#: config/module.config.php:86 config/module.config.php:133
+msgid "How many are three plus 3 (in number)?"
+msgstr "Quanto fa tre più 3 (in cifre)?"
