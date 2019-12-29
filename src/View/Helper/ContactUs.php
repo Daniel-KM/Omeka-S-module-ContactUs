@@ -229,7 +229,7 @@ TXT;
      *
      * @param array $options
      * @param array $params Post data.
-     * @return boolean
+     * @return bool
      */
     protected function checkSpam(array $options, array $params)
     {

@@ -114,7 +114,7 @@ class ContactUs extends AbstractBlockLayout
     {
         $options = $block->data();
         $options['html'] = '';
-        return $view->partial(self::PARTIAL_NAME,[
+        return $view->partial(self::PARTIAL_NAME, [
             'options' => $options,
         ]);
     }

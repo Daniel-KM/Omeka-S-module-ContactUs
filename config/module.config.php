@@ -85,7 +85,7 @@ Object: {object}
                     => '5',
                 'How many are three plus 3 (in number)?' // @translate
                     => '6',
-            ]
+            ],
         ],
         'block_settings' => [
             'contactUs' => [
@@ -132,7 +132,7 @@ Object: {object}
                         => '5',
                     'How many are three plus 3 (in number)?' // @translate
                         => '6',
-                ]
+                ],
             ],
         ],
     ],
