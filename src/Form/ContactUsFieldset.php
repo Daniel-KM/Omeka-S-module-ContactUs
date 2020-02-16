@@ -90,5 +90,20 @@ How many are one plus 1 (in number)? = 2',
                 ],
             ])
         ;
+        if (class_exists('BlockPlus\Form\Element\TemplateSelect')) {
+            $this
+                ->add([
+                    'name' => 'o:block[__blockIndex__][o:data][template]',
+                    'type' => \BlockPlus\Form\Element\TemplateSelect::class,
+                    'options' => [
+                        'label' => 'Template to display', // @translate
+                        'info' => 'Templates are in folder "common/block-layout" of the theme and should start with "contact-us".', // @translate
+                        'template' => 'common/block-layout/contact-us',
+                    ],
+                    'attributes' => [
+                        'class' => 'chosen-select',
+                    ],
+                ]);
+        }
     }
 }

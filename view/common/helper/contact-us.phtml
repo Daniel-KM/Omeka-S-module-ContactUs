@@ -24,7 +24,7 @@ $this->headStyle()->appendStyle($style);
     <h2><?= $escape($heading) ?></h2>
     <?php endif; ?>
 
-    <?= $html ?>
+    <?= @$html ?>
 
     <?php if ($message): ?>
     <p class="explanation <?= $status ?>"><?= $message ?></p>

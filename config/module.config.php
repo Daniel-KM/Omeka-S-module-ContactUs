@@ -133,6 +133,7 @@ Object: {object}
                     'How many are three plus 3 (in number)?' // @translate
                         => '6',
                 ],
+                'template' => '',
             ],
         ],
     ],
