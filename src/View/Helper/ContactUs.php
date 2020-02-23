@@ -114,6 +114,9 @@ class ContactUs extends AbstractHelper
                     $args['email'] = $args['from'];
                     $args['site_title'] = $site->title();
                     $args['site_url'] = $site->siteUrl();
+                    if (empty($args['subject'])) {
+                        $args['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                    }
 
                     $mail = [];
                     $mail['from'] = $args['from'];
@@ -127,7 +130,8 @@ A user has contacted you.
 email: {email}
 name: {name}
 ip: {ip}
-object: {object}
+newsletter: {newsletter}
+subject: {subject}
 message:
 
 {message}
@@ -299,6 +303,8 @@ TXT;
         $defaultParams = [
             'fromName' => null,
             'toName' => null,
+            'subject' => sprintf($this->getView()->translate('[Contact] %s'), $this->mailer->getInstallationTitle()),
+            'body' => null,
         ];
         $params += $defaultParams;
 

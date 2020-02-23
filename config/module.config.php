@@ -60,7 +60,7 @@ Sincerely,
 --
 
 Your message:
-Object: {object}
+Subject: {subject}
 
 {message}', // @translate
             'contactus_antispam' => true,
@@ -107,7 +107,7 @@ Sincerely,
 --
 
 Your message:
-Object: {object}
+Subject: {subject}
 
 {message}', // @translate
                 'antispam' => true,

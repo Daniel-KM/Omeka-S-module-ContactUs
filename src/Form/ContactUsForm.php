@@ -41,13 +41,13 @@ class ContactUsForm extends Form
                 ],
             ])
             ->add([
-                'name' => 'object',
+                'name' => 'subject',
                 'type' => Element\Text::class,
                 'options' => [
-                    'label' => 'Object', // @translate
+                    'label' => 'Subject', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'object',
+                    'id' => 'subject',
                     'required' => false,
                 ],
             ])
