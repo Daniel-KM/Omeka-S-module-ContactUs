@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-16 00:00+0100\n"
-"PO-Revision-Date: 2019-12-16 00:00+0100\n"
+"POT-Creation-Date: 2020-02-24 00:00+0100\n"
+"PO-Revision-Date: 2020-02-24 00:00+0100\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -15,19 +15,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 
-#: src/Generic/AbstractModule.php:518
+#: src/Generic/AbstractModule.php:542
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr "Ce module requiert le module \"%s\"."
 
-#: src/Generic/AbstractModule.php:538
+#: src/Generic/AbstractModule.php:562
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr "Ce module requiert les modules \"%s\"."
 
-#: src/Generic/AbstractModule.php:606
+#: src/Generic/AbstractModule.php:630
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -45,19 +45,20 @@ msgstr "Ajouter un formulaire de contact pour les visiteurs."
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr "Merci pour votre message %s. Nous vous répondrons prochainement."
 
-#: src/View/Helper/ContactUs.php:123
+#: src/View/Helper/ContactUs.php:118 src/View/Helper/ContactUs.php:126
+#: src/View/Helper/ContactUs.php:306
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:142
+#: src/View/Helper/ContactUs.php:146
 msgid ""
 "Sorry, we are not able to send email to notify the admin. Come back later."
 msgstr ""
 "Désolé, nous ne pouvons pas envoyer un mail pour informer l’administrateur. "
 "Merci de revenir ultérieurement."
 
-#: src/View/Helper/ContactUs.php:148
+#: src/View/Helper/ContactUs.php:152
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
@@ -66,18 +67,14 @@ msgstr ""
 "Merci pour votre message %s. Vérifiez le message de confirmation. Nous "
 "répondrons prochainement."
 
-#: src/View/Helper/ContactUs.php:169
+#: src/View/Helper/ContactUs.php:173
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:177
+#: src/View/Helper/ContactUs.php:181
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
-
-#: src/Form/ContactUsForm.php:47
-msgid "Object"
-msgstr "Objet"
 
 #: src/Form/ContactUsForm.php:58
 msgid "Message"
@@ -137,6 +134,18 @@ msgid ""
 msgstr ""
 "Séparer les questions et les réponses avec un signe \"=\". Les questions "
 "peuvent être traduites."
+
+#: src/Form/ContactUsFieldset.php:99
+msgid "Template to display"
+msgstr "Gabarit à afficher"
+
+#: src/Form/ContactUsFieldset.php:100
+msgid ""
+"Templates are in folder \"common/block-layout\" of the theme and should "
+"start with \"contact-us\"."
+msgstr ""
+"Les gabarits sont dans le dossier \"common/block-layout\" du thème et "
+"doivent commencer avec \"contact-us\"."
 
 #: src/Form/SettingsFieldset.php:9 src/Form/SiteSettingsFieldset.php:10
 #: src/Site/BlockLayout/ContactUs.php:21
@@ -200,12 +209,12 @@ msgstr ""
 "Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et "
 "les réponses avec un signe \"=\". Les questions peuvent être traduites."
 
-#: src/View/Helper/ContactUs.php:208
+#: src/View/Helper/ContactUs.php:212
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:324
+#: src/View/Helper/ContactUs.php:330
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr "Erreur lors de l’envoi du mail. Arguments :\\n%s"
@@ -244,7 +253,7 @@ msgid ""
 "--\n"
 "\n"
 "Your message:\n"
-"Object: {object}\n"
+"Subject: {subject}\n"
 "\n"
 "{message}"
 msgstr ""
@@ -262,7 +271,7 @@ msgstr ""
 "--\n"
 "\n"
 "Votre message:\n"
-"Objet: {object}\n"
+"Sujet : {subject}\n"
 "\n"
 "{message}"
 
@@ -305,3 +314,6 @@ msgstr "Combien font trois et 2 (en chiffres) ?"
 #: config/module.config.php:86 config/module.config.php:133
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
+
+#~ msgid "Object"
+#~ msgstr "Objet"

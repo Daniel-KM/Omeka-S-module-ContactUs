@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 00:00+0100\n"
+"POT-Creation-Date: 2020-02-24 00:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Generic/AbstractModule.php:518
+#: src/Generic/AbstractModule.php:542
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:538
+#: src/Generic/AbstractModule.php:562
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:606
+#: src/Generic/AbstractModule.php:630
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -38,45 +38,42 @@ msgstr ""
 msgid "Append a form to allow visitors to contact us."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:104
+#: src/View/Helper/ContactUs.php:105
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:122
+#: src/View/Helper/ContactUs.php:118 src/View/Helper/ContactUs.php:126
+#: src/View/Helper/ContactUs.php:306
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:141
+#: src/View/Helper/ContactUs.php:146
 msgid ""
 "Sorry, we are not able to send email to notify the admin. Come back later."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:147
+#: src/View/Helper/ContactUs.php:152
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
 "you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:168
+#: src/View/Helper/ContactUs.php:173
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:176
+#: src/View/Helper/ContactUs.php:181
 msgid "There is an error."
 msgstr ""
 
-#: src/Form/ContactUsForm.php:46
-msgid "Object"
-msgstr ""
-
-#: src/Form/ContactUsForm.php:57
+#: src/Form/ContactUsForm.php:58
 msgid "Message"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:93
+#: src/Form/ContactUsForm.php:94
 msgid "Send message"
 msgstr ""
 
@@ -125,6 +122,16 @@ msgstr ""
 #: src/Form/ContactUsFieldset.php:83
 msgid ""
 "Separate questions and answer with a \"=\". Questions may be translated."
+msgstr ""
+
+#: src/Form/ContactUsFieldset.php:99
+msgid "Template to display"
+msgstr ""
+
+#: src/Form/ContactUsFieldset.php:100
+msgid ""
+"Templates are in folder \"common/block-layout\" of the theme and should "
+"start with \"contact-us\"."
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:9 src/Form/SiteSettingsFieldset.php:10
@@ -176,12 +183,12 @@ msgid ""
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:206
+#: src/View/Helper/ContactUs.php:212
 #, php-format
 msgid "About resource %s (%s)."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:322
+#: src/View/Helper/ContactUs.php:330
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr ""
@@ -216,7 +223,7 @@ msgid ""
 "--\n"
 "\n"
 "Your message:\n"
-"Object: {object}\n"
+"Subject: {subject}\n"
 "\n"
 "{message}"
 msgstr ""

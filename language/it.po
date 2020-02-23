@@ -7,28 +7,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 00:00+0100\n"
-"PO-Revision-Date: 2019-12-28 13:37+0100\n"
+"POT-Creation-Date: 2020-02-24 00:00+0100\n"
+"PO-Revision-Date: 2020-02-24 00:00+0100\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: \n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.4\n"
-"Last-Translator: \n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: it_IT\n"
 
-#: src/Generic/AbstractModule.php:518
+#: src/Generic/AbstractModule.php:542
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr "Questo modulo richiede il modulo \"%s\"."
 
-#: src/Generic/AbstractModule.php:538
+#: src/Generic/AbstractModule.php:562
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr "Questo modulo richiede i moduli \"%s\"."
 
-#: src/Generic/AbstractModule.php:606
+#: src/Generic/AbstractModule.php:630
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -41,24 +41,25 @@ msgstr ""
 msgid "Append a form to allow visitors to contact us."
 msgstr "Allegare un modulo per consentire ai visitatori di contattarci."
 
-#: src/View/Helper/ContactUs.php:104
+#: src/View/Helper/ContactUs.php:105
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr "Grazie per il vostro messaggio %s. Vi risponderemo presto."
 
-#: src/View/Helper/ContactUs.php:122
+#: src/View/Helper/ContactUs.php:118 src/View/Helper/ContactUs.php:126
+#: src/View/Helper/ContactUs.php:306
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contatto] %s"
 
-#: src/View/Helper/ContactUs.php:141
+#: src/View/Helper/ContactUs.php:146
 msgid ""
 "Sorry, we are not able to send email to notify the admin. Come back later."
 msgstr ""
 "Siamo spiacenti, non siamo in grado di inviare e-mail per avvisare "
 "l'amministratore. Torna più tardi."
 
-#: src/View/Helper/ContactUs.php:147
+#: src/View/Helper/ContactUs.php:152
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
@@ -67,23 +68,19 @@ msgstr ""
 "Grazie per il vostro messaggio %s. Controlli la sua mail di conferma. Vi "
 "risponderemo presto."
 
-#: src/View/Helper/ContactUs.php:168
+#: src/View/Helper/ContactUs.php:173
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:176
+#: src/View/Helper/ContactUs.php:181
 msgid "There is an error."
 msgstr "Si è verificato un errore."
 
-#: src/Form/ContactUsForm.php:46
-msgid "Object"
-msgstr "Oggetto"
-
-#: src/Form/ContactUsForm.php:57
+#: src/Form/ContactUsForm.php:58
 msgid "Message"
 msgstr "Messaggio"
 
-#: src/Form/ContactUsForm.php:93
+#: src/Form/ContactUsForm.php:94
 msgid "Send message"
 msgstr "Invia messaggio"
 
@@ -120,8 +117,8 @@ msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {message}."
 msgstr ""
-"Possibili placeholders: {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {name}, {message}."
+"Possibili placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
+"{email}, {name}, {message}."
 
 #: src/Form/ContactUsFieldset.php:72 src/Form/SiteSettingsFieldset.php:78
 msgid "Enable simple antispam for visitors"
@@ -137,6 +134,16 @@ msgid ""
 msgstr ""
 "Separare le domande e rispondere con un \"=\". Le domande possono essere "
 "tradotte."
+
+#: src/Form/ContactUsFieldset.php:99
+msgid "Template to display"
+msgstr ""
+
+#: src/Form/ContactUsFieldset.php:100
+msgid ""
+"Templates are in folder \"common/block-layout\" of the theme and should "
+"start with \"contact-us\"."
+msgstr ""
 
 #: src/Form/SettingsFieldset.php:9 src/Form/SiteSettingsFieldset.php:10
 #: src/Site/BlockLayout/ContactUs.php:21
@@ -200,12 +207,12 @@ msgstr ""
 "Vedi il blocco \"Contattaci\" per un semplice elenco. Separare le domande e "
 "le risposte con un \"=\". Le domande possono essere tradotte."
 
-#: src/View/Helper/ContactUs.php:206
+#: src/View/Helper/ContactUs.php:212
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "A proposito delle risorse %s (%s)."
 
-#: src/View/Helper/ContactUs.php:322
+#: src/View/Helper/ContactUs.php:330
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr "Errore durante l'invio di e-mail. Argomenti:\\n%s"
@@ -244,7 +251,7 @@ msgid ""
 "--\n"
 "\n"
 "Your message:\n"
-"Object: {object}\n"
+"Subject: {subject}\n"
 "\n"
 "{message}"
 msgstr ""
@@ -262,7 +269,7 @@ msgstr ""
 "--\n"
 "\n"
 "Il suo messaggio:\n"
-"Oggetto: {object}\n"
+"Oggetto: {subject}\n"
 "\n"
 "{message}"
 
@@ -305,3 +312,6 @@ msgstr "Quanto fa tre più 2 (in cifre)?"
 #: config/module.config.php:86 config/module.config.php:133
 msgid "How many are three plus 3 (in number)?"
 msgstr "Quanto fa tre più 3 (in cifre)?"
+
+#~ msgid "Object"
+#~ msgstr "Oggetto"
