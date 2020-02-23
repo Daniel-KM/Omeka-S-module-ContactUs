@@ -205,7 +205,7 @@ TXT;
                 ->setAttribute('disabled', 'disabled');
             $form->get('name')
                 ->setValue($user->getName())
-                ->setAttribute('disabled' , 'disabled');
+                ->setAttribute('disabled', 'disabled');
         endif;
 
         if ($options['resource']):
