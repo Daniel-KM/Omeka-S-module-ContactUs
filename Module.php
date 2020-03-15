@@ -16,6 +16,23 @@ class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
 
+    protected function postInstall()
+    {
+        // Prepare all translations one time.
+        $translatables = [
+            'contactus_confirmation_subject',
+            'contactus_confirmation_body',
+            // 'contactus_questions',
+        ];
+        $config = $this->getConfig()['contactus']['site_settings'];
+        $translate = $this->getServiceLocator()->get('ControllerPluginManager')->get('translate');
+        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
+            return !empty($config[$v]) ? $translate($config[$v]) : null;
+        }, array_combine($translatables, $translatables)));
+
+        $this->manageSiteSettings('update', $translatables);
+    }
+
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
@@ -56,22 +73,51 @@ class Module extends AbstractModule
         );
     }
 
-    public function handleMainSettings(Event $event)
+    protected function initDataToPopulate(SettingsInterface $settings, $settingsType, $id = null, array $values = [])
     {
-        parent::handleMainSettings($event);
+        if ($settingsType !== 'site_settings') {
+            return parent::initDataToPopulate($settings, $settingsType, $id, $values);
+        }
 
-        $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings');
+        // Prepare all translations one time.
+        $translatables = [
+            'contactus_confirmation_subject',
+            'contactus_confirmation_body',
+            // 'contactus_questions',
+        ];
+        $config = $this->getConfig()['contactus']['site_settings'];
+        $translate = $this->getServiceLocator()->get('ControllerPluginManager')->get('translate');
+        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
+            return !empty($config[$v]) ? $translate($config[$v]) : null;
+        }, array_combine($translatables, $translatables)));
 
-        $fieldset = $event
-            ->getTarget()
-            ->get('contactus');
+        // TODO Translate contact us questions.
+        if ($settings->get('contactus_questions') === null) {
+            $settings->set('contactus_questions', $config['contactus_questions']);
+        }
 
-        $recipients = $settings->get('contactus_notify_recipients') ?: [];
-        $value = is_array($recipients) ? implode("\n", $recipients) : $recipients;
-        $fieldset
-            ->get('contactus_notify_recipients')
-            ->setValue($value);
+        return parent::initDataToPopulate($settings, $settingsType, $id, $translatables);
+    }
+
+    protected function prepareDataToPopulate(SettingsInterface $settings, $settingsType)
+    {
+        $data = parent::prepareDataToPopulate($settings, $settingsType);
+        if (in_array($settingsType, ['settings', 'site_settings'])) {
+            if (isset($data['contactus_notify_recipients']) && is_array($data['contactus_notify_recipients'])) {
+                $data['contactus_notify_recipients'] = implode("\n", $data['contactus_notify_recipients']);
+            }
+            if ($settingsType === 'site_settings'
+                && isset($data['contactus_questions']) && is_array($data['contactus_questions'])
+            ) {
+                $questions = $data['contactus_questions'];
+                $value = '';
+                foreach ($questions as $question => $answer) {
+                    $value .= $question . ' = ' . $answer . "\n";
+                }
+                $data['contactus_questions'] = $value;
+            }
+        }
+        return $data;
     }
 
     public function handleMainSettingsFilters(Event $event)
@@ -90,33 +136,6 @@ class Module extends AbstractModule
                     ],
                 ],
             ]);
-    }
-
-    public function handleSiteSettings(Event $event)
-    {
-        parent::handleSiteSettings($event);
-
-        $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings\Site');
-
-        $fieldset = $event
-            ->getTarget()
-            ->get('contactus');
-
-        $recipients = $settings->get('contactus_notify_recipients') ?: [];
-        $value = is_array($recipients) ? implode("\n", $recipients) : $recipients;
-        $fieldset
-            ->get('contactus_notify_recipients')
-            ->setValue($value);
-
-        $questions = $settings->get('contactus_questions') ?: [];
-        $value = '';
-        foreach ($questions as $question => $answer) {
-            $value .= $question . ' = ' . $answer . "\n";
-        }
-        $fieldset
-            ->get('contactus_questions')
-            ->setValue($value);
     }
 
     public function handleSiteSettingsFilters(Event $event)
@@ -148,53 +167,6 @@ class Module extends AbstractModule
                 ],
             ])
         ;
-    }
-
-    protected function initDataToPopulate(SettingsInterface $settings, $settingsType, $id = null)
-    {
-        // This method is not in the interface, but is set for config, site and
-        // user settings.
-        if (!method_exists($settings, 'getTableName')) {
-            return;
-        }
-
-        $config = $this->getConfig();
-        $space = strtolower(static::NAMESPACE);
-        if (empty($config[$space][$settingsType])) {
-            return;
-        }
-
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $this->getServiceLocator()->get('Omeka\Connection');
-        if ($id) {
-            if (!method_exists($settings, 'getTargetIdColumnName')) {
-                return;
-            }
-            $sql = sprintf('SELECT id, value FROM %s WHERE %s = :target_id', $settings->getTableName(), $settings->getTargetIdColumnName());
-            $stmt = $connection->executeQuery($sql, ['target_id' => $id]);
-        } else {
-            $sql = sprintf('SELECT id, value FROM %s', $settings->getTableName());
-            $stmt = $connection->query($sql);
-        }
-
-        $currentSettings = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
-        $defaultSettings = $config[$space][$settingsType];
-        // Skip settings that are arrays, because the fields "multi-checkbox"
-        // and "multi-select" are removed when no value are selected, so it's
-        // not possible to determine if it's a new setting or an old empty
-        // setting currently. So fill them via upgrade in that case.
-        // TODO Find a way to save empty multi-checkboxes and multi-selects (core fix).
-
-        // In this form there is currently no select or radio.
-
-        // $defaultSettings = array_filter($defaultSettings, function ($v) {
-        //     return !is_array($v);
-        // });
-        $missingSettings = array_diff_key($defaultSettings, $currentSettings);
-
-        foreach ($missingSettings as $name => $value) {
-            $settings->set($name, $value);
-        }
     }
 
     public function stringToKeyValues($string)
