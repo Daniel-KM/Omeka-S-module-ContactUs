@@ -308,8 +308,7 @@ TXT;
         ];
         $params += $defaultParams;
 
-        $mailer = $this->mailer;
-        $message = $mailer->createMessage();
+        $message = $this->mailer->createMessage();
         $message
             ->setSubject($params['subject'])
             ->setBody($params['body']);
@@ -323,7 +322,8 @@ TXT;
         }
 
         try {
-            $mailer->send($message);
+            $this->mailer->send($message);
+            return true;
         } catch (\Exception $e) {
             $view = $this->getView();
             $view->logger()->err(new Message(
@@ -332,8 +332,6 @@ TXT;
             ));
             return false;
         }
-
-        return true;
     }
 
     /**
