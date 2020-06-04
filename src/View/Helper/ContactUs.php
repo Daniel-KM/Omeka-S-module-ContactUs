@@ -123,7 +123,7 @@ class ContactUs extends AbstractHelper
                     $mail['fromName'] = $args['name'] ?: null;
                     // Keep compatibility with old versions.
                     $mail['to'] = $this->getNotifyRecipients($options);
-                    $mail['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                    $mail['subject'] = $this->getMailSubject($options);
                     $body = <<<TXT
 A user has contacted you.
 
@@ -344,5 +344,17 @@ TXT;
             ->get('Zend\View\Helper\ViewModel')
             ->getRoot()
             ->getVariable('site');
+    }
+
+    protected function getMailSubject(array $options = [])
+    {
+        if (!empty($options['subject'])) {
+            return $options['subject'];
+        }
+
+        $view = $this->getView();
+        $default = sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+
+        return $view->siteSetting('contactus_subject', $default);
     }
 }

@@ -34,6 +34,19 @@ class ContactUsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'o:block[__blockIndex__][o:data][subject]',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Mail subject', // @translate
+                    'info' => 'Leave empty to use site settings', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_subject',
+                    'required' => false,
+                    'placeholder' => 'Leave empty to use site settings', // @translate
+                ],
+            ])
+            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][confirmation_enabled]',
                 'type' => Element\Checkbox::class,
                 'options' => [
