@@ -203,14 +203,14 @@ TXT;
             $form->get('from')
                 ->setValue($user->getEmail())
                 ->setAttribute('disabled', 'disabled');
-            $form->get('name')
+        $form->get('name')
                 ->setValue($user->getName())
                 ->setAttribute('disabled', 'disabled');
         endif;
 
         if ($options['resource']):
             $answer = 'About resource %s (%s).'; // @translate
-            $form->get('message')
+        $form->get('message')
                 ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
         endif;
 
@@ -339,10 +339,9 @@ TXT;
      */
     protected function currentSite()
     {
-        return $this->getView()
-            ->getHelperPluginManager()
-            ->get('Zend\View\Helper\ViewModel')
-            ->getRoot()
-            ->getVariable('site');
+        $view = $this->getView();
+        return isset($view->site)
+            ? $view->site
+            : $view->getHelperPluginManager()->get('Zend\View\Helper\ViewModel')->getRoot()->getVariable('site');
     }
 }
