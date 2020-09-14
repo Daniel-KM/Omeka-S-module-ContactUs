@@ -30,7 +30,8 @@ class ContactUs extends AbstractBlockLayout
 
         $data['antispam'] = !empty($data['antispam']);
 
-        $notifyRecipients = $this->stringToList($data['notify_recipients']);
+        // Hydration can occurs outside of the form.
+        $notifyRecipients = $this->stringToList(isset($data['notify_recipients']) ? $data['notify_recipients'] : []);
         if (empty($notifyRecipients)) {
             $data['notify_recipients'] = $notifyRecipients;
         } else {
@@ -48,11 +49,13 @@ class ContactUs extends AbstractBlockLayout
 
         if (empty($data['questions'])) {
             $data['questions'] = [];
-        } else {
+        } elseif (!is_array($data['questions'])) {
             $questions = $this->stringToList($data['questions']);
             $data['questions'] = [];
             foreach ($questions as $questionAnswer) {
-                list($question, $answer) = array_map('trim', explode('=', $questionAnswer, 2));
+                list($question, $answer) = is_array($questionAnswer)
+                    ? [key($questionAnswer), reset($questionAnswer)]
+                    : array_map('trim', explode('=', $questionAnswer, 2));
                 if ($question === '' || $answer === '') {
                     $errorStore->addError('questions', 'To create antispam, each question must be separated from the answer by a "=".'); // @translate
                     $hasError = true;
@@ -134,6 +137,9 @@ class ContactUs extends AbstractBlockLayout
      */
     protected function stringToList($string)
     {
+        if (is_array($string)) {
+            return $string;
+        }
         return array_filter(array_map('trim', explode("\n", $this->fixEndOfLine($string))));
     }
 
