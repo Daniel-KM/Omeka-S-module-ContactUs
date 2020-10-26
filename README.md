@@ -1,6 +1,9 @@
 Contact us (module for Omeka S)
 ===============================
 
+> __New versions of this module and support for Omeka S version 3.0 and above
+> are available on [GitLab], which seems to respect users and privacy better.__
+
 [Contact us] is a module for [Omeka S] that allows to add a site page block with
 a "Contact us" form.
 
@@ -70,7 +73,7 @@ See online issues on the [module issues] page on GitHub.
 License
 -------
 
-This module is published under the [CeCILL v2.1] licence, compatible with
+This module is published under the [CeCILL v2.1] license, compatible with
 [GNU/GPL] and approved by [FSF] and [OSI].
 
 In consideration of access to the source code and the rights to copy, modify and
@@ -108,4 +111,5 @@ Copyright
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [MIT]: http://http://opensource.org/licenses/MIT
+[GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"
