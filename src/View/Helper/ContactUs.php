@@ -133,7 +133,6 @@ A user has contacted you.
 email: {email}
 name: {name}
 ip: {ip}
-newsletter: {newsletter}
 subject: {subject}
 message:
 

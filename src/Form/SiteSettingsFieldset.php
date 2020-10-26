@@ -30,17 +30,6 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
-                'name' => 'contactus_html',
-                'type' => CkeditorInline::class,
-                'options' => [
-                    'label' => 'Text', // @translate
-                    'info' => 'Text to use to explain the aim of the form.', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_html',
-                ],
-            ])
-            ->add([
                 'name' => 'contactus_confirmation_enabled',
                 'type' => Element\Checkbox::class,
                 'options' => [
