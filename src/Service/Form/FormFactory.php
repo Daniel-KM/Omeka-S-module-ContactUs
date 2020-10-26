@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\Service\Form;
 
 use Interop\Container\ContainerInterface;

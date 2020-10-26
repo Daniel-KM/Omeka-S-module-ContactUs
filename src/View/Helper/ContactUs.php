@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\View\Helper;
 
 use ContactUs\Form\ContactUsForm;
-use Omeka\Stdlib\Mailer;
-use Omeka\Stdlib\Message;
 use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
 use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
+use Omeka\Stdlib\Mailer;
+use Omeka\Stdlib\Message;
 
 class ContactUs extends AbstractHelper
 {
@@ -76,7 +76,7 @@ class ContactUs extends AbstractHelper
                 $isSpam = $this->checkSpam($options, $params);
                 if (!$isSpam) {
                     $question = (new Container('ContactUs'))->question;
-                    $answer = isset($params['answer']) ? $params['answer'] : false;
+                    $answer = $params['answer'] ?? false;
                     $checkAnswer = $options['questions'][$question];
                     $formOptions = [
                         'question' => $question,

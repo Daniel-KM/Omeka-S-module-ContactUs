@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\Site\BlockLayout;
 
-use Omeka\Api\Representation\SitePageRepresentation;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
+use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
-use Laminas\View\Renderer\PhpRenderer;
 
 class ContactUs extends AbstractBlockLayout
 {
@@ -21,7 +21,7 @@ class ContactUs extends AbstractBlockLayout
         return 'Contact us'; // @translate
     }
 
-    public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
+    public function onHydrate(SitePageBlock $block, ErrorStore $errorStore): void
     {
         $data = $block->getData();
 
@@ -31,7 +31,7 @@ class ContactUs extends AbstractBlockLayout
         $data['antispam'] = !empty($data['antispam']);
 
         // Hydration can occurs outside of the form.
-        $notifyRecipients = $this->stringToList(isset($data['notify_recipients']) ? $data['notify_recipients'] : []);
+        $notifyRecipients = $this->stringToList($data['notify_recipients'] ?? []);
         if (empty($notifyRecipients)) {
             $data['notify_recipients'] = $notifyRecipients;
         } else {

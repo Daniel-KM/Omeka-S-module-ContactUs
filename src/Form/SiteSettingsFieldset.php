@@ -1,15 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\Form;
 
-use Omeka\Form\Element\CkeditorInline;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\CkeditorInline;
 
 class SiteSettingsFieldset extends Fieldset
 {
     protected $label = 'Contact us'; // @translate
 
-    public function init()
+    public function init(): void
     {
         $this
             ->add([

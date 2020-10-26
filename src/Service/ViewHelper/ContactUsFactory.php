@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\Service\ViewHelper;
 
-use Interop\Container\ContainerInterface;
 use ContactUs\View\Helper\ContactUs;
+use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs;
 
 if (!class_exists(\Generic\AbstractModule::class)) {
@@ -8,15 +8,15 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 }
 
 use Generic\AbstractModule;
-use Omeka\Settings\SettingsInterface;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
+use Omeka\Settings\SettingsInterface;
 
 class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
 
-    protected function postInstall()
+    protected function postInstall(): void
     {
         // Prepare all translations one time.
         $translatables = [
@@ -33,7 +33,7 @@ class Module extends AbstractModule
         $this->manageSiteSettings('update', $translatables);
     }
 
-    public function attachListeners(SharedEventManagerInterface $sharedEventManager)
+    public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         $sharedEventManager->attach(
             'Omeka\Controller\Site\ItemSet',
@@ -120,7 +120,7 @@ class Module extends AbstractModule
         return $data;
     }
 
-    public function handleMainSettingsFilters(Event $event)
+    public function handleMainSettingsFilters(Event $event): void
     {
         $event->getParam('inputFilter')
             ->get('contactus')
@@ -138,7 +138,7 @@ class Module extends AbstractModule
             ]);
     }
 
-    public function handleSiteSettingsFilters(Event $event)
+    public function handleSiteSettingsFilters(Event $event): void
     {
         $event->getParam('inputFilter')
             ->get('contactus')
@@ -182,7 +182,7 @@ class Module extends AbstractModule
         return $result;
     }
 
-    public function handleViewShowAfterResource(Event $event)
+    public function handleViewShowAfterResource(Event $event): void
     {
         $view = $event->getTarget();
         $view->partial('common/contact-us', ['resource' => $view->resource]);

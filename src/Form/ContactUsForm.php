@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace ContactUs\Form;
 
 use Laminas\Filter;
@@ -8,7 +8,7 @@ use Laminas\Validator;
 
 class ContactUsForm extends Form
 {
-    public function init()
+    public function init(): void
     {
         $question = $this->getOption('question');
         $checkAnswer = $this->getOption('checkAnswer');
