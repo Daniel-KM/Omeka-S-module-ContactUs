@@ -3,7 +3,7 @@ namespace ContactUs\Service\ViewHelper;
 
 use Interop\Container\ContainerInterface;
 use ContactUs\View\Helper\ContactUs;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Service factory for the ContactUs view helper.

@@ -1,10 +1,10 @@
 <?php
 namespace ContactUs\Form;
 
-use Zend\Filter;
-use Zend\Form\Element;
-use Zend\Form\Form;
-use Zend\Validator;
+use Laminas\Filter;
+use Laminas\Form\Element;
+use Laminas\Form\Form;
+use Laminas\Validator;
 
 class ContactUsForm extends Form
 {

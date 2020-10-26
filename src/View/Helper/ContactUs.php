@@ -4,10 +4,10 @@ namespace ContactUs\View\Helper;
 use ContactUs\Form\ContactUsForm;
 use Omeka\Stdlib\Mailer;
 use Omeka\Stdlib\Message;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
-use Zend\Http\PhpEnvironment\RemoteAddress;
-use Zend\Session\Container;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Http\PhpEnvironment\RemoteAddress;
+use Laminas\Session\Container;
+use Laminas\View\Helper\AbstractHelper;
 
 class ContactUs extends AbstractHelper
 {
@@ -342,6 +342,6 @@ TXT;
         $view = $this->getView();
         return isset($view->site)
             ? $view->site
-            : $view->getHelperPluginManager()->get('Zend\View\Helper\ViewModel')->getRoot()->getVariable('site');
+            : $view->getHelperPluginManager()->get('Laminas\View\Helper\ViewModel')->getRoot()->getVariable('site');
     }
 }

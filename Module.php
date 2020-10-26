@@ -9,8 +9,8 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 
 use Generic\AbstractModule;
 use Omeka\Settings\SettingsInterface;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
 
 class Module extends AbstractModule
 {
@@ -129,7 +129,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'stringToList'],
                         ],
@@ -147,7 +147,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'stringToList'],
                         ],
@@ -159,7 +159,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'stringToKeyValues'],
                         ],
