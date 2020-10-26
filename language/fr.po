@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-24 00:00+0100\n"
-"PO-Revision-Date: 2020-02-24 00:00+0100\n"
+"POT-Creation-Date: 2020-10-26 00:00+0000\n"
+"PO-Revision-Date: 2020-10-26 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -15,19 +15,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
-#: src/Generic/AbstractModule.php:542
+#: src/Generic/AbstractModule.php:66
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr "Ce module requiert le module \"%s\"."
 
-#: src/Generic/AbstractModule.php:562
+#: src/Generic/AbstractModule.php:73
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr "Ce module requiert les modules \"%s\"."
 
-#: src/Generic/AbstractModule.php:630
+#: src/Generic/AbstractModule.php:80
+msgid "This module has resources that connot be installed."
+msgstr "Ce module a des ressources qui ne peuvent pas être installées."
+
+#: src/Generic/AbstractModule.php:709
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -36,29 +40,29 @@ msgstr ""
 "Le module %s\" a été automatiquement désactivé car ses dépendances ne sont "
 "plus disponibles."
 
-#: src/Site/BlockLayout/ContactUs.php:107
+#: src/Site/BlockLayout/ContactUs.php:110
 msgid "Append a form to allow visitors to contact us."
 msgstr "Ajouter un formulaire de contact pour les visiteurs."
 
-#: src/View/Helper/ContactUs.php:105
+#: src/View/Helper/ContactUs.php:108
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr "Merci pour votre message %s. Nous vous répondrons prochainement."
 
-#: src/View/Helper/ContactUs.php:118 src/View/Helper/ContactUs.php:126
-#: src/View/Helper/ContactUs.php:306
+#: src/View/Helper/ContactUs.php:121 src/View/Helper/ContactUs.php:315
+#: src/View/Helper/ContactUs.php:364
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:146
+#: src/View/Helper/ContactUs.php:148
 msgid ""
 "Sorry, we are not able to send email to notify the admin. Come back later."
 msgstr ""
 "Désolé, nous ne pouvons pas envoyer un mail pour informer l’administrateur. "
 "Merci de revenir ultérieurement."
 
-#: src/View/Helper/ContactUs.php:152
+#: src/View/Helper/ContactUs.php:154
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
@@ -67,20 +71,20 @@ msgstr ""
 "Merci pour votre message %s. Vérifiez le message de confirmation. Nous "
 "répondrons prochainement."
 
-#: src/View/Helper/ContactUs.php:173
+#: src/View/Helper/ContactUs.php:175
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:181
+#: src/View/Helper/ContactUs.php:183
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
-#: src/Form/ContactUsForm.php:58
+#: src/Form/ContactUsForm.php:61
 msgid "Message"
 msgstr "Message"
 
-#: src/Form/ContactUsForm.php:94
+#: src/Form/ContactUsForm.php:97
 msgid "Send message"
 msgstr "Envoyer le message"
 
@@ -100,19 +104,27 @@ msgstr "Liste des destinataires du mail"
 msgid "Let empty to use site settings."
 msgstr "Laisser vide pour utiliser les paramètres du site."
 
-#: src/Form/ContactUsFieldset.php:40 src/Form/SiteSettingsFieldset.php:46
+#: src/Form/ContactUsFieldset.php:40 src/Form/SiteSettingsFieldset.php:36
+msgid "Mail subject"
+msgstr "Sujet du mail"
+
+#: src/Form/ContactUsFieldset.php:41 src/Form/ContactUsFieldset.php:46
+msgid "Leave empty to use site settings"
+msgstr "Laisser vide pour utiliser les paramètres du site"
+
+#: src/Form/ContactUsFieldset.php:53 src/Form/SiteSettingsFieldset.php:49
 msgid "Send a confirmation email"
 msgstr "Envoyer un message de confirmation"
 
-#: src/Form/ContactUsFieldset.php:50 src/Form/SiteSettingsFieldset.php:56
+#: src/Form/ContactUsFieldset.php:63 src/Form/SiteSettingsFieldset.php:59
 msgid "Subject of the confirmation email"
 msgstr "Sujet du message de confirmation"
 
-#: src/Form/ContactUsFieldset.php:60 src/Form/SiteSettingsFieldset.php:66
+#: src/Form/ContactUsFieldset.php:73 src/Form/SiteSettingsFieldset.php:69
 msgid "Confirmation message"
 msgstr "Message de confirmation"
 
-#: src/Form/ContactUsFieldset.php:61 src/Form/SiteSettingsFieldset.php:67
+#: src/Form/ContactUsFieldset.php:74 src/Form/SiteSettingsFieldset.php:70
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {message}."
@@ -120,26 +132,26 @@ msgstr ""
 "Les jokers possibles sont : {main_title}, {main_url}, {site_title}, "
 "{site_url}, {email}, {name}, {message}."
 
-#: src/Form/ContactUsFieldset.php:72 src/Form/SiteSettingsFieldset.php:78
+#: src/Form/ContactUsFieldset.php:85 src/Form/SiteSettingsFieldset.php:81
 msgid "Enable simple antispam for visitors"
 msgstr "Activer l’anti-spam simple pour les visiteurs"
 
-#: src/Form/ContactUsFieldset.php:82 src/Form/SiteSettingsFieldset.php:88
+#: src/Form/ContactUsFieldset.php:95 src/Form/SiteSettingsFieldset.php:91
 msgid "List of antispam questions/answers"
 msgstr "Liste de questions/réponses anti-spam"
 
-#: src/Form/ContactUsFieldset.php:83
+#: src/Form/ContactUsFieldset.php:96
 msgid ""
 "Separate questions and answer with a \"=\". Questions may be translated."
 msgstr ""
 "Séparer les questions et les réponses avec un signe \"=\". Les questions "
 "peuvent être traduites."
 
-#: src/Form/ContactUsFieldset.php:99
+#: src/Form/ContactUsFieldset.php:112
 msgid "Template to display"
 msgstr "Gabarit à afficher"
 
-#: src/Form/ContactUsFieldset.php:100
+#: src/Form/ContactUsFieldset.php:113
 msgid ""
 "Templates are in folder \"common/block-layout\" of the theme and should "
 "start with \"contact-us\"."
@@ -147,16 +159,16 @@ msgstr ""
 "Les gabarits sont dans le dossier \"common/block-layout\" du thème et "
 "doivent commencer avec \"contact-us\"."
 
-#: src/Form/SettingsFieldset.php:9 src/Form/SiteSettingsFieldset.php:10
+#: src/Form/SettingsFieldset.php:10 src/Form/SiteSettingsFieldset.php:11
 #: src/Site/BlockLayout/ContactUs.php:21
 msgid "Contact us"
 msgstr "Contactez-nous"
 
-#: src/Form/SettingsFieldset.php:18
+#: src/Form/SettingsFieldset.php:19
 msgid "Default emails to notify"
 msgstr "Emails à notifier par défaut"
 
-#: src/Form/SettingsFieldset.php:19
+#: src/Form/SettingsFieldset.php:20
 msgid ""
 "The default list of recipients to notify, one by row. First email is used "
 "for confirmation."
@@ -164,7 +176,7 @@ msgstr ""
 "La liste des destinataires par défaut, une par ligne. Le premier email est "
 "utilisé pour le message de confirmation."
 
-#: src/Form/SettingsFieldset.php:24
+#: src/Form/SettingsFieldset.php:25
 msgid ""
 "First email is used for confirmation.\n"
 "contact@example.org\n"
@@ -174,11 +186,11 @@ msgstr ""
 "contact@example.org\n"
 "info@example2.org"
 
-#: src/Form/SiteSettingsFieldset.php:19
+#: src/Form/SiteSettingsFieldset.php:20
 msgid "Emails to notify"
 msgstr "Emails à informer"
 
-#: src/Form/SiteSettingsFieldset.php:20
+#: src/Form/SiteSettingsFieldset.php:21
 msgid ""
 "The list of recipients to notify, one by row. First email is used for "
 "confirmation."
@@ -186,7 +198,7 @@ msgstr ""
 "La liste des destinataires par défaut, un par ligne. Le premier email est "
 "utilisé pour le message de confirmation."
 
-#: src/Form/SiteSettingsFieldset.php:25
+#: src/Form/SiteSettingsFieldset.php:26
 msgid ""
 "Let empty to use main settings. First email is used for confirmation.\n"
 "contact@example.org\n"
@@ -197,11 +209,11 @@ msgstr ""
 "contact@example.org\n"
 "info@example2.org"
 
-#: src/Form/SiteSettingsFieldset.php:36
-msgid "Text to use to explain the aim of the form."
-msgstr "Texte à utiliser pour expliquer le but du formulaire."
+#: src/Form/SiteSettingsFieldset.php:37 src/Form/SiteSettingsFieldset.php:42
+msgid "Leave empty to use the default value"
+msgstr "Laisser vide pour utiliser le paramètre par défaut"
 
-#: src/Form/SiteSettingsFieldset.php:89
+#: src/Form/SiteSettingsFieldset.php:92
 msgid ""
 "See the block \"Contact us\" for a simple list. Separate questions and "
 "answer with a \"=\". Questions may be translated."
@@ -209,23 +221,31 @@ msgstr ""
 "Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et "
 "les réponses avec un signe \"=\". Les questions peuvent être traduites."
 
-#: src/View/Helper/ContactUs.php:212
+#: src/Form/SiteSettingsFieldset.php:97
+msgid ""
+"How many are zero plus 1 (in number)? = 1\n"
+"How many are one plus 1 (in number)? = 2"
+msgstr ""
+"Combien font zéro plus 1 (en nombre) ? = 1\n"
+"Combien font un plus 1 (en nombre) ? = 2"
+
+#: src/View/Helper/ContactUs.php:218
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:330
+#: src/View/Helper/ContactUs.php:339
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr "Erreur lors de l’envoi du mail. Arguments :\\n%s"
 
-#: src/Site/BlockLayout/ContactUs.php:44
+#: src/Site/BlockLayout/ContactUs.php:45
 msgid "Check emails for notifications or remove them to use default ones."
 msgstr ""
 "Vérifiez les emails destinés aux notifications, ou supprimez les pour "
 "utiliser les adresses par défaut."
 
-#: src/Site/BlockLayout/ContactUs.php:57
+#: src/Site/BlockLayout/ContactUs.php:60
 msgid ""
 "To create antispam, each question must be separated from the answer by a \"="
 "\"."
@@ -233,11 +253,11 @@ msgstr ""
 "Pour créer un anti-spam, chaque question doit être séparé de la réponse avec "
 "un signe \"=\"."
 
-#: config/module.config.php:48 config/module.config.php:95
+#: config/module.config.php:47 config/module.config.php:94
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
-#: config/module.config.php:49 config/module.config.php:96
+#: config/module.config.php:48 config/module.config.php:95
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -275,45 +295,48 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:68 config/module.config.php:115
+#: config/module.config.php:67 config/module.config.php:114
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:70 config/module.config.php:117
+#: config/module.config.php:69 config/module.config.php:116
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:72 config/module.config.php:119
+#: config/module.config.php:71 config/module.config.php:118
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:74 config/module.config.php:121
+#: config/module.config.php:73 config/module.config.php:120
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:76 config/module.config.php:123
+#: config/module.config.php:75 config/module.config.php:122
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:78 config/module.config.php:125
+#: config/module.config.php:77 config/module.config.php:124
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:80 config/module.config.php:127
+#: config/module.config.php:79 config/module.config.php:126
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:82 config/module.config.php:129
+#: config/module.config.php:81 config/module.config.php:128
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:84 config/module.config.php:131
+#: config/module.config.php:83 config/module.config.php:130
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:86 config/module.config.php:133
+#: config/module.config.php:85 config/module.config.php:132
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
+
+#~ msgid "Text to use to explain the aim of the form."
+#~ msgstr "Texte à utiliser pour expliquer le but du formulaire."
 
 #~ msgid "Object"
 #~ msgstr "Objet"
