@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs;
 
 return [
@@ -41,6 +42,7 @@ return [
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
+            'contactus_subject' => '',
             'contactus_confirmation_enabled' => true,
             'contactus_confirmation_subject' => 'Confirmation contact', // @translate
             'contactus_confirmation_body' => 'Hi {name},
