@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Service\ViewHelper;
 
 use ContactUs\View\Helper\ContactUs;
@@ -17,9 +18,8 @@ class ContactUsFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        $options = $serviceLocator->get('Config')['contactus']['site_settings'];
         $defaultOptions = [];
-        foreach ($options as $key => $value) {
+        foreach ($serviceLocator->get('Config')['contactus']['site_settings'] as $key => $value) {
             $defaultOptions[substr($key, 10)] = $value;
         }
         return new ContactUs(

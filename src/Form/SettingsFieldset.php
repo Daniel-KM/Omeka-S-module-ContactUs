@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Form;
 
-use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\ArrayTextarea;
 
 class SettingsFieldset extends Fieldset
 {
@@ -13,7 +14,7 @@ class SettingsFieldset extends Fieldset
         $this
             ->add([
                 'name' => 'contactus_notify_recipients',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'Default emails to notify', // @translate
                     'info' => 'The default list of recipients to notify, one by row. First email is used for confirmation.', // @translate

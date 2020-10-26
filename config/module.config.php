@@ -19,12 +19,10 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
+            Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
+            Form\ContactUsForm::class => Form\ContactUsForm::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
-        ],
-        'factories' => [
-            Form\ContactUsFieldset::class => Service\Form\FormFactory::class,
-            Form\ContactUsForm::class => Service\Form\FormFactory::class,
         ],
     ],
     'translator' => [

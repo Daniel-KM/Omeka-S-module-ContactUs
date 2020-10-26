@@ -66,9 +66,11 @@ class ContactUs extends AbstractHelper
         $isSpam = false;
         $message = null;
         $status = null;
-        $formOptions = [];
-        $formOptions['isAuthenticated'] = $isAuthenticated;
         $defaultForm = true;
+
+        $question = '';
+        $answer = '';
+        $checkAnswer = '';
 
         $params = $view->params()->fromPost();
         if ($params) {
@@ -78,11 +80,6 @@ class ContactUs extends AbstractHelper
                     $question = (new Container('ContactUs'))->question;
                     $answer = $params['answer'] ?? false;
                     $checkAnswer = $options['questions'][$question];
-                    $formOptions = [
-                        'question' => $question,
-                        'answer' => $answer,
-                        'checkAnswer' => $checkAnswer,
-                    ];
                 }
             }
 
@@ -90,7 +87,13 @@ class ContactUs extends AbstractHelper
             $hasEmail = $params['from'] || $user;
 
             /** @var \ContactUs\Form\ContactUsForm $form */
-            $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
+            $form = $this->formElementManager->get(ContactUsForm::class);
+            $form
+                ->setQuestion($question)
+                ->setAnswer($answer)
+                ->setCheckAnswer($checkAnswer)
+                ->setIsAuthenticated($isAuthenticated);
+
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
                 $args = $form->getData();
@@ -188,15 +191,19 @@ TXT;
             if ($antispam) {
                 $question = array_rand($options['questions']);
                 $answer = $options['questions'][$question];
-                $formOptions = [
-                    'question' => $question,
-                    'checkAnswer' => $answer,
-                    'isAuthenticated' => $isAuthenticated,
-                ];
                 $session = new Container('ContactUs');
                 $session->question = $question;
+            } else {
+                $question = '';
+                $answer = '';
+                $checkAnswer = '';
             }
-            $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
+            $form = $this->formElementManager->get(ContactUsForm::class);
+            $form
+                ->setQuestion($question)
+                ->setAnswer($answer)
+                ->setCheckAnswer($checkAnswer)
+                ->setIsAuthenticated($isAuthenticated);
         }
 
         if ($user):
@@ -213,6 +220,9 @@ TXT;
         $form->get('message')
                 ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
         endif;
+
+        $form->init();
+        $form->setName('contact-us');
 
         $template = $options['template'] ?: self::PARTIAL_NAME;
         return $view->partial(

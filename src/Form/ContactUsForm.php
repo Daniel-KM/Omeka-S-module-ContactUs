@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Form;
 
 use Laminas\Filter;
@@ -8,13 +9,15 @@ use Laminas\Validator;
 
 class ContactUsForm extends Form
 {
+    protected $question = '';
+    protected $answer = '';
+    protected $checkAnswer = '';
+    protected $isAuthenticated = false;
+
     public function init(): void
     {
-        $question = $this->getOption('question');
-        $checkAnswer = $this->getOption('checkAnswer');
-        $isAuthenticated = $this->getOption('isAuthenticated');
-
         $this->setAttribute('class', 'contact-form');
+        $this->setName('contact-us');
 
         // "From" is used instead of "email" to avoid some basic spammers.
         $this
@@ -26,7 +29,7 @@ class ContactUsForm extends Form
                 ],
                 'attributes' => [
                     'id' => 'from',
-                    'required' => !$isAuthenticated,
+                    'required' => !$this->isAuthenticated,
                 ],
             ])
             ->add([
@@ -63,13 +66,13 @@ class ContactUsForm extends Form
                 ],
             ]);
 
-        if ($question) {
+        if ($this->question) {
             $this
                 ->add([
                     'name' => 'answer',
                     'type' => Element\Text::class,
                     'options' => [
-                        'label' => $question,
+                        'label' => $this->question,
                     ],
                     'attributes' => [
                         'id' => 'answer',
@@ -80,7 +83,7 @@ class ContactUsForm extends Form
                     'name' => 'check',
                     'type' => Element\Hidden::class,
                     'attributes' => [
-                        'value' => substr(md5($question), 0, 16),
+                        'value' => substr(md5($this->question), 0, 16),
                     ],
                 ]);
         }
@@ -99,7 +102,7 @@ class ContactUsForm extends Form
         $inputFilter
             ->add([
                 'name' => 'from',
-                'required' => !$isAuthenticated,
+                'required' => !$this->isAuthenticated,
             ])
             ->add([
                 'name' => 'message',
@@ -109,7 +112,7 @@ class ContactUsForm extends Form
                 ],
             ])
         ;
-        if ($question) {
+            if ($this->question) {
             $inputFilter->add([
                 'name' => 'answer',
                 'required' => true,
@@ -120,16 +123,40 @@ class ContactUsForm extends Form
                     [
                         'name' => Validator\Callback::class,
                         'options' => [
-                            'callback' => function ($answer) use ($checkAnswer) {
-                                return $answer === $checkAnswer;
+                            'callback' => function ($answer) {
+                                return $answer === $this->checkAnswer;
                             },
                             'callbackOptions' => [
-                                'checkAnswer' => $checkAnswer,
+                                'checkAnswer' => $this->checkAnswer,
                             ],
                         ],
                     ],
                 ],
             ]);
         }
+    }
+
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+        return $this;
+    }
+
+    public function setAnswer($answer)
+    {
+        $this->answer = $answer;
+        return $this;
+    }
+
+    public function setCheckAnswer($checkAnswer)
+    {
+        $this->checkAnswer = $checkAnswer;
+        return $this;
+    }
+
+    public function setIsAuthenticated($isAuthenticated)
+    {
+        $this->isAuthenticated = $isAuthenticated;
+        return $this;
     }
 }

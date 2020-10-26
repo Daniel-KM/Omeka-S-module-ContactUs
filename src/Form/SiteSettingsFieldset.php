@@ -3,6 +3,7 @@ namespace ContactUs\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\ArrayTextarea;
 use Omeka\Form\Element\CkeditorInline;
 
 class SiteSettingsFieldset extends Fieldset
@@ -14,7 +15,7 @@ class SiteSettingsFieldset extends Fieldset
         $this
             ->add([
                 'name' => 'contactus_notify_recipients',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'Emails to notify', // @translate
                     'info' => 'The list of recipients to notify, one by row. First email is used for confirmation.', // @translate
@@ -83,15 +84,16 @@ info@example2.org', // @translate
             ])
             ->add([
                 'name' => 'contactus_questions',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'List of antispam questions/answers', // @translate
                     'info' => 'See the block "Contact us" for a simple list. Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'as_key_value' => true,
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',
                     'placeholder' => 'How many are zero plus 1 (in number)? = 1
-How many are one plus 1 (in number)? = 2',
+How many are one plus 1 (in number)? = 2', // @translate
                     'rows' => 5,
                 ],
             ])
