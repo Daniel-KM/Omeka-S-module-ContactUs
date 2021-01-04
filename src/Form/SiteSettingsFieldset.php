@@ -4,7 +4,6 @@ namespace ContactUs\Form;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element\ArrayTextarea;
-use Omeka\Form\Element\CkeditorInline;
 
 class SiteSettingsFieldset extends Fieldset
 {
@@ -67,7 +66,7 @@ info@example2.org', // @translate
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Confirmation message', // @translate
-                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {message}.', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {message}, {newsletter}.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_confirmation_body',

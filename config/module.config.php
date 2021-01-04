@@ -37,9 +37,11 @@ return [
     'form_elements' => [
         'invokables' => [
             Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
-            Form\ContactUsForm::class => Form\ContactUsForm::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
+        ],
+        'factories' => [
+            Form\ContactUsForm::class => Service\Form\FormFactory::class,
         ],
     ],
     'controllers' => [
@@ -137,10 +139,13 @@ Sincerely,
 
 --
 
+{newsletter}
 Your message:
 Subject: {subject}
 
 {message}', // @translate
+            'contactus_newsletter' => false,
+            'contactus_newsletter_label' => 'Subscribe to the newsletter', // @translate
             'contactus_antispam' => true,
             'contactus_questions' => [
                 'How many are zero plus 1 (in number)?' // @translate
@@ -188,6 +193,8 @@ Your message:
 Subject: {subject}
 
 {message}', // @translate
+                'newsletter' => false,
+                'newsletter_label' => 'Subscribe to the newsletter', // @translate
                 'antispam' => true,
                 'questions' => [
                     'How many are zero plus 1 (in number)?' // @translate

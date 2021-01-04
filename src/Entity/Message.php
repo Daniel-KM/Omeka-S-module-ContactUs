@@ -385,6 +385,17 @@ class Message extends AbstractEntity
         return $this->userAgent;
     }
 
+    public function setNewsletter(?bool $newsletter): self
+    {
+        $this->newsletter = $newsletter;
+        return $this;
+    }
+
+    public function getNewsletter(): ?bool
+    {
+        return $this->newsletter;
+    }
+
     public function setIsRead($isRead): self
     {
         $this->isRead = (bool) $isRead;

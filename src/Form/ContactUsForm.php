@@ -9,10 +9,21 @@ use Laminas\Validator;
 
 class ContactUsForm extends Form
 {
+    protected $newsletterLabel = '';
     protected $question = '';
     protected $answer = '';
     protected $checkAnswer = '';
     protected $isAuthenticated = false;
+
+    public function __construct($name = null, $options = [])
+    {
+        parent::__construct($name, $options);
+        $this->newsletterLabel = $options['newsletter_label'] ?? '';
+        $this->question = $options['question'] ?? '';
+        $this->answer = $options['answer'] ?? '';
+        $this->checkAnswer = $options['check_answer'] ?? '';
+        $this->isAuthenticated = !empty($options['is_authenticated']);
+    }
 
     public function init(): void
     {
@@ -64,7 +75,25 @@ class ContactUsForm extends Form
                     'id' => 'message',
                     'required' => true,
                 ],
-            ]);
+            ])
+        ;
+        if ($this->newsletterLabel) {
+            $this
+                ->add([
+                    'name' => 'newsletter',
+                    'type' => Element\Checkbox::class,
+                    'options' => [
+                        'label' => $this->newsletterLabel, // @translate
+                        'use_hidden_element' => true,
+                        'unchecked_value' => 'no', // @translate
+                        'checked_value' => 'yes', // @translate
+                    ],
+                    'attributes' => [
+                        'id' => 'newsletter',
+                        'required' => false,
+                    ],
+                ]);
+        }
 
         if ($this->question) {
             $this
@@ -112,7 +141,7 @@ class ContactUsForm extends Form
                 ],
             ])
         ;
-            if ($this->question) {
+        if ($this->question) {
             $inputFilter->add([
                 'name' => 'answer',
                 'required' => true,
@@ -134,6 +163,12 @@ class ContactUsForm extends Form
                 ],
             ]);
         }
+    }
+
+    public function setNewsletterLabel($newsletterLabel)
+    {
+        $this->newsletterLabel = $newsletterLabel;
+        return $this;
     }
 
     public function setQuestion($question)

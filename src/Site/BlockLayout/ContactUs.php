@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Site\BlockLayout;
 
 use Laminas\View\Renderer\PhpRenderer;
@@ -84,6 +85,8 @@ class ContactUs extends AbstractBlockLayout
         $blockFieldset = \ContactUs\Form\ContactUsFieldset::class;
 
         $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
+
+        // TODO Use ArrayTextarea.
         if (is_array($data['notify_recipients'])) {
             $values = $data['notify_recipients'];
             $data['notify_recipients'] = '';
@@ -118,6 +121,9 @@ class ContactUs extends AbstractBlockLayout
         $options = $block->data();
         $options['html'] = '';
         unset($options['template']);
+
+        $options['newsletter_label'] = empty($options['newsletter']) ? '' : $options['newsletter_label'];
+        unset($options['newsletter']);
 
         $vars = [];
         $vars['block'] = $block;

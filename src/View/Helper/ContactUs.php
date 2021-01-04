@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\View\Helper;
 
 use ContactUs\Form\ContactUsForm;
@@ -54,6 +55,7 @@ class ContactUs extends AbstractHelper
             'resource' => null,
             'heading' => null,
             'html' => null,
+            'newsletter_label' => null,
         ];
 
         $view = $this->getView();
@@ -61,6 +63,8 @@ class ContactUs extends AbstractHelper
         $user = $view->identity();
         $isAuthenticated = (bool) $user;
         $translate = $view->plugin('translate');
+
+        $newsletterLabel = trim((string) $options['newsletter_label']);
 
         $antispam = !$isAuthenticated && !empty($options['antispam']) && !empty($options['questions']);
         $isSpam = false;
@@ -87,8 +91,15 @@ class ContactUs extends AbstractHelper
             $hasEmail = $params['from'] || $user;
 
             /** @var \ContactUs\Form\ContactUsForm $form */
-            $form = $this->formElementManager->get(ContactUsForm::class);
+            $form = $this->formElementManager->get(ContactUsForm::class, [
+                'newsletter_label' => $newsletterLabel,
+                'question' => $question,
+                'answer' => $answer,
+                'check_answer' => $checkAnswer,
+                'is_authenticated' => $isAuthenticated,
+            ]);
             $form
+                ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
                 ->setCheckAnswer($checkAnswer)
@@ -96,50 +107,62 @@ class ContactUs extends AbstractHelper
 
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
-                $args = $form->getData();
+                $submitted = $form->getData();
                 if ($user) {
-                    $args['from'] = $user->getEmail();
-                    $args['name'] = $user->getName();
+                    $submitted['from'] = $user->getEmail();
+                    $submitted['name'] = $user->getName();
                 }
 
                 $status = 'success';
                 // If spam, return a success message, but don't send email.
                 $message = new Message(
                     $translate('Thank you for your message %s. We will answer you soon.'), // @translate
-                    $args['name']
-                        ? sprintf('%s (%s)', $args['name'], $args['from'])
-                        : sprintf('(%s)', $args['from'])
+                    $submitted['name']
+                        ? sprintf('%s (%s)', $submitted['name'], $submitted['from'])
+                        : sprintf('(%s)', $submitted['from'])
                 );
                 // Send the message to the administrator of the site.
                 if (!$isSpam) {
                     // Add some keys to use as placeholders.
                     $site = $this->currentSite();
-                    $args['email'] = $args['from'];
-                    $args['site_title'] = $site->title();
-                    $args['site_url'] = $site->siteUrl();
-                    if (empty($args['subject'])) {
-                        $args['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                    $submitted['email'] = $submitted['from'];
+                    $submitted['site_title'] = $site->title();
+                    $submitted['site_url'] = $site->siteUrl();
+                    if (empty($submitted['subject'])) {
+                        $submitted['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                    }
+
+                    if ($newsletterLabel) {
+                        $submitted['newsletter'] = sprintf(
+                            $translate('newsletter: %s'), // @translate
+                            $translate($submitted['newsletter'])
+                        ) . "\n";
+                    } else {
+                        $submitted['newsletter'] = '';
                     }
 
                     $mail = [];
-                    $mail['from'] = $args['from'];
-                    $mail['fromName'] = $args['name'] ?: null;
+                    $mail['from'] = $submitted['from'];
+                    $mail['fromName'] = $submitted['name'] ?: null;
                     // Keep compatibility with old versions.
                     $mail['to'] = $this->getNotifyRecipients($options);
-                    $mail['subject'] = $this->getMailSubject($options);
+                    $mail['subject'] = $this->getMailSubject($options)
+                        ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $body = <<<TXT
 A user has contacted you.
 
 email: {email}
 name: {name}
 ip: {ip}
+
+{newsletter}
 subject: {subject}
 message:
 
 {message}
 TXT;
                     $body = $translate($body);
-                    $mail['body'] = $this->fillMessage($body, $args);
+                    $mail['body'] = $this->fillMessage($body, $submitted);
 
                     $result = $this->sendEmail($mail);
                     if (!$result) {
@@ -152,21 +175,21 @@ TXT;
                     elseif ($options['confirmation_enabled']) {
                         $message = new Message(
                             $translate('Thank you for your message %s. Check your confirmation mail. We will answer you soon.'), // @translate
-                            $args['name']
-                                ? sprintf('%s (%s)', $args['name'], $args['from'])
-                                : sprintf('(%s)', $args['from'])
+                            $submitted['name']
+                                ? sprintf('%s (%s)', $submitted['name'], $submitted['from'])
+                                : sprintf('(%s)', $submitted['from'])
                         );
 
                         $notifyRecipients = $this->getNotifyRecipients($options);
 
                         $mail = [];
                         $mail['from'] = reset($notifyRecipients);
-                        $mail['to'] = $args['from'];
-                        $mail['toName'] = $args['name'] ?: null;
+                        $mail['to'] = $submitted['from'];
+                        $mail['toName'] = $submitted['name'] ?: null;
                         $subject = $options['confirmation_subject'] ?: $this->defaultSettings['confirmation_subject'];
-                        $mail['subject'] = $this->fillMessage($translate($subject), $args);
+                        $mail['subject'] = $this->fillMessage($translate($subject), $submitted);
                         $body = $options['confirmation_body'] ?: $this->defaultSettings['confirmation_body'];
-                        $mail['body'] = $this->fillMessage($translate($body), $args);
+                        $mail['body'] = $this->fillMessage($translate($body), $submitted);
 
                         $result = $this->sendEmail($mail);
                         if (!$result) {
@@ -197,8 +220,15 @@ TXT;
                 $answer = '';
                 $checkAnswer = '';
             }
-            $form = $this->formElementManager->get(ContactUsForm::class);
+            $form = $this->formElementManager->get(ContactUsForm::class, [
+                'newsletter_label' => $newsletterLabel,
+                'question' => $question,
+                'answer' => $answer,
+                'check_answer' => $checkAnswer,
+                'is_authenticated' => $isAuthenticated,
+            ]);
             $form
+                ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
                 ->setCheckAnswer($checkAnswer)

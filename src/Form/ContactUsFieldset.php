@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Form;
 
 use Laminas\Form\Element;
@@ -71,11 +72,31 @@ class ContactUsFieldset extends Fieldset
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Confirmation message', // @translate
-                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {message}.', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {message}, {newsletter}.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_confirmation_body',
                     'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][newsletter]',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Add a checkbox for a newsletter', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_newsletter',
+                ],
+            ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][newsletter_label]',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Label for the newsletter', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_newsletter_label',
                 ],
             ])
             ->add([

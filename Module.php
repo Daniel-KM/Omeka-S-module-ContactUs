@@ -154,7 +154,7 @@ class Module extends AbstractModule
     public function handleViewShowAfterResource(Event $event): void
     {
         $view = $event->getTarget();
-        $view->partial('common/contact-us', ['resource' => $view->resource]);
+        $view->partial('common/contact-us', ['resource' => $view->resource, 'newsletter_label' => '']);
     }
 
     /**
