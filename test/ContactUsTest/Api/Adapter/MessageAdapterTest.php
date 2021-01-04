@@ -188,6 +188,17 @@ class MessageAdapterTest extends AbstractHttpControllerTestCase
 
     /**
      * @test
+     * @depends apiReadContactMessage
+     * @expectedException \Omeka\Api\Exception\PermissionDeniedException
+     */
+    public function apiReadContactMessageForbiddenForAnonymous(): void
+    {
+        $this->logout();
+        $this->api()->read('contact_messages', 1)->getContent();
+    }
+
+    /**
+     * @test
      * @depends apiReadContactMessageOtherUser
      */
     public function apiSearchContactMessage(): void
@@ -225,5 +236,16 @@ class MessageAdapterTest extends AbstractHttpControllerTestCase
         $expected = $isAdmin ? 9 : 1;
         $total = $response->getTotalResults();
         $this->assertEquals($expected, $total);
+    }
+
+    /**
+     * @test
+     * @depends apiReadContactMessage
+     * @expectedException \Omeka\Api\Exception\PermissionDeniedException
+     */
+    public function apiSearchContactMessageForbiddenForAnonymous(): void
+    {
+        $this->logout();
+        $this->api()->search('contact_messages')->getContent();
     }
 }

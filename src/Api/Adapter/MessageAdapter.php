@@ -274,6 +274,22 @@ class MessageAdapter extends AbstractEntityAdapter
         ErrorStore $errorStore
     ): void {
         $fileData = $request->getFileData();
+        if (empty($fileData['file'])) {
+            return;
+        }
+
+        // Manage the case where there is only one file sent by a form.
+        if (!isset($fileData['file'][0])) {
+            if (isset($fileData['file']['tmp_name'])
+                || isset($fileData['file']['name'])
+                || isset($fileData['file']['base64'])
+            ) {
+                $fileData['file'] = [$fileData['file']];
+            } else {
+                return;
+            }
+        }
+
         $services = $this->getServiceLocator();
         // In some case, the file data are sent via base64.
         if (empty($fileData['file'][0]['tmp_name'])) {

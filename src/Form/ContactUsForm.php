@@ -9,6 +9,7 @@ use Laminas\Validator;
 
 class ContactUsForm extends Form
 {
+    protected $attachFile = false;
     protected $newsletterLabel = '';
     protected $question = '';
     protected $answer = '';
@@ -18,6 +19,7 @@ class ContactUsForm extends Form
     public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
+        $this->attachFile = !empty($options['attach_file']);
         $this->newsletterLabel = $options['newsletter_label'] ?? '';
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
@@ -77,6 +79,21 @@ class ContactUsForm extends Form
                 ],
             ])
         ;
+
+        if ($this->attachFile) {
+            $this
+                ->add([
+                    'name' => 'file',
+                    'type' => Element\File::class,
+                    'options' => [
+                        'label' => 'Attach a file', // @translate
+                    ],
+                    'attributes' => [
+                        'id' => 'file',
+                    ],
+                ]);
+        }
+
         if ($this->newsletterLabel) {
             $this
                 ->add([
@@ -163,6 +180,12 @@ class ContactUsForm extends Form
                 ],
             ]);
         }
+    }
+
+    public function setAttachFile($attachFile)
+    {
+        $this->attachFile = $attachFile;
+        return $this;
     }
 
     public function setNewsletterLabel($newsletterLabel)

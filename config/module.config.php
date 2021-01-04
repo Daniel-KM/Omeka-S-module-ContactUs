@@ -146,6 +146,7 @@ Subject: {subject}
 {message}', // @translate
             'contactus_newsletter' => false,
             'contactus_newsletter_label' => 'Subscribe to the newsletter', // @translate
+            'contactus_attach_file' => false,
             'contactus_antispam' => true,
             'contactus_questions' => [
                 'How many are zero plus 1 (in number)?' // @translate
@@ -195,6 +196,7 @@ Subject: {subject}
 {message}', // @translate
                 'newsletter' => false,
                 'newsletter_label' => 'Subscribe to the newsletter', // @translate
+                'attach_file' => false,
                 'antispam' => true,
                 'questions' => [
                     'How many are zero plus 1 (in number)?' // @translate

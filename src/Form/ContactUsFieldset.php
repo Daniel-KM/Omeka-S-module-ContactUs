@@ -80,6 +80,16 @@ class ContactUsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'o:block[__blockIndex__][o:data][attach_file]',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Allow to attach a file', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_attach_file',
+                ],
+            ])
+            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][newsletter]',
                 'type' => Element\Checkbox::class,
                 'options' => [

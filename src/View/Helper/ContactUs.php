@@ -64,6 +64,7 @@ class ContactUs extends AbstractHelper
             'resource' => null,
             'heading' => null,
             'html' => null,
+            'attach_file' => null,
             'newsletter_label' => null,
         ];
 
@@ -73,6 +74,7 @@ class ContactUs extends AbstractHelper
         $isAuthenticated = (bool) $user;
         $translate = $view->plugin('translate');
 
+        $attachFile = !empty($options['attach_file']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
         $antispam = !$isAuthenticated && !empty($options['antispam']) && !empty($options['questions']);
@@ -101,6 +103,7 @@ class ContactUs extends AbstractHelper
 
             /** @var \ContactUs\Form\ContactUsForm $form */
             $form = $this->formElementManager->get(ContactUsForm::class, [
+                'attach_file' => $attachFile,
                 'newsletter_label' => $newsletterLabel,
                 'question' => $question,
                 'answer' => $answer,
@@ -108,6 +111,7 @@ class ContactUs extends AbstractHelper
                 'is_authenticated' => $isAuthenticated,
             ]);
             $form
+                ->setAttachFile($attachFile)
                 ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
@@ -121,6 +125,8 @@ class ContactUs extends AbstractHelper
                     $submitted['from'] = $user->getEmail();
                     $submitted['name'] = $user->getName();
                 }
+
+                $fileData = $attachFile ? $view->params()->fromFiles() : [];
 
                 $status = 'success';
                 // If spam, return a success message, but don't send email.
@@ -145,7 +151,7 @@ class ContactUs extends AbstractHelper
                     'o-module-contact:body' => $submitted['message'],
                     'o-module-contact:newsletter' => $newsletterLabel ? $submitted['newsletter'] === 'yes' : null,
                     'o-module-contact:is_spam' => $isSpam,
-                ]);
+                ], $fileData);
 
                 if (!$response) {
                     $formMessages = $form->getMessages();
@@ -272,6 +278,7 @@ TXT;
                 $checkAnswer = '';
             }
             $form = $this->formElementManager->get(ContactUsForm::class, [
+                'attach_file' => $attachFile,
                 'newsletter_label' => $newsletterLabel,
                 'question' => $question,
                 'answer' => $answer,
@@ -279,6 +286,7 @@ TXT;
                 'is_authenticated' => $isAuthenticated,
             ]);
             $form
+                ->setAttachFile($attachFile)
                 ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
