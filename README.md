@@ -2,10 +2,13 @@ Contact us (module for Omeka S)
 ===============================
 
 > __New versions of this module and support for Omeka S version 3.0 and above
-> are available on [GitLab], which seems to respect users and privacy better.__
+> are available on [GitLab], which seems to respect users and privacy better
+> than the previous repository.__
 
 [Contact us] is a module for [Omeka S] that allows to add a site page block with
-a "Contact us" form.
+a "Contact us" form. The messages are sent by email to the admin but can be read
+directly in the interface too. The form is fully available by api too, so it can
+be used by a third party client.
 
 
 Installation
@@ -24,7 +27,7 @@ Quick start
 
 The form can be placed anywhere in the site.
 
-# Static pages
+### Static pages
 
 Create a site page and add the block "Contact us".
 
@@ -39,7 +42,7 @@ will be sent to the visitor.
 If you want to use the "Contact us" page in all your sites, you can use the
 module [Next], that has a special block to duplicate a page in multiple places.
 
-# Resource pages
+### Resource pages
 
 The form is displayed automatically on item set, item or media show pages. The
 settings can be set for each site.
@@ -53,6 +56,56 @@ echo $this->contactUs(['resource' => $resource]);
 
 The partial is themable: copy the file `common/helper/contact-us.phtml` in your
 theme.
+
+### Admin interface
+
+The contact us list of message is available in the left sidebar and can be
+managed: mark read, set spam, delete.
+
+
+Development
+-----------
+
+### Testing
+
+Install Omeka with dev dependencies first.
+
+```sh
+# From module directory.
+composer install
+../../vendor/bin/phpunit --testdox --configuration /var/www/html/modules/ContactUs/test/phpunit.xml
+```
+
+### Api
+
+Any user can create a message:
+```sh
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -i 'https://example.org/api/contact_messages?key_identity=xxx&key_credential=yyy&pretty_print=1' --data '{"o:email":"alpha@beta.com","o-module-contact:body":"message"}'
+```
+
+Or with a file (via a form):
+```sh
+curl -X POST -H 'Accept: application/json' -i 'https://example.org/api/contact_messages?pretty_print=1' -F 'data={"o:email":"alpha@beta.com","o-module-contact:body":"message"}' -F 'file[0]=@/home/user/my-file.jpeg'
+```
+
+Or with a base64-encoded file inside the json payload:
+```sh
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -i 'https://example.org/api/contact_messages?key_identity=xxx&key_credential=yyy&pretty_print=1' --data '{"o:email":"alpha@beta.com","o-module-contact:body":"message","file":[{"name":"filename.txt","base64":"T21la2EgUw=="}]}'
+```
+
+Available keys are:
+- `o:owner`: generally useless, because the user is already authenticated.
+- `o:email`: required for anonymous people.
+- `o:name`
+- `o-module-contact:subject`: recommended.
+- `o-module-contact:body`: required message.
+- `o-module-contact:newsletter`: true or false.
+- `file`: only one file is currently managed. Useless when the file is sent via
+  a posted form.
+
+The owner or the email is useless when the user is already authenticated and is
+skipped in that case, except if the user has the right to change the owner of a
+message.
 
 
 Warning
@@ -96,7 +149,7 @@ altered, and that no provisions are either added or removed herefrom.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2018-2019 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2018-2021 (see [Daniel-KM] on GitLab)
 
 
 [Contact us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
