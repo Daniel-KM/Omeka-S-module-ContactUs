@@ -66,10 +66,10 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'isRead', 'isSpam', 'created'];
+            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'created'];
         }
 
-        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'isRead', 'isSpam', 'created'];
+        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'created'];
     }
 
     /**
@@ -508,6 +508,28 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserAgent', []);
 
         return parent::getUserAgent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNewsletter(?bool $newsletter): \ContactUs\Entity\Message
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNewsletter', [$newsletter]);
+
+        return parent::setNewsletter($newsletter);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNewsletter(): ?bool
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNewsletter', []);
+
+        return parent::getNewsletter();
     }
 
     /**

@@ -162,6 +162,7 @@ class MessageAdapter extends AbstractEntityAdapter
         }
 
         foreach ([
+            'newsletter' => 'newsletter',
             'is_read' => 'isRead',
             'is_spam' => 'isSpam',
         ] as $queryKey => $column) {
@@ -191,16 +192,16 @@ class MessageAdapter extends AbstractEntityAdapter
                 $entity->setEmail($owner->getEmail());
                 $entity->setName($owner->getName());
             } else {
-                $entity->setEmail($data['o:email'] ?? null);
-                $entity->setName($data['o:name'] ?? null);
+                $entity->setEmail(empty($data['o:email']) ? null : trim(strip_tags((string) $data['o:email'])));
+                $entity->setName(empty($data['o:name']) ? null : trim(strip_tags((string) $data['o:name'])));
             }
 
             $subject = $data['o-module-contact:subject'] ?? null;
-            if ($subject = trim((string) $subject)) {
+            if ($subject = trim(strip_tags((string) $subject))) {
                 $entity->setSubject($subject);
             }
             $body = $data['o-module-contact:body'] ?? null;
-            if ($body = trim((string) $body)) {
+            if ($body = trim(strip_tags((string) $body))) {
                 $entity->setBody($body);
             }
 
@@ -220,6 +221,13 @@ class MessageAdapter extends AbstractEntityAdapter
             $entity->setRequestUrl($this->getRequestUrl());
             $entity->setIp($this->getClientIp());
             $entity->setUserAgent($this->getUserAgent());
+
+            if ($this->shouldHydrate($request, 'o-module-contact:newsletter')) {
+                $entity->setNewsletter(isset($data['o-module-contact:newsletter'])
+                    ? (bool) $data['o-module-contact:newsletter']
+                    : null
+                );
+            }
 
             $entity->setCreated(new \DateTime('now'));
         }
@@ -318,6 +326,8 @@ class MessageAdapter extends AbstractEntityAdapter
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore): void
     {
         /** @var \ContactUs\Entity\Message $entity */
+
+        // Tags are stripped during hydration in all cases.
 
         // When the user, the resource or the site are deleted, there is no
         // validation here, so it can be checked when created or updated?

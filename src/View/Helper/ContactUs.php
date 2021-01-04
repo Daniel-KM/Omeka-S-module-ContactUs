@@ -7,6 +7,8 @@ use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementM
 use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
+use Omeka\Mvc\Controller\Plugin\Api;
+use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Mailer;
 use Omeka\Stdlib\Message;
 
@@ -28,18 +30,25 @@ class ContactUs extends AbstractHelper
     protected $defaultOptions;
 
     /**
-     * @var Mailer $mailer
+     * @var Mailer
      */
     protected $mailer;
+
+    /**
+     * @var Api
+     */
+    protected $api;
 
     public function __construct(
         FormElementManager $formElementManager,
         array $defaultOptions,
-        Mailer $mailer
+        Mailer $mailer,
+        Api $api
     ) {
         $this->formElementManager = $formElementManager;
         $this->defaultOptions = $defaultOptions;
         $this->mailer = $mailer;
+        $this->api = $api;
     }
 
     /**
@@ -121,29 +130,71 @@ class ContactUs extends AbstractHelper
                         ? sprintf('%s (%s)', $submitted['name'], $submitted['from'])
                         : sprintf('(%s)', $submitted['from'])
                 );
-                // Send the message to the administrator of the site.
-                if (!$isSpam) {
-                    // Add some keys to use as placeholders.
-                    $site = $this->currentSite();
-                    $submitted['email'] = $submitted['from'];
-                    $submitted['site_title'] = $site->title();
-                    $submitted['site_url'] = $site->siteUrl();
-                    if (empty($submitted['subject'])) {
-                        $submitted['subject'] = sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+
+                $site = $this->currentSite();
+
+                // Store contact message. Security checks are done in adapter.
+                // Use the controller plugin: the view cannot create and the
+                // main manager cannot check form.
+                $response = $this->api->__invoke($form)->create('contact_messages', [
+                    'o:owner' => $user,
+                    'o:email' => $submitted['from'],
+                    'o:name' => $submitted['name'],
+                    'o:site' => ['o:id' => $site->id()],
+                    'o-module-contact:subject' => $submitted['subject'],
+                    'o-module-contact:body' => $submitted['message'],
+                    'o-module-contact:newsletter' => $newsletterLabel ? $submitted['newsletter'] === 'yes' : null,
+                    'o-module-contact:is_spam' => $isSpam,
+                ]);
+
+                if (!$response) {
+                    $formMessages = $form->getMessages();
+                    $errorMessages = [];
+                    foreach ($formMessages as $formKeyMessages) {
+                        foreach ($formKeyMessages as $formKeyMessage) {
+                            $errorMessages[] = is_array($formKeyMessage) ? reset($formKeyMessage) : $formKeyMessage;
+                        }
                     }
+                    // TODO Map errors key with form (keep original keys of the form).
+                    $messenger = new Messenger();
+                    $messenger->addFormErrors($form);
+                    $status = 'error';
+                    $message = new Message(
+                        $translate('There is an error: %s'), // @translate
+                        implode(", \n", $errorMessages)
+                    );
+                    $defaultForm = false;
+                }
+                // Send non-spam message to site administrator.
+                elseif (!$isSpam) {
+                    // Use contact message and not form, because it is filtered.
+                    // Add some keys for placeholders too.
+                    /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+                    $contactMessage = $response->getContent();
+                    $submitted['from'] = $contactMessage->email();
+                    $submitted['email'] = $contactMessage->email();
+                    $submitted['name'] = $contactMessage->name();
+                    $submitted['site_title'] = $contactMessage->site()->title();
+                    $submitted['site_url'] = $contactMessage->site()->siteUrl();
+                    $submitted['subject'] = $contactMessage->subject()
+                        ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                    $submitted['message'] = $contactMessage->body();
+                    $submitted['ip'] = $contactMessage->ip();
 
                     if ($newsletterLabel) {
                         $submitted['newsletter'] = sprintf(
                             $translate('newsletter: %s'), // @translate
-                            $translate($submitted['newsletter'])
+                            $contactMessage->newsletter()
+                                ? $translate('yes') // @translate
+                                : $translate('no') // @translate
                         ) . "\n";
                     } else {
                         $submitted['newsletter'] = '';
                     }
 
                     $mail = [];
-                    $mail['from'] = $submitted['from'];
-                    $mail['fromName'] = $submitted['name'] ?: null;
+                    $mail['from'] = $contactMessage->email();
+                    $mail['fromName'] = $contactMessage->name();
                     // Keep compatibility with old versions.
                     $mail['to'] = $this->getNotifyRecipients($options);
                     $mail['subject'] = $this->getMailSubject($options)
@@ -168,7 +219,7 @@ TXT;
                     if (!$result) {
                         $status = 'error';
                         $message = new Message(
-                            $translate('Sorry, we are not able to send email to notify the admin. Come back later.') // @translate
+                            $translate('Sorry, the message is recorded, but we are not able to send email to notify the admin. Come back later.') // @translate
                         );
                     }
                     // Send the confirmation message to the visitor.
@@ -203,7 +254,7 @@ TXT;
             } else {
                 $status = 'error';
                 $message = new Message(
-                    $translate('There is an error.')
+                    $translate('There is an error.') // @translate
                 );
                 $defaultForm = false;
             }

@@ -84,4 +84,11 @@ $i18n = $plugins->get('i18n');
         </div>
     </div>
     <?php endif; ?>
+    <?php $newsletter = $message->newsletter() ?>
+    <?php if (is_bool($newsletter)): ?>
+    <div class="meta-group">
+        <h4><?= $translate('Newsletter') ?></h4>
+        <div class="value"><?= $newsletter ? $translate('yes') : $translate('no') ?></div>
+    </div>
+    <?php endif; ?>
 </div>

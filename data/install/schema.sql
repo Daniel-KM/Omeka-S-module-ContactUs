@@ -16,6 +16,7 @@ CREATE TABLE `contact_message` (
     `user_agent` TEXT DEFAULT NULL,
     `is_read` TINYINT(1) DEFAULT 0 NOT NULL,
     `is_spam` TINYINT(1) DEFAULT 0 NOT NULL,
+    `newsletter` TINYINT(1) DEFAULT NULL,
     `created` DATETIME NOT NULL,
     UNIQUE INDEX UNIQ_2C9211FE5CC5DB90 (`storage_id`),
     INDEX IDX_2C9211FE7E3C61F9 (`owner_id`),

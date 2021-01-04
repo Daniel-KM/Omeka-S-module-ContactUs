@@ -16,16 +16,17 @@ class ContactUsFactory implements FactoryInterface
      *
      * @return ContactUs
      */
-    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
         $defaultOptions = [];
-        foreach ($serviceLocator->get('Config')['contactus']['site_settings'] as $key => $value) {
+        foreach ($services->get('Config')['contactus']['site_settings'] as $key => $value) {
             $defaultOptions[substr($key, 10)] = $value;
         }
         return new ContactUs(
-            $serviceLocator->get('FormElementManager'),
+            $services->get('FormElementManager'),
             $defaultOptions,
-            $serviceLocator->get('Omeka\Mailer')
+            $services->get('Omeka\Mailer'),
+            $services->get('ControllerPluginManager')->get('api')
         );
     }
 }

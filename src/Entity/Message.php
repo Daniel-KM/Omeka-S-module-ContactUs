@@ -187,6 +187,16 @@ class Message extends AbstractEntity
      *
      * @Column(
      *      type="boolean",
+     *      nullable=true
+     * )
+     */
+    protected $newsletter;
+
+    /**
+     * @var bool
+     *
+     * @Column(
+     *      type="boolean",
      *      nullable=false,
      *      options={
      *          "default":0

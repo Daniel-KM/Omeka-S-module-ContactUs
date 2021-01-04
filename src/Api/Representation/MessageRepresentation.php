@@ -48,6 +48,11 @@ class MessageRepresentation extends AbstractEntityRepresentation
             $linked['o:site'] = $site->getReference();
         }
 
+        $newsletter = $this->newsletter();
+        $newsletter = is_null($newsletter)
+            ? []
+            : ['o-module-contact:newsletter' => (bool) $newsletter];
+
         $created = [
             '@value' => $this->getDateTime($this->created()),
             '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
@@ -67,6 +72,9 @@ class MessageRepresentation extends AbstractEntityRepresentation
             'o-module-contact:request_url' => $this->requestUrl(),
             'o-module-contact:ip' => $this->ip(),
             'o-module-contact:user_agent' => $this->userAgent(),
+        ]
+        + $newsletter
+        + [
             'o-module-contact:is_read' => $this->isRead(),
             'o-module-contact:is_spam' => $this->isSpam(),
             'o:created' => $created,
@@ -154,6 +162,11 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function userAgent(): ?string
     {
         return $this->resource->getUserAgent();
+    }
+
+    public function newsletter(): ?bool
+    {
+        return $this->resource->getNewsletter();
     }
 
     public function isRead(): bool
