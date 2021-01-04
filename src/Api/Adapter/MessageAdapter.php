@@ -57,6 +57,21 @@ class MessageAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query): void
     {
+        // Users can search only messages they own, except admins.
+        // This is a simple check simpler than a low level filter, but it is
+        // sufficient in all cases.
+        $services = $this->getServiceLocator();
+        $user = $services->get('Omeka\AuthenticationService')->getIdentity();
+        // This is not possible because there is no rights.
+        if (!$user) {
+            $qb->andWhere('1 = 0');
+            return;
+        }
+        $acl = $services->get('Omeka\Acl');
+        if (!$acl->isAdminRole($user->getRole())) {
+            $query['owner_id'] = [$user->getId()];
+        }
+
         $expr = $qb->expr();
 
         foreach ([

@@ -27,20 +27,43 @@ class Module extends AbstractModule
         $acl = $services->get('Omeka\Acl');
 
         // Since Omeka 1.4, modules are ordered, so Guest come after Selection.
+        if (!$acl->hasRole('guest')) {
+            $acl->addRole('guest');
+        }
         $roles = $acl->getRoles();
-
-        // Any user or anonymous people can create a message.
-        // Only admins can browse them. Other users can only manage their owns.
+        $adminRoles = [
+            \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
+            \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
+        ];
+        $userRoles = array_diff($roles, $adminRoles);
         // A check is done on attached files for anonymous people and guests.
         $acl
+            // Any user or anonymous people can create a message.
             ->allow(
-                $roles,
+                null,
                 [
                     Entity\Message::class,
                     Api\Adapter\MessageAdapter::class,
-                    'ContactUs\Controller\Admin\ContactMessage',
-                ]
+                ],
+                ['create']
             )
+            // Users can read their own messages but cannot delete them once
+            // sent.
+            ->allow(
+                $userRoles,
+                [Entity\Message::class],
+                ['read'],
+                new \Omeka\Permissions\Assertion\OwnsEntityAssertion
+            )
+            // The search is limited to own messages directly inside adapter.
+            ->allow(
+                $userRoles,
+                [Api\Adapter\MessageAdapter::class],
+                ['read', 'search']
+            )
+            // Add possibility to list search own entities.
+            // Admins can admin messages (browse, flag, delete, etc.).
+            // This is automatic via acl factory.
         ;
     }
 
