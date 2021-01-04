@@ -62,10 +62,17 @@ ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`o
 ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE89329D25 FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE SET NULL;
 ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FEF6BD1646 FOREIGN KEY (`site_id`) REFERENCES `site` (`id`) ON DELETE SET NULL;
 SQL;
-    foreach (explode(";\n", $sqls) as $sql) {
-        $connection->exec($sql);
+    try {
+        foreach (explode(";\n", $sqls) as $sql) {
+            $connection->exec($sql);
+        }
+    } catch (\Exception $e) {
+        // Already installed.
     }
+}
 
+if (version_compare($oldVersion, '3.3.8.2', '<')) {
+    $siteSettings = $services->get('Omeka\Settings\Site');
     $sites = $api->search('sites')->getContent();
     foreach ($sites as $site) {
         $siteSettings->setTargetId($site->id());
