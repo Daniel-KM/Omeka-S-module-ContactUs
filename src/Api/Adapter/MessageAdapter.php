@@ -11,6 +11,7 @@ use Omeka\Entity\Item;
 use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
+use Omeka\File\TempFile;
 use Omeka\File\Validator;
 use Omeka\Stdlib\ErrorStore;
 
@@ -250,20 +251,31 @@ class MessageAdapter extends AbstractEntityAdapter
         ErrorStore $errorStore
     ): void {
         $fileData = $request->getFileData();
-        if (empty($fileData['file'][0]['name'])) {
-            return;
+        $services = $this->getServiceLocator();
+        // In some case, the file data are sent via base64.
+        if (empty($fileData['file'][0]['tmp_name'])) {
+            $fileData = ['file' => $request->getValue('file', [])];
+            if (empty($fileData['file'][0]['base64'])) {
+                return;
+            }
+            $tempFile = $this->fetchBase64File($fileData['file'][0], $errorStore);
+        } else {
+            // Standard way (form).
+            $uploader = $services->get('Omeka\File\Uploader');
+            /** @var \Omeka\File\TempFile $tempFile */
+            $tempFile = $uploader->upload($fileData['file'], $errorStore);
         }
 
-        $services = $this->getServiceLocator();
-        $uploader = $services->get('Omeka\File\Uploader');
-
-        /** @var \Omeka\File\TempFile $tempFile */
-        $tempFile = $uploader->upload($fileData['file'], $errorStore);
         if (!$tempFile) {
             return;
         }
 
-        $tempFile->setSourceName($fileData['file'][0]['name']);
+        // The name is required because  there is a validator.
+        $sourceName = isset($fileData['file'][0]['name']) && strlen(trim($fileData['file'][0]['name']))
+            ? trim($fileData['file'][0]['name'])
+            : null;
+        $tempFile->setSourceName($sourceName);
+
         $settings = $services->get('Omeka\Settings');
         $validator = new Validator(
             $settings->get('media_type_whitelist', []),
@@ -276,13 +288,31 @@ class MessageAdapter extends AbstractEntityAdapter
         }
 
         $this->hydrateOwner($request, $entity);
-        $entity->setSource($request->getValue('o:source', $fileData['file'][0]['name']));
+        $entity->setSource($request->getValue('o:source', $sourceName));
         $entity->setMediaType($tempFile->getMediaType());
         $entity->setStorageId($tempFile->getStorageId());
         $entity->setExtension($tempFile->getExtension());
 
         $tempFile->store(\ContactUs\Module::STORE_PREFIX);
         $tempFile->delete();
+    }
+
+    protected function fetchBase64File(array $fileData, ErrorStore $errorStore): ?TempFile
+    {
+        if (empty($fileData['base64'])) {
+            return null;
+        }
+
+        /** @var \Omeka\File\TempFile $tempFile */
+        $tempFile = $this->getServiceLocator()->get('Omeka\File\TempFileFactory')->build();
+        $result = file_put_contents($tempFile->getTempPath(), base64_decode($fileData['base64'], true));
+        if ($result === false) {
+            $message = 'Error loading or saving base64 file.'; // @translate
+            $errorStore->addError('file', $message);
+            return null;
+        }
+
+        return $tempFile;
     }
 
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore): void
