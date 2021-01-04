@@ -6,6 +6,7 @@ use Laminas\Filter;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
 use Laminas\Validator;
+use Omeka\Entity\User;
 
 class ContactUsForm extends Form
 {
@@ -14,7 +15,7 @@ class ContactUsForm extends Form
     protected $question = '';
     protected $answer = '';
     protected $checkAnswer = '';
-    protected $isAuthenticated = false;
+    protected $user = null;
 
     public function __construct($name = null, $options = [])
     {
@@ -24,7 +25,7 @@ class ContactUsForm extends Form
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
-        $this->isAuthenticated = !empty($options['is_authenticated']);
+        $this->user = $options['user'] ?? null;
     }
 
     public function init(): void
@@ -33,29 +34,53 @@ class ContactUsForm extends Form
         $this->setName('contact-us');
 
         // "From" is used instead of "email" to avoid some basic spammers.
+        if ($this->user) {
+            $this
+                ->add([
+                    'name' => 'from',
+                    'type' => Element\Hidden::class,
+                    'attributes' => [
+                        'id' => 'from',
+                        'value' => $this->user->getEmail(),
+                        'required' => false,
+                    ],
+                ])
+                ->add([
+                    'name' => 'name',
+                    'type' => Element\Hidden::class,
+                    'attributes' => [
+                        'id' => 'name',
+                        'value' => $this->user->getName(),
+                        'required' => false,
+                    ],
+                ]);
+        } else {
+            $this
+                ->add([
+                    'name' => 'from',
+                    'type' => Element\Email::class,
+                    'options' => [
+                        'label' => 'Email', // @translate
+                    ],
+                    'attributes' => [
+                        'id' => 'from',
+                        'required' => true,
+                    ],
+                ])
+                ->add([
+                    'name' => 'name',
+                    'type' => Element\Text::class,
+                    'options' => [
+                        'label' => 'Name', // @translate
+                    ],
+                    'attributes' => [
+                        'id' => 'name',
+                        'required' => false,
+                    ],
+                ]);
+        }
+
         $this
-            ->add([
-                'name' => 'from',
-                'type' => Element\Email::class,
-                'options' => [
-                    'label' => 'Email', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'from',
-                    'required' => !$this->isAuthenticated,
-                ],
-            ])
-            ->add([
-                'name' => 'name',
-                'type' => Element\Text::class,
-                'options' => [
-                    'label' => 'Name', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'name',
-                    'required' => false,
-                ],
-            ])
             ->add([
                 'name' => 'subject',
                 'type' => Element\Text::class,
@@ -148,7 +173,7 @@ class ContactUsForm extends Form
         $inputFilter
             ->add([
                 'name' => 'from',
-                'required' => !$this->isAuthenticated,
+                'required' => empty($this->user),
             ])
             ->add([
                 'name' => 'message',
@@ -212,9 +237,9 @@ class ContactUsForm extends Form
         return $this;
     }
 
-    public function setIsAuthenticated($isAuthenticated)
+    public function setUser(?User $user)
     {
-        $this->isAuthenticated = $isAuthenticated;
+        $this->user = $user;
         return $this;
     }
 }

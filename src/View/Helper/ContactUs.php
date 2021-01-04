@@ -71,13 +71,13 @@ class ContactUs extends AbstractHelper
         $view = $this->getView();
 
         $user = $view->identity();
-        $isAuthenticated = (bool) $user;
         $translate = $view->plugin('translate');
 
         $attachFile = !empty($options['attach_file']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
-        $antispam = !$isAuthenticated && !empty($options['antispam']) && !empty($options['questions']);
+        $antispam = empty($user)
+            && !empty($options['antispam']) && !empty($options['questions']);
         $isSpam = false;
         $message = null;
         $status = null;
@@ -108,7 +108,7 @@ class ContactUs extends AbstractHelper
                 'question' => $question,
                 'answer' => $answer,
                 'check_answer' => $checkAnswer,
-                'is_authenticated' => $isAuthenticated,
+                'user' => $user,
             ]);
             $form
                 ->setAttachFile($attachFile)
@@ -116,7 +116,7 @@ class ContactUs extends AbstractHelper
                 ->setQuestion($question)
                 ->setAnswer($answer)
                 ->setCheckAnswer($checkAnswer)
-                ->setIsAuthenticated($isAuthenticated);
+                ->setUser($user);
 
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
@@ -225,7 +225,7 @@ TXT;
                     if (!$result) {
                         $status = 'error';
                         $message = new Message(
-                            $translate('Sorry, the message is recorded, but we are not able to send email to notify the admin. Come back later.') // @translate
+                            $translate('Sorry, the message is recorded, but we are not able to notify the admin at once. You may come back later if you don’t receive answer.') // @translate
                         );
                     }
                     // Send the confirmation message to the visitor.
@@ -233,7 +233,7 @@ TXT;
                         $message = new Message(
                             $translate('Thank you for your message %s. Check your confirmation mail. We will answer you soon.'), // @translate
                             $submitted['name']
-                                ? sprintf('%s (%s)', $submitted['name'], $submitted['from'])
+                                ? sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])
                                 : sprintf('(%s)', $submitted['from'])
                         );
 
@@ -283,7 +283,7 @@ TXT;
                 'question' => $question,
                 'answer' => $answer,
                 'check_answer' => $checkAnswer,
-                'is_authenticated' => $isAuthenticated,
+                'user' => $user,
             ]);
             $form
                 ->setAttachFile($attachFile)
@@ -291,7 +291,7 @@ TXT;
                 ->setQuestion($question)
                 ->setAnswer($answer)
                 ->setCheckAnswer($checkAnswer)
-                ->setIsAuthenticated($isAuthenticated);
+                ->setUser($user);
         }
 
         if ($user):
