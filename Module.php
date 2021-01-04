@@ -16,8 +16,11 @@ class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
 
+    const STORE_PREFIX = 'contactus';
+
     protected function postInstall(): void
     {
+        $services = $this->getServiceLocator();
         // Prepare all translations one time.
         $translatables = [
             'contactus_confirmation_subject',
@@ -25,12 +28,64 @@ class Module extends AbstractModule
             // 'contactus_questions',
         ];
         $config = $this->getConfig()['contactus']['site_settings'];
-        $translate = $this->getServiceLocator()->get('ControllerPluginManager')->get('translate');
+        $translate = $services->get('ControllerPluginManager')->get('translate');
         $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
             return !empty($config[$v]) ? $translate($config[$v]) : null;
         }, array_combine($translatables, $translatables)));
 
         $this->manageSiteSettings('update', $translatables);
+
+        $config = $services->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+        if (!$this->checkDestinationDir($basePath . '/' . self::STORE_PREFIX)) {
+            $message = new \Omeka\Stdlib\Message(
+                'The directory "%s" is not writeable.', // @translate
+                $basePath
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+        }
+    }
+
+    protected function preUninstall(): void
+    {
+        if (!empty($_POST['remove-contact-us'])) {
+            $config = $this->getServiceLocator()->get('Config');
+            $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+            $this->rmDir($basePath . '/' . self::STORE_PREFIX);
+        }
+    }
+
+    public function warnUninstall(Event $event): void
+    {
+        $view = $event->getTarget();
+        $module = $view->vars()->module;
+        if ($module->getId() != __NAMESPACE__) {
+            return;
+        }
+
+        $serviceLocator = $this->getServiceLocator();
+        $t = $serviceLocator->get('MvcTranslator');
+        $config = $this->getServiceLocator()->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+
+        $html = '<p>';
+        $html .= '<strong>';
+        $html .= $t->translate('WARNING:'); // @translate
+        $html .= '</strong>';
+        $html .= '</p>';
+
+        $html .= '<p>';
+        $html .= sprintf(
+            $t->translate('All contact messages and files will be removed (folder "{folder}").'), // @translate
+            $basePath . '/' . self::STORE_PREFIX
+        );
+        $html .= '</p>';
+
+        $html .= '<label><input name="remove-contact-us" type="checkbox" form="confirmform">';
+        $html .= $t->translate('Remove Contact Us files'); // @translate
+        $html .= '</label>';
+
+        echo $html;
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
@@ -61,11 +116,71 @@ class Module extends AbstractModule
             'form.add_elements',
             [$this, 'handleSiteSettings']
         );
+
+        // Display a warn before uninstalling.
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Module',
+            'view.details',
+            [$this, 'warnUninstall']
+        );
     }
 
     public function handleViewShowAfterResource(Event $event): void
     {
         $view = $event->getTarget();
         $view->partial('common/contact-us', ['resource' => $view->resource]);
+    }
+
+    /**
+     * Check or create the destination folder.
+     *
+     * @param string $dirPath Absolute path.
+     * @return string|null
+     */
+    protected function checkDestinationDir($dirPath)
+    {
+        if (file_exists($dirPath)) {
+            if (!is_dir($dirPath) || !is_readable($dirPath) || !is_writable($dirPath)) {
+                $this->getServiceLocator()->get('Omeka\Logger')->err(
+                    'The directory "{path}" is not writeable.', // @translate
+                    ['path' => $dirPath]
+                );
+                return null;
+            }
+            return $dirPath;
+        }
+
+        $result = @mkdir($dirPath, 0775, true);
+        if (!$result) {
+            $this->getServiceLocator()->get('Omeka\Logger')->err(
+                'The directory "{path}" is not writeable: {error}.', // @translate
+                ['path' => $dirPath, 'error' => error_get_last()['message']]
+            );
+            return null;
+        }
+        return $dirPath;
+    }
+
+    /**
+     * Remove a dir from filesystem.
+     *
+     * @param string $dirpath Absolute path.
+     * @return bool
+     */
+    private function rmDir($dirPath)
+    {
+        if (!file_exists($dirPath)) {
+            return true;
+        }
+        $files = array_diff(scandir($dirPath), ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dirPath . '/' . $file;
+            if (is_dir($path)) {
+                $this->rmDir($path);
+            } else {
+                unlink($path);
+            }
+        }
+        return rmdir($dirPath);
     }
 }
