@@ -4,6 +4,7 @@ namespace ContactUs\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\ArrayTextarea;
 
 class ContactUsFieldset extends Fieldset
 {
@@ -23,7 +24,7 @@ class ContactUsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'o:block[__blockIndex__][o:data][notify_recipients]',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'List of recipients to notify', // @translate
                     'info' => 'Let empty to use site settings.', // @translate
@@ -121,10 +122,11 @@ class ContactUsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'o:block[__blockIndex__][o:data][questions]',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'List of antispam questions/answers', // @translate
                     'info' => 'Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'as_key_value' => true,
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',

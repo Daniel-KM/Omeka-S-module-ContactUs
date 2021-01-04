@@ -65,4 +65,18 @@ SQL;
     foreach (explode(";\n", $sqls) as $sql) {
         $connection->exec($sql);
     }
+
+    $sites = $api->search('sites')->getContent();
+    foreach ($sites as $site) {
+        $siteSettings->setTargetId($site->id());
+        $siteSettings->delete('contactus_subject');
+        $siteSettings->delete('contactus_confirmation_enabled');
+        $siteSettings->delete('contactus_confirmation_subject');
+        $siteSettings->delete('contactus_confirmation_body');
+        $siteSettings->delete('contactus_newsletter');
+        $siteSettings->delete('contactus_newsletter_label');
+        $siteSettings->delete('contactus_attach_file');
+        $siteSettings->delete('contactus_antispam');
+        $siteSettings->delete('contactus_questions');
+    }
 }

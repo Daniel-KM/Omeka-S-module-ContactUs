@@ -70,19 +70,6 @@ class Module extends AbstractModule
     protected function postInstall(): void
     {
         $services = $this->getServiceLocator();
-        // Prepare all translations one time.
-        $translatables = [
-            'contactus_confirmation_subject',
-            'contactus_confirmation_body',
-            // 'contactus_questions',
-        ];
-        $config = $this->getConfig()['contactus']['site_settings'];
-        $translate = $services->get('ControllerPluginManager')->get('translate');
-        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
-            return !empty($config[$v]) ? $translate($config[$v]) : null;
-        }, array_combine($translatables, $translatables)));
-
-        $this->manageSiteSettings('update', $translatables);
 
         $config = $services->get('Config');
         $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');

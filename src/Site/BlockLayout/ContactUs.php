@@ -26,48 +26,7 @@ class ContactUs extends AbstractBlockLayout
     {
         $data = $block->getData();
 
-        // Check and normalize options.
-        $hasError = false;
-
         $data['antispam'] = !empty($data['antispam']);
-
-        // Hydration can occurs outside of the form.
-        $notifyRecipients = $this->stringToList($data['notify_recipients'] ?? []);
-        if (empty($notifyRecipients)) {
-            $data['notify_recipients'] = $notifyRecipients;
-        } else {
-            $data['notify_recipients'] = [];
-            foreach ($notifyRecipients as $notifyRecipient) {
-                if (filter_var($notifyRecipient, FILTER_VALIDATE_EMAIL)) {
-                    $data['notify_recipients'][] = $notifyRecipient;
-                }
-            }
-            if (empty($data['notify_recipients'])) {
-                $errorStore->addError('notify_recipients', 'Check emails for notifications or remove them to use default ones.'); // @translate
-                $hasError = true;
-            }
-        }
-
-        if (empty($data['questions'])) {
-            $data['questions'] = [];
-        } elseif (!is_array($data['questions'])) {
-            $questions = $this->stringToList($data['questions']);
-            $data['questions'] = [];
-            foreach ($questions as $questionAnswer) {
-                list($question, $answer) = is_array($questionAnswer)
-                    ? [key($questionAnswer), reset($questionAnswer)]
-                    : array_map('trim', explode('=', $questionAnswer, 2));
-                if ($question === '' || $answer === '') {
-                    $errorStore->addError('questions', 'To create antispam, each question must be separated from the answer by a "=".'); // @translate
-                    $hasError = true;
-                }
-                $data['questions'][$question] = $answer;
-            }
-        }
-
-        if ($hasError) {
-            return;
-        }
 
         $block->setData($data);
     }
@@ -85,22 +44,6 @@ class ContactUs extends AbstractBlockLayout
         $blockFieldset = \ContactUs\Form\ContactUsFieldset::class;
 
         $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
-
-        // TODO Use ArrayTextarea.
-        if (is_array($data['notify_recipients'])) {
-            $values = $data['notify_recipients'];
-            $data['notify_recipients'] = '';
-            foreach ($values as $value) {
-                $data['notify_recipients'] .= $value . "\n";
-            }
-        }
-        if (is_array($data['questions'])) {
-            $questions = $data['questions'];
-            $data['questions'] = '';
-            foreach ($questions as $question => $answer) {
-                $data['questions'] .= $question . ' = ' . $answer . "\n";
-            }
-        }
 
         $dataForm = [];
         foreach ($data as $key => $value) {
