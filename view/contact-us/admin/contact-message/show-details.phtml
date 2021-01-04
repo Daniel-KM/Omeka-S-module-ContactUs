@@ -1,0 +1,87 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \ContactUs\Api\Representation\messageRepresentation $resource
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escape = $plugins->get('escapeHtml');
+$url = $plugins->get('url');
+$hyperlink = $plugins->get('hyperlink');
+$i18n = $plugins->get('i18n');
+?>
+
+<?php $message = $resource; ?>
+<div class="resource-details" data-resource-values="<?php // echo $escape($values) ?>">
+    <h3 class="o-module-contact"><?= $message->link(sprintf($translate('message #%d'), $message->id())) ?></h3>
+    <div class="meta-group">
+        <?php $owner = $message->owner(); ?>
+        <h4><?= $escape($translate('Sender')) ?> <?php if (!$owner): ?><span class="contact-message-public"><?= $translate('(public)') ?></span><?php endif; ?></h4>
+        <div class="value">
+            <?php if ($owner): ?>
+            <span class="contact-message-email"><?= $hyperlink($owner->name(), $url('admin/id', ['controller' => 'user', 'action' => 'show', 'id' => $owner->id()])) ?></span>
+            <?php else: ?>
+            <span class="contact-message-email message-public"><?= $hyperlink($message->email(), 'mailto:' . $message->email()) ?></span>
+            <span class="contact-message-name"><?= $message->name() ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="meta-group">
+        <?php $attachedResource = $message->resource(); ?>
+        <?php if ($attachedResource): ?>
+        <?php $attachedResourceName = $attachedResource->getControllerName(); ?>
+        <h4><?= $escape($translate(ucfirst($attachedResourceName))) ?> <span class="fa resource-name <?= $attachedResourceName ?>" aria-label="<?= $attachedResourceName ?>"></span></h4>
+        <div class="value">
+        <span class="resource-name">
+            <?= $attachedResource->link($attachedResource->displayTitle()) ?>
+        </span>
+            <?php if (!$attachedResource->isPublic()): ?>
+        <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
+            <?php endif; ?>
+        <?php endif; ?>
+        </div>
+    </div>
+    <div class="meta-group">
+        <?php $site = $message->site(); ?>
+        <?php if ($site): ?>
+        <h4><?= $escape($translate('Site')) ?></h4>
+        <div class="value">
+        <span class="site-name">
+            <?= $site->link($site->title()) ?>
+        </span>
+            <?php if (!$site->isPublic()): ?>
+        <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
+            <?php endif; ?>
+        <?php endif; ?>
+        </div>
+    </div>
+    <div class="meta-group">
+        <h4><?= $translate('Date Created') ?></h4>
+        <div class="value"><?= $escape($i18n->dateFormat($message->created(), 'medium', 'medium')) ?></div>
+    </div>
+    <div class="meta-group">
+        <h4><?= $translate('Subject') ?></h4>
+        <div class="value"><?= $escape($message->subject() ?: $translate('[No subject]')) ?></div>
+    </div>
+    <div class="meta-group">
+        <h4><?= $translate('Body') ?></h4>
+        <div class="value"><?= $escape($message->body()) ?></div>
+    </div>
+    <?php if ($fileUrl = $message->assetUrl()): ?>
+    <div class="meta-group">
+        <h4><?= $translate('Attached file') ?></h4>
+        <div class="value">
+            <?= sprintf($translate('Media type: %s'), $message->mediaType()) ?>
+        </div>
+        <div class="value">
+            <?= $hyperlink($message->source() ?: $fileUrl, $fileUrl) ?>
+            <?php if (!$owner): ?>
+            <span><?= $translate('Warning: content from an anonymous user') ?></span>
+            <?php elseif ($owner->role() === 'guest'): ?>
+            <span><?= $translate('Warning: content from a guest user') ?></span>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>

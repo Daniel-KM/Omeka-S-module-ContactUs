@@ -11,12 +11,38 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 use Generic\AbstractModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\MvcEvent;
 
 class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
 
     const STORE_PREFIX = 'contactus';
+
+    public function onBootstrap(MvcEvent $event): void
+    {
+        parent::onBootstrap($event);
+
+        $services = $this->getServiceLocator();
+        $acl = $services->get('Omeka\Acl');
+
+        // Since Omeka 1.4, modules are ordered, so Guest come after Selection.
+        $roles = $acl->getRoles();
+
+        // Any user or anonymous people can create a message.
+        // Only admins can browse them. Other users can only manage their owns.
+        // A check is done on attached files for anonymous people and guests.
+        $acl
+            ->allow(
+                $roles,
+                [
+                    Entity\Message::class,
+                    Api\Adapter\MessageAdapter::class,
+                    'ContactUs\Controller\Admin\ContactMessage',
+                ]
+            )
+        ;
+    }
 
     protected function postInstall(): void
     {

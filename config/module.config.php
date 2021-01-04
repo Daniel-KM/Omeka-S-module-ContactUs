@@ -20,6 +20,9 @@ return [
         'template_path_stack' => [
             dirname(__DIR__) . '/view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
     ],
     'view_helpers' => [
         'factories' => [
@@ -37,6 +40,69 @@ return [
             Form\ContactUsForm::class => Form\ContactUsForm::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
+        ],
+    ],
+    'controllers' => [
+        'invokables' => [
+            'ContactUs\Controller\Admin\ContactMessage' => Controller\Admin\ContactMessageController::class,
+        ],
+    ],
+    'navigation' => [
+        'AdminModule' => [
+            'contact-us' => [
+                'label' => 'Contact messages', // @translate
+                'class' => 'contact-messages far fa-envelope',
+                'route' => 'admin/contact-message',
+                'resource' => 'ContactUs\Controller\Admin\ContactMessage',
+                'privilege' => 'browse',
+            ],
+        ],
+    ],
+    'router' => [
+        'routes' => [
+            'admin' => [
+                'child_routes' => [
+                    'contact-message' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/contact-message',
+                            'defaults' => [
+                                '__NAMESPACE__' => 'ContactUs\Controller\Admin',
+                                'controller' => 'ContactMessage',
+                                'action' => 'browse',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'default' => [
+                                'type' => \Laminas\Router\Http\Segment::class,
+                                'options' => [
+                                    'route' => '[/:action]',
+                                    'constraints' => [
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
+                                    'defaults' => [
+                                        'action' => 'browse',
+                                    ],
+                                ],
+                            ],
+                            'id' => [
+                                'type' => \Laminas\Router\Http\Segment::class,
+                                'options' => [
+                                    'route' => '/:id[/:action]',
+                                    'constraints' => [
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                        'id' => '\d+',
+                                    ],
+                                    'defaults' => [
+                                        'action' => 'show',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'translator' => [

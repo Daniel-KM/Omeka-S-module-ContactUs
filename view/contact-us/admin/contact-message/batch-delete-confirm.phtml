@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Form\ConfirmForm $form
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+?>
+
+<div id="sidebar-confirm">
+    <h3><?= $translate('Delete contact messages') ?></h3>
+    <p><?= $translate('Are you sure you would like to delete the selected messages?') ?></p>
+    <?= $this->form($form) ?>
+</div>
