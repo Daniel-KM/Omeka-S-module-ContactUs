@@ -87,6 +87,11 @@ class ContactUs extends AbstractHelper
         $answer = '';
         $checkAnswer = '';
 
+        // Sometime, questions/answers are not converted into array in form.
+        if ($antispam) {
+            $options['questions'] = $this->checkAntispamOptions($options['questions']);
+        }
+
         $params = $view->params()->fromPost();
         if ($params) {
             if ($antispam) {
@@ -448,5 +453,41 @@ TXT;
         return empty($options['subject'])
             ? sprintf($this->getView()->translate('[Contact] %s'), $this->mailer->getInstallationTitle())
             : $options['subject'];
+    }
+
+    protected function checkAntispamOptions($options): array
+    {
+        if (is_array($options)) {
+            return $options;
+        }
+        $string = $options;
+        $result = [];
+        foreach ($this->stringToList($string) as $keyValue) {
+            if (strpos($keyValue, '=') === false) {
+                $result[trim($keyValue)] = '';
+            } else {
+                list($key, $value) = array_map('trim', explode('=', $keyValue, 2));
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get each line of a string separately as a list.
+     */
+    protected function stringToList($string): array
+    {
+        return array_filter(array_map('trim', explode("\n", $this->fixEndOfLine($string))), 'strlen');
+    }
+
+    /**
+     * Clean the text area from end of lines.
+     *
+     * This method fixes Windows and Apple copy/paste from a textarea input.
+     */
+    protected function fixEndOfLine($string): string
+    {
+        return str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], (string) $string);
     }
 }
