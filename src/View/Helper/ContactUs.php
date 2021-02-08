@@ -450,9 +450,14 @@ TXT;
 
     protected function getMailSubject(array $options = [])
     {
-        return empty($options['subject'])
-            ? sprintf($this->getView()->translate('[Contact] %s'), $this->mailer->getInstallationTitle())
-            : $options['subject'];
+        if (!empty($options['subject'])) {
+            return $options['subject'];
+        }
+
+        $view = $this->getView();
+        $default = sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+
+        return $view->siteSetting('contactus_subject', $default);
     }
 
     protected function checkAntispamOptions($options): array

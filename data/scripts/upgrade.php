@@ -70,20 +70,3 @@ SQL;
         // Already installed.
     }
 }
-
-if (version_compare($oldVersion, '3.3.8.2', '<')) {
-    $siteSettings = $services->get('Omeka\Settings\Site');
-    $sites = $api->search('sites')->getContent();
-    foreach ($sites as $site) {
-        $siteSettings->setTargetId($site->id());
-        $siteSettings->delete('contactus_subject');
-        $siteSettings->delete('contactus_confirmation_enabled');
-        $siteSettings->delete('contactus_confirmation_subject');
-        $siteSettings->delete('contactus_confirmation_body');
-        $siteSettings->delete('contactus_newsletter');
-        $siteSettings->delete('contactus_newsletter_label');
-        $siteSettings->delete('contactus_attach_file');
-        $siteSettings->delete('contactus_antispam');
-        $siteSettings->delete('contactus_questions');
-    }
-}
