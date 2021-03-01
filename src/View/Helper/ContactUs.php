@@ -66,6 +66,7 @@ class ContactUs extends AbstractHelper
             'html' => null,
             'attach_file' => null,
             'newsletter_label' => null,
+            'notify_recipients' => null,
         ];
 
         $view = $this->getView();
@@ -367,7 +368,10 @@ class ContactUs extends AbstractHelper
     protected function getNotifyRecipients(array $options)
     {
         $view = $this->getView();
-        $list = $view->siteSetting('contactus_notify_recipients') ?: $view->setting('contactus_notify_recipients');
+        $list = $options['notify_recipients'] ?? [];
+        if (!$list) {
+            $list = $view->siteSetting('contactus_notify_recipients') ?: $view->setting('contactus_notify_recipients');
+        }
         // Check emails.
         if ($list) {
             $originalList = array_filter($list);
