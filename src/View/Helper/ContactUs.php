@@ -368,6 +368,16 @@ class ContactUs extends AbstractHelper
     {
         $view = $this->getView();
         $list = $view->siteSetting('contactus_notify_recipients') ?: $view->setting('contactus_notify_recipients');
+        // Check emails.
+        if ($list) {
+            $originalList = array_filter($list);
+            $list = array_filter($originalList, function ($v) {
+                return filter_var($v, FILTER_VALIDATE_EMAIL);
+            });
+            if (count($originalList) !== count($list)) {
+                $view->logger()->err('Contact Us: Some notification emails for module are invalid.'); // @translate
+            }
+        }
         if (!$list) {
             $site = $this->currentSite();
             $owner = $site->owner();
