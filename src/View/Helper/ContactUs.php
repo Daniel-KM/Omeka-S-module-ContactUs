@@ -210,20 +210,8 @@ class ContactUs extends AbstractHelper
                     $mail['to'] = $this->getNotifyRecipients($options);
                     $mail['subject'] = $this->getMailSubject($options)
                         ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
-                    $body = <<<TXT
-A user has contacted you.
-
-email: {email}
-name: {name}
-ip: {ip}
-
-{newsletter}
-subject: {subject}
-message:
-
-{message}
-TXT;
-                    $body = $translate($body);
+                    $body = $view->siteSetting('contactus_notify_body')
+                        ?: $translate($this->defaultSettings['notify_body']);
                     $mail['body'] = $this->fillMessage($body, $submitted);
 
                     $result = $this->sendEmail($mail);

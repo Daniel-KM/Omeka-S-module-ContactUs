@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace ContactUs\Form;
 
 use Laminas\Form\Element;
@@ -42,6 +43,18 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_notify_body',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'label' => 'Notification message for admin', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_notify_body',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_confirmation_enabled',
                 'type' => Element\Checkbox::class,
                 'options' => [
@@ -66,7 +79,7 @@ info@example2.org', // @translate
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Confirmation message', // @translate
-                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {message}, {newsletter}.', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_confirmation_body',
