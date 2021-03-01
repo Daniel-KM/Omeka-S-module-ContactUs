@@ -22,32 +22,6 @@ class ContactUsFieldset extends Fieldset
                 ],
             ])
             ->add([
-                'name' => 'o:block[__blockIndex__][o:data][notify_recipients]',
-                'type' => Element\Textarea::class,
-                'options' => [
-                    'label' => 'List of recipients to notify', // @translate
-                    'info' => 'Let empty to use site settings.', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_notify_recipients',
-                    'required' => false,
-                    'placeholder' => 'Let empty to use site settings.', // @translate
-                ],
-            ])
-            ->add([
-                'name' => 'o:block[__blockIndex__][o:data][subject]',
-                'type' => Element\Text::class,
-                'options' => [
-                    'label' => 'Mail subject', // @translate
-                    'info' => 'Leave empty to use site settings', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_subject',
-                    'required' => false,
-                    'placeholder' => 'Leave empty to use site settings', // @translate
-                ],
-            ])
-            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][confirmation_enabled]',
                 'type' => Element\Checkbox::class,
                 'options' => [

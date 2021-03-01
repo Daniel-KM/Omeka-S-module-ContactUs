@@ -367,17 +367,11 @@ class ContactUs extends AbstractHelper
     protected function getNotifyRecipients(array $options)
     {
         $view = $this->getView();
-        $list = $options['notify_recipients'] ?: [];
+        $list = $view->siteSetting('contactus_notify_recipients') ?: $view->setting('contactus_notify_recipients');
         if (!$list) {
-            $list = $view->siteSetting('contactus_notify_recipients');
-            if (!$list) {
-                $list = $view->setting('contactus_notify_recipients');
-                if (!$list) {
-                    $site = $this->currentSite();
-                    $owner = $site->owner();
-                    $list = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
-                }
-            }
+            $site = $this->currentSite();
+            $owner = $site->owner();
+            $list = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
         }
         return $list;
     }
@@ -445,7 +439,7 @@ class ContactUs extends AbstractHelper
         $view = $this->getView();
         $default = sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle());
 
-        return $view->siteSetting('contactus_subject', $default);
+        return $view->siteSetting('contactus_notify_subject', $default);
     }
 
     protected function checkAntispamOptions($options): array

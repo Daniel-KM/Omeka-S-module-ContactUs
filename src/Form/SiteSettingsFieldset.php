@@ -30,16 +30,14 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
-                'name' => 'contactus_subject',
+                'name' => 'contactus_notify_subject',
                 'type' => Element\Text::class,
                 'options' => [
-                    'label' => 'Mail subject', // @translate
-                    'info' => 'Leave empty to use the default value', // @translate
+                    'label' => 'Notification email subject for admin', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'contactus_subject',
+                    'id' => 'contactus_notify_subject',
                     'required' => false,
-                    'placeholder' => 'Leave empty to use the default value', // @translate
                 ],
             ])
             ->add([

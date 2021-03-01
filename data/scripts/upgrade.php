@@ -78,5 +78,16 @@ if (version_compare($oldVersion, '3.3.8.4', '<')) {
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
         $siteSettings->set('contactus_notify_body', $config['contactus']['site_settings']['contactus_notify_body']);
+        $siteSettings->set('contactus_notify_subject', $siteSettings->get('contactus_subject'));
+        $siteSettings->delete('contactus_subject');
     }
+
+    // Just to hide the data. Will be removed when the page will be resaved.
+    $sql = <<<'SQL'
+UPDATE site_page_block
+SET
+    data = REPLACE(data, '"notify_recipients":', '"_old_notify_recipients":')
+WHERE layout = "contactUs";
+SQL;
+    $connection->exec($sql);
 }

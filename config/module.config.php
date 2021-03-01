@@ -123,7 +123,7 @@ return [
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
-            'contactus_subject' => '',
+            'contactus_notify_subject' => '',
             'contactus_notify_body' => 'A user has contacted you.
 
 email: {email}
@@ -185,7 +185,6 @@ Subject: {subject}
         'block_settings' => [
             'contactUs' => [
                 'heading' => null,
-                'notify_recipients' => [],
                 'confirmation_enabled' => true,
                 'confirmation_subject' => 'Confirmation contact', // @translate
                 'confirmation_body' => 'Hi {name},

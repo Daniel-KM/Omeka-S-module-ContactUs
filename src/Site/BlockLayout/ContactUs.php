@@ -31,23 +31,6 @@ class ContactUs extends AbstractBlockLayout
 
         $data['antispam'] = !empty($data['antispam']);
 
-        // Hydration can occurs outside of the form.
-        $notifyRecipients = $this->stringToList($data['notify_recipients'] ?? []);
-        if (empty($notifyRecipients)) {
-            $data['notify_recipients'] = $notifyRecipients;
-        } else {
-            $data['notify_recipients'] = [];
-            foreach ($notifyRecipients as $notifyRecipient) {
-                if (filter_var($notifyRecipient, FILTER_VALIDATE_EMAIL)) {
-                    $data['notify_recipients'][] = $notifyRecipient;
-                }
-            }
-            if (empty($data['notify_recipients'])) {
-                $errorStore->addError('notify_recipients', 'Check emails for notifications or remove them to use default ones.'); // @translate
-                $hasError = true;
-            }
-        }
-
         if (empty($data['questions'])) {
             $data['questions'] = [];
         } elseif (!is_array($data['questions'])) {
@@ -87,13 +70,6 @@ class ContactUs extends AbstractBlockLayout
         $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
 
         // TODO Use ArrayTextarea.
-        if (is_array($data['notify_recipients'])) {
-            $values = $data['notify_recipients'];
-            $data['notify_recipients'] = '';
-            foreach ($values as $value) {
-                $data['notify_recipients'] .= $value . "\n";
-            }
-        }
         if (is_array($data['questions'])) {
             $questions = $data['questions'];
             $data['questions'] = '';
