@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-01 00:00+0000\n"
+"POT-Creation-Date: 2021-09-13 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,10 +40,10 @@ msgid "This module requires modules \"%s\"."
 msgstr ""
 
 #: src/Generic/AbstractModule.php:80
-msgid "This module has resources that connot be installed."
+msgid "This module has resources that cannot be installed."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:707
+#: src/Generic/AbstractModule.php:725
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -54,45 +54,45 @@ msgstr ""
 msgid "Append a form to allow visitors to contact us."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:139
+#: src/View/Helper/ContactUs.php:144
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:174
+#: src/View/Helper/ContactUs.php:179
 #, php-format
 msgid "There is an error: %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:191 src/View/Helper/ContactUs.php:212
-#: src/View/Helper/ContactUs.php:401 src/View/Helper/ContactUs.php:450
+#: src/View/Helper/ContactUs.php:196 src/View/Helper/ContactUs.php:217
+#: src/View/Helper/ContactUs.php:411 src/View/Helper/ContactUs.php:458
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:197
+#: src/View/Helper/ContactUs.php:202
 #, php-format
 msgid "newsletter: %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:221
+#: src/View/Helper/ContactUs.php:226
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:227
+#: src/View/Helper/ContactUs.php:232
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
 "you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:248
+#: src/View/Helper/ContactUs.php:253
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:256
+#: src/View/Helper/ContactUs.php:261
 msgid "There is an error."
 msgstr ""
 
@@ -185,10 +185,6 @@ msgstr ""
 msgid "[No subject]"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:68
-msgid "Body"
-msgstr ""
-
 #: view/contact-us/admin/contact-message/show-details.phtml:73
 msgid "Attached file"
 msgstr ""
@@ -210,28 +206,30 @@ msgstr ""
 msgid "Newsletter"
 msgstr ""
 
+#: data/scripts/upgrade.php:100
+msgid ""
+"A checkbox for consent has been added to the user form. You may update the "
+"default label in site settings"
+msgstr ""
+
 #: Module.php:91
 #, php-format
 msgid "The directory \"%s\" is not writeable."
 msgstr ""
 
-#: Module.php:194
+#: Module.php:197
 msgid "The directory \"{path}\" is not writeable."
 msgstr ""
 
-#: Module.php:205
+#: Module.php:208
 msgid "The directory \"{path}\" is not writeable: {error}."
 msgstr ""
 
-#: src/Form/ContactUsForm.php:114
+#: src/Form/ContactUsForm.php:116
 msgid "Attach a file"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:128
-msgid "label"
-msgstr ""
-
-#: src/Form/ContactUsForm.php:168
+#: src/Form/ContactUsForm.php:195
 msgid "Send message"
 msgstr ""
 
@@ -267,31 +265,36 @@ msgid "Allow to attach a file"
 msgstr ""
 
 #: src/Form/ContactUsFieldset.php:70
-msgid "Add a checkbox for a newsletter"
+msgid "Label for the consent checkbox"
 msgstr ""
 
 #: src/Form/ContactUsFieldset.php:80
+msgid "Add a checkbox for a newsletter"
+msgstr ""
+
+#: src/Form/ContactUsFieldset.php:90
 msgid "Label for the newsletter"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:90 src/Form/SiteSettingsFieldset.php:91
+#: src/Form/ContactUsFieldset.php:100 src/Form/SiteSettingsFieldset.php:91
+#: src/Form/SiteSettingsFieldset.php:101
 msgid "Enable simple antispam for visitors"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:100 src/Form/SiteSettingsFieldset.php:101
+#: src/Form/ContactUsFieldset.php:110 src/Form/SiteSettingsFieldset.php:111
 msgid "List of antispam questions/answers"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:101
+#: src/Form/ContactUsFieldset.php:111
 msgid ""
 "Separate questions and answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:117
+#: src/Form/ContactUsFieldset.php:127
 msgid "Template to display"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:118
+#: src/Form/ContactUsFieldset.php:128
 msgid ""
 "Templates are in folder \"common/block-layout\" of the theme and should "
 "start with \"contact-us\"."
@@ -344,13 +347,13 @@ msgstr ""
 msgid "Notification message for admin"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:102
+#: src/Form/SiteSettingsFieldset.php:112
 msgid ""
 "See the block \"Contact us\" for a simple list. Separate questions and "
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:107
+#: src/Form/SiteSettingsFieldset.php:117
 msgid ""
 "How many are zero plus 1 (in number)? = 1\n"
 "How many are one plus 1 (in number)? = 2"
@@ -385,16 +388,16 @@ msgstr ""
 msgid "Unknown key."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:300
+#: src/View/Helper/ContactUs.php:307
 #, php-format
 msgid "About resource %s (%s)."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:378
+#: src/View/Helper/ContactUs.php:388
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:425
+#: src/View/Helper/ContactUs.php:435
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr ""
@@ -432,7 +435,7 @@ msgid ""
 "{message}"
 msgstr ""
 
-#: config/module.config.php:139 config/module.config.php:189
+#: config/module.config.php:139 config/module.config.php:186
 msgid "Confirmation contact"
 msgstr ""
 
@@ -458,51 +461,47 @@ msgid ""
 "{message}"
 msgstr ""
 
-#: config/module.config.php:159 config/module.config.php:208
-msgid "Subscribe to the newsletter"
-msgstr ""
-
-#: config/module.config.php:163 config/module.config.php:212
+#: config/module.config.php:160 config/module.config.php:210
 msgid "How many are zero plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:165 config/module.config.php:214
+#: config/module.config.php:162 config/module.config.php:212
 msgid "How many are one plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:167 config/module.config.php:216
+#: config/module.config.php:164 config/module.config.php:214
 msgid "How many are one plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:169 config/module.config.php:218
+#: config/module.config.php:166 config/module.config.php:216
 msgid "How many are one plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:171 config/module.config.php:220
+#: config/module.config.php:168 config/module.config.php:218
 msgid "How many are two plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:173 config/module.config.php:222
+#: config/module.config.php:170 config/module.config.php:220
 msgid "How many are two plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:175 config/module.config.php:224
+#: config/module.config.php:172 config/module.config.php:222
 msgid "How many are two plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:177 config/module.config.php:226
+#: config/module.config.php:174 config/module.config.php:224
 msgid "How many are three plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:179 config/module.config.php:228
+#: config/module.config.php:176 config/module.config.php:226
 msgid "How many are three plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:181 config/module.config.php:230
+#: config/module.config.php:178 config/module.config.php:228
 msgid "How many are three plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:190
+#: config/module.config.php:187
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -521,4 +520,14 @@ msgid ""
 "Subject: {subject}\n"
 "\n"
 "{message}"
+msgstr ""
+
+#: config/module.config.php:204
+msgid ""
+"I allow the site owner to store my name and my email to answer to this "
+"message."
+msgstr ""
+
+#: config/module.config.php:206
+msgid "Subscribe to the newsletter"
 msgstr ""
