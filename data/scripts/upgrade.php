@@ -2,6 +2,9 @@
 
 namespace ContactUs;
 
+use Omeka\Mvc\Controller\Plugin\Messenger;
+use Omeka\Stdlib\Message;
+
 /**
  * @var Module $this
  * @var \Laminas\ServiceManager\ServiceLocatorInterface $services
@@ -87,6 +90,36 @@ if (version_compare($oldVersion, '3.3.8.4', '<')) {
 UPDATE site_page_block
 SET
     data = REPLACE(data, '"notify_recipients":', '"_old_notify_recipients":')
+WHERE layout = "contactUs";
+SQL;
+    $connection->exec($sql);
+}
+
+if (version_compare($oldVersion, '3.3.8.5', '<')) {
+    $message = new Message(
+        'A checkbox for consent has been added to the user form. You may update the default label in site settings' // @translate
+    );
+    $messenger = new Messenger();
+    $messenger->addNotice($message);
+
+    $siteSettings = $services->get('Omeka\Settings\Site');
+    $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
+    foreach ($ids as $id) {
+        $siteSettings->setTargetId($id);
+        $siteSettings->delete('contactus_newsletter');
+        $siteSettings->delete('contactus_newsletter_label');
+        $siteSettings->delete('contactus_attach_file');
+        $siteSettings->set('contactus_consent_label', $config['contactus']['site_settings']['contactus_consent_label']);
+    }
+
+    $sql = <<<SQL
+UPDATE site_page_block
+SET
+    data = REPLACE(
+        data,
+        '"confirmation_enabled":',
+        '"consent_label":"I allow the site owner to store my name and my email to answer to this message.","confirmation_enabled":'
+    )
 WHERE layout = "contactUs";
 SQL;
     $connection->exec($sql);

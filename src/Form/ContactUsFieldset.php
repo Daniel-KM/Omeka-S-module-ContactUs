@@ -64,6 +64,16 @@ class ContactUsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'o:block[__blockIndex__][o:data][consent_label]',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Label for the consent checkbox', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_consent_label',
+                ],
+            ])
+            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][newsletter]',
                 'type' => Element\Checkbox::class,
                 'options' => [

@@ -95,6 +95,16 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_antispam',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Enable simple antispam for visitors', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_antispam',
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_questions',
                 'type' => ArrayTextarea::class,
                 'options' => [

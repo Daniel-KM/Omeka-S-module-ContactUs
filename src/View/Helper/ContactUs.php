@@ -65,6 +65,7 @@ class ContactUs extends AbstractHelper
             'heading' => null,
             'html' => null,
             'attach_file' => null,
+            'consent_label' => null,
             'newsletter_label' => null,
             'notify_recipients' => null,
         ];
@@ -75,6 +76,7 @@ class ContactUs extends AbstractHelper
         $translate = $view->plugin('translate');
 
         $attachFile = !empty($options['attach_file']);
+        $consentLabel = trim((string) $options['consent_label']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
         $antispam = empty($user)
@@ -110,6 +112,7 @@ class ContactUs extends AbstractHelper
             /** @var \ContactUs\Form\ContactUsForm $form */
             $form = $this->formElementManager->get(ContactUsForm::class, [
                 'attach_file' => $attachFile,
+                'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
                 'question' => $question,
                 'answer' => $answer,
@@ -118,6 +121,7 @@ class ContactUs extends AbstractHelper
             ]);
             $form
                 ->setAttachFile($attachFile)
+                ->setConsentLabel($consentLabel)
                 ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
@@ -273,6 +277,7 @@ class ContactUs extends AbstractHelper
             }
             $form = $this->formElementManager->get(ContactUsForm::class, [
                 'attach_file' => $attachFile,
+                'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
                 'question' => $question,
                 'answer' => $answer,
@@ -281,6 +286,7 @@ class ContactUs extends AbstractHelper
             ]);
             $form
                 ->setAttachFile($attachFile)
+                ->setConsentLabel($consentLabel)
                 ->setNewsletterLabel($newsletterLabel)
                 ->setQuestion($question)
                 ->setAnswer($answer)
@@ -433,15 +439,13 @@ class ContactUs extends AbstractHelper
         }
     }
 
-    /**
-     * @return \Omeka\Api\Representation\SiteRepresentation
-     */
-    protected function currentSite()
+    protected function currentSite(): ?\Omeka\Api\Representation\SiteRepresentation
     {
-        $view = $this->getView();
-        return isset($view->site)
-            ? $view->site
-            : $view->getHelperPluginManager()->get('Laminas\View\Helper\ViewModel')->getRoot()->getVariable('site');
+        return $this->view->site ?? $this->view->site = $this->view
+            ->getHelperPluginManager()
+            ->get('Laminas\View\Helper\ViewModel')
+            ->getRoot()
+            ->getVariable('site');
     }
 
     protected function getMailSubject(array $options = [])

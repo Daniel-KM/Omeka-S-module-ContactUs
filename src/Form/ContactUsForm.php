@@ -11,6 +11,7 @@ use Omeka\Entity\User;
 class ContactUsForm extends Form
 {
     protected $attachFile = false;
+    protected $consentLabel = '';
     protected $newsletterLabel = '';
     protected $question = '';
     protected $answer = '';
@@ -21,6 +22,7 @@ class ContactUsForm extends Form
     {
         parent::__construct($name, $options);
         $this->attachFile = !empty($options['attach_file']);
+        $this->consentLabel = $options['consent_label'] ?? '';
         $this->newsletterLabel = $options['newsletter_label'] ?? '';
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
@@ -119,13 +121,38 @@ class ContactUsForm extends Form
                 ]);
         }
 
+        if ($this->user || !$this->consentLabel) {
+            $this
+                ->add([
+                    'name' => 'consent',
+                    'type' => Element\Hidden::class,
+                    'attributes' => [
+                        'id' => 'consent',
+                        'value' => true,
+                    ],
+                ]);
+        } else {
+            $this
+                ->add([
+                    'name' => 'consent',
+                    'type' => Element\Checkbox::class,
+                    'options' => [
+                        'label' => $this->consentLabel,
+                    ],
+                    'attributes' => [
+                        'id' => 'consent',
+                        'required' => true,
+                    ],
+                ]);
+        }
+
         if ($this->newsletterLabel) {
             $this
                 ->add([
                     'name' => 'newsletter',
                     'type' => Element\Checkbox::class,
                     'options' => [
-                        'label' => $this->newsletterLabel, // @translate
+                        'label' => $this->newsletterLabel,
                         'use_hidden_element' => true,
                         'unchecked_value' => 'no', // @translate
                         'checked_value' => 'yes', // @translate
@@ -210,6 +237,12 @@ class ContactUsForm extends Form
     public function setAttachFile($attachFile)
     {
         $this->attachFile = $attachFile;
+        return $this;
+    }
+
+    public function setConsentLabel($consentLabel)
+    {
+        $this->consentLabel = $consentLabel;
         return $this;
     }
 
