@@ -37,7 +37,7 @@ class Message extends AbstractEntity
      * )
      * @JoinColumn(
      *     nullable=true,
-     *     onDelete="CASCADE"
+     *     onDelete="SET NULL"
      * )
      */
     protected $owner;
