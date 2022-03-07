@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 00:00+0000\n"
+"POT-Creation-Date: 2022-03-07 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Remove Contact Us files"
 msgstr ""
 
-#: src/Generic/AbstractModule.php:66
+#: src/Generic/AbstractModule.php:66 src/Generic/AbstractModule.php:740
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr ""
@@ -43,7 +43,23 @@ msgstr ""
 msgid "This module has resources that cannot be installed."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:725
+#: src/Generic/AbstractModule.php:87
+msgid ""
+"This module cannot install its tables, because they exist already. Try to "
+"remove them first."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:328
+#, php-format
+msgid "The module removed tables \"%s\" from a previous broken install."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:735
+#, php-format
+msgid "This module requires the module \"%s\", version %s or above."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:832
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -54,45 +70,45 @@ msgstr ""
 msgid "Append a form to allow visitors to contact us."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:144
+#: src/View/Helper/ContactUs.php:148
 #, php-format
 msgid "Thank you for your message %s. We will answer you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:179
+#: src/View/Helper/ContactUs.php:183
 #, php-format
 msgid "There is an error: %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:196 src/View/Helper/ContactUs.php:217
-#: src/View/Helper/ContactUs.php:411 src/View/Helper/ContactUs.php:458
+#: src/View/Helper/ContactUs.php:200 src/View/Helper/ContactUs.php:221
+#: src/View/Helper/ContactUs.php:415 src/View/Helper/ContactUs.php:462
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:202
+#: src/View/Helper/ContactUs.php:206
 #, php-format
 msgid "newsletter: %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:226
+#: src/View/Helper/ContactUs.php:230
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:232
+#: src/View/Helper/ContactUs.php:236
 #, php-format
 msgid ""
 "Thank you for your message %s. Check your confirmation mail. We will answer "
 "you soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:253
+#: src/View/Helper/ContactUs.php:257
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:261
+#: src/View/Helper/ContactUs.php:265
 msgid "There is an error."
 msgstr ""
 
@@ -237,64 +253,60 @@ msgstr ""
 msgid "Block title"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:18
-msgid "Heading for the block, if any."
-msgstr ""
-
-#: src/Form/ContactUsFieldset.php:28 src/Form/SiteSettingsFieldset.php:59
+#: src/Form/ContactUsFieldset.php:27 src/Form/SiteSettingsFieldset.php:59
 msgid "Send a confirmation email"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:38 src/Form/SiteSettingsFieldset.php:69
+#: src/Form/ContactUsFieldset.php:37 src/Form/SiteSettingsFieldset.php:69
 msgid "Subject of the confirmation email"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:48 src/Form/SiteSettingsFieldset.php:79
+#: src/Form/ContactUsFieldset.php:47 src/Form/SiteSettingsFieldset.php:79
 msgid "Confirmation message"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:49 src/Form/SiteSettingsFieldset.php:48
+#: src/Form/ContactUsFieldset.php:48 src/Form/SiteSettingsFieldset.php:48
 #: src/Form/SiteSettingsFieldset.php:80
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:60
+#: src/Form/ContactUsFieldset.php:59
 msgid "Allow to attach a file"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:70
+#: src/Form/ContactUsFieldset.php:69
 msgid "Label for the consent checkbox"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:80
+#: src/Form/ContactUsFieldset.php:79
 msgid "Add a checkbox for a newsletter"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:90
+#: src/Form/ContactUsFieldset.php:89
 msgid "Label for the newsletter"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:100 src/Form/SiteSettingsFieldset.php:91
+#: src/Form/ContactUsFieldset.php:99 src/Form/SiteSettingsFieldset.php:91
 #: src/Form/SiteSettingsFieldset.php:101
 msgid "Enable simple antispam for visitors"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:110 src/Form/SiteSettingsFieldset.php:111
+#: src/Form/ContactUsFieldset.php:109 src/Form/SiteSettingsFieldset.php:111
 msgid "List of antispam questions/answers"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:111
+#: src/Form/ContactUsFieldset.php:110
 msgid ""
 "Separate questions and answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:127
+#: src/Form/ContactUsFieldset.php:126
 msgid "Template to display"
 msgstr ""
 
-#: src/Form/ContactUsFieldset.php:128
+#: src/Form/ContactUsFieldset.php:127
 msgid ""
 "Templates are in folder \"common/block-layout\" of the theme and should "
 "start with \"contact-us\"."
@@ -388,16 +400,16 @@ msgstr ""
 msgid "Unknown key."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:307
+#: src/View/Helper/ContactUs.php:311
 #, php-format
 msgid "About resource %s (%s)."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:388
+#: src/View/Helper/ContactUs.php:392
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:435
+#: src/View/Helper/ContactUs.php:439
 #, php-format
 msgid "Error when sending email. Arguments:\\n%s"
 msgstr ""
@@ -416,8 +428,8 @@ msgstr ""
 
 #: src/Site/BlockLayout/ContactUs.php:44
 msgid ""
-"To create antispam, each question must be separated from the answer by a \"="
-"\"."
+"To create antispam, each question must be separated from the answer by a "
+"\"=\"."
 msgstr ""
 
 #: config/module.config.php:127
