@@ -384,7 +384,7 @@ class MessageAdapter extends AbstractEntityAdapter
             $errorStore->addError('o-module-contact:request_url', 'The request url is not valid.'); // @transalte
         }
         $ip = $entity->getIp();
-        if (empty($ip) || $ip === '::') {
+        if (empty($ip)) {
             $errorStore->addError('o-module-contact:ip', 'The ip cannot be empty.'); // @translate
         }
     }
@@ -402,8 +402,6 @@ class MessageAdapter extends AbstractEntityAdapter
 
     /**
      * Get the request url.
-     *
-     * @return string
      */
     protected function getRequestUrl(): string
     {
@@ -419,21 +417,23 @@ class MessageAdapter extends AbstractEntityAdapter
     /**
      * Get the ip of the client.
      *
-     * @return string
+     * @todo Use the laminas http function.
      */
     protected function getClientIp(): string
     {
-        $ip = $_SERVER['REMOTE_ADDR'];
-        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
+        // Some servers add the real ip.
+        $ip = $_SERVER['HTTP_X_REAL_IP']
+            ?? $_SERVER['REMOTE_ADDR'];
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
             || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)
-            ? $ip
-            : '::';
+        ) {
+            return $ip;
+        }
+        return '::';
     }
 
     /**
      * Get the user agent.
-     *
-     * @return string
      */
     protected function getUserAgent(): ?string
     {
