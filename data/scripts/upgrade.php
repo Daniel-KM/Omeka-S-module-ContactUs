@@ -67,7 +67,7 @@ ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FEF6BD1646 FOREIGN KEY (`s
 SQL;
     try {
         foreach (explode(";\n", $sqls) as $sql) {
-            $connection->exec($sql);
+            $connection->executeStatement($sql);
         }
     } catch (\Exception $e) {
         // Already installed.
@@ -92,7 +92,7 @@ SET
     data = REPLACE(data, '"notify_recipients":', '"_old_notify_recipients":')
 WHERE layout = "contactUs";
 SQL;
-    $connection->exec($sql);
+    $connection->executeStatement($sql);
 }
 
 if (version_compare($oldVersion, '3.3.8.5', '<')) {
@@ -112,7 +112,7 @@ if (version_compare($oldVersion, '3.3.8.5', '<')) {
         $siteSettings->set('contactus_consent_label', $config['contactus']['site_settings']['contactus_consent_label']);
     }
 
-    $sql = <<<SQL
+    $sql = <<<'SQL'
 UPDATE site_page_block
 SET
     data = REPLACE(
@@ -122,5 +122,26 @@ SET
     )
 WHERE layout = "contactUs";
 SQL;
-    $connection->exec($sql);
+    $connection->executeStatement($sql);
+}
+
+if (version_compare($oldVersion, '3.3.8.7', '<')) {
+    $sql = <<<'SQL'
+ALTER TABLE `contact_message`
+    DROP FOREIGN KEY FK_2C9211FE7E3C61F9;
+ALTER TABLE `contact_message`
+    CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
+    CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
+    CHANGE `site_id` `site_id` INT DEFAULT NULL,
+    CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
+    CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
+    CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
+    CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
+    CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
+    CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
+    CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
+ALTER TABLE `contact_message`
+    ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE SET NULL;
+SQL;
+    $connection->executeStatement($sql);
 }

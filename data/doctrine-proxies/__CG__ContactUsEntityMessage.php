@@ -26,7 +26,7 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
     /**
      * @var boolean flag indicating if this object was already initialized
      *
-     * @see \Doctrine\Common\Persistence\Proxy::__isInitialized
+     * @see \Doctrine\Persistence\Proxy::__isInitialized
      */
     public $__isInitialized__ = false;
 
@@ -596,17 +596,6 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function prePersist(\Doctrine\ORM\Event\LifecycleEventArgs $eventArgs): void
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'prePersist', [$eventArgs]);
-
-        parent::prePersist($eventArgs);
     }
 
     /**

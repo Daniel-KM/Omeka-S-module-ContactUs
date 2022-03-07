@@ -3,7 +3,6 @@
 namespace ContactUs\Entity;
 
 use DateTime;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Resource;
 use Omeka\Entity\Site;
@@ -14,7 +13,6 @@ use Omeka\Entity\User;
  * @Table(
  *     name="contact_message"
  * )
- * @HasLifecycleCallbacks
  */
 class Message extends AbstractEntity
 {
@@ -23,7 +21,7 @@ class Message extends AbstractEntity
      *
      * @Id
      * @Column(
-     *      type="integer"
+     *     type="integer"
      * )
      * @GeneratedValue
      */
@@ -46,8 +44,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="string",
-     *      length=190
+     *     type="string",
+     *     length=190
      * )
      */
     protected $email;
@@ -56,9 +54,9 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="string",
-     *      length=190,
-     *      nullable=true
+     *     type="string",
+     *     length=190,
+     *     nullable=true
      * )
      */
     protected $name;
@@ -67,8 +65,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="text",
-     *      nullable=true
+     *     type="text",
+     *     nullable=true
      * )
      */
     protected $subject;
@@ -77,7 +75,7 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="text"
+     *     type="text"
      * )
      */
     protected $body;
@@ -86,8 +84,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="text",
-     *      nullable=true
+     *     type="text",
+     *     nullable=true
      * )
      */
     protected $source;
@@ -96,8 +94,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      length=190,
-     *      nullable=true
+     *     length=190,
+     *     nullable=true
      * )
      */
     protected $mediaType;
@@ -106,9 +104,9 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      length=190,
-     *      unique=true,
-     *      nullable=true
+     *     length=190,
+     *     unique=true,
+     *     nullable=true
      * )
      */
     protected $storageId;
@@ -117,7 +115,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      nullable=true
+     *     length=190,
+     *     nullable=true
      * )
      */
     protected $extension;
@@ -149,12 +148,19 @@ class Message extends AbstractEntity
     protected $site;
 
     /**
+     * In Omeka S, a url may be very long: site name, page name, file name, etc.
+     * Furthermore, some identifiers are case sensitive. And they need to be
+     * indexed. So the choice of the length and the collation.
+     *
      * @var string
      *
      * @Column(
-     *      type="string",
-     *      length=1024,
-     *      nullable=true
+     *     type="string",
+     *     length=1024,
+     *     nullable=true,
+     *     options={
+     *        "collation": "latin1_bin"
+     *     }
      * )
      */
     protected $requestUrl;
@@ -165,8 +171,8 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="string",
-     *      length=45
+     *     type="string",
+     *     length=45
      * )
      */
     protected $ip;
@@ -175,9 +181,9 @@ class Message extends AbstractEntity
      * @var string
      *
      * @Column(
-     *      type="text",
-     *      length=65534,
-     *      nullable=true
+     *     type="string",
+     *     length=1024,
+     *     nullable=true
      * )
      */
     protected $userAgent;
@@ -186,8 +192,8 @@ class Message extends AbstractEntity
      * @var bool
      *
      * @Column(
-     *      type="boolean",
-     *      nullable=true
+     *     type="boolean",
+     *     nullable=true
      * )
      */
     protected $newsletter;
@@ -196,11 +202,11 @@ class Message extends AbstractEntity
      * @var bool
      *
      * @Column(
-     *      type="boolean",
-     *      nullable=false,
-     *      options={
-     *          "default":0
-     *      }
+     *     type="boolean",
+     *     nullable=false,
+     *     options={
+     *         "default":0
+     *     }
      * )
      */
     protected $isRead = false;
@@ -209,11 +215,11 @@ class Message extends AbstractEntity
      * @var bool
      *
      * @Column(
-     *      type="boolean",
-     *      nullable=false,
-     *      options={
-     *          "default":0
-     *      }
+     *     type="boolean",
+     *     nullable=false,
+     *     options={
+     *         "default":0
+     *     }
      * )
      */
     protected $isSpam = false;
@@ -222,7 +228,8 @@ class Message extends AbstractEntity
      * @var DateTime
      *
      * @Column(
-     *      type="datetime"
+     *     type="datetime",
+     *     nullable=false
      * )
      */
     protected $created;
@@ -437,13 +444,5 @@ class Message extends AbstractEntity
     public function getCreated(): DateTime
     {
         return $this->created;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function prePersist(LifecycleEventArgs $eventArgs): void
-    {
-        $this->created = new DateTime('now');
     }
 }
