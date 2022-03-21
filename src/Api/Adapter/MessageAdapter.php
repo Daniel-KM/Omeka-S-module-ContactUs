@@ -180,6 +180,7 @@ class MessageAdapter extends AbstractEntityAdapter
             'newsletter' => 'newsletter',
             'is_read' => 'isRead',
             'is_spam' => 'isSpam',
+            'to_author' => 'toAuthor',
         ] as $queryKey => $column) {
             if (isset($query[$queryKey]) && strlen((string) $query[$queryKey])) {
                 $qb
@@ -252,6 +253,9 @@ class MessageAdapter extends AbstractEntityAdapter
         }
         if ($this->shouldHydrate($request, 'o-module-contact:is_spam')) {
             $entity->setIsSpam(!empty($data['o-module-contact:is_spam']));
+        }
+        if ($this->shouldHydrate($request, 'o-module-contact:to_author')) {
+            $entity->setToAuthor(!empty($data['o-module-contact:to_author']));
         }
     }
 

@@ -225,6 +225,19 @@ class Message extends AbstractEntity
     protected $isSpam = false;
 
     /**
+     * @var bool
+     *
+     * @Column(
+     *     type="boolean",
+     *     nullable=false,
+     *     options={
+     *         "default":0
+     *     }
+     * )
+     */
+    protected $toAuthor = false;
+
+    /**
      * @var DateTime
      *
      * @Column(
@@ -433,6 +446,17 @@ class Message extends AbstractEntity
     public function isSpam(): bool
     {
         return (bool) $this->isSpam;
+    }
+
+    public function setToAuthor($toAuthor): self
+    {
+        $this->toAuthor = (bool) $toAuthor;
+        return $this;
+    }
+
+    public function isToAuthor(): bool
+    {
+        return (bool) $this->toAuthor;
     }
 
     public function setCreated(DateTime $created): self

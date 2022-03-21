@@ -130,6 +130,9 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                 <?php endif; ?>
                 <?php $subject = $message->subject() ?: $message->body() ?>
                 <?= $escape(mb_substr($subject, 0, 200)) . (mb_strlen($subject) > 200 ? '…' : '') ?>
+                <?php if ($message->isToAuthor()): ?>
+                <span class="o-icon-user" aria-label="<?= $translate('Message to author') ?>"></span>
+                <?php endif; ?>
                 <ul class="actions">
                 <?php $editRightContactUs = $message->userIsAllowed('update'); ?>
                     <?php if ($editRightContactUs): ?>

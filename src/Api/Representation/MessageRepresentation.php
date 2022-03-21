@@ -77,6 +77,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
         + [
             'o-module-contact:is_read' => $this->isRead(),
             'o-module-contact:is_spam' => $this->isSpam(),
+            'o-module-contact:to_author' => $this->isToAuthor(),
             'o:created' => $created,
         ];
     }
@@ -177,6 +178,11 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function isSpam(): bool
     {
         return $this->resource->isSpam();
+    }
+
+    public function isToAuthor(): bool
+    {
+        return $this->resource->isToAuthor();
     }
 
     public function created(): DateTime

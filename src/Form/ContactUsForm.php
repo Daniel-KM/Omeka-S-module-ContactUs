@@ -17,6 +17,7 @@ class ContactUsForm extends Form
     protected $answer = '';
     protected $checkAnswer = '';
     protected $user = null;
+    protected $isContactAuthor = false;
 
     public function __construct($name = null, $options = [])
     {
@@ -27,7 +28,7 @@ class ContactUsForm extends Form
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
-        $this->user = $options['user'] ?? null;
+        $this->isContactAuthor = ($options['contact'] ?? null) === 'author';
     }
 
     public function init(): void

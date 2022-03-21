@@ -145,3 +145,30 @@ ALTER TABLE `contact_message`
 SQL;
     $connection->executeStatement($sql);
 }
+
+if (version_compare($oldVersion, '3.3.8.8', '<')) {
+    $sql = <<<'SQL'
+ALTER TABLE `contact_message`
+    ADD `to_author` TINYINT(1) DEFAULT '0' NOT NULL AFTER `is_spam`,
+    CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
+    CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
+    CHANGE `site_id` `site_id` INT DEFAULT NULL,
+    CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
+    CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
+    CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
+    CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
+    CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
+    CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
+    CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
+SQL;
+    $connection->executeStatement($sql);
+
+    $settings->set('contactus_to_author_subject', $config['contactus']['site_settings']['contactus_to_author_subject']);
+    $settings->set('contactus_to_author_body', $config['contactus']['site_settings']['contactus_to_author_body']);
+
+    $messenger = new Messenger();
+    $message = new Message(
+        'It’s now possible to contact authors of a resource via the view helper contactUs().' // @translate
+    );
+    $messenger->addSuccess($message);
+}

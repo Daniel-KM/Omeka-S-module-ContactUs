@@ -66,10 +66,10 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'created'];
+            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created'];
         }
 
-        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'created'];
+        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created'];
     }
 
     /**
@@ -574,6 +574,28 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'isSpam', []);
 
         return parent::isSpam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setToAuthor($toAuthor): \ContactUs\Entity\Message
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setToAuthor', [$toAuthor]);
+
+        return parent::setToAuthor($toAuthor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isToAuthor(): bool
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isToAuthor', []);
+
+        return parent::isToAuthor();
     }
 
     /**

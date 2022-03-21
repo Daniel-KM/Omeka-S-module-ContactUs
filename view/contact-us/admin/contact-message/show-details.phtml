@@ -59,6 +59,7 @@ $hyperlink = $plugins->get('hyperlink');
     <div class="meta-group">
         <h4><?= $translate('Infos') ?></h4>
         <div class="value">
+            <div class="to-author"><?= $message->isToAuthor() ? $translate('Message to author') : $translate('Message to us') ?></div>
             <div class="is-read"><?= sprintf('Is read: %s', $message->isRead() ? $translate('yes') : $translate('no')) ?></div>
             <div class="is-spam"><?= sprintf('Is spam: %s', $message->isSpam() ? $translate('yes') : $translate('no')) ?></div>
         </div>

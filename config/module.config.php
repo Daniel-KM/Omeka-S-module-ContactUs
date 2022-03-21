@@ -120,6 +120,8 @@ return [
     'contactus' => [
         'settings' => [
             'contactus_notify_recipients' => [],
+            'contactus_author' => '',
+            'contactus_author_only' => false,
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
@@ -141,7 +143,7 @@ message:
 
 Thanks to contact us!
 
-We will answer you soon.
+We will answer you as soon as possible.
 
 Sincerely,
 
@@ -152,6 +154,21 @@ Sincerely,
 
 {newsletter}
 Your message:
+Subject: {subject}
+
+{message}', // @translate
+            'contactus_to_author_subject' => 'Message to the author', // @translate
+            'contactus_to_author_body' => 'Hi {user_name},
+
+The visitor {name} ({email} made the following request about a resource on {main_title}:
+
+Thanks to reply directly to the email above and do not use "reply".
+
+Sincerely,
+
+--
+
+From: {name} <{email}>
 Subject: {subject}
 
 {message}', // @translate

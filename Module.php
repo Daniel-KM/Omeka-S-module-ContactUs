@@ -76,6 +76,8 @@ class Module extends AbstractModule
         $translatables = [
             'contactus_confirmation_subject',
             'contactus_confirmation_body',
+            'contactus_to_author_subject',
+            'contactus_to_author_body',
             // 'contactus_questions',
         ];
         $config = $this->getConfig()['contactus']['site_settings'];

@@ -85,6 +85,28 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_to_author_subject',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Subject of the email to author', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_to_author_subject',
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_to_author_body',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'label' => 'Message to the author', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_to_author_body',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_antispam',
                 'type' => Element\Checkbox::class,
                 'options' => [
