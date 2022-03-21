@@ -63,6 +63,9 @@ class ContactUsForm extends Form
                     'type' => Element\Email::class,
                     'options' => [
                         'label' => 'Email', // @translate
+                        'label_attributes' => [
+                            'class' => 'required',
+                        ],
                     ],
                     'attributes' => [
                         'id' => 'from',
@@ -99,6 +102,9 @@ class ContactUsForm extends Form
                 'type' => Element\Textarea::class,
                 'options' => [
                     'label' => 'Message', // @translate
+                    'label_attributes' => [
+                        'class' => 'required',
+                    ],
                 ],
                 'attributes' => [
                     'id' => 'message',
@@ -138,6 +144,9 @@ class ContactUsForm extends Form
                     'type' => Element\Checkbox::class,
                     'options' => [
                         'label' => $this->consentLabel,
+                        'label_attributes' => [
+                            'class' => 'required',
+                        ],
                     ],
                     'attributes' => [
                         'id' => 'consent',
@@ -171,6 +180,9 @@ class ContactUsForm extends Form
                     'type' => Element\Text::class,
                     'options' => [
                         'label' => $this->question,
+                        'label_attributes' => [
+                            'class' => 'required',
+                        ],
                     ],
                     'attributes' => [
                         'id' => 'answer',
