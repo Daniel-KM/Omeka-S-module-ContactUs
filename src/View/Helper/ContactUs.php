@@ -80,7 +80,8 @@ class ContactUs extends AbstractHelper
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
         $antispam = empty($user)
-            && !empty($options['antispam']) && !empty($options['questions']);
+            && !empty($options['antispam'])
+            && !empty($options['questions']);
         $isSpam = false;
         $message = null;
         $status = null;
@@ -142,8 +143,9 @@ class ContactUs extends AbstractHelper
 
                 $fileData = $attachFile ? $view->params()->fromFiles() : [];
 
-                $status = 'success';
                 // If spam, return a success message, but don't send email.
+                // Status is checked below.
+                $status = 'success';
                 $message = new Message(
                     $translate('Thank you for your message %s. We will answer you soon.'), // @translate
                     $submitted['name']
@@ -153,7 +155,8 @@ class ContactUs extends AbstractHelper
 
                 $site = $this->currentSite();
 
-                // Store contact message. Security checks are done in adapter.
+                // Store contact message in all cases. Security checks are done
+                // in adapter.
                 // Use the controller plugin: the view cannot create and the
                 // main manager cannot check form.
                 $response = $this->api->__invoke($form)->create('contact_messages', [
@@ -220,7 +223,7 @@ class ContactUs extends AbstractHelper
                     $mail['subject'] = $this->getMailSubject($options)
                         ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $body = $view->siteSetting('contactus_notify_body')
-                        ?: $translate($this->defaultSettings['notify_body']);
+                        ?: $translate($this->defaultOptions['notify_body']);
                     $mail['body'] = $this->fillMessage($body, $submitted);
 
                     $result = $this->sendEmail($mail);
@@ -245,9 +248,9 @@ class ContactUs extends AbstractHelper
                         $mail['from'] = reset($notifyRecipients);
                         $mail['to'] = $submitted['from'];
                         $mail['toName'] = $submitted['name'] ?: null;
-                        $subject = $options['confirmation_subject'] ?: $this->defaultSettings['confirmation_subject'];
+                        $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
                         $mail['subject'] = $this->fillMessage($translate($subject), $submitted);
-                        $body = $options['confirmation_body'] ?: $this->defaultSettings['confirmation_body'];
+                        $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
                         $mail['body'] = $this->fillMessage($translate($body), $submitted);
 
                         $result = $this->sendEmail($mail);
@@ -302,15 +305,15 @@ class ContactUs extends AbstractHelper
             $form->get('from')
                 ->setValue($user->getEmail())
                 ->setAttribute('disabled', 'disabled');
-        $form->get('name')
+            $form->get('name')
                 ->setValue($user->getName())
                 ->setAttribute('disabled', 'disabled');
         endif;
 
         if ($options['resource']):
             $answer = 'About resource %s (%s).'; // @translate
-        $form->get('message')
-                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
+            $form->get('message')
+                    ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
         endif;
 
         $form->init();
@@ -416,6 +419,12 @@ class ContactUs extends AbstractHelper
             'body' => null,
         ];
         $params += $defaultParams;
+        if (empty($params['body'])) {
+            $this->getView()->logger()->err(new Message(
+                'The message has no content to send.' // @translate
+            ));
+            return false;
+        }
 
         $message = $this->mailer->createMessage();
         $message
@@ -434,8 +443,7 @@ class ContactUs extends AbstractHelper
             $this->mailer->send($message);
             return true;
         } catch (\Exception $e) {
-            $view = $this->getView();
-            $view->logger()->err(new Message(
+            $this->getView()->logger()->err(new Message(
                 'Error when sending email. Arguments:\n%s', // @translate
                 json_encode($params, 448)
             ));

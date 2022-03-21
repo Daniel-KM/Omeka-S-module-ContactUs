@@ -5,11 +5,11 @@
  */
 
 $plugins = $this->getHelperPluginManager();
-$translate = $plugins->get('translate');
-$escape = $plugins->get('escapeHtml');
 $url = $plugins->get('url');
-$hyperlink = $plugins->get('hyperlink');
 $i18n = $plugins->get('i18n');
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
 ?>
 
 <?php $message = $resource; ?>
@@ -33,32 +33,35 @@ $i18n = $plugins->get('i18n');
         <?php $attachedResourceName = $attachedResource->getControllerName(); ?>
         <h4><?= $escape($translate(ucfirst($attachedResourceName))) ?> <span class="fa resource-name <?= $attachedResourceName ?>" aria-label="<?= $attachedResourceName ?>"></span></h4>
         <div class="value">
-        <span class="resource-name">
-            <?= $attachedResource->link($attachedResource->displayTitle()) ?>
-        </span>
+            <span class="resource-name"><?= $attachedResource->link($attachedResource->displayTitle()) ?></span>
             <?php if (!$attachedResource->isPublic()): ?>
-        <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
+            <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
             <?php endif; ?>
-        <?php endif; ?>
         </div>
+        <?php endif; ?>
     </div>
     <div class="meta-group">
         <?php $site = $message->site(); ?>
         <?php if ($site): ?>
         <h4><?= $escape($translate('Site')) ?></h4>
         <div class="value">
-        <span class="site-name">
-            <?= $site->link($site->title()) ?>
-        </span>
+            <span class="site-name"><?= $site->link($site->title()) ?></span>
             <?php if (!$site->isPublic()): ?>
-        <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
+            <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
             <?php endif; ?>
-        <?php endif; ?>
         </div>
+        <?php endif; ?>
     </div>
     <div class="meta-group">
         <h4><?= $translate('Date Created') ?></h4>
         <div class="value"><?= $escape($i18n->dateFormat($message->created(), 'medium', 'medium')) ?></div>
+    </div>
+    <div class="meta-group">
+        <h4><?= $translate('Infos') ?></h4>
+        <div class="value">
+            <div class="is-read"><?= sprintf('Is read: %s', $message->isRead() ? $translate('yes') : $translate('no')) ?></div>
+            <div class="is-spam"><?= sprintf('Is spam: %s', $message->isSpam() ? $translate('yes') : $translate('no')) ?></div>
+        </div>
     </div>
     <div class="meta-group">
         <h4><?= $translate('Subject') ?></h4>
