@@ -168,6 +168,10 @@ SQL;
 
     $messenger = new Messenger();
     $message = new Message(
+        'It’s now possible to set a specific message when contacting author.' // @translate
+    );
+    $messenger->addSuccess($message);
+    $message = new Message(
         'It’s now possible to contact authors of a resource via the view helper contactUs().' // @translate
     );
     $messenger->addSuccess($message);
