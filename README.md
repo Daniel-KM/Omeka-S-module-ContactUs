@@ -8,7 +8,8 @@ Contact us (module for Omeka S)
 [Contact us] is a module for [Omeka S] that allows to add a site page block with
 a "Contact us" form. The messages are sent by email to the admin but can be read
 directly in the interface too. The form is fully available by api too, so it can
-be used by a third party client.
+be used by a third party client. It's possible to send a mail to the author of a
+resource too.
 
 
 Installation
@@ -54,8 +55,7 @@ add the following code in your theme:
 echo $this->contactUs(['resource' => $resource]);
 ```
 
-The partial is themable: copy the file `common/helper/contact-us.phtml` in your
-theme.
+The partial is themable: copy the file `common/contact-us.phtml` in your theme.
 
 ### Admin interface
 
