@@ -177,8 +177,9 @@ class Module extends AbstractModule
     public function handleViewShowAfterResource(Event $event): void
     {
         $view = $event->getTarget();
-        $view->partial('common/contact-us', [
+        echo $view->contactUs([
             'resource' => $view->resource,
+            'attach_file' => false,
             'newsletter_label' => '',
         ]);
     }

@@ -17,7 +17,7 @@ class ContactUs extends AbstractHelper
     /**
      * The default partial view script.
      */
-    const PARTIAL_NAME = 'common/helper/contact-us';
+    const PARTIAL_NAME = 'common/contact-us';
 
     /**
      * @var FormElementManager
