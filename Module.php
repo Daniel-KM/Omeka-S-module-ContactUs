@@ -34,6 +34,8 @@ class Module extends AbstractModule
         $adminRoles = [
             \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
             \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
+            \Omeka\Permissions\Acl::ROLE_EDITOR,
+            \Omeka\Permissions\Acl::ROLE_REVIEWER,
         ];
         $userRoles = array_diff($roles, $adminRoles);
         // A check is done on attached files for anonymous people and guests.
