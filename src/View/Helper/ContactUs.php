@@ -40,6 +40,11 @@ class ContactUs extends AbstractHelper
     protected $api;
 
     /**
+     * @var Messenger
+     */
+    protected $messenger;
+
+    /**
      * @var string
      */
     protected $errorMessage;
@@ -48,7 +53,8 @@ class ContactUs extends AbstractHelper
         FormElementManager $formElementManager,
         array $defaultOptions,
         Mailer $mailer,
-        Api $api
+        Api $api,
+        Messenger $messenger
     ) {
         $this->formElementManager = $formElementManager;
         $this->defaultOptions = $defaultOptions + [
@@ -65,6 +71,7 @@ class ContactUs extends AbstractHelper
         ];
         $this->mailer = $mailer;
         $this->api = $api;
+        $this->messenger = $messenger;
     }
 
     /**
@@ -145,7 +152,7 @@ class ContactUs extends AbstractHelper
             $hasEmail = $params['from'] || $user;
 
             /** @var \ContactUs\Form\ContactUsForm $form */
-            $form = $this->formElementManager->get(ContactUsForm::class, [
+            $formOptions = [
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
@@ -154,7 +161,8 @@ class ContactUs extends AbstractHelper
                 'check_answer' => $checkAnswer,
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
-            ]);
+            ];
+            $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
             $form
                 ->setAttachFile($attachFile)
                 ->setConsentLabel($consentLabel)
@@ -162,7 +170,8 @@ class ContactUs extends AbstractHelper
                 ->setQuestion($question)
                 ->setAnswer($answer)
                 ->setCheckAnswer($checkAnswer)
-                ->setUser($user);
+                ->setUser($user)
+                ->setIsContactAuthor($isContactAuthor);
 
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
@@ -192,7 +201,7 @@ class ContactUs extends AbstractHelper
                 // in adapter.
                 // Use the controller plugin: the view cannot create and the
                 // main manager cannot check form.
-                $response = $this->api->__invoke($form)->create('contact_messages', [
+                $data = [
                     'o:owner' => $user,
                     'o:email' => $submitted['from'],
                     'o:name' => $submitted['name'],
@@ -202,7 +211,8 @@ class ContactUs extends AbstractHelper
                     'o-module-contact:newsletter' => $newsletterLabel ? $submitted['newsletter'] === 'yes' : null,
                     'o-module-contact:is_spam' => $isSpam,
                     'o-module-contact:to_author' => $isContactAuthor,
-                ], $fileData);
+                ];
+                $response = $this->api->__invoke($form)->create('contact_messages', $data, $fileData);
 
                 if (!$response) {
                     $formMessages = $form->getMessages();
@@ -213,8 +223,7 @@ class ContactUs extends AbstractHelper
                         }
                     }
                     // TODO Map errors key with form (keep original keys of the form).
-                    $messenger = new Messenger();
-                    $messenger->addFormErrors($form);
+                    $this->messenger->addFormErrors($form);
                     $status = 'error';
                     $message = new Message(
                         $translate('There is an error: %s'), // @translate
@@ -341,10 +350,24 @@ class ContactUs extends AbstractHelper
                     }
                 }
             } else {
+                $formMessages = $form->getMessages();
+                $errorMessages = [];
+                foreach ($formMessages as $formKeyMessages) {
+                    foreach ($formKeyMessages as $formKeyMessage) {
+                        $errorMessages[] = is_array($formKeyMessage) ? reset($formKeyMessage) : $formKeyMessage;
+                    }
+                }
+                // TODO Map errors key with form (keep original keys of the form).
+                $this->messenger->addFormErrors($form);
                 $status = 'error';
-                $message = new Message(
-                    $translate('There is an error.') // @translate
-                );
+                $message = count($errorMessages)
+                    ? new Message(
+                        $translate('There is an error: %s'), // @translate
+                        implode(", \n", $errorMessages)
+                    )
+                    : new Message(
+                        $translate('There is an error.') // @translate
+                    );
                 $defaultForm = false;
             }
         }

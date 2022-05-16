@@ -288,4 +288,10 @@ class ContactUsForm extends Form
         $this->user = $user;
         return $this;
     }
+
+    public function setIsContactAuthor(bool $isContactAuthor)
+    {
+        $this->isContactAuthor = $isContactAuthor;
+        return $this;
+    }
 }

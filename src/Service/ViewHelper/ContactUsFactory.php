@@ -22,11 +22,13 @@ class ContactUsFactory implements FactoryInterface
         foreach ($services->get('Config')['contactus']['site_settings'] as $key => $value) {
             $defaultOptions[substr($key, 10)] = $value;
         }
+        $plugins = $services->get('ControllerPluginManager');
         return new ContactUs(
             $services->get('FormElementManager'),
             $defaultOptions,
             $services->get('Omeka\Mailer'),
-            $services->get('ControllerPluginManager')->get('api')
+            $plugins->get('api'),
+            $plugins->get('messenger')
         );
     }
 }
