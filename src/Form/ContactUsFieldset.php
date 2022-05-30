@@ -4,6 +4,7 @@ namespace ContactUs\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element as OmekaElement;
 
 class ContactUsFieldset extends Fieldset
 {
@@ -104,15 +105,16 @@ class ContactUsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'o:block[__blockIndex__][o:data][questions]',
-                'type' => Element\Textarea::class,
+                'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
                     'label' => 'List of antispam questions/answers', // @translate
-                    'info' => 'Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'info' => 'See the block "Contact us" for a simple list. Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'as_key_value' => true,
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',
                     'placeholder' => 'How many are zero plus 1 (in number)? = 1
-How many are one plus 1 (in number)? = 2',
+How many are one plus 1 (in number)? = 2', // @translate
                     'rows' => 5,
                 ],
             ])

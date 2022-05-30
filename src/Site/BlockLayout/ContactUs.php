@@ -69,15 +69,6 @@ class ContactUs extends AbstractBlockLayout
 
         $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
 
-        // TODO Use ArrayTextarea.
-        if (is_array($data['questions'])) {
-            $questions = $data['questions'];
-            $data['questions'] = '';
-            foreach ($questions as $question => $answer) {
-                $data['questions'] .= $question . ' = ' . $answer . "\n";
-            }
-        }
-
         $dataForm = [];
         foreach ($data as $key => $value) {
             $dataForm['o:block[__blockIndex__][o:data][' . $key . ']'] = $value;
