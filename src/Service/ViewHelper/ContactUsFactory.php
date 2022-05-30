@@ -18,11 +18,12 @@ class ContactUsFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
+        $plugins = $services->get('ControllerPluginManager');
+        $siteSettings = $services->get('Omeka\Settings\Site');
         $defaultOptions = [];
         foreach ($services->get('Config')['contactus']['site_settings'] as $key => $value) {
-            $defaultOptions[substr($key, 10)] = $value;
+            $defaultOptions[substr($key, 10)] = $siteSettings->get($key, $value);
         }
-        $plugins = $services->get('ControllerPluginManager');
         return new ContactUs(
             $services->get('FormElementManager'),
             $defaultOptions,

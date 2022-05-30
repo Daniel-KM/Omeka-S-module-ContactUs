@@ -200,51 +200,14 @@ Subject: {subject}
             'contactUs' => [
                 'heading' => null,
                 'confirmation_enabled' => true,
-                'confirmation_subject' => 'Confirmation contact', // @translate
-                'confirmation_body' => 'Hi {name},
-
-Thanks to contact us!
-
-We will answer you soon.
-
-Sincerely,
-
-{main_title}
-{main_url}
-
---
-
-Your message:
-Subject: {subject}
-
-{message}', // @translate
+                'confirmation_subject' => '',
+                'confirmation_body' => '',
                 'consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate
                 'newsletter' => false,
                 'newsletter_label' => 'Subscribe to the newsletter', // @translate
                 'attach_file' => false,
                 'antispam' => true,
-                'questions' => [
-                    'How many are zero plus 1 (in number)?' // @translate
-                        => '1',
-                    'How many are one plus 1 (in number)?' // @translate
-                        => '2',
-                    'How many are one plus 2 (in number)?' // @translate
-                        => '3',
-                    'How many are one plus 3 (in number)?' // @translate
-                        => '4',
-                    'How many are two plus 1 (in number)?' // @translate
-                        => '3',
-                    'How many are two plus 2 (in number)?' // @translate
-                        => '4',
-                    'How many are two plus 3 (in number)?' // @translate
-                        => '5',
-                    'How many are three plus 1 (in number)?' // @translate
-                        => '4',
-                    'How many are three plus 2 (in number)?' // @translate
-                        => '5',
-                    'How many are three plus 3 (in number)?' // @translate
-                        => '6',
-                ],
+                'questions' => [],
                 'template' => '',
             ],
         ],

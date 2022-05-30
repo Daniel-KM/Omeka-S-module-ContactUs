@@ -77,7 +77,7 @@ class ContactUs extends AbstractBlockLayout
         $fieldset->populateValues($dataForm);
 
         $html = '<p class="explanation">'
-            . $view->translate('Append a form to allow visitors to contact us.') // @translate
+            . $view->translate('Append a form to allow visitors to contact us. Site settings are used when strings are empty.') // @translate
             . '</p>';
         $html .= $view->formCollection($fieldset, false);
         return $html;
@@ -91,6 +91,10 @@ class ContactUs extends AbstractBlockLayout
 
         $options['newsletter_label'] = empty($options['newsletter']) ? '' : $options['newsletter_label'];
         unset($options['newsletter']);
+
+        if (!empty($options['antispam']) && empty($options['questions'])) {
+            $options['questions'] = $view->siteSetting('contactus_questions');
+        }
 
         $vars = [];
         $vars['block'] = $block;
