@@ -49,6 +49,11 @@ class ContactUs extends AbstractHelper
      */
     protected $errorMessage;
 
+    /**
+     * @var array
+     */
+    protected $currentOptions = [];
+
     public function __construct(
         FormElementManager $formElementManager,
         array $defaultOptions,
@@ -108,6 +113,8 @@ class ContactUs extends AbstractHelper
                 );
             }
         }
+
+        $this->currentOptions = $options;
 
         $user = $view->identity();
         $translate = $view->plugin('translate');
@@ -511,19 +518,53 @@ SQL;
      */
     protected function fillMessage($message, array $placeholders): string
     {
-        $holders = [];
+        $replace = [];
         foreach ($placeholders as $placeholder => $value) {
-            $holders['{' . $placeholder . '}'] = $value;
+            $replace['{' . $placeholder . '}'] = $value;
         }
+
+        $plugins = $this->view->getHelperPluginManager();
+        $url = $plugins->get('url');
+        $site = $this->currentSite();
+        $translate = $plugins->get('translate');
+
+        // Placehoders are the submitted values: from, email, name, site_title,
+        // site_url, subject, message, ip.
 
         $defaultPlaceholders = [
             '{ip}' => (new RemoteAddress())->getIpAddress(),
             '{main_title}' => $this->mailer->getInstallationTitle(),
-            '{main_url}' => $this->mailer->getSiteUrl(),
+            '{main_url}' => $url('top', [], ['force_canonical' => true]),
+            '{site_title}' => $site->title(),
+            '{site_url}' => $site->siteUrl(),
         ];
-        $holders += $defaultPlaceholders;
+        $replace += $defaultPlaceholders;
 
-        return str_replace(array_keys($holders), array_values($holders), $message);
+        if (!empty($this->currentOptions['resource'])) {
+            $replace['{resource_id}'] = $this->currentOptions['resource']->id();
+            $replace['{resource_title}'] = $this->currentOptions['resource']->displayTitle();
+            $replace['{resource_url}'] = $this->currentOptions['resource']->siteUrl();
+            $resourceJson = json_decode(json_encode($this->currentOptions['resource']), true);
+            foreach ($resourceJson as $term => $value) {
+                if (!is_array($value) || empty($value) || !isset(reset($value)['type'])) {
+                    continue;
+                }
+                $first = reset($value);
+                if (!empty($first['@id'])) {
+                    $replace['{' . $term . '}'] = $first['@id'];
+                } elseif (!empty($first['value_resource_id'])) {
+                    try {
+                        $replace['{' . $term . '}'] = $this->api->read('resources', ['id' => $first['value_resource_id']], [], ['initialize' => false, 'finalize' => false])->getContent()->getTitle();
+                    } catch (\Exception $e) {
+                        $replace['{' . $term . '}'] = $translate('[Unknown resource]'); // @translate
+                    }
+                } elseif (isset($first['@value']) && strlen((string) $first['@value'])) {
+                    $replace['{' . $term . '}'] = $first['@value'];
+                }
+            }
+        }
+
+        return str_replace(array_keys($replace), array_values($replace), $message);
     }
 
     protected function getNotifyRecipients(array $options): array
