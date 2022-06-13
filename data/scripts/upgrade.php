@@ -176,3 +176,15 @@ SQL;
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.3.8.11', '<')) {
+    $sql = <<<'SQL'
+UPDATE `contact_message`
+SET `resource_id` = SUBSTRING_INDEX(`request_url`, '/', -1)
+WHERE `resource_id` IS NULL
+    AND `request_url` IS NOT NULL 
+    AND SUBSTRING_INDEX(`request_url`, '/', -1) REGEXP '^[0-9]+$'
+;
+SQL;
+    $connection->executeStatement($sql);
+}

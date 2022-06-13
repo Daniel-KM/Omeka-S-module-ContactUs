@@ -205,6 +205,7 @@ class ContactUs extends AbstractHelper
                     'o:owner' => $user,
                     'o:email' => $submitted['from'],
                     'o:name' => $submitted['name'],
+                    'o:resource' => !empty($options['resource']) ? ['o:id' => $options['resource']->id()] : null,
                     'o:site' => ['o:id' => $site->id()],
                     'o-module-contact:subject' => $submitted['subject'],
                     'o-module-contact:body' => $submitted['message'],
@@ -415,7 +416,7 @@ class ContactUs extends AbstractHelper
         if ($options['resource']):
             $answer = 'About resource %s (%s).'; // @translate
             $form->get('message')
-                    ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
+                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
         endif;
 
         $form->init();
