@@ -28,6 +28,17 @@ Quick start
 
 The form can be placed anywhere in the site.
 
+### Config
+
+Fill the options in the main settings, the site settings and the page block.
+
+For subjects and messages, you can use placeholders for customization. They
+should be wrapped with `{` and `}`: "from", "email", "name", "site_title",
+"site_url", "subject", "message", "ip", "newsletter".
+When there is a resource, you can use too "resource_id", "resource_title",
+"resource_url", and any property term, like "dcterms:date". Note that the
+property should exist in all cases, else it won't be filled.
+
 ### Static pages
 
 Create a site page and add the block "Contact us".
@@ -41,7 +52,7 @@ When submitted, the site admin will receive the email, and a confirmation email
 will be sent to the visitor.
 
 If you want to use the "Contact us" page in all your sites, you can use the
-module [Next], that has a special block to duplicate a page in multiple places.
+module [Block Plus], that has a special block to duplicate a page in multiple places.
 
 ### Resource pages
 
@@ -157,7 +168,7 @@ Copyright
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
-[Next]: https://gitlab.com/Daniel-KM/Omeka-S-module-Next
+[Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
