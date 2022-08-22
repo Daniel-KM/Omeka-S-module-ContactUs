@@ -13,6 +13,7 @@ class SettingsFieldset extends Fieldset
     public function init(): void
     {
         $this
+            ->setAttribute('id', 'contact-us')
             ->add([
                 'name' => 'contactus_notify_recipients',
                 'type' => OmekaElement\ArrayTextarea::class,
