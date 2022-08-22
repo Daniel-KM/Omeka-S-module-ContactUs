@@ -34,10 +34,34 @@ class MessageAdapter extends AbstractEntityAdapter
         'item_id' => 'resource',
         'media_id' => 'resource',
         'site_id' => 'site',
-        'url' => 'url',
+        'request_url' => 'requestUrl',
 
         'ip' => 'ip',
-        'user_agent' => 'user_agent',
+        'user_agent' => 'userAgent',
+        'created' => 'created',
+    ];
+
+    protected $scalarFields = [
+        'id' => 'id',
+        'owner' => 'owner',
+        'email' => 'email',
+        'name' => 'name',
+        'subject' => 'subject',
+        'body' => 'body',
+        'source' => 'source',
+        'media_type' => 'mediaType',
+        'storage_id' => 'storageId',
+        'extension' => 'extension',
+        'resource' => 'resource',
+        'site' => 'site',
+        'request_url' => 'requestUrl',
+        'ip' => 'ip',
+        'user_agent' => 'userAgent',
+        'newsletter' => 'newsletter',
+        'is_read' => 'isRead',
+        'is_spam' => 'isSpam',
+        'to_author' => 'toAuthor',
+        'created' => 'created',
     ];
 
     public function getResourceName()
