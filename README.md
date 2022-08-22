@@ -119,6 +119,12 @@ skipped in that case, except if the user has the right to change the owner of a
 message.
 
 
+TODO
+----
+
+- [ ] Fix consent label.
+
+
 Warning
 -------
 
