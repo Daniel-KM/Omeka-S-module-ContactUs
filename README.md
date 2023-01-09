@@ -166,14 +166,14 @@ altered, and that no provisions are either added or removed herefrom.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2018-2022 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2018-2023 (see [Daniel-KM] on GitLab)
 
 
 [Contact us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
-[Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
+[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
