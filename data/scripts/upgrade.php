@@ -2,7 +2,6 @@
 
 namespace ContactUs;
 
-use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 
 /**
@@ -11,17 +10,20 @@ use Omeka\Stdlib\Message;
  * @var string $newVersion
  * @var string $oldVersion
  *
+ * @var \Omeka\Api\Manager $api
+ * @var \Omeka\Settings\Settings $settings
  * @var \Doctrine\DBAL\Connection $connection
  * @var \Doctrine\ORM\EntityManager $entityManager
- * @var \Omeka\Api\Manager $api
+ * @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger
  */
-$settings = $services->get('Omeka\Settings');
-$config = require dirname(dirname(__DIR__)) . '/config/module.config.php';
-$connection = $services->get('Omeka\Connection');
-// $entityManager = $services->get('Omeka\EntityManager');
 $plugins = $services->get('ControllerPluginManager');
 $api = $plugins->get('api');
-// $space = strtolower(__NAMESPACE__);
+$settings = $services->get('Omeka\Settings');
+$connection = $services->get('Omeka\Connection');
+$messenger = $plugins->get('messenger');
+$entityManager = $services->get('Omeka\EntityManager');
+
+$config = require dirname(dirname(__DIR__)) . '/config/module.config.php';
 
 if (version_compare($oldVersion, '3.3.8', '<')) {
     $settings->delete('contactus_html');
@@ -99,7 +101,6 @@ if (version_compare($oldVersion, '3.3.8.5', '<')) {
     $message = new Message(
         'A checkbox for consent has been added to the user form. You may update the default label in site settings' // @translate
     );
-    $messenger = new Messenger();
     $messenger->addNotice($message);
 
     $siteSettings = $services->get('Omeka\Settings\Site');
@@ -166,7 +167,6 @@ SQL;
     $settings->set('contactus_to_author_subject', $config['contactus']['site_settings']['contactus_to_author_subject']);
     $settings->set('contactus_to_author_body', $config['contactus']['site_settings']['contactus_to_author_body']);
 
-    $messenger = new Messenger();
     $message = new Message(
         'It’s now possible to set a specific message when contacting author.' // @translate
     );

@@ -197,7 +197,7 @@ class Module extends AbstractModule
     protected function checkDestinationDir($dirPath)
     {
         if (file_exists($dirPath)) {
-            if (!is_dir($dirPath) || !is_readable($dirPath) || !is_writable($dirPath)) {
+            if (!is_dir($dirPath) || !is_readable($dirPath) || !is_writeable($dirPath)) {
                 $this->getServiceLocator()->get('Omeka\Logger')->err(
                     'The directory "{path}" is not writeable.', // @translate
                     ['path' => $dirPath]
