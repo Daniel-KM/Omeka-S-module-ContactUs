@@ -3,7 +3,7 @@
 namespace ContactUs\View\Helper;
 
 use ContactUs\Form\ContactUsForm;
-use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill as FormElementManager;
+use Laminas\Form\FormElementManager;
 use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
