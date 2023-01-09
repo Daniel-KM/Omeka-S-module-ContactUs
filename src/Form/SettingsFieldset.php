@@ -10,14 +10,20 @@ class SettingsFieldset extends Fieldset
 {
     protected $label = 'Contact us'; // @translate
 
+    protected $elementGroups = [
+        'contact' => 'Contact', // @translate
+    ];
+
     public function init(): void
     {
         $this
             ->setAttribute('id', 'contact-us')
+            ->setOption('element_groups', $this->elementGroups)
             ->add([
                 'name' => 'contactus_notify_recipients',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
+                    'element_group' => 'contact',
                     'label' => 'Default emails to notify', // @translate
                     'info' => 'The default list of recipients to notify, one by row. First email is used for confirmation.', // @translate
                 ],
@@ -34,6 +40,7 @@ info@example2.org', // @translate
                 'name' => 'contactus_author',
                 'type' => OmekaElement\PropertySelect::class,
                 'options' => [
+                    'element_group' => 'contact',
                     'label' => 'Property where email of the author is stored', // @translate
                     'info' => 'Allows visitors to contact authors via an email.', // @translate
                     'empty_option' => '',
@@ -55,6 +62,7 @@ info@example2.org', // @translate
                 'name' => 'contactus_author_only',
                 'type' => Element\Checkbox::class,
                 'options' => [
+                    'element_group' => 'contact',
                     'label' => 'Send email to author only, not admins (hidden)', // @translate
                 ],
                 'attributes' => [
