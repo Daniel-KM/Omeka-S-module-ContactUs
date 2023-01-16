@@ -53,7 +53,7 @@ return [
         'AdminModule' => [
             'contact-us' => [
                 'label' => 'Contact messages', // @translate
-                'class' => 'contact-messages far fa-envelope',
+                'class' => 'o-icon- contact-messages fa-envelope',
                 'route' => 'admin/contact-message',
                 'resource' => 'ContactUs\Controller\Admin\ContactMessage',
                 'privilege' => 'browse',
