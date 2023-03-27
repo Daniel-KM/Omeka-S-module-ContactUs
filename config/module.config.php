@@ -205,6 +205,7 @@ Subject: {subject}
                 'consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate
                 'newsletter' => false,
                 'newsletter_label' => 'Subscribe to the newsletter', // @translate
+                'fields' => [],
                 'attach_file' => false,
                 'antispam' => true,
                 'questions' => [],

@@ -65,6 +65,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
             'o:name' => $this->name(),
             'o-module-contact:subject' => $this->subject(),
             'o-module-contact:body' => $this->body(),
+            'o-module-contact:fields' => $this->fields(),
         ]
         + $fileData
         + $linked
@@ -111,6 +112,11 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function body(): ?string
     {
         return $this->resource->getBody();
+    }
+
+    public function fields(): ?array
+    {
+        return $this->resource->getFields();
     }
 
     public function source(): ?string

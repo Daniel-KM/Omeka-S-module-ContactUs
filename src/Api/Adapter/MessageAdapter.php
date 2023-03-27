@@ -48,6 +48,7 @@ class MessageAdapter extends AbstractEntityAdapter
         'name' => 'name',
         'subject' => 'subject',
         'body' => 'body',
+        'fields' => 'fields',
         'source' => 'source',
         'media_type' => 'mediaType',
         'storage_id' => 'storageId',
@@ -240,9 +241,15 @@ class MessageAdapter extends AbstractEntityAdapter
             if ($subject = trim(strip_tags((string) $subject))) {
                 $entity->setSubject($subject);
             }
+
             $body = $data['o-module-contact:body'] ?? null;
             if ($body = trim(strip_tags((string) $body))) {
                 $entity->setBody($body);
+            }
+
+            $fields = $data['o-module-contact:fields'] ?? null;
+            if ($fields && is_array($fields)) {
+                $entity->setFields($fields);
             }
 
             $this->hydrateFile($request, $entity, $errorStore);

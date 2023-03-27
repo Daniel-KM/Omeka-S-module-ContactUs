@@ -7,6 +7,7 @@ CREATE TABLE `contact_message` (
     `name` VARCHAR(190) DEFAULT NULL,
     `subject` LONGTEXT DEFAULT NULL,
     `body` LONGTEXT NOT NULL,
+    `fields` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)',
     `source` LONGTEXT DEFAULT NULL,
     `media_type` VARCHAR(190) DEFAULT NULL,
     `storage_id` VARCHAR(190) DEFAULT NULL,

@@ -48,6 +48,24 @@ class ContactUs extends AbstractBlockLayout
             }
         }
 
+        // The element ArrayTextarea is not managed by block.
+        if (empty($data['fields'])) {
+            $data['fields'] = [];
+        } elseif (!is_array($data['fields'])) {
+            $fields = $this->stringToList($data['fields']);
+            $data['fields'] = [];
+            foreach ($fields as $nameLabel) {
+                [$name, $label] = is_array($nameLabel)
+                    ? [key($nameLabel), reset($nameLabel)]
+                    : (array_map('trim', explode('=', $nameLabel, 2)) + ['', '']);
+                if ($name === '' || $label === '') {
+                    $errorStore->addError('fields', 'To append fields, each row must contain a name and a label separated by a "=".'); // @translate
+                    $hasError = true;
+                }
+                $data['fields'][$name] = $label;
+            }
+        }
+
         if ($hasError) {
             return;
         }
@@ -77,7 +95,7 @@ class ContactUs extends AbstractBlockLayout
         $fieldset->populateValues($dataForm);
 
         $html = '<p class="explanation">'
-            . $view->translate('Append a form to allow visitors to contact us. Site settings are used when strings are empty.') // @translate
+            . $view->translate('Append a form to allow visitors to contact us. Site settings are used when following fields are empty.') // @translate
             . '</p>';
         $html .= $view->formCollection($fieldset, false);
         return $html;

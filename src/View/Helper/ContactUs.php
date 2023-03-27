@@ -119,6 +119,7 @@ class ContactUs extends AbstractHelper
         $user = $view->identity();
         $translate = $view->plugin('translate');
 
+        $fields = $options['fields'] ?? [];
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
@@ -160,6 +161,7 @@ class ContactUs extends AbstractHelper
 
             /** @var \ContactUs\Form\ContactUsForm $form */
             $formOptions = [
+                'fields' => $fields,
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
@@ -169,16 +171,16 @@ class ContactUs extends AbstractHelper
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
             ];
-            $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
-            $form
-                ->setAttachFile($attachFile)
-                ->setConsentLabel($consentLabel)
-                ->setNewsletterLabel($newsletterLabel)
-                ->setQuestion($question)
-                ->setAnswer($answer)
-                ->setCheckAnswer($checkAnswer)
-                ->setUser($user)
-                ->setIsContactAuthor($isContactAuthor);
+            $form = $this->contactUsForm($formOptions);
+
+            $postFields = [];
+            if ($fields) {
+                foreach (array_keys($fields) as $name) {
+                    $params['fields[' . $name . ']'] = $params['fields'][$name] ?? null;
+                    $postFields[$name] = $params['fields'][$name] ?? null;
+                    unset($params['fields'][$name]);
+                }
+            }
 
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
@@ -216,6 +218,7 @@ class ContactUs extends AbstractHelper
                     'o:site' => ['o:id' => $site->id()],
                     'o-module-contact:subject' => $submitted['subject'],
                     'o-module-contact:body' => $submitted['message'],
+                    'o-module-contact:fields' => $postFields,
                     'o-module-contact:newsletter' => $newsletterLabel ? $submitted['newsletter'] === 'yes' : null,
                     'o-module-contact:is_spam' => $isSpam,
                     'o-module-contact:to_author' => $isContactAuthor,
@@ -391,7 +394,8 @@ class ContactUs extends AbstractHelper
                 $answer = '';
                 $checkAnswer = '';
             }
-            $form = $this->formElementManager->get(ContactUsForm::class, [
+            $formOptions = [
+                'fields' => $fields,
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
@@ -400,15 +404,8 @@ class ContactUs extends AbstractHelper
                 'check_answer' => $checkAnswer,
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
-            ]);
-            $form
-                ->setAttachFile($attachFile)
-                ->setConsentLabel($consentLabel)
-                ->setNewsletterLabel($newsletterLabel)
-                ->setQuestion($question)
-                ->setAnswer($answer)
-                ->setCheckAnswer($checkAnswer)
-                ->setUser($user);
+            ];
+            $form = $this->contactUsForm($formOptions);
         }
 
         if ($user):
@@ -441,6 +438,23 @@ class ContactUs extends AbstractHelper
                 'contact' => $isContactAuthor ? 'author' : 'us',
             ]
         );
+    }
+
+    protected function contactUsForm(array $formOptions): ContactUsForm
+    {
+        /** @var \ContactUs\Form\ContactUsForm $form */
+        $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
+        $form
+            ->setFields($formOptions['fields'])
+            ->setAttachFile($formOptions['attach_file'])
+            ->setConsentLabel($formOptions['consent_label'])
+            ->setNewsletterLabel($formOptions['newsletter_label'])
+            ->setQuestion($formOptions['question'])
+            ->setAnswer($formOptions['answer'])
+            ->setCheckAnswer($formOptions['check_answer'])
+            ->setUser($formOptions['user'])
+            ->setIsContactAuthor($formOptions['contact'] === 'author');
+        return $form;
     }
 
     /**

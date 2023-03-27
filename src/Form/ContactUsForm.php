@@ -10,6 +10,7 @@ use Omeka\Entity\User;
 
 class ContactUsForm extends Form
 {
+    protected $fields = [];
     protected $attachFile = false;
     protected $consentLabel = '';
     protected $newsletterLabel = '';
@@ -22,6 +23,7 @@ class ContactUsForm extends Form
     public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
+        $this->fields = $options['fields'] ?? [];
         $this->attachFile = !empty($options['attach_file']);
         $this->consentLabel = $options['consent_label'] ?? '';
         $this->newsletterLabel = $options['newsletter_label'] ?? '';
@@ -114,6 +116,20 @@ class ContactUsForm extends Form
                 ],
             ])
         ;
+
+        foreach ($this->fields ?? [] as $name => $label) {
+            $this
+                ->add([
+                    'name' => 'fields[' . $name . ']',
+                    'type' => Element\Text::class,
+                    'options' => [
+                        'label' => $label,
+                    ],
+                    'attributes' => [
+                        'id' => 'fields-' . $name,
+                    ],
+                ]);
+        }
 
         if ($this->attachFile) {
             $this
@@ -248,49 +264,55 @@ class ContactUsForm extends Form
         }
     }
 
-    public function setAttachFile($attachFile)
+    public function setFields(?array $fields): self
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
+    public function setAttachFile($attachFile): self
     {
         $this->attachFile = $attachFile;
         return $this;
     }
 
-    public function setConsentLabel($consentLabel)
+    public function setConsentLabel($consentLabel): self
     {
         $this->consentLabel = $consentLabel;
         return $this;
     }
 
-    public function setNewsletterLabel($newsletterLabel)
+    public function setNewsletterLabel($newsletterLabel): self
     {
         $this->newsletterLabel = $newsletterLabel;
         return $this;
     }
 
-    public function setQuestion($question)
+    public function setQuestion($question): self
     {
         $this->question = $question;
         return $this;
     }
 
-    public function setAnswer($answer)
+    public function setAnswer($answer): self
     {
         $this->answer = $answer;
         return $this;
     }
 
-    public function setCheckAnswer($checkAnswer)
+    public function setCheckAnswer($checkAnswer): self
     {
         $this->checkAnswer = $checkAnswer;
         return $this;
     }
 
-    public function setUser(?User $user)
+    public function setUser(?User $user): self
     {
         $this->user = $user;
         return $this;
     }
 
-    public function setIsContactAuthor(bool $isContactAuthor)
+    public function setIsContactAuthor(bool $isContactAuthor): self
     {
         $this->isContactAuthor = $isContactAuthor;
         return $this;
