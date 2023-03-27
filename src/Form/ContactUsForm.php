@@ -71,6 +71,7 @@ class ContactUsForm extends Form
                     'attributes' => [
                         'id' => 'from',
                         'required' => true,
+                        'pattern' => '^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$',
                     ],
                 ])
                 ->add([
