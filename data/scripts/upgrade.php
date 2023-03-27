@@ -188,3 +188,22 @@ WHERE `resource_id` IS NULL
 SQL;
     $connection->executeStatement($sql);
 }
+
+if (version_compare($oldVersion, '3.4.8.13', '<')) {
+    $sql = <<<'SQL'
+ALTER TABLE `contact_message`
+    ADD `fields` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)' AFTER `body`
+;
+SQL;
+    $connection->executeStatement($sql);
+
+    $message = new Message(
+        'It’s now possible to append specific fields to the form.' // @translate
+    );
+    $messenger->addSuccess($message);
+
+    $message = new Message(
+        'It’s now possible to add a contact form in item/show for themes supporting resource blocks.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
