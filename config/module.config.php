@@ -34,6 +34,11 @@ return [
             'contactUs' => Site\BlockLayout\ContactUs::class,
         ],
     ],
+    'resource_page_block_layouts' => [
+        'invokables' => [
+            'contactUs' => Site\ResourcePageBlockLayout\ContactUs::class,
+        ],
+    ],
     'form_elements' => [
         'invokables' => [
             Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
