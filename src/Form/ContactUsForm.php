@@ -112,6 +112,7 @@ class ContactUsForm extends Form
                 ],
                 'attributes' => [
                     'id' => 'message',
+                    'rows' => 10,
                     'required' => true,
                 ],
             ])
