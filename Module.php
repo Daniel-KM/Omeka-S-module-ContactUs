@@ -143,6 +143,7 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
+        // Deprecated. Use resource block layout instead.
         $sharedEventManager->attach(
             'Omeka\Controller\Site\ItemSet',
             'view.show.after',
@@ -157,6 +158,13 @@ class Module extends AbstractModule
             'Omeka\Controller\Site\Media',
             'view.show.after',
             [$this, 'handleViewShowAfterResource']
+        );
+
+        // Display the contact form under item/browse.
+        $sharedEventManager->attach(
+            'Omeka\Controller\Site\Item',
+            'view.browse.after',
+            [$this, 'handleViewBrowse']
         );
 
         $sharedEventManager->attach(
@@ -183,6 +191,15 @@ class Module extends AbstractModule
         $view = $event->getTarget();
         echo $view->contactUs([
             'resource' => $view->resource,
+            'attach_file' => false,
+            'newsletter_label' => '',
+        ]);
+    }
+
+    public function handleViewBrowse(Event $event): void
+    {
+        $view = $event->getTarget();
+        echo $view->contactUs([
             'attach_file' => false,
             'newsletter_label' => '',
         ]);

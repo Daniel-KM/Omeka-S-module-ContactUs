@@ -119,7 +119,10 @@ class ContactUs extends AbstractHelper
         $user = $view->identity();
         $translate = $view->plugin('translate');
 
-        $fields = $options['fields'] ?? [];
+        // Manage list of resource ids automatically, if any.
+        $fields = empty($options['fields'])
+            ? ['id' => ['type' => 'hidden']]
+            : $options['fields'] + ['id' => ['type' => 'hidden']];
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
@@ -175,6 +178,9 @@ class ContactUs extends AbstractHelper
 
             $postFields = [];
             if ($fields) {
+                // Manage exception for list of id and security, because fields
+                // are not fully checked.
+                $params['fields']['id'] = array_filter(array_map('intval', $params['fields']['id']));
                 foreach (array_keys($fields) as $name) {
                     $params['fields[' . $name . ']'] = $params['fields'][$name] ?? null;
                     $postFields[$name] = $params['fields'][$name] ?? null;
@@ -205,6 +211,19 @@ class ContactUs extends AbstractHelper
                 );
 
                 $site = $this->currentSite();
+
+                // Manage the specific field for multiple ids.
+                if (empty($postFields['id'])) {
+                    unset($postFields['id']);
+                } elseif (is_array($postFields['id']) && count($postFields['id']) === 1 && empty($options['resource'])) {
+                    try {
+                        $fieldResource = $this->api->__invoke()->read('resources', ['id' => (int) $postFields['id']])->getContent();
+                        $options['resource'] = $fieldResource;
+                        unset($postFields['id']);
+                    } catch (\Exception $e) {
+                        // Nothing to do.
+                    }
+                }
 
                 // Store contact message in all cases. Security checks are done
                 // in adapter.

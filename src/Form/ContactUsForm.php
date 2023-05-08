@@ -118,18 +118,50 @@ class ContactUsForm extends Form
             ])
         ;
 
-        foreach ($this->fields ?? [] as $name => $label) {
-            $this
-                ->add([
-                    'name' => 'fields[' . $name . ']',
-                    'type' => Element\Text::class,
-                    'options' => [
-                        'label' => $label,
-                    ],
-                    'attributes' => [
-                        'id' => 'fields-' . $name,
-                    ],
-                ]);
+        foreach ($this->fields ?? [] as $name => $data) {
+            if ($name === 'id') {
+                $name = 'id[]';
+            }
+            if (!is_array($data)) {
+                $data = ['label' => $data, 'type' => Element\Text::class];
+            }
+            $isMultiple = substr($name, -2) === '[]';
+            if ($isMultiple) {
+                $fieldType = $data['type'] ?? Element\Select::class;
+                $fieldValue = isset($data['value']) ? (is_array($data['value']) ? $data['value'] : [$data['value']]) : [];
+                if ($fieldType === 'hidden' || $fieldType === Element\Hidden::class) {
+                    $fieldValue = json_encode($fieldValue);
+                }
+                $this
+                    ->add([
+                        'name' => 'fields[' . substr($name, 0, -2) . '][]',
+                        'type' => $fieldType,
+                        'options' => [
+                            'label' => $data['label'] ?? '',
+                            'value_options' => $data['value_options'] ?? [],
+                        ],
+                        'attributes' => [
+                            'id' => 'fields-' . substr($name, 0, -2),
+                            'class' => $data['class'] ?? '',
+                            'multiple' => 'multiple',
+                            'value' => $fieldValue,
+                        ],
+                    ]);
+            } else {
+                $this
+                    ->add([
+                        'name' => 'fields[' . $name . ']',
+                        'type' => $data['type'] ?? Element\Text::class,
+                        'options' => [
+                            'label' => $data['label'] ?? '',
+                        ],
+                        'attributes' => [
+                            'id' => 'fields-' . $name,
+                            'class' => $data['class'] ?? '',
+                            'value' => $data['value'] ?? '',
+                        ],
+                    ]);
+            }
         }
 
         if ($this->attachFile) {

@@ -10,6 +10,9 @@ $i18n = $plugins->get('i18n');
 $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$fields = $resource->fields() ?: [];
 ?>
 
 <?php $message = $resource; ?>
@@ -38,7 +41,13 @@ $hyperlink = $plugins->get('hyperlink');
             <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
             <?php endif; ?>
         </div>
+        <?php elseif (!empty($fields['id'])): ?>
+        <h4><?= $escape($translate('Multiple resources')) ?></h4>
+        <div class="value">
+            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items'), count($fields['id'])) ?></a>
+        </div>
         <?php endif; ?>
+        <?php unset($fields['id']); ?>
     </div>
     <div class="meta-group">
         <?php $site = $message->site(); ?>
@@ -72,7 +81,7 @@ $hyperlink = $plugins->get('hyperlink');
         <h4><?= $translate('Body') ?></h4>
         <div class="value"><?= $escape($message->body()) ?></div>
     </div>
-    <?php foreach ($message->fields() ?? [] as $key => $value): ?>
+    <?php foreach ($fields as $key => $value): ?>
     <div class="meta-group">
         <h4><?= $key ?></h4>
         <div class="value"><?= $escape($value) ?></div>
