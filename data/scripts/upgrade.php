@@ -207,3 +207,10 @@ SQL;
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.10', '<')) {
+    $message = new Message(
+        'It’s now possible to add a contact form in item/browse and to send a list of resource ids (need a line in theme).' // @translate
+    );
+    $messenger->addSuccess($message);
+}
