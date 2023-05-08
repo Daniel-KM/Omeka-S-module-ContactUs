@@ -56,14 +56,17 @@ module [Block Plus], that has a special block to duplicate a page in multiple pl
 
 ### Resource pages
 
-The form is displayed automatically on item set, item or media show pages. The
-settings can be set for each site.
+The form is displayed automatically on item set, item or media show pages and
+item browse page. The settings can be set for each site.
 
 To manage the display more precisely, use the module [Blocks Disposition], or
 add the following code in your theme:
 
 ```php
+// For a single resource.
 echo $this->contactUs(['resource' => $resource]);
+// For multiple resources.
+echo $this->contactUs();
 ```
 
 The partial is themable: copy the file `common/contact-us.phtml` in your theme.
@@ -72,6 +75,15 @@ The partial is themable: copy the file `common/contact-us.phtml` in your theme.
 
 The contact us list of message is available in the left sidebar and can be
 managed: mark read, set spam, delete.
+
+### Multicheckbox in item/browse or search results
+
+To send contact message with selected items, add a checkbox in the theme
+template, for example in "item/browse.phtml" or "search/resource-list.phtml":
+
+```php
+<input form="contact-us" class="contact-us-resource" type="checkbox" name="fields[id][]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add to message') ?>"/>
+```
 
 
 Development
