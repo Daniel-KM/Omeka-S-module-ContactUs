@@ -63,6 +63,10 @@ class Module extends AbstractModule
                 [Api\Adapter\MessageAdapter::class],
                 ['read', 'search']
             )
+            ->allow(
+                null,
+                ['ContactUs\Controller\Zip']
+            );
             // Add possibility to list search own entities.
             // Admins can admin messages (browse, flag, delete, etc.).
             // This is automatic via acl factory.

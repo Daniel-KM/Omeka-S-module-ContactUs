@@ -2,6 +2,7 @@
 
 namespace ContactUs\Form;
 
+use ContactUs\Form\Element as ContactUsElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
@@ -67,6 +68,26 @@ info@example2.org', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_author_only',
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_zip',
+                'type' => ContactUsElement\OptionalRadio::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Zipped files to send', // @translate
+                    'value_options' => [
+                        '' => 'None', // @translate
+                        'original' => 'Original', // @translate
+                        'large' => 'Large', // @translate
+                        'medium' => 'Medium', // @translate
+                        'square' => 'Square', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'contactus_zip',
+                    'required' => false,
+                    'value' => '',
                 ],
             ])
         ;

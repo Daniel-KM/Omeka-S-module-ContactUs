@@ -7,6 +7,7 @@
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $i18n = $plugins->get('i18n');
+$setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
@@ -46,6 +47,9 @@ $fields = $resource->fields() ?: [];
         <div class="value">
             <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items'), count($fields['id'])) ?></a>
         </div>
+        <?php endif; ?>
+        <?php if ($setting('contactus_zip')): ?>
+        <a download="download" href="<?= $url('contact-us/default', ['controller' => 'contact-us', 'action' => 'zip'], ['']) ?>"><?= $translate('Link to the zipped files') ?></a>
         <?php endif; ?>
         <?php unset($fields['id']); ?>
     </div>

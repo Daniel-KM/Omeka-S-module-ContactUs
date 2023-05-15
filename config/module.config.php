@@ -41,6 +41,7 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
+            Form\Element\OptionalRadio::class => Form\Element\OptionalRadio::class,
             Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
@@ -107,6 +108,20 @@ return [
                                 ],
                             ],
                         ],
+                    ],
+                ],
+            ],
+            'contact-us' => [
+                'type' => \Laminas\Router\Http\Segment::class,
+                'options' => [
+                    'route' => '/contact-us/zip/:id',
+                    'constraints' => [
+                        'id' => '\d+',
+                    ],
+                    'defaults' => [
+                        '__NAMESPACE__' => 'ContactUs\Controller',
+                        'controller' => 'Zip',
+                        'action' => 'index',
                     ],
                 ],
             ],
