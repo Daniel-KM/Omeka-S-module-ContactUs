@@ -1,0 +1,227 @@
+<?php declare(strict_types=1);
+
+namespace ContactUs\Job;
+
+use Omeka\Api\Representation\MediaRepresentation;
+use Omeka\Job\AbstractJob;
+use Omeka\Stdlib\Message;
+use ZipArchive;
+
+class ZipResources extends AbstractJob
+{
+    public function perform(): void
+    {
+        $services = $this->getServiceLocator();
+        $logger = $services->get('Omeka\Logger');
+
+        /**
+         * @var \Omeka\Api\Manager $api
+         */
+        $services = $this->getServiceLocator();
+
+        // The reference id is the job id for now.
+        $referenceIdProcessor = new \Laminas\Log\Processor\ReferenceId();
+        $referenceIdProcessor->setReferenceId('contactus/zip/job_' . $this->job->getId());
+
+        $logger = $services->get('Omeka\Logger');
+        $logger->addProcessor($referenceIdProcessor);
+        $api = $services->get('Omeka\ApiManager');
+
+        $config = $services->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+
+        $ids = $this->getArg('id');
+        $zipFilename = $this->getArg('filename');
+        $baseDir = $this->getArg('baseDir');
+        $size = $this->getArg('size');
+
+        if (empty($ids)) {
+            $logger->err('No resource id set.'); // @translate
+            return;
+        }
+        if (empty($zipFilename)) {
+            $logger->err('No filename set.'); // @translate
+            return;
+        }
+        if (empty($baseDir)) {
+            $logger->err('No basepath set.'); // @translate
+            return;
+        }
+        if (empty($size)) {
+            $logger->err('No size set.'); // @translate
+            return;
+        }
+
+        if (!class_exists('ZipArchive')) {
+            $this->logger()->err('The php extension "php-zip" must be installed.'); // @translate
+            return false;
+        }
+
+        // Check if resources have files.
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        $items = $api->search('items', ['id' => $ids])->getContent();
+        $media = $api->search('media', ['id' => $ids])->getContent();
+        $resources = array_merge($items, $media);
+        if (!$resources) {
+            $logger->err('No valid resource.'); // @translate
+            return;
+        }
+
+        $mediaData = [];
+        foreach ($resources as $resource) {
+            if ($resource instanceof MediaRepresentation) {
+                $medias = [$resource];
+            } else {
+                $medias = $resource->media();
+            }
+            /** @var \Omeka\Api\Representation\MediaRepresentation $media */
+            foreach ($medias as $media) {
+                if (($size === 'original' && $media->hasOriginal())
+                    || ($size !== 'original' && $media->hasThumbnails())
+                ) {
+                    $mediaId = $media->id();
+                    $filename = $media->filename();
+                    $filepath = $basePath . '/' . $size . '/' . $filename;
+                    $mediaType = $media->mediaType();
+                    $mediaId = $media->id();
+                    $mainType = strtok($mediaType, '/');
+                    $extension = $media->extension();
+                    $mediaData[$mediaId] = [
+                        'id' => $mediaId,
+                        'source' => $media->source(),
+                        'filename' => $media->fil,
+                        'filepath' => $filepath,
+                        'mediatype' => $mediaType,
+                        'maintype' => $mainType,
+                        'extension' => $extension,
+                        'size' => $media->size(),
+                    ];
+                }
+            }
+        }
+        if (!count($mediaData)) {
+            $logger->err('No file attached to items.'); // @translate
+            return;
+        }
+
+        $zipFilepath = $basePath . '/' . $baseDir . '/' . $zipFilename;
+        if (file_exists($zipFilepath)) {
+            @unlink($zipFilepath);
+        }
+
+        $zipUri = $this->getBaseUri() . '/' . $baseDir . '/' . $zipFilename;
+
+        $result = $this->prepareDerivativeZip('zip', $zipFilepath, $mediaData);
+        if (!$result) {
+            $logger->err('An error occured during the creation of the zip.'); // @translate
+            return;
+        }
+
+        $logger->notice(new Message('Zip created available at %s.', $zipUri)); // @translate
+    }
+
+    /**
+     * @see \ContactUs\Job\ZipResources
+     * @see \DerivativeMedia\Mvc\Controller\Plugin\CreateDerivative
+     */
+    protected function prepareDerivativeZip(string $type, string $filepath, array $mediaData): ?bool
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->getServiceLocator()->get('Omeka\Logger')
+                ->err('The php extension "php-zip" must be installed.'); // @translate
+            return false;
+        }
+
+        if (!$this->ensureDirectory(dirname($filepath))) {
+            $this->getServiceLocator()->get('Omeka\Logger')
+                ->err('Unable to create directory in "/files/".'); // @translate
+            return false;
+        }
+
+        // ZipArchive::OVERWRITE is available only in php 8.
+        $zip = new ZipArchive();
+        if ($zip->open($filepath, ZipArchive::CREATE) !== true) {
+            $this->getServiceLocator()->get('Omeka\Logger')
+                ->err('Unable to create the zip file.'); // @translate
+            return false;
+        }
+
+        $url = $this->getServiceLocator()->get('ControllerPluginManager')->get('url');
+
+        // Here, the site may not be available, so can't store item site url.
+        $comment = $this->getServiceLocator()->get('Omeka\Settings')->get('installation_title') . ' [' . $url->fromRoute('top', [], ['force_canonical' => true]) . ']';
+        $zip->setArchiveComment($comment);
+
+        // Store files: they are all already compressed (image, video, pdf...),
+        // except some txt, xml and old docs.
+
+        $index = 0;
+        $filenames = [];
+        foreach ($mediaData as $file) {
+            $zip->addFile($file['filepath']);
+            // Light and quick compress text and xml.
+            if ($file['maintype'] === 'text'
+                || $file['mediatype'] === 'application/xml'
+                || substr($file['mediatype'], -4) === '+xml'
+            ) {
+                $zip->setCompressionIndex($index, ZipArchive::CM_DEFLATE, 9);
+            } else {
+                $zip->setCompressionIndex($index, ZipArchive::CM_STORE);
+            }
+
+            // Use the source name, but check and rename for unique filename,
+            // taking care of extension.
+            $basepath = pathinfo($file['source'], PATHINFO_FILENAME);
+            $extension = pathinfo($file['source'], PATHINFO_EXTENSION);
+            $i = 0;
+            do {
+                $sourceBase = $basepath . ($i ? '.' . $i : '') . (strlen($extension) ? '.' . $extension : '');
+                ++$i;
+            } while (in_array($sourceBase, $filenames));
+            $filenames[] = $sourceBase;
+            $zip->renameName($file['filepath'], $sourceBase);
+            ++$index;
+        }
+
+        $result = $zip->close();
+
+        return $result;
+    }
+
+    protected function ensureDirectory(string $dirpath): bool
+    {
+        if (file_exists($dirpath)) {
+            return true;
+        }
+        return mkdir($dirpath, 0775, true);
+    }
+
+    /**
+     * @todo To get the base uri is useless now, since base uri is passed as job argument.
+     */
+    protected function getBaseUri()
+    {
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $baseUri = $config['file_store']['local']['base_uri'];
+        if (!$baseUri) {
+            $helpers = $services->get('ViewHelperManager');
+            $serverUrlHelper = $helpers->get('ServerUrl');
+            $basePathHelper = $helpers->get('basePath');
+            $baseUri = $serverUrlHelper($basePathHelper('files'));
+            if ($baseUri === 'http:///files' || $baseUri === 'https:///files') {
+                $t = $services->get('MvcTranslator');
+                throw new \Omeka\Mvc\Exception\RuntimeException(
+                    sprintf(
+                        $t->translate('The base uri is not set (key [file_store][local][base_uri]) in the config file of Omeka "config/local.config.php". It must be set for now (key [file_store][local][base_uri]) in order to process background jobs.'), //@translate
+                        $baseUri
+                    )
+                );
+            }
+        }
+        return $baseUri;
+    }
+}

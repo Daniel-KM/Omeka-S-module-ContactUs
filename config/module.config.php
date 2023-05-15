@@ -54,6 +54,9 @@ return [
         'invokables' => [
             'ContactUs\Controller\Admin\ContactMessage' => Controller\Admin\ContactMessageController::class,
         ],
+        'factories' => [
+            'ContactUs\Controller\Zip' => Service\Controller\ZipControllerFactory::class,
+        ],
     ],
     'navigation' => [
         'AdminModule' => [
@@ -116,7 +119,7 @@ return [
                 'options' => [
                     'route' => '/contact-us/zip/:id',
                     'constraints' => [
-                        'id' => '\d+',
+                        'id' => '\d+\.[a-zA-Z0-9]+',
                     ],
                     'defaults' => [
                         '__NAMESPACE__' => 'ContactUs\Controller',
@@ -142,6 +145,7 @@ return [
             'contactus_notify_recipients' => [],
             'contactus_author' => '',
             'contactus_author_only' => false,
+            'contactus_zip' => 'original',
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],

@@ -1,259 +1,129 @@
 <?php declare(strict_types=1);
 
-namespace ContactUs\Controller\Admin;
+namespace ContactUs\Controller;
 
-use Laminas\Http\Response;
+use Doctrine\ORM\EntityManager;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\JsonModel;
-use Laminas\View\Model\ViewModel;
-use Omeka\Form\ConfirmForm;
+use ContactUs\Api\Adapter\MessageAdapter;
 
 class ZipController extends AbstractActionController
 {
-    public function browseAction()
+    /**
+     * @var \Doctrine\ORM\EntityManager;
+     */
+    protected $entityManager;
+
+    /**
+     * @var \ContactUs\Api\Adapter\MessageAdapter;
+     */
+    protected $adapter;
+
+    /**
+     * @var string
+     */
+    protected $basePath;
+
+    public function __construct(EntityManager $entityManager, MessageAdapter $adapter, string $basePath)
     {
-        $this->setBrowseDefaults('created');
-        $response = $this->api()->search('contact_messages', $this->params()->fromQuery());
-        $this->paginator($response->getTotalResults());
-
-        $formDeleteSelected = $this->getForm(ConfirmForm::class);
-        $formDeleteSelected->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-delete'], true));
-        $formDeleteSelected->setButtonLabel('Confirm Delete'); // @translate
-        $formDeleteSelected->setAttribute('id', 'confirm-delete-selected');
-
-        $formDeleteAll = $this->getForm(ConfirmForm::class);
-        $formDeleteAll->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-delete-all'], true));
-        $formDeleteAll->setButtonLabel('Confirm Delete'); // @translate
-        $formDeleteAll->setAttribute('id', 'confirm-delete-all');
-        $formDeleteAll->get('submit')->setAttribute('disabled', true);
-
-        $messages = $response->getContent();
-        return new ViewModel([
-            'messages' => $messages,
-            'resources' => $messages,
-            'formDeleteSelected' => $formDeleteSelected,
-            'formDeleteAll' => $formDeleteAll,
-        ]);
+        $this->entityManager = $entityManager;
+        $this->adapter = $adapter;
+        $this->basePath = $basePath;
     }
 
-    public function showDetailsAction()
+    public function indexAction()
     {
-        $response = $this->api()->read('contact_messages', $this->params('id'));
-        $contactMessage = $response->getContent();
-
-        $view = new ViewModel([
-            'resource' => $contactMessage,
-        ]);
-        return $view
-            ->setTerminal(true);
-    }
-
-    public function deleteConfirmAction()
-    {
-        $response = $this->api()->read('contact_messages', $this->params('id'));
-        $message = $response->getContent();
-
-        $view = new ViewModel([
-            'message' => $message,
-            'resource' => $message,
-            'resourceLabel' => 'contact message',
-            'partialPath' => 'contact-us/admin/contact-message/show-details',
-        ]);
-        return $view
-            ->setTemplate('common/delete-confirm-details')
-            ->setTerminal(true);
-    }
-
-    public function deleteAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            /** @var \Omeka\Form\ConfirmForm $form */
-            $form = $this->getForm(ConfirmForm::class);
-            $form->setData($this->getRequest()->getPost());
-            if ($form->isValid()) {
-                $response = $this->api($form)->delete('contact_messages', $this->params('id'));
-                if ($response) {
-                    $this->messenger()->addSuccess('Contact message successfully deleted.'); // @translate
-                }
-            } else {
-                $this->messenger()->addFormErrors($form);
-            }
-        }
-        return $this->redirect()->toRoute('admin/contact-message', ['action' => 'browse'], true);
-    }
-
-    public function batchDeleteConfirmAction()
-    {
-        /** @var \Omeka\Form\ConfirmForm $form */
-        $form = $this->getForm(ConfirmForm::class);
-        $routeAction = $this->params()->fromQuery('all') ? 'batch-delete-all' : 'batch-delete';
-        $form->setAttribute('action', $this->url()->fromRoute(null, ['action' => $routeAction], true));
-        $form->setButtonLabel('Confirm delete'); // @translate
-        $form->setAttribute('id', 'batch-delete-confirm');
-        $form->setAttribute('class', $routeAction);
-
-        $view = new ViewModel([
-            'form' => $form,
-        ]);
-        return $view
-            ->setTerminal(true);
-    }
-
-    public function batchDeleteAction()
-    {
-        if (!$this->getRequest()->isPost()) {
-            return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
-        }
-
-        $resourceIds = $this->params()->fromPost('resource_ids', []);
-        if (!$resourceIds) {
-            $this->messenger()->addError('You must select at least one contact message to batch delete.'); // @translate
-            return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
-        }
-
-        $form = $this->getForm(ConfirmForm::class);
-        $form->setData($this->getRequest()->getPost());
-        if ($form->isValid()) {
-            $response = $this->api($form)->batchDelete('contact_messages', $resourceIds, [], ['continueOnError' => true]);
-            if ($response) {
-                $this->messenger()->addSuccess('Contact messages successfully deleted.'); // @translate
-            }
-        } else {
-            $this->messenger()->addFormErrors($form);
-        }
-        return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
-    }
-
-    public function batchDeleteAllAction(): void
-    {
-        $this->messenger()->addError('Delete of all contact messages is not supported currently.'); // @translate
-    }
-
-    public function batchSetReadAction()
-    {
-        return $this->batchUpdateProperty(['o-module-contact:is_read' => true]);
-    }
-
-    public function batchSetNotReadAction()
-    {
-        return $this->batchUpdateProperty(['o-module-contact:is_read' => false]);
-    }
-
-    public function batchSetSpamAction()
-    {
-        return $this->batchUpdateProperty(['o-module-contact:is_spam' => true]);
-    }
-
-    public function batchSetNotSpamAction()
-    {
-        return $this->batchUpdateProperty(['o-module-contact:is_spam' => false]);
-    }
-
-    protected function batchUpdateProperty(array $data)
-    {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            throw new \Omeka\Mvc\Exception\NotFoundException;
-        }
-
-        $resourceIds = $this->params()->fromQuery('resource_ids', []);
-        // Secure the input.
-        $resourceIds = array_filter(array_map('intval', $resourceIds));
-        if (empty($resourceIds)) {
-            return $this->jsonError('No contact messages submitted.', Response::STATUS_CODE_400); // @translate
-        }
-
-        $response = $this->api()
-            ->batchUpdate('contact_messages', $resourceIds, $data, ['continueOnError' => true]);
-        if (!$response) {
-            return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
-        }
-
-        $value = reset($data);
-        $property = key($data);
-
-        $statuses = [
-            'o-module-contact:is_read' => ['not-read', 'read'],
-            'o-module-contact:is_spam' => ['not-spam', 'spam'],
-        ];
-
-        return new JsonModel([
-            'content' => [
-                'property' => $property,
-                'value' => $value,
-                'status' => $statuses[$property][(int) $value],
-            ],
-        ]);
-    }
-
-    public function toggleReadAction()
-    {
-        return $this->toggleProperty('o-module-contact:is_read');
-    }
-
-    public function toggleSpamAction()
-    {
-        return $this->toggleProperty('o-module-contact:is_spam');
-    }
-
-    protected function toggleProperty($property)
-    {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            throw new \Omeka\Mvc\Exception\NotFoundException;
-        }
-
         $id = $this->params('id');
+        if (!$id) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('No resource set.'); // @translate
+        }
+
+        // Don't use api to skip check of rights.
+
+        $id = strtok($id, '.');
+        $token = strtok('.');
+        if (!$id || !$token) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('Resource is invalid.'); // @translate
+        }
+
+        /** @var \ContactUs\Entity\Message $messageEntity */
+        $messageEntity = $this->entityManager->find(\ContactUs\Entity\Message::class, $id);
+        if (!$messageEntity) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('No message found.'); // @translate
+        }
+
         /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
-        $message = $this->api()->read('contact_messages', $id)->getContent();
+        $message = $this->adapter->getRepresentation($messageEntity);
 
-        switch ($property) {
-            case 'o-module-contact:is_read':
-                $value = !$message->isRead();
-                break;
-            case 'o-module-contact:is_spam':
-                $value = !$message->isSpam();
-                break;
-            default:
-                return $this->jsonError('Unknown key.', Response::STATUS_CODE_400); // @translate
+        if ($token !== $message->token()) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('Resource does not exist.'); // @translate
         }
 
-        $data = [];
-        $data[$property] = $value;
-        $response = $this->api()
-            ->update('contact_messages', $id, $data, [], ['isPartial' => true]);
-        if (!$response) {
-            return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
+        if (!$message->resourceIds()) {
+            throw new \Omeka\Mvc\Exception\RuntimeException('Resource has no file.'); // @translate
         }
 
-        $statuses = [
-            'o-module-contact:is_read' => ['not-read', 'read'],
-            'o-module-contact:is_spam' => ['not-spam', 'spam'],
-        ];
+        // Check if the zip exists: it is prepared early.
+        $filepath = $this->basePath . '/files/contactus/' . $id . '.' . $token . '.zip';
+        if (!file_exists($filepath) || !is_readable($filepath)) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('No zip found.'); // @translate
+        }
 
-        return new JsonModel([
-            'content' => [
-                'property' => $property,
-                'value' => $value,
-                'status' => $statuses[$property][(int) $value],
-            ],
-        ]);
+        $this->sendFile($filepath, 'application/zip', $id . '.zip', 'attachment', true);
     }
 
     /**
-     * Return a message of error.
+     * This is the 'file' action that is invoked when a user wants to download
+     * the given file.
      *
-     * @param string $message
-     * @param int $statusCode
-     * @param array $messages
-     * @return \Laminas\View\Model\JsonModel
+     * @see \AccessResource\Controller\AccessResourceController::sendFile()
+     * @see \DerivativeMedia\Controller\IndexController::sendFile()
+     * @see \Statistics\Controller\DownloadController::sendFile()
      */
-    protected function jsonError($message, $statusCode = Response::STATUS_CODE_400, array $messages = [])
-    {
+    protected function sendFile(
+        string $filepath,
+        string $mediaType,
+        ?string $filename = null,
+        // "inline" or "attachment".
+        // It is recommended to set attribute "download" to link tag "<a>".
+        ?string $dispositionMode = 'inline',
+        ?bool $cache = false
+    ): \Laminas\Http\PhpEnvironment\Response {
+        $filename = $filename ?: basename($filepath);
+        $filesize = (int) filesize($filepath);
+
+        /** @var \Laminas\Http\PhpEnvironment\Response $response */
         $response = $this->getResponse();
-        $response->setStatusCode($statusCode);
-        $output = ['error' => $message];
-        if ($messages) {
-            $output['messages'] = $messages;
+
+        // Write headers.
+        $headers = $response->getHeaders()
+            ->addHeaderLine(sprintf('Content-Type: %s', $mediaType))
+            ->addHeaderLine(sprintf('Content-Disposition: %s; filename="%s"', $dispositionMode, $filename))
+            ->addHeaderLine(sprintf('Content-Length: %s', $filesize))
+            ->addHeaderLine('Content-Transfer-Encoding: binary');
+        if ($cache) {
+            // Use this to open files directly.
+            // Cache for 30 days.
+            $headers
+                ->addHeaderLine('Cache-Control: private, max-age=2592000, post-check=2592000, pre-check=2592000')
+                ->addHeaderLine(sprintf('Expires: %s', gmdate('D, d M Y H:i:s', time() + (30 * 24 * 60 * 60)) . ' GMT'));
         }
-        return new JsonModel($output);
+
+        // Send headers separately to handle large files.
+        $response->sendHeaders();
+
+        // TODO Use Laminas stream response.
+
+        // Clears all active output buffers to avoid memory overflow.
+        $response->setContent('');
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        readfile($filepath);
+
+        // TODO Fix issue with session. See readme of module XmlViewer.
+        ini_set('display_errors', '0');
+
+        // Return response to avoid default view rendering and to manage events.
+        return $response;
     }
 }

@@ -205,9 +205,11 @@ class ContactMessageController extends AbstractActionController
         /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
         $message = $this->api()->read('contact_messages', $id)->getContent();
 
+        $isSetRead = false;
         switch ($property) {
             case 'o-module-contact:is_read':
                 $value = !$message->isRead();
+                $isSetRead = $value;
                 break;
             case 'o-module-contact:is_spam':
                 $value = !$message->isSpam();
@@ -222,6 +224,27 @@ class ContactMessageController extends AbstractActionController
             ->update('contact_messages', $id, $data, [], ['isPartial' => true]);
         if (!$response) {
             return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
+        }
+
+        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+        $contactMessage = $response->getContent();
+        $size = $this->settings()->get('contactus_zip', 'original');
+        if ($isSetRead && $size && $contactMessage->resourceIds()) {
+            // Check if a zip exists.
+            $config = $contactMessage->getServiceLocator()->get('Config');
+            $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+            $filename = $id . '.' . $contactMessage->token() . '.zip';
+            $filepath = $basePath . '/files/contactus/' . $filename;
+            if (!file_exists($filepath) || !is_readable($filepath)) {
+                $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
+                    'id' => $message->resourceIds(),
+                    'flename' => $filename,
+                    'baseDir' => 'contactus',
+                    'baseUri' => 'contactus',
+                    'size' => $size,
+                ]);
+                // $this->messenger()->addSuccess('A zip with the files is created in background.');
+            }
         }
 
         $statuses = [

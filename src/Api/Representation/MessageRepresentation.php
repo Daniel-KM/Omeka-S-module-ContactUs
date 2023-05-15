@@ -214,4 +214,22 @@ class MessageRepresentation extends AbstractEntityRepresentation
     {
         return $this->filename() ? $this : null;
     }
+
+    /**
+     * Get all resource ids (main resource and field "id").
+     */
+    public function resourceIds(): array
+    {
+        $result = $this->resource();
+        $result = $result ? [$result->id()] : [];
+        $fields = $this->fields();
+        $fields = $fields && !empty($fields['id']) ? (is_array($fields['id']) ? $fields['id'] : [$fields['id']]) : [];
+        return array_values(array_unique(array_merge($result, $fields)));
+    }
+
+    public function token(): ?string
+    {
+        $string = $this->id() . '/' . $this->email() . '/' . $this->ip() . '/' . $this->userAgent() . '/' . $this->created()->format('Y-m-d H:i:s');
+        return substr(str_replace(['+', '/', '='], '', base64_encode(hash('sha256', $string))), 0, random_int(24, 30));
+    }
 }
