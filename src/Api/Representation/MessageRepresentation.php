@@ -230,6 +230,6 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function token(): ?string
     {
         $string = $this->id() . '/' . $this->email() . '/' . $this->ip() . '/' . $this->userAgent() . '/' . $this->created()->format('Y-m-d H:i:s');
-        return substr(str_replace(['+', '/', '='], '', base64_encode(hash('sha256', $string))), 0, random_int(24, 30));
+        return substr(str_replace(['+', '/', '='], '', base64_encode(hash('sha256', $string))), 0, 12);
     }
 }
