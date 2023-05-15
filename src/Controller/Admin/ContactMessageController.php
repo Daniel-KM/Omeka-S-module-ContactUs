@@ -2,6 +2,8 @@
 
 namespace ContactUs\Controller\Admin;
 
+use DateTime;
+use Doctrine\DBAL\Connection;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
@@ -10,8 +12,26 @@ use Omeka\Form\ConfirmForm;
 
 class ContactMessageController extends AbstractActionController
 {
+    /**
+     * @var \Doctrine\DBAL\Connection $connection
+     */
+    protected $connection;
+
+    /**
+     * @param string
+     */
+    protected $basePath;
+
+    public function __construct(Connection $connection, string $basePath)
+    {
+        $this->connection = $connection;
+        $this->basePath = $basePath;
+    }
+
     public function browseAction()
     {
+        $this->deleteZips();
+
         $this->setBrowseDefaults('created');
         $response = $this->api()->search('contact_messages', $this->params()->fromQuery());
         $this->paginator($response->getTotalResults());
@@ -28,6 +48,7 @@ class ContactMessageController extends AbstractActionController
         $formDeleteAll->get('submit')->setAttribute('disabled', true);
 
         $messages = $response->getContent();
+
         return new ViewModel([
             'messages' => $messages,
             'resources' => $messages,
@@ -233,10 +254,8 @@ class ContactMessageController extends AbstractActionController
         $type = $this->settings()->get('contactus_create_zip', '');
         if ($type && $contactMessage->resourceIds()) {
             // Check if a zip exists.
-            $config = $contactMessage->getServiceLocator()->get('Config');
-            $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
             $filename = $id . '.' . $contactMessage->token() . '.zip';
-            $filepath = $basePath . '/contactus/' . $filename;
+            $filepath = $this->basePath . '/contactus/' . $filename;
             $fileExists = file_exists($filepath) && is_readable($filepath);
             if ($isSetRead && !$fileExists) {
                 $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
@@ -264,6 +283,51 @@ class ContactMessageController extends AbstractActionController
                 'status' => $statuses[$property][(int) $value],
             ],
         ]);
+    }
+
+    protected function deleteZips(): void
+    {
+        $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
+        if (!$deleteZip) {
+            return;
+        }
+
+        // Get all messages older than x days.
+        $older = new DateTime('-' . $deleteZip . ' day');
+        /*
+        $messageIds = $this->api()->search('contact_messages', [
+            'modified_before' => $older->format('Y-m-d\TH:i:s'),
+        ], ['returnScalar' => 'id'])->getContent();
+        if (!count($messageIds)) {
+            return;
+        }
+        */
+
+        // For performance purpose, use a direct sql query.
+        $sql = <<<'SQL'
+SELECT
+    `id`,
+    SUBSTRING(REPLACE(REPLACE(REPLACE(TO_BASE64(SHA2(CONCAT(id, '/', email, '/', ip, '/', user_agent, '/', created), 256)), '+', ''), '/', ''), '=', ''), 1, 12) AS "token"
+FROM contact_message
+WHERE modified < :older
+;
+SQL;
+        $bind = [
+            'older' => $older->format('Y-m-d H:i:s'),
+        ];
+        $types = [
+            'older' => \Doctrine\DBAL\ParameterType::STRING,
+        ];
+        $tokens = $this->connection->executeQuery($sql, $bind, $types)->fetchAllKeyValue();
+
+        foreach ($tokens as $id => $token) {
+            $filename = $id . '.' . $token . '.zip';
+            $filepath = $this->basePath . '/contactus/' . $filename;
+            $fileExists = file_exists($filepath) && is_writeable($filepath);
+            if ($fileExists) {
+                @unlink($filepath);
+            }
+        }
     }
 
     /**

@@ -51,11 +51,9 @@ return [
         ],
     ],
     'controllers' => [
-        'invokables' => [
-            'ContactUs\Controller\Admin\ContactMessage' => Controller\Admin\ContactMessageController::class,
-        ],
         'factories' => [
             'ContactUs\Controller\Zip' => Service\Controller\ZipControllerFactory::class,
+            'ContactUs\Controller\Admin\ContactMessage' => Service\Controller\ContactMessageControllerFactory::class,
         ],
     ],
     'navigation' => [
