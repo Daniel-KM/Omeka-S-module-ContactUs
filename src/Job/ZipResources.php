@@ -54,7 +54,7 @@ class ZipResources extends AbstractJob
 
         if (!class_exists('ZipArchive')) {
             $this->logger()->err('The php extension "php-zip" must be installed.'); // @translate
-            return false;
+            return;
         }
 
         // Check if resources have files.
@@ -202,7 +202,7 @@ class ZipResources extends AbstractJob
     /**
      * @todo To get the base uri is useless now, since base uri is passed as job argument.
      */
-    protected function getBaseUri()
+    protected function getBaseUri(): string
     {
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
