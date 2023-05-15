@@ -62,8 +62,19 @@ class ZipController extends AbstractActionController
             throw new \Omeka\Mvc\Exception\RuntimeException('Resource has no file.'); // @translate
         }
 
-        // Check if the zip exists: it is prepared early.
         $filepath = $this->basePath . '/contactus/' . $id . '.' . $token . '.zip';
+
+        $deleteZip = (int) $this->settings->get('contactus_delete_zip');
+        if ($deleteZip
+            && $message->modified() < new \DateTime('-' . $deleteZip . ' day')
+        ) {
+            if (file_exists($filepath) && is_writeable($filepath)) {
+                @unlink($filepath);
+            }
+            throw new \Omeka\Mvc\Exception\NotFoundException('No zip found: too much old.'); // @translate
+        }
+
+        // Check if the zip exists: it is prepared early.
         if (!file_exists($filepath) || !is_readable($filepath)) {
             throw new \Omeka\Mvc\Exception\NotFoundException('No zip found.'); // @translate
         }

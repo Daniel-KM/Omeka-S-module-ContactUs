@@ -90,6 +90,18 @@ info@example2.org', // @translate
                     'value' => '',
                 ],
             ])
+            ->add([
+                'name' => 'contactus_delete_zip',
+                'type' => Element\Number::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Remove zip files after some days', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_delete_zip',
+                    'required' => false,
+                ],
+            ])
         ;
     }
 }

@@ -146,6 +146,7 @@ return [
             'contactus_author' => '',
             'contactus_author_only' => false,
             'contactus_create_zip' => '',
+            'contactus_delete_zip' => 30,
         ],
         'site_settings' => [
             'contactus_notify_recipients' => [],
