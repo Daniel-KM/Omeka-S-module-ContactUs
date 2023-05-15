@@ -51,7 +51,7 @@ $fields = $resource->fields() ?: [];
         <?php if ($setting('contactus_zip')): ?>
         <div class="value">
             <a download="download" href="<?= $url('contact-us', ['id' => $message->id() . '.' . $message->token()]) ?>"><?= $translate('Link to the zipped files') ?></a>
-            <p><?= sprintf($translate('The zip is available when the message is set "read".')) ?></p>
+            <p><?= sprintf($translate('The zip is created when the message is set "read".')) ?></p>
         </div>
         <?php endif; ?>
         <?php unset($fields['id']); ?>
