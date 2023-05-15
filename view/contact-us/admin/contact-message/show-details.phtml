@@ -71,6 +71,10 @@ $fields = $resource->fields() ?: [];
     <div class="meta-group">
         <h4><?= $translate('Date Created') ?></h4>
         <div class="value"><?= $escape($i18n->dateFormat($message->created(), 'medium', 'medium')) ?></div>
+        <?php if ($modified = $message->modified()): ?>
+        <h4><?= $translate('Last modified') ?></h4>
+        <div class="value"><?= $escape($i18n->dateFormat($modified, 'medium', 'medium')) ?></div>
+        <?php endif; ?>
     </div>
     <div class="meta-group">
         <h4><?= $translate('Infos') ?></h4>

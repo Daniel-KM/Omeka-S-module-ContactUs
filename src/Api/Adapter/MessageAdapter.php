@@ -39,6 +39,7 @@ class MessageAdapter extends AbstractEntityAdapter
         'ip' => 'ip',
         'user_agent' => 'userAgent',
         'created' => 'created',
+        'modified' => 'modified',
     ];
 
     protected $scalarFields = [
@@ -63,6 +64,7 @@ class MessageAdapter extends AbstractEntityAdapter
         'is_spam' => 'isSpam',
         'to_author' => 'toAuthor',
         'created' => 'created',
+        'modified' => 'modified',
     ];
 
     public function getResourceName()
@@ -275,8 +277,6 @@ class MessageAdapter extends AbstractEntityAdapter
                     : null
                 );
             }
-
-            $entity->setCreated(new \DateTime('now'));
         }
 
         if ($this->shouldHydrate($request, 'o-module-contact:is_read')) {
@@ -288,6 +288,8 @@ class MessageAdapter extends AbstractEntityAdapter
         if ($this->shouldHydrate($request, 'o-module-contact:to_author')) {
             $entity->setToAuthor(!empty($data['o-module-contact:to_author']));
         }
+
+        $this->updateTimestamps($request, $entity);
     }
 
     /**

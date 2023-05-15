@@ -257,6 +257,16 @@ class Message extends AbstractEntity
      */
     protected $created;
 
+    /**
+     * @var DateTime
+     *
+     * @Column(
+     *     type="datetime",
+     *     nullable=true
+     * )
+     */
+    protected $modified;
+
     public function getId()
     {
         return $this->id;
@@ -489,5 +499,16 @@ class Message extends AbstractEntity
     public function getCreated(): DateTime
     {
         return $this->created;
+    }
+
+    public function setModified(?DateTime $modified): self
+    {
+        $this->modified = $modified;
+        return $this;
+    }
+
+    public function getModified(): ?DateTime
+    {
+        return $this->modified;
     }
 }

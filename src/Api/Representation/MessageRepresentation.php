@@ -58,6 +58,14 @@ class MessageRepresentation extends AbstractEntityRepresentation
             '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
         ];
 
+        $modified = $this->modified();
+        if ($modified) {
+            $modified = [
+                '@value' => $this->getDateTime($modified),
+                '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
+            ];
+        }
+
         return [
             'o:id' => $this->id(),
             'o:owner' => $owner,
@@ -80,6 +88,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
             'o-module-contact:is_spam' => $this->isSpam(),
             'o-module-contact:to_author' => $this->isToAuthor(),
             'o:created' => $created,
+            'o:modified' => $modified,
         ];
     }
 
@@ -194,6 +203,11 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function created(): DateTime
     {
         return $this->resource->getCreated();
+    }
+
+    public function modified(): ?DateTime
+    {
+        return $this->resource->getModified();
     }
 
     public function assetUrl(): ?string

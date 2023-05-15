@@ -20,6 +20,7 @@ CREATE TABLE `contact_message` (
     `is_spam` TINYINT(1) DEFAULT '0' NOT NULL,
     `to_author` TINYINT(1) DEFAULT '0' NOT NULL,
     `created` DATETIME NOT NULL,
+    `modified` DATETIME DEFAULT NULL,
     UNIQUE INDEX UNIQ_2C9211FE5CC5DB90 (`storage_id`),
     INDEX IDX_2C9211FE7E3C61F9 (`owner_id`),
     INDEX IDX_2C9211FE89329D25 (`resource_id`),

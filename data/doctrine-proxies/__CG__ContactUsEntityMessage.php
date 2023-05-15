@@ -67,10 +67,10 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'fields', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created'];
+            return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'fields', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created', 'modified'];
         }
 
-        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'fields', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created'];
+        return ['__isInitialized__', 'id', 'owner', 'email', 'name', 'subject', 'body', 'fields', 'source', 'mediaType', 'storageId', 'extension', 'resource', 'site', 'requestUrl', 'ip', 'userAgent', 'newsletter', 'isRead', 'isSpam', 'toAuthor', 'created', 'modified'];
     }
 
     /**
@@ -641,6 +641,28 @@ class Message extends \ContactUs\Entity\Message implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
 
         return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setModified(?\DateTime $modified): \ContactUs\Entity\Message
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setModified', [$modified]);
+
+        return parent::setModified($modified);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getModified(): ?\DateTime
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getModified', []);
+
+        return parent::getModified();
     }
 
     /**
