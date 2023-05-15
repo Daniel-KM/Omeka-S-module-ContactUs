@@ -11,12 +11,14 @@ use Omeka\Stdlib\Message;
  * @var string $oldVersion
  *
  * @var \Omeka\Api\Manager $api
+ * @var \Omeka\View\Helper\Url $url
  * @var \Omeka\Settings\Settings $settings
  * @var \Doctrine\DBAL\Connection $connection
  * @var \Doctrine\ORM\EntityManager $entityManager
  * @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger
  */
 $plugins = $services->get('ControllerPluginManager');
+$url = $services->get('ViewHelperManager')->get('url');
 $api = $plugins->get('api');
 $settings = $services->get('Omeka\Settings');
 $connection = $services->get('Omeka\Connection');
@@ -212,5 +214,36 @@ if (version_compare($oldVersion, '3.4.10', '<')) {
     $message = new Message(
         'It’s now possible to add a contact form in item/browse and to send a list of resource ids (need a line in theme).' // @translate
     );
+    $messenger->addSuccess($message);
+}
+
+if (version_compare($oldVersion, '3.4.11', '<')) {
+    $sql = <<<'SQL'
+ALTER TABLE `contact_message`
+    ADD `modified` DATETIME DEFAULT NULL AFTER `created`
+;
+SQL;
+    $connection->executeStatement($sql);
+
+    // Set modified for all old messages.
+    $sql = <<<'SQL'
+UPDATE `contact_message`
+SET `modified` = `created`
+WHERE `is_read` IS NOT NULL
+    OR `is_spam` IS NOT NULL
+;
+SQL;
+    $connection->executeStatement($sql);
+
+    $settings->set('contactus_create_zip', $settings->get('contactus_zip') ?: '');
+    $settings->delete('contactus_zip');
+    $settings->set('contactus_delete_zip', 30);
+
+    $message = new Message(
+        'It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See %1$ssettings%2$s.', // @translate
+        sprintf('<a href="%s">', $url('admin/default', ['controller' => 'setting'], ['fragment' => 'contact'])),
+        '</a>'
+    );
+    $message->setEscapeHtml(false);
     $messenger->addSuccess($message);
 }
