@@ -228,20 +228,20 @@ class ContactMessageController extends AbstractActionController
 
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $response->getContent();
-        $size = $this->settings()->get('contactus_zip', 'original');
-        if ($isSetRead && $size && $contactMessage->resourceIds()) {
+        $type = $this->settings()->get('contactus_zip', 'original');
+        if ($isSetRead && $type && $contactMessage->resourceIds()) {
             // Check if a zip exists.
             $config = $contactMessage->getServiceLocator()->get('Config');
             $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
             $filename = $id . '.' . $contactMessage->token() . '.zip';
-            $filepath = $basePath . '/files/contactus/' . $filename;
+            $filepath = $basePath . '/contactus/' . $filename;
             if (!file_exists($filepath) || !is_readable($filepath)) {
                 $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
                     'id' => $message->resourceIds(),
-                    'flename' => $filename,
+                    'filename' => $filename,
                     'baseDir' => 'contactus',
                     'baseUri' => 'contactus',
-                    'size' => $size,
+                    'type' => $type,
                 ]);
                 // $this->messenger()->addSuccess('A zip with the files is created in background.');
             }

@@ -63,7 +63,7 @@ class ZipController extends AbstractActionController
         }
 
         // Check if the zip exists: it is prepared early.
-        $filepath = $this->basePath . '/files/contactus/' . $id . '.' . $token . '.zip';
+        $filepath = $this->basePath . '/contactus/' . $id . '.' . $token . '.zip';
         if (!file_exists($filepath) || !is_readable($filepath)) {
             throw new \Omeka\Mvc\Exception\NotFoundException('No zip found.'); // @translate
         }

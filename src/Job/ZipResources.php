@@ -9,10 +9,15 @@ use ZipArchive;
 
 class ZipResources extends AbstractJob
 {
+    /**
+     * @var \Laminas\Log\Logger
+     */
+    protected $logger;
+
     public function perform(): void
     {
         $services = $this->getServiceLocator();
-        $logger = $services->get('Omeka\Logger');
+        $this->logger = $services->get('Omeka\Logger');
 
         /**
          * @var \Omeka\Api\Manager $api
@@ -23,8 +28,8 @@ class ZipResources extends AbstractJob
         $referenceIdProcessor = new \Laminas\Log\Processor\ReferenceId();
         $referenceIdProcessor->setReferenceId('contactus/zip/job_' . $this->job->getId());
 
-        $logger = $services->get('Omeka\Logger');
-        $logger->addProcessor($referenceIdProcessor);
+        $this->logger = $services->get('Omeka\Logger');
+        $this->logger->addProcessor($referenceIdProcessor);
         $api = $services->get('Omeka\ApiManager');
 
         $config = $services->get('Config');
@@ -33,22 +38,22 @@ class ZipResources extends AbstractJob
         $ids = $this->getArg('id');
         $zipFilename = $this->getArg('filename');
         $baseDir = $this->getArg('baseDir');
-        $size = $this->getArg('size');
+        $type = $this->getArg('type');
 
         if (empty($ids)) {
-            $logger->err('No resource id set.'); // @translate
+            $this->logger->err('No resource id set.'); // @translate
             return;
         }
         if (empty($zipFilename)) {
-            $logger->err('No filename set.'); // @translate
+            $this->logger->err('No filename set.'); // @translate
             return;
         }
         if (empty($baseDir)) {
-            $logger->err('No basepath set.'); // @translate
+            $this->logger->err('No basepath set.'); // @translate
             return;
         }
-        if (empty($size)) {
-            $logger->err('No size set.'); // @translate
+        if (empty($type)) {
+            $this->logger->err('No image type set.'); // @translate
             return;
         }
 
@@ -66,7 +71,7 @@ class ZipResources extends AbstractJob
         $media = $api->search('media', ['id' => $ids])->getContent();
         $resources = array_merge($items, $media);
         if (!$resources) {
-            $logger->err('No valid resource.'); // @translate
+            $this->logger->err('No valid resource.'); // @translate
             return;
         }
 
@@ -79,12 +84,12 @@ class ZipResources extends AbstractJob
             }
             /** @var \Omeka\Api\Representation\MediaRepresentation $media */
             foreach ($medias as $media) {
-                if (($size === 'original' && $media->hasOriginal())
-                    || ($size !== 'original' && $media->hasThumbnails())
+                if (($type === 'original' && $media->hasOriginal())
+                    || ($type !== 'original' && $media->hasThumbnails())
                 ) {
                     $mediaId = $media->id();
                     $filename = $media->filename();
-                    $filepath = $basePath . '/' . $size . '/' . $filename;
+                    $filepath = $basePath . '/' . $type . '/' . $filename;
                     $mediaType = $media->mediaType();
                     $mediaId = $media->id();
                     $mainType = strtok($mediaType, '/');
@@ -103,7 +108,7 @@ class ZipResources extends AbstractJob
             }
         }
         if (!count($mediaData)) {
-            $logger->err('No file attached to items.'); // @translate
+            $this->logger->err('No file attached to items.'); // @translate
             return;
         }
 
@@ -116,11 +121,11 @@ class ZipResources extends AbstractJob
 
         $result = $this->prepareDerivativeZip('zip', $zipFilepath, $mediaData);
         if (!$result) {
-            $logger->err('An error occured during the creation of the zip.'); // @translate
+            $this->logger->err('An error occured during the creation of the zip.'); // @translate
             return;
         }
 
-        $logger->notice(new Message('Zip created available at %s.', $zipUri)); // @translate
+        $this->logger->notice(new Message('Zip created available at %s.', $zipUri)); // @translate
     }
 
     /**
@@ -129,30 +134,29 @@ class ZipResources extends AbstractJob
      */
     protected function prepareDerivativeZip(string $type, string $filepath, array $mediaData): ?bool
     {
+        $services = $this->getServiceLocator();
+
         if (!class_exists('ZipArchive')) {
-            $this->getServiceLocator()->get('Omeka\Logger')
-                ->err('The php extension "php-zip" must be installed.'); // @translate
+            $this->logger->err('The php extension "php-zip" must be installed.'); // @translate
             return false;
         }
 
         if (!$this->ensureDirectory(dirname($filepath))) {
-            $this->getServiceLocator()->get('Omeka\Logger')
-                ->err('Unable to create directory in "/files/".'); // @translate
+            $this->logger->err('Unable to create directory in "/files/".'); // @translate
             return false;
         }
 
         // ZipArchive::OVERWRITE is available only in php 8.
         $zip = new ZipArchive();
         if ($zip->open($filepath, ZipArchive::CREATE) !== true) {
-            $this->getServiceLocator()->get('Omeka\Logger')
-                ->err('Unable to create the zip file.'); // @translate
+            $this->logger->err('Unable to create the zip file.'); // @translate
             return false;
         }
 
-        $url = $this->getServiceLocator()->get('ControllerPluginManager')->get('url');
+        $url = $services->get('ViewHelperManager')->get('url');
 
         // Here, the site may not be available, so can't store item site url.
-        $comment = $this->getServiceLocator()->get('Omeka\Settings')->get('installation_title') . ' [' . $url->fromRoute('top', [], ['force_canonical' => true]) . ']';
+        $comment = $services->get('Omeka\Settings')->get('installation_title') . ' [' . $url('top', [], ['force_canonical' => true]) . ']';
         $zip->setArchiveComment($comment);
 
         // Store files: they are all already compressed (image, video, pdf...),
