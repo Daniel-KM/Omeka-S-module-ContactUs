@@ -48,7 +48,7 @@ $fields = $resource->fields() ?: [];
             <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items'), count($fields['id'])) ?></a>
         </div>
         <?php endif; ?>
-        <?php if ($setting('contactus_zip')): ?>
+        <?php if ($setting('contactus_create_zip')): ?>
         <div class="value">
             <a download="download" href="<?= $url('contact-us', ['id' => $message->id() . '.' . $message->token()]) ?>"><?= $translate('Link to the zipped files') ?></a>
             <p><?= sprintf($translate('The zip is created when the message is set "read".')) ?></p>

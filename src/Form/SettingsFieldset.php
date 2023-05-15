@@ -71,7 +71,7 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
-                'name' => 'contactus_zip',
+                'name' => 'contactus_create_zip',
                 'type' => ContactUsElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => 'contact',
@@ -85,7 +85,7 @@ info@example2.org', // @translate
                     ],
                 ],
                 'attributes' => [
-                    'id' => 'contactus_zip',
+                    'id' => 'contactus_create_zip',
                     'required' => false,
                     'value' => '',
                 ],

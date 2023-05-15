@@ -228,7 +228,7 @@ class ContactMessageController extends AbstractActionController
 
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $response->getContent();
-        $type = $this->settings()->get('contactus_zip', 'original');
+        $type = $this->settings()->get('contactus_create_zip', '');
         if ($isSetRead && $type && $contactMessage->resourceIds()) {
             // Check if a zip exists.
             $config = $contactMessage->getServiceLocator()->get('Config');
