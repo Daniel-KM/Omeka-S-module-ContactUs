@@ -2,6 +2,7 @@
 
 namespace ContactUs\Api\Adapter;
 
+use DateTime;
 use Doctrine\ORM\QueryBuilder;
 use Laminas\Validator\EmailAddress;
 use Omeka\Api\Adapter\AbstractEntityAdapter;
@@ -215,6 +216,38 @@ class MessageAdapter extends AbstractEntityAdapter
                         "omeka_root.$column",
                         $this->createNamedParameter($qb, (int) !empty($query[$queryKey]))
                     ));
+            }
+        }
+
+        /** @see \Omeka\Api\Adapter\AbstractResourceEntityAdapter::buildQuery() */
+        $dateSearches = [
+            'modified_before' => ['lt', 'modified'],
+            'modified_after' => ['gt', 'modified'],
+            'created_before' => ['lt', 'created'],
+            'created_after' => ['gt', 'created'],
+        ];
+        $dateGranularities = [
+            DateTime::ISO8601,
+            '!Y-m-d\TH:i:s',
+            '!Y-m-d\TH:i',
+            '!Y-m-d\TH',
+            '!Y-m-d',
+            '!Y-m',
+            '!Y',
+        ];
+        foreach ($dateSearches as $dateSearchKey => $dateSearch) {
+            if (isset($query[$dateSearchKey])) {
+                foreach ($dateGranularities as $dateGranularity) {
+                    $date = DateTime::createFromFormat($dateGranularity, $query[$dateSearchKey]);
+                    if (false !== $date) {
+                        break;
+                    }
+                }
+                $qb->andWhere($expr->{$dateSearch[0]}(
+                    sprintf('omeka_root.%s', $dateSearch[1]),
+                    // If the date is invalid, pass null to ensure no results.
+                    $this->createNamedParameter($qb, $date ?: null)
+                ));
             }
         }
     }
