@@ -206,10 +206,12 @@ class ContactMessageController extends AbstractActionController
         $message = $this->api()->read('contact_messages', $id)->getContent();
 
         $isSetRead = false;
+        $isSetUnread = false;
         switch ($property) {
             case 'o-module-contact:is_read':
                 $value = !$message->isRead();
                 $isSetRead = $value;
+                $isSetUnread = !$value;
                 break;
             case 'o-module-contact:is_spam':
                 $value = !$message->isSpam();
@@ -229,13 +231,14 @@ class ContactMessageController extends AbstractActionController
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $response->getContent();
         $type = $this->settings()->get('contactus_create_zip', '');
-        if ($isSetRead && $type && $contactMessage->resourceIds()) {
+        if ($type && $contactMessage->resourceIds()) {
             // Check if a zip exists.
             $config = $contactMessage->getServiceLocator()->get('Config');
             $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
             $filename = $id . '.' . $contactMessage->token() . '.zip';
             $filepath = $basePath . '/contactus/' . $filename;
-            if (!file_exists($filepath) || !is_readable($filepath)) {
+            $fileExists = file_exists($filepath) && is_readable($filepath);
+            if ($isSetRead && !$fileExists) {
                 $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
                     'id' => $message->resourceIds(),
                     'filename' => $filename,
@@ -244,6 +247,8 @@ class ContactMessageController extends AbstractActionController
                     'type' => $type,
                 ]);
                 // $this->messenger()->addSuccess('A zip with the files is created in background.');
+            } elseif ($isSetUnread && $fileExists) {
+                @unlink($filepath);
             }
         }
 
