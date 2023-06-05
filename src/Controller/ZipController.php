@@ -64,7 +64,7 @@ class ZipController extends AbstractActionController
 
         $filepath = $this->basePath . '/contactus/' . $id . '.' . $token . '.zip';
 
-        $deleteZip = (int) $this->settings->get('contactus_delete_zip');
+        $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
         if ($deleteZip
             && $message->modified() < new \DateTime('-' . $deleteZip . ' day')
         ) {
