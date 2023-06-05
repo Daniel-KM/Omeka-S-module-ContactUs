@@ -14,6 +14,7 @@ $hyperlink = $plugins->get('hyperlink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 
 $fields = $resource->fields() ?: [];
+$site = $resource->site();
 ?>
 
 <?php $message = $resource; ?>
@@ -45,7 +46,12 @@ $fields = $resource->fields() ?: [];
         <?php elseif (!empty($fields['id'])): ?>
         <h4><?= $escape($translate('Multiple resources')) ?></h4>
         <div class="value">
-            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items'), count($fields['id'])) ?></a>
+            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items (admin)'), count($fields['id'])) ?></a>
+            <?php if ($site): ?>
+            <div>
+                <a class="resource-name" href="<?= $escapeAttr($url('site/resource', ['controller' => 'item', 'action' => 'browse', 'site-slug' => $site->slug()], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items (public)'), count($fields['id'])) ?></a>
+            </div>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
         <?php if ($setting('contactus_create_zip')): ?>
@@ -57,7 +63,6 @@ $fields = $resource->fields() ?: [];
         <?php unset($fields['id']); ?>
     </div>
     <div class="meta-group">
-        <?php $site = $message->site(); ?>
         <?php if ($site): ?>
         <h4><?= $escape($translate('Site')) ?></h4>
         <div class="value">
