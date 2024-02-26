@@ -126,7 +126,7 @@ class ContactUs extends AbstractHelper
         // Manage list of resource ids automatically, if any.
         $fields = empty($options['fields'])
             ? ['id' => ['type' => 'hidden']]
-            : $options['fields'] + ['id' => ['type' => 'hidden']];
+            : ($options['fields'] + ['id' => ['type' => 'hidden']]);
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
@@ -184,7 +184,7 @@ class ContactUs extends AbstractHelper
             if ($fields) {
                 // Manage exception for list of id and security, because fields
                 // are not fully checked.
-                $params['fields']['id'] = array_filter(array_map('intval', $params['fields']['id']));
+                $params['fields']['id'] = array_filter(array_map('intval', $params['fields']['id'] ?? []));
                 foreach (array_keys($fields) as $name) {
                     $params['fields[' . $name . ']'] = $params['fields'][$name] ?? null;
                     $postFields[$name] = $params['fields'][$name] ?? null;
