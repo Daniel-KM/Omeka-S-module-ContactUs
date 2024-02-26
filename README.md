@@ -1,11 +1,11 @@
-Contact us (module for Omeka S)
+Contact Us (module for Omeka S)
 ===============================
 
 > __New versions of this module and support for Omeka S version 3.0 and above
 > are available on [GitLab], which seems to respect users and privacy better
 > than the previous repository.__
 
-[Contact us] is a module for [Omeka S] that allows to add a site page block with
+[Contact Us] is a module for [Omeka S] that allows to add a site page block with
 a "Contact us" form. The messages are sent by email to the admin but can be read
 directly in the interface too. The form is fully available by api too, so it can
 be used by a third party client. It's possible to send a mail to the author of a
@@ -15,12 +15,26 @@ resource too.
 Installation
 ------------
 
-First, install the two optional modules [Generic] and [Blocks Disposition].
+See general end user documentation for [installing a module].
 
-Uncompress files and rename module folder `ContactUs`. Then install it like any
-other Omeka module and follow the config instructions.
+The module [Common] must be installed first.
 
-See general end user documentation for [Installing a module].
+If you use an old theme, you can install [Blocks Disposition] too.
+
+The module uses external libraries, so use the release zip to install it, or
+use and init the source.
+
+* From the zip
+
+Download the last release [ContactUs.zip] from the list of releases (the master
+does not contain the dependency), and uncompress it in the `modules` directory.
+
+* From the source and for development
+
+If the module was installed from the source, rename the name of the folder of
+the module to `ContactUs`.
+
+Then install it like any other Omeka module and follow the config instructions.
 
 
 Quick start
@@ -178,10 +192,10 @@ altered, and that no provisions are either added or removed herefrom.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2018-2023 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2018-2024 (see [Daniel-KM] on GitLab)
 
 
-[Contact us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
+[Contact Us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
