@@ -30,6 +30,9 @@ class Module extends AbstractModule
         if (!$acl->hasRole('guest')) {
             $acl->addRole('guest');
         }
+        if (!$acl->hasRole('guest_private')) {
+            $acl->addRole('guest_private');
+        }
         $roles = $acl->getRoles();
         $adminRoles = [
             \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
