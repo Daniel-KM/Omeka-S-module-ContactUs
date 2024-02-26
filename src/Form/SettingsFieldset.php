@@ -2,7 +2,7 @@
 
 namespace ContactUs\Form;
 
-use ContactUs\Form\Element as ContactUsElement;
+use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
@@ -72,7 +72,7 @@ info@example2.org', // @translate
             ])
             ->add([
                 'name' => 'contactus_create_zip',
-                'type' => ContactUsElement\OptionalRadio::class,
+                'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Zipped files to send', // @translate

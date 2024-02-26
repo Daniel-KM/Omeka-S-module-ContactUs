@@ -41,7 +41,6 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
-            Form\Element\OptionalRadio::class => Form\Element\OptionalRadio::class,
             Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,

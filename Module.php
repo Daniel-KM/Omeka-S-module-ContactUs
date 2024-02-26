@@ -2,19 +2,27 @@
 
 namespace ContactUs;
 
-if (!class_exists(\Generic\AbstractModule::class)) {
-    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
-        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
-        : __DIR__ . '/src/Generic/AbstractModule.php';
+if (!class_exists(\Common\TraitModule::class)) {
+    require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
-use Generic\AbstractModule;
+use Common\Stdlib\PsrMessage;
+use Common\TraitModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
+use Omeka\Module\AbstractModule;
 
+/**
+ * Contact Us
+ *
+ * @copyright Daniel Berthereau, 2018-2024
+ * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
+ */
 class Module extends AbstractModule
 {
+    use TraitModule;
+
     const NAMESPACE = __NAMESPACE__;
 
     const STORE_PREFIX = 'contactus';
@@ -76,9 +84,38 @@ class Module extends AbstractModule
         ;
     }
 
+    protected function preInstall(): void
+    {
+        $services = $this->getServiceLocator();
+        $plugins = $services->get('ControllerPluginManager');
+        $translate = $plugins->get('translate');
+        $translator = $services->get('MvcTranslator');
+
+        if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.54')) {
+            $message = new \Omeka\Stdlib\Message(
+                $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+                'Common', '3.4.54'
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+        }
+
+        $config = $services->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+
+        if (!$this->checkDestinationDir($basePath . '/' . self::STORE_PREFIX)) {
+            $message = new PsrMessage(
+                'The directory "{directory}" is not writeable.', // @translate
+                ['directory' => $basePath . '/' . self::STORE_PREFIX]
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message->setTranslator($translator));
+        }
+    }
+
     protected function postInstall(): void
     {
         $services = $this->getServiceLocator();
+        $translate = $services->get('ControllerPluginManager')->get('translate');
+
         // Prepare all translations one time.
         $translatables = [
             'contactus_confirmation_subject',
@@ -87,26 +124,16 @@ class Module extends AbstractModule
             'contactus_to_author_body',
             // 'contactus_questions',
         ];
+
         $config = $this->getConfig()['contactus']['site_settings'];
-        $translate = $services->get('ControllerPluginManager')->get('translate');
         $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
             return !empty($config[$v]) ? $translate($config[$v]) : null;
         }, array_combine($translatables, $translatables)));
 
         $this->manageSiteSettings('update', $translatables);
-
-        $config = $services->get('Config');
-        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
-        if (!$this->checkDestinationDir($basePath . '/' . self::STORE_PREFIX)) {
-            $message = new \Omeka\Stdlib\Message(
-                'The directory "%s" is not writeable.', // @translate
-                $basePath
-            );
-            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
-        }
     }
 
-    protected function preUninstall(): void
+    protected function postUninstall(): void
     {
         if (!empty($_POST['remove-contact-us'])) {
             $config = $this->getServiceLocator()->get('Config');
@@ -210,61 +237,5 @@ class Module extends AbstractModule
             'attach_file' => false,
             'newsletter_label' => '',
         ]);
-    }
-
-    /**
-     * Check or create the destination folder.
-     *
-     * @param string $dirPath Absolute path.
-     * @return string|null
-     */
-    protected function checkDestinationDir($dirPath)
-    {
-        if (file_exists($dirPath)) {
-            if (!is_dir($dirPath) || !is_readable($dirPath) || !is_writeable($dirPath)) {
-                $this->getServiceLocator()->get('Omeka\Logger')->err(
-                    'The directory "{path}" is not writeable.', // @translate
-                    ['path' => $dirPath]
-                );
-                return null;
-            }
-            return $dirPath;
-        }
-
-        $result = @mkdir($dirPath, 0775, true);
-        if (!$result) {
-            $this->getServiceLocator()->get('Omeka\Logger')->err(
-                'The directory "{path}" is not writeable: {error}.', // @translate
-                ['path' => $dirPath, 'error' => error_get_last()['message']]
-            );
-            return null;
-        }
-        return $dirPath;
-    }
-
-    /**
-     * Remove a dir from filesystem.
-     *
-     * @param string $dirpath Absolute path.
-     * @return bool
-     */
-    private function rmDir($dirPath)
-    {
-        if (!file_exists($dirPath)) {
-            return true;
-        }
-        if (strpos($dirPath, '/..') !== false || substr($dirPath, 0, 1) !== '/') {
-            return false;
-        }
-        $files = array_diff(scandir($dirPath), ['.', '..']);
-        foreach ($files as $file) {
-            $path = $dirPath . '/' . $file;
-            if (is_dir($path)) {
-                $this->rmDir($path);
-            } else {
-                unlink($path);
-            }
-        }
-        return rmdir($dirPath);
     }
 }
