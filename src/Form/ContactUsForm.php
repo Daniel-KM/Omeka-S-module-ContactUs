@@ -35,8 +35,9 @@ class ContactUsForm extends Form
 
     public function init(): void
     {
-        $this->setAttribute('class', 'contact-form');
-        $this->setName('contact-us');
+        $this
+            ->setAttribute('class', 'contact-form')
+            ->setName('contact-us');
 
         // "From" is used instead of "email" to avoid some basic spammers.
         if ($this->user) {

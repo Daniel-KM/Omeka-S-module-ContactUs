@@ -56,17 +56,6 @@ return [
             'ContactUs\Controller\Admin\ContactMessage' => Service\Controller\ContactMessageControllerFactory::class,
         ],
     ],
-    'navigation' => [
-        'AdminModule' => [
-            'contact-us' => [
-                'label' => 'Contact messages', // @translate
-                'class' => 'o-icon- contact-messages fa-envelope',
-                'route' => 'admin/contact-message',
-                'resource' => 'ContactUs\Controller\Admin\ContactMessage',
-                'privilege' => 'browse',
-            ],
-        ],
-    ],
     'router' => [
         'routes' => [
             'admin' => [
@@ -125,6 +114,17 @@ return [
                         'action' => 'index',
                     ],
                 ],
+            ],
+        ],
+    ],
+    'navigation' => [
+        'AdminModule' => [
+            'contact-us' => [
+                'label' => 'Contact messages', // @translate
+                'class' => 'o-icon- contact-messages fa-envelope',
+                'route' => 'admin/contact-message',
+                'resource' => 'ContactUs\Controller\Admin\ContactMessage',
+                'privilege' => 'browse',
             ],
         ],
     ],

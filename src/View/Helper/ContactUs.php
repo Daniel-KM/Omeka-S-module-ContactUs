@@ -12,6 +12,10 @@ use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Mailer;
 use Omeka\Stdlib\Message;
 
+/**
+ * @see \Access\Site\BlockLayout\AccessRequest
+ * @see \ContactUs\Site\BlockLayout\ContactUs
+ */
 class ContactUs extends AbstractHelper
 {
     /**

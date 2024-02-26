@@ -85,7 +85,7 @@ class ContactUs extends AbstractBlockLayout
         $defaultSettings = $services->get('Config')['contactus']['block_settings']['contactUs'];
         $blockFieldset = \ContactUs\Form\ContactUsFieldset::class;
 
-        $data = $block ? $block->data() + $defaultSettings : $defaultSettings;
+        $data = $block ? ($block->data() ?? []) + $defaultSettings : $defaultSettings;
 
         $dataForm = [];
         foreach ($data as $key => $value) {

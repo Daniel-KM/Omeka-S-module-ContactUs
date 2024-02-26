@@ -6,6 +6,10 @@ use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
 
+/**
+ * @see \Access\Form\AccessRequesetFieldset
+ * @see \ContactUs\Form\ContactUsFieldset
+ */
 class ContactUsFieldset extends Fieldset
 {
     public function init(): void
