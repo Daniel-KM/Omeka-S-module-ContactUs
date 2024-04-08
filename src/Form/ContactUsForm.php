@@ -275,6 +275,7 @@ class ContactUsForm extends Form
             ])
         ;
         if ($this->question) {
+            $checkAnswer = $this->checkAnswer;
             $inputFilter->add([
                 'name' => 'answer',
                 'required' => true,
@@ -285,12 +286,9 @@ class ContactUsForm extends Form
                     [
                         'name' => Validator\Callback::class,
                         'options' => [
-                            'callback' => function ($answer) {
-                                return $answer === $this->checkAnswer;
+                            'callback' => function ($answer) use ($checkAnswer) {
+                                return $answer === $checkAnswer;
                             },
-                            'callbackOptions' => [
-                                'checkAnswer' => $this->checkAnswer,
-                            ],
                         ],
                     ],
                 ],
