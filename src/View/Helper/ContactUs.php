@@ -305,7 +305,6 @@ class ContactUs extends AbstractHelper
                         $notifyRecipients = $this->getNotifyRecipients($options);
 
                         $mail = [];
-                        $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
                         $mail['to'] = $options['author_email'];
                         $mail['toName'] = null;
                         $mail['reply-to'] = $submitted['email'];
@@ -338,8 +337,6 @@ class ContactUs extends AbstractHelper
                     else {
                         // Send the notification message to administrators.
                         $mail = [];
-                        $mail['from'] = $contactMessage->email();
-                        $mail['fromName'] = $contactMessage->name();
                         $mail['to'] = $this->getNotifyRecipients($options);
                         $mail['subject'] = $this->getMailSubject($options)
                             ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
@@ -362,10 +359,7 @@ class ContactUs extends AbstractHelper
                                     : sprintf('(%s)', $submitted['from'])
                             );
 
-                            $notifyRecipients = $this->getNotifyRecipients($options);
-
                             $mail = [];
-                            $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
                             $mail['to'] = $submitted['from'];
                             $mail['toName'] = $submitted['name'] ?: null;
                             $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
@@ -653,7 +647,6 @@ SQL;
     {
         $view = $this->getView();
         $defaultParams = [
-            'fromName' => null,
             'toName' => null,
             'subject' => sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle()),
             'body' => null,
@@ -689,10 +682,6 @@ SQL;
         $replyTo = is_array($params['reply-to']) ? $params['reply-to'] : [$params['reply-to']];
         foreach ($replyTo as $r) {
             $message->addReplyTo($r);
-        }
-        if ($params['from']) {
-            $message
-                ->setFrom($params['from'], $params['fromName']);
         }
         try {
             $this->mailer->send($message);
