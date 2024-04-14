@@ -18,23 +18,17 @@ class ZipController extends AbstractActionController
      */
     protected $messageAdapter;
 
-    /**
-     * @var string
-     */
-    protected $basePath;
-
     public function __construct(
         EntityManager $entityManager,
-        MessageAdapter $messageAdapter,
-        string $basePath
+        MessageAdapter $messageAdapter
     ) {
         $this->entityManager = $entityManager;
-        $this->messageAdapter = $messageAdapter;
-        $this->basePath = $basePath;
+        $this->messageadapter = $messageAdapter;
     }
 
     public function indexAction(): void
     {
+        // Here, the id is the id with the token of the message.
         $id = $this->params('id');
         if (!$id) {
             throw new \Omeka\Mvc\Exception\NotFoundException('No resource set.'); // @translate
@@ -65,7 +59,7 @@ class ZipController extends AbstractActionController
             throw new \Omeka\Mvc\Exception\RuntimeException('Resource has no file.'); // @translate
         }
 
-        $filepath = $this->basePath . '/contactus/' . $id . '.' . $token . '.zip';
+        $filepath = $contactMessage->zipFilepath();
 
         $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
         if ($deleteZip

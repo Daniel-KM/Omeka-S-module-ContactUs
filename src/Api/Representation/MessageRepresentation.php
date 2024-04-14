@@ -200,6 +200,31 @@ class MessageRepresentation extends AbstractEntityRepresentation
         return $this->resource->isToAuthor();
     }
 
+    public function hasZip(): bool
+    {
+        $filepath = $this->zipFilepath();
+        return file_exists($filepath) && is_readable($filepath) && !is_dir($filepath);
+    }
+
+    public function zipFilename(): string
+    {
+        return $this->resource->getId() . '.' . $this->token() . '.zip';
+    }
+
+    public function zipFilepath(): string
+    {
+        // TODO Use Omeka storage.
+        $config = $this->getServiceLocator()->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+        return $basePath . '/contactus/' . $this->zipFilename();
+    }
+
+    public function zipUrl(): string
+    {
+        $url = $this->getViewHelper('Url');
+        return $url('contact-us', ['id' => $this->resource->getId() . '.' . $this->token()], ['force_canonical' => true]);
+    }
+
     public function created(): DateTime
     {
         return $this->resource->getCreated();

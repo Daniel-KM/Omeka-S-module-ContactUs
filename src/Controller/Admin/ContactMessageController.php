@@ -252,15 +252,12 @@ class ContactMessageController extends AbstractActionController
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $response->getContent();
         $type = $this->settings()->get('contactus_create_zip', '');
-        if ($type && $contactMessage->resourceIds()) {
-            // Check if a zip exists.
-            $filename = $id . '.' . $contactMessage->token() . '.zip';
-            $filepath = $this->basePath . '/contactus/' . $filename;
-            $fileExists = file_exists($filepath) && is_readable($filepath);
+        if ($type && $type !== 'none' && $contactMessage->resourceIds()) {
+            $fileExists = $contactMessage->hasZip();
             if ($isSetRead && !$fileExists) {
                 $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
                     'id' => $contactMessage->resourceIds(),
-                    'filename' => $filename,
+                    'filename' => $contactMessage->zipFilename(),
                     'baseDir' => 'contactus',
                     'baseUri' => 'contactus',
                     'type' => $type,
@@ -320,6 +317,7 @@ SQL;
         ];
         $tokens = $this->connection->executeQuery($sql, $bind, $types)->fetchAllKeyValue();
 
+        /** @see \ContactUs\Api\Representation\MessageRepresentation::zipFilepath() */
         foreach ($tokens as $id => $token) {
             $filename = $id . '.' . $token . '.zip';
             $filepath = $this->basePath . '/contactus/' . $filename;

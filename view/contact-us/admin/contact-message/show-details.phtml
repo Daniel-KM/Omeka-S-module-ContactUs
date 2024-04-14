@@ -56,7 +56,7 @@ $site = $resource->site();
         <?php endif; ?>
         <?php if ($setting('contactus_create_zip')): ?>
         <div class="value">
-            <a download="download" href="<?= $url('contact-us', ['id' => $message->id() . '.' . $message->token()]) ?>"><?= $translate('Link to the zipped files') ?></a>
+            <a download="download" href="<?= $message->zipUrl() ?>"><?= $translate('Link to the zipped files') ?></a>
             <p><?= sprintf($translate('The zip is created when the message is set "read" and removed when set "unread".')) ?></p>
         </div>
         <?php endif; ?>
