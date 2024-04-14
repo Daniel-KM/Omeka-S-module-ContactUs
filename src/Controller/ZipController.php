@@ -79,62 +79,11 @@ class ZipController extends AbstractActionController
             throw new \Omeka\Mvc\Exception\NotFoundException('No zip found.'); // @translate
         }
 
-        $this->sendFile($filepath, 'application/zip', $id . '.zip', 'attachment', true);
-    }
-
-    /**
-     * This is the 'file' action that is invoked when a user wants to download
-     * the given file.
-     *
-     * @see \Access\Controller\AccessFileController::sendFile()
-     * @see \DerivativeMedia\Controller\IndexController::sendFile()
-     * @see \Statistics\Controller\DownloadController::sendFile()
-     */
-    protected function sendFile(
-        string $filepath,
-        string $mediaType,
-        ?string $filename = null,
-        // "inline" or "attachment".
-        // It is recommended to set attribute "download" to link tag "<a>".
-        ?string $dispositionMode = 'inline',
-        ?bool $cache = false
-    ): \Laminas\Http\PhpEnvironment\Response {
-        $filename = $filename ?: basename($filepath);
-        $filesize = (int) filesize($filepath);
-
-        /** @var \Laminas\Http\PhpEnvironment\Response $response */
-        $response = $this->getResponse();
-
-        // Write headers.
-        $headers = $response->getHeaders()
-            ->addHeaderLine(sprintf('Content-Type: %s', $mediaType))
-            ->addHeaderLine(sprintf('Content-Disposition: %s; filename="%s"', $dispositionMode, $filename))
-            ->addHeaderLine(sprintf('Content-Length: %s', $filesize))
-            ->addHeaderLine('Content-Transfer-Encoding: binary');
-        if ($cache) {
-            // Use this to open files directly.
-            // Cache for 30 days.
-            $headers
-                ->addHeaderLine('Cache-Control: private, max-age=2592000, post-check=2592000, pre-check=2592000')
-                ->addHeaderLine(sprintf('Expires: %s', gmdate('D, d M Y H:i:s', time() + (30 * 24 * 60 * 60)) . ' GMT'));
-        }
-
-        // Send headers separately to handle large files.
-        $response->sendHeaders();
-
-        // TODO Use Laminas stream response.
-
-        // Clears all active output buffers to avoid memory overflow.
-        $response->setContent('');
-        while (ob_get_level()) {
-            ob_end_clean();
-        }
-        readfile($filepath);
-
-        // TODO Fix issue with session. See readme of module XmlViewer.
-        ini_set('display_errors', '0');
-
-        // Return response to avoid default view rendering and to manage events.
-        return $response;
+        return $this->sendFile($filepath, [
+            'content_type' => 'application/zip',
+            'filename' => $id . '.zip',
+            'disposition_mode' => 'attachment',
+            'cache' => true,
+        ]);
     }
 }
