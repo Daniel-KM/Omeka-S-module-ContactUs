@@ -28,10 +28,10 @@ $entityManager = $services->get('Omeka\EntityManager');
 
 $config = require dirname(__DIR__, 2) . '/config/module.config.php';
 
-if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.55')) {
+if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.56')) {
     $message = new \Omeka\Stdlib\Message(
         $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
-        'Common', '3.4.55'
+        'Common', '3.4.56'
     );
     throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
 }
@@ -256,5 +256,13 @@ SQL;
         ]
     );
     $message->setEscapeHtml(false);
+    $messenger->addSuccess($message);
+}
+
+if (version_compare($oldVersion, '3.4.13', '<')) {
+    $settings->set('contactus_create_zip', $settings->get('contactus_create_zip', 'original') ?: 'original');
+    $message = new PsrMessage(
+        'A new button allows to create a zip for any contact.' // @translate
+    );
     $messenger->addSuccess($message);
 }
