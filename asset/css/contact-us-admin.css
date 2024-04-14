@@ -136,8 +136,8 @@
 
     .contact-message .fa-spin {
         color: #A0A0A0;
-        width: 16px; 
-        margin-left: 8px;
+        width: 32px;
+        margin-right: -8px;
     }
 }
 

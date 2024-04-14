@@ -18,25 +18,22 @@ $(document).ready(function() {
                 }
             })
             .done(function(data) {
-                if (!data.content) {
-                    alert(Omeka.jsTranslate('Something went wrong'));
-                    data = {
-                        'content': {
-                            'status': status
-                        }
-                    }
+                if (data.status === 'success') {
+                    status = data.data.action.status;
                 }
-                status = data.content.status;
                 button.data('status', status);
                 var row = button.closest('.contact-message')
                 var iconLink = row.find('.toggle-property.' + property);
                 iconLink.data('status', status);
+                if (data.status !== 'success' && data.message.length) {
+                    alert(data.message);
+                }
             })
             .fail(function(jqXHR, textStatus) {
                 if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
                     alert(jqXHR.responseJSON.message);
                 } else if (jqXHR.status == 404) {
-                    alert(Omeka.jsTranslate('The message doesn’t exist.'));
+                    alert(Omeka.jsTranslate('The contact message doesn’t exist.'));
                 } else {
                     alert(Omeka.jsTranslate('Something went wrong'));
                 }
@@ -71,15 +68,9 @@ $(document).ready(function() {
                 }
             })
             .done(function(data) {
-                if (!data.content) {
-                    alert(Omeka.jsTranslate('Something went wrong'));
-                    data = {
-                        'content': {
-                            'status': status
-                        }
-                    }
+                if (data.status === 'success') {
+                    status = data.data.action.status;
                 }
-                status = data.content.status;
                 selected.closest('.contact-message').each(function() {
                     var row = $(this);
                     row.find('input[type="checkbox"]').prop('checked', false);
@@ -87,13 +78,16 @@ $(document).ready(function() {
                     iconLink.data('status', status);
                     iconLink.removeClass('fas fa-sync fa-spin').addClass('o-icon-' + status);
                 });
+                if (data.status !== 'success' && data.message.length) {
+                    alert(data.message);
+                }
             })
             .fail(function(jqXHR, textStatus) {
                 selected.closest('.contact-message').find('.toggle-property.' + property).each(function() {
                     $(this).removeClass('fas fa-sync fa-spin').addClass('o-icon-' + $(this).data('status'));
                 });
                 if (jqXHR.status == 404) {
-                    alert(Omeka.jsTranslate('The message doesn’t exist.'));
+                    alert(Omeka.jsTranslate('The contact message doesn’t exist.'));
                 } else {
                     alert(Omeka.jsTranslate('Something went wrong'));
                 }

@@ -9,6 +9,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
+use Omeka\Stdlib\ErrorStore;
 
 class ContactMessageController extends AbstractActionController
 {
@@ -180,13 +181,13 @@ class ContactMessageController extends AbstractActionController
         // Secure the input.
         $resourceIds = array_filter(array_map('intval', $resourceIds));
         if (empty($resourceIds)) {
-            return $this->jsonError('No contact messages submitted.', Response::STATUS_CODE_400); // @translate
+            return $this->returnError('No contact messages submitted.', Response::STATUS_CODE_400); // @translate
         }
 
         $response = $this->api()
             ->batchUpdate('contact_messages', $resourceIds, $data, ['continueOnError' => true]);
         if (!$response) {
-            return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
+            return $this->returnError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
         }
 
         $value = reset($data);
@@ -198,10 +199,13 @@ class ContactMessageController extends AbstractActionController
         ];
 
         return new JsonModel([
-            'content' => [
-                'property' => $property,
-                'value' => $value,
-                'status' => $statuses[$property][(int) $value],
+            'status' => 'success',
+            'data' => [
+                'action' => [
+                    'property' => $property,
+                    'value' => $value,
+                    'status' => $statuses[$property][(int) $value],
+                ],
             ],
         ]);
     }
@@ -234,7 +238,7 @@ class ContactMessageController extends AbstractActionController
                 $value = !$contactMessage->isSpam();
                 break;
             default:
-                return $this->jsonError('Unknown key.', Response::STATUS_CODE_400); // @translate
+                return $this->returnError('Unknown key.', Response::STATUS_CODE_400); // @translate
         }
 
         $data = [];
@@ -242,7 +246,7 @@ class ContactMessageController extends AbstractActionController
         $response = $this->api()
             ->update('contact_messages', $id, $data, [], ['isPartial' => true]);
         if (!$response) {
-            return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
+            return $this->returnError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
         }
 
         $statuses = [
@@ -251,10 +255,13 @@ class ContactMessageController extends AbstractActionController
         ];
 
         return new JsonModel([
-            'content' => [
-                'property' => $property,
-                'value' => $value,
-                'status' => $statuses[$property][(int) $value],
+            'status' => 'success',
+            'data' => [
+                'action' => [
+                    'property' => $property,
+                    'value' => $value,
+                    'status' => $statuses[$property][(int) $value],
+                ],
             ],
         ]);
     }
@@ -290,10 +297,13 @@ class ContactMessageController extends AbstractActionController
         }
 
         return new JsonModel([
-            'content' => [
-                'property' => 'o-module-contact:has_zip',
-                'value' => $hasZip,
-                'status' => $hasZip ? 'zip' : 'no-zip',
+            'status' => 'success',
+            'data' => [
+                'action' => [
+                    'property' => 'o-module-contact:has_zip',
+                    'value' => $hasZip,
+                    'status' => $hasZip ? 'zip' : 'no-zip',
+                ],
             ],
         ]);
     }
@@ -347,19 +357,31 @@ SQL;
     /**
      * Return a message of error.
      *
-     * @param string $message
+     * @see https://github.com/omniti-labs/jsend
+     *
+     * @param \Common\Stdlib\PsrMessage|string $message
      * @param int $statusCode
-     * @param array $messages
+     * @param \Omeka\Stdlib\ErrorStore|array $messages
      * @return \Laminas\View\Model\JsonModel
      */
-    protected function jsonError($message, $statusCode = Response::STATUS_CODE_400, array $messages = [])
+    protected function returnError($message, int $statusCode = Response::STATUS_CODE_400, $erros = null): JsonModel
     {
         $response = $this->getResponse();
         $response->setStatusCode($statusCode);
-        $output = ['error' => $message];
-        if ($messages) {
-            $output['messages'] = $messages;
+
+        $status = $statusCode >= 500 ? 'error' : 'fail';
+
+        $result = [
+            'status' => $status,
+            'message' => is_object($message) ? $message->setTranslator($this->translator()) : $message,
+        ];
+
+        if (is_array($messages) && count($messages)) {
+            $result['data'] = $messages;
+        } elseif (is_object($messages) && $messages instanceof ErrorStore && $messages->hasErrors()) {
+            $result['data'] = $messages->getErrors();
         }
-        return new JsonModel($output);
+
+        return new JsonModel($result);
     }
 }

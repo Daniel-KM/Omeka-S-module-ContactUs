@@ -137,6 +137,9 @@ return [
             ],
         ],
     ],
+    'js_translate_strings' => [
+        'The contact message doesn’t exist.', // @translate
+    ],
     'contactus' => [
         'settings' => [
             'contactus_notify_recipients' => [],
