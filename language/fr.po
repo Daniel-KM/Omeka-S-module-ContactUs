@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-26 00:00+0000"
-"PO-Revision-Date: 2024-02-26 00:00+0000"
+"POT-Creation-Date: 2024-04-15 00:00+0000"
+"PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -17,34 +17,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: data/scripts/upgrade.php:33 Module.php:96
+#: data/scripts/upgrade.php:33 Module.php:95
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:160
+#: Module.php:157
 msgid "WARNING:"
 msgstr "ATTENTION :"
 
-#: Module.php:166
+#: Module.php:163
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 "Tous les messages de contact et tous les fichiers seront supprimés (dossier "
 "\"{folder}\")."
 
-#: Module.php:172
+#: Module.php:169
 msgid "Remove Contact Us files"
 msgstr "Supprimer les fichiers du module"
 
-#: src/Job/ZipResources.php:223
+#: src/Job/ZipResources.php:266
 msgid ""
 "The base uri is not set (key [file_store][local][base_uri]) in the config "
 "file of Omeka \"config/local.config.php\". It must be set for now (key "
 "[file_store][local][base_uri]) in order to process background jobs."
 msgstr ""
-"L’uri de base n’est pas défini (clé [file_store][local][base_uri]) dans le "
+"L’uri de base n’est pas définie (clé [file_store][local][base_uri]) dans le "
 "fichier de configuration Omeka « config/local.config.php ». Il doit être "
-"indiqué pour l’instant (key [file_store][local][base_uri]) de façon à gérer "
+"indiqué pour l’instant (clé [file_store][local][base_uri]) de façon à gérer "
 "les tâches en arrière-plan."
 
 #: src/Site/BlockLayout/ContactUs.php:98
@@ -55,26 +55,8 @@ msgstr ""
 "Ajouter un formulaire de contact pour les visiteurs. Les paramètres du site "
 "sont utilisés quand les chaînes sont vides."
 
-#: src/View/Helper/ContactUs.php:210
-#, php-format
-msgid ""
-"Thank you for your message %s. It will be sent to the author as soon as "
-"possible."
-msgstr ""
-"Merci pour votre message %s. Il sera envoyé à l’auteur dès que possible."
-
-#: src/View/Helper/ContactUs.php:211
-#, php-format
-msgid "Thank you for your message %s. We will answer you as soon as possible."
-msgstr "Merci pour votre message %s. Nous vous répondrons dès que possible."
-
-#: src/View/Helper/ContactUs.php:263 src/View/Helper/ContactUs.php:399
-#, php-format
-msgid "There is an error: %s"
-msgstr "Il y a une erreur : %s"
-
-#: src/View/Helper/ContactUs.php:281 src/View/Helper/ContactUs.php:345
-#: src/View/Helper/ContactUs.php:658 src/View/Helper/ContactUs.php:725
+#: src/View/Helper/ContactUs.php:281 src/View/Helper/ContactUs.php:342
+#: src/View/Helper/ContactUs.php:649 src/View/Helper/ContactUs.php:712
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
@@ -84,47 +66,7 @@ msgstr "[Contact] %s"
 msgid "newsletter: %s"
 msgstr "infolettre : %s"
 
-#: src/View/Helper/ContactUs.php:299
-#, php-format
-msgid ""
-"Thank you for your message %s. Check your confirmation mail. The author will "
-"receive it soon."
-msgstr ""
-"Merci pour votre message %s. Vérifiez le message de confirmation. Nous "
-"répondrons dès que possible."
-
-#: src/View/Helper/ContactUs.php:332
-msgid "Sorry, we are not able to send the email to the author."
-msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
-
-#: src/View/Helper/ContactUs.php:353
-msgid ""
-"Sorry, the message is recorded, but we are not able to notify the admin at "
-"once. You may come back later if you don’t receive answer."
-msgstr ""
-"Désolé, le message est enregistré, mais il n’est pas possible d’en informer "
-"le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
-"recevez pas de réponse."
-
-#: src/View/Helper/ContactUs.php:359
-#, php-format
-msgid ""
-"Thank you for your message %s. Check your confirmation mail. We will answer "
-"you soon."
-msgstr ""
-"Merci pour votre message %s. Vérifiez le message de confirmation. Nous "
-"répondrons prochainement."
-
-#: src/View/Helper/ContactUs.php:380
-msgid "Sorry, we are not able to send the confirmation email."
-msgstr ""
-"Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
-
-#: src/View/Helper/ContactUs.php:403
-msgid "There is an error."
-msgstr "Une erreur s’est produite."
-
-#: src/View/Helper/ContactUs.php:596
+#: src/View/Helper/ContactUs.php:590
 msgid "[Unknown resource]"
 msgstr "[Ressource inconnue]"
 
@@ -195,7 +137,7 @@ msgid "Sender"
 msgstr "Expéditeur"
 
 #: view/contact-us/admin/contact-message/browse.phtml:134
-#: view/contact-us/admin/contact-message/show-details.phtml:87
+#: view/contact-us/admin/contact-message/show-details.phtml:83
 msgid "Message to author"
 msgstr "Message à l’auteur"
 
@@ -208,6 +150,11 @@ msgstr "Basculer lu"
 #: view/contact-us/admin/contact-message/browse.phtml:152
 msgid "Toggle spam"
 msgstr "Basculer spam"
+
+#: view/contact-us/admin/contact-message/browse.phtml:160
+#: view/contact-us/admin/contact-message/browse.phtml:161
+msgid "Toggle zip"
+msgstr "Basculer zip"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:22
 #, php-format
@@ -232,52 +179,59 @@ msgstr "%d contenus (admin)"
 msgid "%d items (public)"
 msgstr "%d contenus (public)"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:59
-msgid "Link to the zipped files"
-msgstr "Lien vers les fichiers zippés"
+#: view/contact-us/admin/contact-message/show-details.phtml:58
+msgid "Link to the zipped files when created"
+msgstr "Lien vers les fichiers zippés après création"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:60
-msgid ""
-"The zip is created when the message is set \"read\" and removed when set "
-"\"unread\"."
-msgstr ""
-"Le zip est créé quand le message est défini à « lu » et supprimé quand il "
-"est mis à « non lu »."
-
-#: view/contact-us/admin/contact-message/show-details.phtml:80
+#: view/contact-us/admin/contact-message/show-details.phtml:76
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:85
+#: view/contact-us/admin/contact-message/show-details.phtml:81
 msgid "Infos"
 msgstr "Infos"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:87
+#: view/contact-us/admin/contact-message/show-details.phtml:83
 msgid "Message to us"
 msgstr "Message pour nous"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:94
+#: view/contact-us/admin/contact-message/show-details.phtml:84
+#, php-format
+msgid "Is read: %s"
+msgstr "Est lu : %s"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:85
+#, php-format
+msgid "Is spam: %s"
+msgstr "Est spam : %s"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:86
+#, php-format
+msgid "Has zip: %s"
+msgstr "A un zip : %s"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:91
 msgid "[No subject]"
 msgstr "[Pas de sujet]"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:108
+#: view/contact-us/admin/contact-message/show-details.phtml:106
 msgid "Attached file"
 msgstr "Fichier attaché"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:110
+#: view/contact-us/admin/contact-message/show-details.phtml:108
 #, php-format
 msgid "Media type: %s"
 msgstr "Type de média : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:115
+#: view/contact-us/admin/contact-message/show-details.phtml:113
 msgid "Warning: content from an anonymous user"
 msgstr "Attention : contenu d’un visiteur anonyme"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:117
+#: view/contact-us/admin/contact-message/show-details.phtml:115
 msgid "Warning: content from a guest user"
 msgstr "Attention : contenu de l’utilisateur invité"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:125
+#: view/contact-us/admin/contact-message/show-details.phtml:123
 msgid "Newsletter"
 msgstr "Infolettre"
 
@@ -324,28 +278,86 @@ msgstr ""
 "d’envoyer une liste de ressources (nécessite une ligne dans le thème)."
 
 #: data/scripts/upgrade.php:252
-#, php-format
 msgid ""
 "It’s now possible to prepare a zip file of asked files to send to a visitor "
-"via a link. See %1$ssettings%2$s."
+"via a link. See {link}settings{link_end}."
 msgstr ""
 "Il est désormais possible de préparer un fichier zip en réponse à une "
-"demande d’un visiteur via un lien. Voir les %1$sparamètres%2$s."
+"demande d’un visiteur via un lien. Voir les {link}paramètres{link_end}."
 
-#: Module.php:107
+#: data/scripts/upgrade.php:265
+msgid "A new button allows to create a zip for any contact."
+msgstr "Un nouveau bouton permet de créer un zip pour tout contact."
+
+#: Module.php:106
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
 
-#: src/View/Helper/ContactUs.php:444
+#: src/View/Helper/ContactUs.php:210
+msgid ""
+"Thank you for your message {name}. It will be sent to the author as soon as "
+"possible."
+msgstr ""
+"Merci pour votre message {name}. Il sera envoyé à l’auteur dès que possible."
+
+#: src/View/Helper/ContactUs.php:211
+msgid ""
+"Thank you for your message {name}. We will answer you as soon as possible."
+msgstr ""
+"Merci pour votre message {name}. Nous vous répondrons dès que possible."
+
+#: src/View/Helper/ContactUs.php:263 src/View/Helper/ContactUs.php:393
+msgid "There is an error: {errors}"
+msgstr "Il y a une erreur : {errors}"
+
+#: src/View/Helper/ContactUs.php:299
+msgid ""
+"Thank you for your message {name}. Check your confirmation mail. The author "
+"will receive it soon."
+msgstr ""
+"Merci pour votre message {name}. Vérifiez le message de confirmation. "
+"L’auteur le recevra bientôt."
+
+#: src/View/Helper/ContactUs.php:331
+msgid "Sorry, we are not able to send the email to the author."
+msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
+
+#: src/View/Helper/ContactUs.php:350
+msgid ""
+"Sorry, the message is recorded, but we are not able to notify the admin at "
+"once. You may come back later if you don’t receive answer."
+msgstr ""
+"Désolé, le message est enregistré, mais il n’est pas possible d’en informer "
+"le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
+"recevez pas de réponse."
+
+#: src/View/Helper/ContactUs.php:356
+msgid ""
+"Thank you for your message {name}. Check your confirmation mail. We will "
+"answer you soon."
+msgstr ""
+"Merci pour votre message {name}. Vérifiez le message de confirmation. Nous "
+"répondrons très bientôt."
+
+#: src/View/Helper/ContactUs.php:374
+msgid "Sorry, we are not able to send the confirmation email."
+msgstr ""
+"Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
+
+#: src/View/Helper/ContactUs.php:397
+msgid "There is an error."
+msgstr "Une erreur s’est produite."
+
+#: src/View/Helper/ContactUs.php:438
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:489
+#: src/View/Helper/ContactUs.php:483
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/View/Helper/ContactUs.php:504 src/View/Helper/ContactUs.php:530
+#: src/View/Helper/ContactUs.php:498 src/View/Helper/ContactUs.php:524
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -353,67 +365,78 @@ msgstr ""
 "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
 "d’informations."
 
-#: src/View/Helper/ContactUs.php:525
+#: src/View/Helper/ContactUs.php:519
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/View/Helper/ContactUs.php:623
+#: src/View/Helper/ContactUs.php:615
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr "Contact Us : Certains mails de notification ne sont pas valides."
 
-#: src/View/Helper/ContactUs.php:668
+#: src/View/Helper/ContactUs.php:659
 msgid "The message has no content to send."
 msgstr "Le message n’a pas de contenu à envoyer."
 
-#: src/View/Helper/ContactUs.php:702
-#, php-format
-msgid "Error when sending email. Arguments:\\n%s"
-msgstr "Erreur lors de l’envoi du mail. Arguments :\\n%s"
+#: src/View/Helper/ContactUs.php:689
+msgid "Error when sending email. Arguments:\\n{json}"
+msgstr "Erreur lors de l’envoi du mail. Arguments :\\n{json}"
 
 #: src/Job/ZipResources.php:44
 msgid "No resource id set."
 msgstr "Aucune ressource n’est définie."
 
-#: src/Job/ZipResources.php:48
+#: src/Job/ZipResources.php:49
 msgid "No filename set."
 msgstr "Aucun nom de fichier défini."
 
-#: src/Job/ZipResources.php:52
+#: src/Job/ZipResources.php:54
 msgid "No basepath set."
 msgstr "Aucun chemin de base défini."
 
-#: src/Job/ZipResources.php:56
+#: src/Job/ZipResources.php:59
 msgid "No image type set."
 msgstr "Aucun type d’image défini."
 
-#: src/Job/ZipResources.php:61 src/Job/ZipResources.php:140
+#: src/Job/ZipResources.php:64 src/Job/ZipResources.php:163
 msgid "The php extension \"php-zip\" must be installed."
 msgstr "L’extension « php-zip » doit être installée."
 
-#: src/Job/ZipResources.php:74
+#: src/Job/ZipResources.php:75
+msgid "Resource id is invalid."
+msgstr "La ressource est incorrecte."
+
+#: src/Job/ZipResources.php:84
 msgid "No valid resource."
 msgstr "Aucune ressource valide."
 
-#: src/Job/ZipResources.php:111
-msgid "No file attached to items."
-msgstr "Aucun fichier attaché aux contenus."
-
-#: src/Job/ZipResources.php:124
-msgid "An error occured during the creation of the zip."
-msgstr "Une erreur est survenue pendant la création du zip."
+#: src/Job/ZipResources.php:125
+msgid "No file attached to selected items."
+msgstr "Aucun fichier attaché aux contenus choisis."
 
 #: src/Job/ZipResources.php:128
-#, php-format
-msgid "Zip created available at %s."
-msgstr "Le zip créé est disponible à %s."
+msgid "No derivative file of type {type} attached to selected items."
+msgstr ""
+"Aucun fichier dérivé du type {type} n’est attaché aux contenus choisis."
 
-#: src/Job/ZipResources.php:145
+#: src/Job/ZipResources.php:149
+msgid "Zip created successfully and available directly at {url}."
+msgstr "Le zip a été créé avec succès et est disponible directement à {url}."
+
+#: src/Job/ZipResources.php:168
 msgid "Unable to create directory in \"/files/\"."
 msgstr "Impossible de créer un dossier dans « /files »."
 
-#: src/Job/ZipResources.php:152
+#: src/Job/ZipResources.php:175
 msgid "Unable to create the zip file."
 msgstr "Impossible de créer le fichier zip."
+
+#: src/Job/ZipResources.php:224
+msgid "An issue occurred during the creation of the zip file: {error}."
+msgstr "Une erreur est survenue pendant la création du zip : {error}."
+
+#: src/Job/ZipResources.php:232
+msgid "An issue occurred and the zip file was not created: {error}."
+msgstr "Un problème est apparu et le fichier zip n’a pas été créé : {error}."
 
 #: src/Form/SiteSettingsFieldset.php:11 src/Form/SettingsFieldset.php:12
 #: src/Site/BlockLayout/ContactUs.php:22
@@ -481,7 +504,7 @@ msgstr "Message de confirmation"
 msgid "Subject of the email to author"
 msgstr "Sujet du message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:115 config/module.config.php:182
+#: src/Form/SiteSettingsFieldset.php:115 config/module.config.php:185
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
@@ -560,15 +583,15 @@ msgstr "Envoyer le mail à l’auteur seulement, pas aux administrateurs."
 msgid "Zipped files to send"
 msgstr "Liste des fichiers zippés à envoyer"
 
-#: src/Form/SettingsFieldset.php:82
+#: src/Form/SettingsFieldset.php:81
 msgid "Large"
 msgstr "Large"
 
-#: src/Form/SettingsFieldset.php:84
+#: src/Form/SettingsFieldset.php:83
 msgid "Square"
 msgstr "Carré"
 
-#: src/Form/SettingsFieldset.php:98
+#: src/Form/SettingsFieldset.php:97
 msgid "Remove zip files after some days"
 msgstr "Supprimer les fichiers zip après quelques jours"
 
@@ -640,29 +663,29 @@ msgstr "Le corps ne peut pas être vide."
 msgid "The ip cannot be empty."
 msgstr "L’ip ne peut pas être vide."
 
-#: src/Controller/Admin/ContactMessageController.php:97
+#: src/Controller/Admin/ContactMessageController.php:98
 msgid "Contact message successfully deleted."
 msgstr "Le message de contact a été supprimé avec succès."
 
-#: src/Controller/Admin/ContactMessageController.php:131
+#: src/Controller/Admin/ContactMessageController.php:132
 msgid "You must select at least one contact message to batch delete."
 msgstr "Vous devez sélectionner au moins un message de contact à supprimer."
 
-#: src/Controller/Admin/ContactMessageController.php:140
+#: src/Controller/Admin/ContactMessageController.php:141
 msgid "Contact messages successfully deleted."
 msgstr "Les messages de contact ont été supprimés avec succès."
 
-#: src/Controller/Admin/ContactMessageController.php:150
+#: src/Controller/Admin/ContactMessageController.php:151
 msgid "Delete of all contact messages is not supported currently."
 msgstr ""
 "La suppression de tous les messages de contact n’est pas supportée "
 "actuellement."
 
-#: src/Controller/Admin/ContactMessageController.php:183
+#: src/Controller/Admin/ContactMessageController.php:184
 msgid "No contact messages submitted."
 msgstr "Aucun message de contact envoyé."
 
-#: src/Controller/Admin/ContactMessageController.php:189
+#: src/Controller/Admin/ContactMessageController.php:190
 #: src/Controller/Admin/ContactMessageController.php:249
 msgid "An internal error occurred."
 msgstr "Une erreur interne s'est produite."
@@ -671,31 +694,31 @@ msgstr "Une erreur interne s'est produite."
 msgid "Unknown key."
 msgstr "Clé inconnue."
 
-#: src/Controller/ZipController.php:37
+#: src/Controller/ZipController.php:34
 msgid "No resource set."
 msgstr "Aucune ressource définie."
 
-#: src/Controller/ZipController.php:45
+#: src/Controller/ZipController.php:42
 msgid "Resource is invalid."
 msgstr "La ressource est incorrecte."
 
-#: src/Controller/ZipController.php:51
+#: src/Controller/ZipController.php:48
 msgid "No message found."
 msgstr "Aucun message trouvé."
 
-#: src/Controller/ZipController.php:58
+#: src/Controller/ZipController.php:55
 msgid "Resource does not exist."
 msgstr "La ressource n’existe pas."
 
-#: src/Controller/ZipController.php:62
+#: src/Controller/ZipController.php:59
 msgid "Resource has no file."
 msgstr "La ressource n’a pas de fichier."
 
-#: src/Controller/ZipController.php:74
+#: src/Controller/ZipController.php:71
 msgid "No zip found: too much old."
 msgstr "Aucun zip trouvé : trop ancien."
 
-#: src/Controller/ZipController.php:79
+#: src/Controller/ZipController.php:76
 msgid "No zip found."
 msgstr "Aucun zip trouvé."
 
@@ -719,7 +742,11 @@ msgstr ""
 "Pour ajouter des champs, chaque ligne doit contenir un nom et un libellé "
 "séparés par un « = »."
 
-#: config/module.config.php:151
+#: config/module.config.php:141
+msgid "The contact message doesn’t exist."
+msgstr "Le message de contact n’existe pas."
+
+#: config/module.config.php:154
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -745,11 +772,11 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:163
+#: config/module.config.php:166
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
-#: config/module.config.php:164
+#: config/module.config.php:167
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -789,7 +816,7 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:183
+#: config/module.config.php:186
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -824,47 +851,47 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:199
+#: config/module.config.php:202
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:201
+#: config/module.config.php:204
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:203
+#: config/module.config.php:206
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:205
+#: config/module.config.php:208
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:207
+#: config/module.config.php:210
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:209
+#: config/module.config.php:212
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:211
+#: config/module.config.php:214
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:213
+#: config/module.config.php:216
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:215
+#: config/module.config.php:218
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:217
+#: config/module.config.php:220
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:227
+#: config/module.config.php:230
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -872,9 +899,16 @@ msgstr ""
 "J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour "
 "répondre à ce message."
 
-#: config/module.config.php:229
+#: config/module.config.php:232
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
+
+#~ msgid ""
+#~ "The zip is created when the message is set \"read\" and removed when set "
+#~ "\"unread\"."
+#~ msgstr ""
+#~ "Le zip est créé quand le message est défini à « lu » et supprimé quand il "
+#~ "est mis à « non lu »."
 
 #, php-format
 #~ msgid "This module requires the module \"%s\"."
