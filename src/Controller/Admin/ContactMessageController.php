@@ -47,11 +47,11 @@ class ContactMessageController extends AbstractActionController
         $formDeleteAll->setAttribute('id', 'confirm-delete-all');
         $formDeleteAll->get('submit')->setAttribute('disabled', true);
 
-        $messages = $response->getContent();
+        $contactMessages = $response->getContent();
 
         return new ViewModel([
-            'messages' => $messages,
-            'resources' => $messages,
+            'messages' => $contactMessages,
+            'resources' => $contactMessages,
             'formDeleteSelected' => $formDeleteSelected,
             'formDeleteAll' => $formDeleteAll,
         ]);
@@ -72,11 +72,11 @@ class ContactMessageController extends AbstractActionController
     public function deleteConfirmAction()
     {
         $response = $this->api()->read('contact_messages', $this->params('id'));
-        $message = $response->getContent();
+        $contactMessage = $response->getContent();
 
         $view = new ViewModel([
-            'message' => $message,
-            'resource' => $message,
+            'message' => $contactMessage,
+            'resource' => $contactMessage,
             'resourceLabel' => 'contact message',
             'partialPath' => 'contact-us/admin/contact-message/show-details',
         ]);
@@ -223,19 +223,19 @@ class ContactMessageController extends AbstractActionController
         }
 
         $id = $this->params('id');
-        /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
-        $message = $this->api()->read('contact_messages', $id)->getContent();
+        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+        $contactMessage = $this->api()->read('contact_messages', $id)->getContent();
 
         $isSetRead = false;
         $isSetUnread = false;
         switch ($property) {
             case 'o-module-contact:is_read':
-                $value = !$message->isRead();
+                $value = !$contactMessage->isRead();
                 $isSetRead = $value;
                 $isSetUnread = !$value;
                 break;
             case 'o-module-contact:is_spam':
-                $value = !$message->isSpam();
+                $value = !$contactMessage->isSpam();
                 break;
             default:
                 return $this->jsonError('Unknown key.', Response::STATUS_CODE_400); // @translate
@@ -259,7 +259,7 @@ class ContactMessageController extends AbstractActionController
             $fileExists = file_exists($filepath) && is_readable($filepath);
             if ($isSetRead && !$fileExists) {
                 $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
-                    'id' => $message->resourceIds(),
+                    'id' => $contactMessage->resourceIds(),
                     'filename' => $filename,
                     'baseDir' => 'contactus',
                     'baseUri' => 'contactus',
@@ -295,10 +295,10 @@ class ContactMessageController extends AbstractActionController
         // Get all messages older than x days.
         $older = new DateTime('-' . $deleteZip . ' day');
         /*
-        $messageIds = $this->api()->search('contact_messages', [
+        $contactMessageIds = $this->api()->search('contact_messages', [
             'modified_before' => $older->format('Y-m-d\TH:i:s'),
         ], ['returnScalar' => 'id'])->getContent();
-        if (!count($messageIds)) {
+        if (!count($contactMessageIds)) {
             return;
         }
         */

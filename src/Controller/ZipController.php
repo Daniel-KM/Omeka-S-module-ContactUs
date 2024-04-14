@@ -16,17 +16,20 @@ class ZipController extends AbstractActionController
     /**
      * @var \ContactUs\Api\Adapter\MessageAdapter;
      */
-    protected $adapter;
+    protected $messageAdapter;
 
     /**
      * @var string
      */
     protected $basePath;
 
-    public function __construct(EntityManager $entityManager, MessageAdapter $adapter, string $basePath)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        MessageAdapter $messageAdapter,
+        string $basePath
+    ) {
         $this->entityManager = $entityManager;
-        $this->adapter = $adapter;
+        $this->messageAdapter = $messageAdapter;
         $this->basePath = $basePath;
     }
 
@@ -45,20 +48,20 @@ class ZipController extends AbstractActionController
             throw new \Omeka\Mvc\Exception\NotFoundException('Resource is invalid.'); // @translate
         }
 
-        /** @var \ContactUs\Entity\Message $messageEntity */
-        $messageEntity = $this->entityManager->find(\ContactUs\Entity\Message::class, $id);
-        if (!$messageEntity) {
+        /** @var \ContactUs\Entity\Message $contactMessageEntity */
+        $contactMessageEntity = $this->entityManager->find(\ContactUs\Entity\Message::class, $id);
+        if (!$contactMessageEntity) {
             throw new \Omeka\Mvc\Exception\NotFoundException('No message found.'); // @translate
         }
 
-        /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
-        $message = $this->adapter->getRepresentation($messageEntity);
+        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+        $contactMessage = $this->messageAdapter->getRepresentation($contactMessageEntity);
 
-        if ($token !== $message->token()) {
+        if ($token !== $contactMessage->token()) {
             throw new \Omeka\Mvc\Exception\NotFoundException('Resource does not exist.'); // @translate
         }
 
-        if (!$message->resourceIds()) {
+        if (!$contactMessage->resourceIds()) {
             throw new \Omeka\Mvc\Exception\RuntimeException('Resource has no file.'); // @translate
         }
 
@@ -66,7 +69,7 @@ class ZipController extends AbstractActionController
 
         $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
         if ($deleteZip
-            && $message->modified() < new \DateTime('-' . $deleteZip . ' day')
+            && $contactMessage->modified() < new \DateTime('-' . $deleteZip . ' day')
         ) {
             if (file_exists($filepath) && is_writeable($filepath)) {
                 @unlink($filepath);
