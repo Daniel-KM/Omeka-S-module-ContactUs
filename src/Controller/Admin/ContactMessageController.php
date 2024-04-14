@@ -216,7 +216,7 @@ class ContactMessageController extends AbstractActionController
         return $this->toggleProperty('o-module-contact:is_spam');
     }
 
-    protected function toggleProperty($property)
+    protected function toggleProperty(string $property)
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new \Omeka\Mvc\Exception\NotFoundException;
@@ -226,13 +226,9 @@ class ContactMessageController extends AbstractActionController
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $this->api()->read('contact_messages', $id)->getContent();
 
-        $isSetRead = false;
-        $isSetUnread = false;
         switch ($property) {
             case 'o-module-contact:is_read':
                 $value = !$contactMessage->isRead();
-                $isSetRead = $value;
-                $isSetUnread = !$value;
                 break;
             case 'o-module-contact:is_spam':
                 $value = !$contactMessage->isSpam();
@@ -249,25 +245,6 @@ class ContactMessageController extends AbstractActionController
             return $this->jsonError('An internal error occurred.', Response::STATUS_CODE_500); // @translate
         }
 
-        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
-        $contactMessage = $response->getContent();
-        $type = $this->settings()->get('contactus_create_zip', '');
-        if ($type && $type !== 'none' && $contactMessage->resourceIds()) {
-            $fileExists = $contactMessage->hasZip();
-            if ($isSetRead && !$fileExists) {
-                $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
-                    'id' => $contactMessage->resourceIds(),
-                    'filename' => $contactMessage->zipFilename(),
-                    'baseDir' => 'contactus',
-                    'baseUri' => 'contactus',
-                    'type' => $type,
-                ]);
-                // $this->messenger()->addSuccess('A zip with the files is created in background.');
-            } elseif ($isSetUnread && $fileExists) {
-                @unlink($filepath);
-            }
-        }
-
         $statuses = [
             'o-module-contact:is_read' => ['not-read', 'read'],
             'o-module-contact:is_spam' => ['not-spam', 'spam'],
@@ -278,6 +255,45 @@ class ContactMessageController extends AbstractActionController
                 'property' => $property,
                 'value' => $value,
                 'status' => $statuses[$property][(int) $value],
+            ],
+        ]);
+    }
+
+    public function toggleZipAction()
+    {
+        // ZIp is not managed by adapter, but by file system.
+
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            throw new \Omeka\Mvc\Exception\NotFoundException;
+        }
+
+        $id = $this->params('id');
+
+        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+        $contactMessage = $this->api()->read('contact_messages', $id)->getContent();
+
+        $hasZip = $contactMessage->hasZip();
+        if ($hasZip) {
+            @unlink($contactMessage->zipFilepath());
+            $hasZip = false;
+        } elseif ($contactMessage->resourceIds()) {
+            $type = $this->settings()->get('contactus_create_zip', '');
+            $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
+                'id' => $contactMessage->resourceIds(),
+                'filename' => $contactMessage->zipFilename(),
+                'baseDir' => 'contactus',
+                'baseUri' => 'contactus',
+                'type' => $type,
+            ]);
+            // $this->messenger()->addSuccess('A zip with the files is created in background.');
+            $hasZip = true;
+        }
+
+        return new JsonModel([
+            'content' => [
+                'property' => 'o-module-contact:has_zip',
+                'value' => $hasZip,
+                'status' => $hasZip ? 'zip' : 'no-zip',
             ],
         ]);
     }

@@ -117,6 +117,14 @@
         color: #00FF00;
         content: ""; /* far fa-thumbs-up */
     }
+    .contact-message .o-icon-zip::before {
+        color: #00FF00;
+        content:""; /* far fa-file-archive */
+    }
+    .contact-message .o-icon-no-zip::before {
+        color: #FF0000;
+        content:""; /* far fa-file-archive */
+    }
     .contact-message .o-icon-undefined::before {
         color: #FF0000;
         content: ""; /* fas fa-exclamation-circle */

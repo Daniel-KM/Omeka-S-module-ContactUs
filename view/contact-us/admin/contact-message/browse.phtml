@@ -151,6 +151,15 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                         aria-label="<?= $escape($translate('Toggle spam')) ?>"
                         title="<?= $escape($translate('Toggle spam')) ?>"></a></li>
                     <?php endif; ?>
+                    <?php if ($editRightContactUs): ?>
+                    <li><a href="#"
+                        class="toggle-property has_zip o-icon-<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
+                        data-toggle-url="<?= $escape($message->url('toggle-zip')) ?>"
+                        data-property="has_zip"
+                        data-status="<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
+                        aria-label="<?= $escape($translate('Toggle zip')) ?>"
+                        title="<?= $escape($translate('Toggle zip')) ?>"></a></li>
+                    <?php endif; ?>
                     <?php if ($message->userIsAllowed('delete')): ?>
                     <li><a href="#"
                         class="o-icon-delete sidebar-content"

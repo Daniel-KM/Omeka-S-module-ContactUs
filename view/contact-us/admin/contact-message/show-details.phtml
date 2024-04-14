@@ -54,13 +54,9 @@ $site = $resource->site();
             <?php endif; ?>
         </div>
         <?php endif; ?>
-        <?php if ($setting('contactus_create_zip')): ?>
         <div class="value">
-            <a download="download" href="<?= $message->zipUrl() ?>"><?= $translate('Link to the zipped files') ?></a>
-            <p><?= sprintf($translate('The zip is created when the message is set "read" and removed when set "unread".')) ?></p>
+            <a download="download" href="<?= $message->zipUrl() ?>"><?= $translate('Link to the zipped files when created') ?></a>
         </div>
-        <?php endif; ?>
-        <?php unset($fields['id']); ?>
     </div>
     <div class="meta-group">
         <?php if ($site): ?>
@@ -87,6 +83,7 @@ $site = $resource->site();
             <div class="to-author"><?= $message->isToAuthor() ? $translate('Message to author') : $translate('Message to us') ?></div>
             <div class="is-read"><?= sprintf($translate('Is read: %s'), $message->isRead() ? $translate('yes') : $translate('no')) ?></div>
             <div class="is-spam"><?= sprintf($translate('Is spam: %s'), $message->isSpam() ? $translate('yes') : $translate('no')) ?></div>
+            <div class="has-zip"><?= sprintf($translate('Has zip: %s'), $message->hasZip() ? $translate('yes') : $translate('no')) ?></div>
         </div>
     </div>
     <div class="meta-group">
@@ -97,7 +94,8 @@ $site = $resource->site();
         <h4><?= $translate('Body') ?></h4>
         <div class="value"><?= $escape($message->body()) ?></div>
     </div>
-    <?php foreach ($fields as $key => $value): ?>
+    <?php foreach ($fields as $key => $value):
+        if ($key === 'id') continue; ?>
     <div class="meta-group">
         <h4><?= $key ?></h4>
         <div class="value"><?= $escape($value) ?></div>
