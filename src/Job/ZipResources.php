@@ -4,7 +4,6 @@ namespace ContactUs\Job;
 
 use Omeka\Api\Representation\MediaRepresentation;
 use Omeka\Job\AbstractJob;
-use Omeka\Stdlib\Message;
 use ZipArchive;
 
 class ZipResources extends AbstractJob
@@ -41,18 +40,22 @@ class ZipResources extends AbstractJob
         $type = $this->getArg('type');
 
         if (empty($ids)) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No resource id set.'); // @translate
             return;
         }
         if (empty($zipFilename)) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No filename set.'); // @translate
             return;
         }
         if (empty($baseDir)) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No basepath set.'); // @translate
             return;
         }
         if (empty($type)) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No image type set.'); // @translate
             return;
         }
@@ -77,6 +80,7 @@ class ZipResources extends AbstractJob
         $media = $api->search('media', ['id' => $ids])->getContent();
         $resources = array_merge($items, $media);
         if (!$resources) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No valid resource.'); // @translate
             return;
         }
@@ -93,17 +97,19 @@ class ZipResources extends AbstractJob
                 if (($type === 'original' && $media->hasOriginal())
                     || ($type !== 'original' && $media->hasThumbnails())
                 ) {
-                    $mediaId = $media->id();
                     $filename = $media->filename();
                     $filepath = $basePath . '/' . $type . '/' . $filename;
+                    if (!file_exists($filepath)) {
+                        continue;
+                    }
                     $mediaType = $media->mediaType();
                     $mediaId = $media->id();
                     $mainType = strtok($mediaType, '/');
                     $extension = $media->extension();
                     $mediaData[$mediaId] = [
                         'id' => $mediaId,
-                        'source' => $media->source(),
-                        'filename' => $media->fil,
+                        'source' => $media->source() ?: $media->filename(),
+                        'filename' => $media->filename(),
                         'filepath' => $filepath,
                         'mediatype' => $mediaType,
                         'maintype' => $mainType,
@@ -114,7 +120,15 @@ class ZipResources extends AbstractJob
             }
         }
         if (!count($mediaData)) {
-            $this->logger->err('No file attached to items.'); // @translate
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
+            if ($type === 'original') {
+                $this->logger->err('No file attached to selected items.'); // @translate
+            } else {
+                $this->logger->err(
+                    'No derivative file of type {type} attached to selected items.', // @translate
+                    ['type' => $type]
+                );
+            }
             return;
         }
 
@@ -123,15 +137,18 @@ class ZipResources extends AbstractJob
             @unlink($zipFilepath);
         }
 
-        $zipUri = $this->getBaseUri() . '/' . $baseDir . '/' . $zipFilename;
-
         $result = $this->prepareDerivativeZip('zip', $zipFilepath, $mediaData);
         if (!$result) {
-            $this->logger->err('An error occured during the creation of the zip.'); // @translate
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             return;
         }
 
-        $this->logger->notice(new Message('Zip created available at %s.', $zipUri)); // @translate
+        // Use the direct uri because the message is not known here.
+        $zipUri = $this->getBaseUri() . '/' . $baseDir . '/' . $zipFilename;
+        $this->logger->notice(
+            'Zip created successfully and available directly at {url}.', // @translate
+            ['url' => $zipUri]
+        );
     }
 
     /**
@@ -167,13 +184,14 @@ class ZipResources extends AbstractJob
 
         // Store files: they are all already compressed (image, video, pdf...),
         // except some txt, xml and old docs.
-
         $index = 0;
         $filenames = [];
         foreach ($mediaData as $file) {
             $zip->addFile($file['filepath']);
             // Light and quick compress text and xml.
             if ($file['maintype'] === 'text'
+                || $file['mediatype'] === 'application/json'
+                || substr($file['mediatype'], -5) === '+json'
                 || $file['mediatype'] === 'application/xml'
                 || substr($file['mediatype'], -4) === '+xml'
             ) {
@@ -196,9 +214,28 @@ class ZipResources extends AbstractJob
             ++$index;
         }
 
+        // Only available before close before php 8.
+        $status = $zip->getStatusString();
+
         $result = $zip->close();
 
-        return $result;
+        if (!$result) {
+            $this->logger->err(
+                'An issue occurred during the creation of the zip file: {error}.', // @translate
+                ['error' => $status]
+            );
+            return false;
+        }
+
+        if (!file_exists($filepath)) {
+            $this->logger->err(
+                'An issue occurred and the zip file was not created: {error}.', // @translate
+                ['error' => $status]
+            );
+            return false;
+        }
+
+        return true;
     }
 
     protected function ensureDirectory(string $dirpath): bool
