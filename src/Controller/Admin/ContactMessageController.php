@@ -277,7 +277,7 @@ class ContactMessageController extends AbstractActionController
             @unlink($contactMessage->zipFilepath());
             $hasZip = false;
         } elseif ($contactMessage->resourceIds()) {
-            $type = $this->settings()->get('contactus_create_zip', '');
+            $type = $this->settings()->get('contactus_create_zip', 'original');
             $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
                 'id' => $contactMessage->resourceIds(),
                 'filename' => $contactMessage->zipFilename(),

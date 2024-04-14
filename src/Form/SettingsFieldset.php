@@ -77,7 +77,6 @@ info@example2.org', // @translate
                     'element_group' => 'contact',
                     'label' => 'Zipped files to send', // @translate
                     'value_options' => [
-                        '' => 'None', // @translate
                         'original' => 'Original', // @translate
                         'large' => 'Large', // @translate
                         'medium' => 'Medium', // @translate
@@ -87,7 +86,7 @@ info@example2.org', // @translate
                 'attributes' => [
                     'id' => 'contactus_create_zip',
                     'required' => false,
-                    'value' => '',
+                    'value' => 'original',
                 ],
             ])
             ->add([
