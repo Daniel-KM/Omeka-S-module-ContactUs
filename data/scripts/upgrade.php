@@ -26,7 +26,7 @@ $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
 $entityManager = $services->get('Omeka\EntityManager');
 
-$config = require dirname(dirname(__DIR__)) . '/config/module.config.php';
+$config = require dirname(__DIR__, 2) . '/config/module.config.php';
 
 if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.55')) {
     $message = new \Omeka\Stdlib\Message(

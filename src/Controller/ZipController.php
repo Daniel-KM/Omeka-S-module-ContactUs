@@ -2,9 +2,9 @@
 
 namespace ContactUs\Controller;
 
+use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
 use Laminas\Mvc\Controller\AbstractActionController;
-use ContactUs\Api\Adapter\MessageAdapter;
 
 class ZipController extends AbstractActionController
 {
@@ -33,7 +33,7 @@ class ZipController extends AbstractActionController
         $this->basePath = $basePath;
     }
 
-    public function indexAction()
+    public function indexAction(): void
     {
         $id = $this->params('id');
         if (!$id) {

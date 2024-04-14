@@ -286,9 +286,7 @@ class ContactUsForm extends Form
                     [
                         'name' => Validator\Callback::class,
                         'options' => [
-                            'callback' => function ($answer) use ($checkAnswer) {
-                                return $answer === $checkAnswer;
-                            },
+                            'callback' => fn ($answer) => $answer === $checkAnswer,
                         ],
                     ],
                 ],

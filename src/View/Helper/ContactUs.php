@@ -610,9 +610,7 @@ SQL;
         // Check emails.
         if ($list) {
             $originalList = array_filter($list);
-            $list = array_filter($originalList, function ($v) {
-                return filter_var($v, FILTER_VALIDATE_EMAIL);
-            });
+            $list = array_filter($originalList, fn ($v) => filter_var($v, FILTER_VALIDATE_EMAIL));
             if (count($originalList) !== count($list)) {
                 $view->logger()->err('Contact Us: Some notification emails for module are invalid.'); // @translate
             }

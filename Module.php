@@ -81,7 +81,6 @@ class Module extends AbstractModule
             // Add possibility to list search own entities.
             // Admins can admin messages (browse, flag, delete, etc.).
             // This is automatic via acl factory.
-        ;
     }
 
     protected function preInstall(): void
@@ -126,9 +125,7 @@ class Module extends AbstractModule
         ];
 
         $config = $this->getConfig()['contactus']['site_settings'];
-        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
-            return !empty($config[$v]) ? $translate($config[$v]) : null;
-        }, array_combine($translatables, $translatables)));
+        $translatables = array_filter(array_map(fn ($v) => !empty($config[$v]) ? $translate($config[$v]) : null, array_combine($translatables, $translatables)));
 
         $this->manageSiteSettings('update', $translatables);
     }
