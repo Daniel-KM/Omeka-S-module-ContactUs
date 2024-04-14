@@ -364,22 +364,60 @@ SQL;
      * @param \Omeka\Stdlib\ErrorStore|array $messages
      * @return \Laminas\View\Model\JsonModel
      */
-    protected function returnError($message, int $statusCode = Response::STATUS_CODE_400, $erros = null): JsonModel
+    protected function returnError($message, ?int $statusCode = Response::STATUS_CODE_400, $messages = null): JsonModel
     {
+        $statusCode ??= Response::STATUS_CODE_400;
+
         $response = $this->getResponse();
         $response->setStatusCode($statusCode);
 
-        $status = $statusCode >= 500 ? 'error' : 'fail';
-
-        $result = [
-            'status' => $status,
-            'message' => is_object($message) ? $message->setTranslator($this->translator()) : $message,
-        ];
+        $translator = $this->translator();
 
         if (is_array($messages) && count($messages)) {
-            $result['data'] = $messages;
+            foreach ($messages as &$msg) {
+                is_object($msg) ? $msg->setTranslator($translator) : $this->translate($msg);
+            }
+            unset($msg);
         } elseif (is_object($messages) && $messages instanceof ErrorStore && $messages->hasErrors()) {
-            $result['data'] = $messages->getErrors();
+            $msgs = [];
+            foreach ($messages->getErrors() as $key => $msg) {
+                $msgs[$key] = is_object($msg) ? $msg->setTranslator($translator) : $this->translate($msg);
+            }
+            $messages = $msgs;
+        } else {
+            $messages = [];
+        }
+
+        $status = $statusCode >= 500 ? 'error' : 'fail';
+
+        $result = [];
+        $result['status'] = $status;
+
+        if (is_object($message)) {
+            $message->setTranslator($translator);
+        } elseif ($message) {
+            $message = $this->translate($message);
+        } elseif ($status === 'error') {
+            // A message is required for error.
+            if ($messages) {
+                $message = reset($messages);
+                if (count($messages) === 1) {
+                    $messages = [];
+                }
+            } else {
+                $message = $this->translate('An error occurred.'); // @translate;
+            }
+        }
+
+        // Normally, only in error, not fail, but a main message may be useful
+        // in any case.
+        if ($message) {
+            $result['message'] = $message;
+        }
+
+        // Normally, not in error.
+        if (count($messages)) {
+            $result['data'] = $messages;
         }
 
         return new JsonModel($result);
