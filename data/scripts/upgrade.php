@@ -2,7 +2,7 @@
 
 namespace ContactUs;
 
-use Omeka\Stdlib\Message;
+use Common\Stdlib\PsrMessage;
 
 /**
  * @var Module $this
@@ -109,7 +109,7 @@ SQL;
 }
 
 if (version_compare($oldVersion, '3.3.8.5', '<')) {
-    $message = new Message(
+    $message = new PsrMessage(
         'A checkbox for consent has been added to the user form. You may update the default label in site settings' // @translate
     );
     $messenger->addNotice($message);
@@ -178,11 +178,11 @@ SQL;
     $settings->set('contactus_to_author_subject', $config['contactus']['site_settings']['contactus_to_author_subject']);
     $settings->set('contactus_to_author_body', $config['contactus']['site_settings']['contactus_to_author_body']);
 
-    $message = new Message(
+    $message = new PsrMessage(
         'It’s now possible to set a specific message when contacting author.' // @translate
     );
     $messenger->addSuccess($message);
-    $message = new Message(
+    $message = new PsrMessage(
         'It’s now possible to contact authors of a resource via the view helper contactUs().' // @translate
     );
     $messenger->addSuccess($message);
@@ -208,19 +208,19 @@ ALTER TABLE `contact_message`
 SQL;
     $connection->executeStatement($sql);
 
-    $message = new Message(
+    $message = new PsrMessage(
         'It’s now possible to append specific fields to the form.' // @translate
     );
     $messenger->addSuccess($message);
 
-    $message = new Message(
+    $message = new PsrMessage(
         'It’s now possible to add a contact form in item/show for themes supporting resource blocks.' // @translate
     );
     $messenger->addSuccess($message);
 }
 
 if (version_compare($oldVersion, '3.4.10', '<')) {
-    $message = new Message(
+    $message = new PsrMessage(
         'It’s now possible to add a contact form in item/browse and to send a list of resource ids (need a line in theme).' // @translate
     );
     $messenger->addSuccess($message);
@@ -248,10 +248,12 @@ SQL;
     $settings->delete('contactus_zip');
     $settings->set('contactus_delete_zip', 30);
 
-    $message = new Message(
-        'It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See %1$ssettings%2$s.', // @translate
-        sprintf('<a href="%s">', $url('admin/default', ['controller' => 'setting'], ['fragment' => 'contact'])),
-        '</a>'
+    $message = new PsrMessage(
+        'It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See {link}settings{link_end}.', // @translate
+        [
+            'link' => sprintf('<a href="%s">', $url('admin/default', ['controller' => 'setting'], ['fragment' => 'contact'])),
+            'link_end' => '</a>',
+        ]
     );
     $message->setEscapeHtml(false);
     $messenger->addSuccess($message);

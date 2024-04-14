@@ -134,7 +134,7 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                 <span class="o-icon-user" aria-label="<?= $translate('Message to author') ?>"></span>
                 <?php endif; ?>
                 <ul class="actions">
-                <?php $editRightContactUs = $message->userIsAllowed('update'); ?>
+                    <?php $editRightContactUs = $message->userIsAllowed('update'); ?>
                     <?php if ($editRightContactUs): ?>
                     <li><a href="#"
                         class="toggle-property is_read o-icon-<?= $message->isRead() ? 'read' : 'not-read' ?>"
