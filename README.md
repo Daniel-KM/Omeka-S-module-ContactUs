@@ -6,10 +6,15 @@ Contact Us (module for Omeka S)
 > than the previous repository.__
 
 [Contact Us] is a module for [Omeka S] that allows to add a site page block with
-a "Contact us" form. The messages are sent by email to the admin but can be read
-directly in the interface too. The form is fully available by api too, so it can
-be used by a third party client. It's possible to send a mail to the author of a
-resource too.
+a "Contact us" form. The messages are sent by email to the admin and can be read
+directly in the interface too. The form can be set on a resource page too, and
+in that case, it is possible for the admin to send a zip of the medias.
+
+Furthermore, it is possible to send a email to the author of a resource, for
+example for an institutional repository of student works.
+
+The form is fully available by api, so it can be used by a third party client,
+like any web or phone app.
 
 
 Installation
@@ -21,8 +26,7 @@ The module [Common] must be installed first.
 
 If you use an old theme, you can install [Blocks Disposition] too.
 
-The module uses external libraries, so use the release zip to install it, or
-use and init the source.
+You may use the release zip to install it or clone the source via git.
 
 * From the zip
 
@@ -33,6 +37,11 @@ does not contain the dependency), and uncompress it in the `modules` directory.
 
 If the module was installed from the source, rename the name of the folder of
 the module to `ContactUs`.
+
+```sh
+cd modules
+git clone https://gitlab.com/Daniel-KM/Omeka-S-module-Contact-Us ContactUs
+```
 
 Then install it like any other Omeka module and follow the config instructions.
 
@@ -48,10 +57,10 @@ Fill the options in the main settings, the site settings and the page block.
 
 For subjects and messages, you can use placeholders for customization. They
 should be wrapped with `{` and `}`: "from", "email", "name", "site_title",
-"site_url", "subject", "message", "ip", "newsletter".
-When there is a resource, you can use too "resource_id", "resource_title",
-"resource_url", and any property term, like "dcterms:date". Note that the
-property should exist in all cases, else it won't be filled.
+"site_url", "subject", "message", "ip", "newsletter". When there is a resource,
+you can use too "resource_id", "resource_title", "resource_url", and any
+property term, like "dcterms:date". Note that the property should exist in all
+cases, else it won't be filled.
 
 ### Static pages
 
@@ -92,11 +101,12 @@ managed: mark read, set spam, delete.
 
 ### Multicheckbox in item/browse or search results
 
-To send contact message with selected items, add a checkbox in the theme
-template, for example in "item/browse.phtml" or "search/resource-list.phtml":
+To send contact message with selected items, add the form as above and add a
+checkbox aside each result in the theme template, for example in "item/browse.phtml"
+or "search/resource-list.phtml":
 
 ```php
-<input form="contact-us" class="contact-us-resource" type="checkbox" name="fields[id][]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add to message') ?>"/>
+<input form="contact-us" class="contact-us-resource" type="checkbox" name="fields[id][]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add this resource to the message to send') ?>"/>
 ```
 
 
