@@ -66,6 +66,12 @@ class ZipResources extends AbstractJob
         if (!is_array($ids)) {
             $ids = [$ids];
         }
+        $ids = array_unique(array_filter(array_map('intval', $ids)));
+        if (!$ids) {
+            $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
+            $this->logger->err('Resource id is invalid.'); // @translate
+            return;
+        }
 
         $items = $api->search('items', ['id' => $ids])->getContent();
         $media = $api->search('media', ['id' => $ids])->getContent();
