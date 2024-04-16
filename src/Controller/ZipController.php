@@ -23,7 +23,7 @@ class ZipController extends AbstractActionController
         MessageAdapter $messageAdapter
     ) {
         $this->entityManager = $entityManager;
-        $this->messageadapter = $messageAdapter;
+        $this->messageAdapter = $messageAdapter;
     }
 
     public function indexAction()
