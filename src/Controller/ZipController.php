@@ -26,7 +26,7 @@ class ZipController extends AbstractActionController
         $this->messageadapter = $messageAdapter;
     }
 
-    public function indexAction(): void
+    public function indexAction()
     {
         // Here, the id is the id with the token of the message.
         $id = $this->params('id');
