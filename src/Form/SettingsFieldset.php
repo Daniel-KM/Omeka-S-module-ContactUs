@@ -71,6 +71,17 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_send_with_user_email',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Use the user email to send message (warning: many email providers reject them as spam)', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_send_with_user_email',
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_create_zip',
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [

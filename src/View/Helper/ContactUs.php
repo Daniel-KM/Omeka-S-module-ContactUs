@@ -123,6 +123,8 @@ class ContactUs extends AbstractHelper
         $user = $view->identity();
         $translate = $view->plugin('translate');
 
+        $sendWithUserEmail = (bool) $view->setting('contactus_send_with_user_email');
+
         // Manage list of resource ids automatically, if any.
         $fields = empty($options['fields'])
             ? ['id' => ['type' => 'hidden']]
@@ -305,6 +307,9 @@ class ContactUs extends AbstractHelper
                         $notifyRecipients = $this->getNotifyRecipients($options);
 
                         $mail = [];
+                        if ($sendWithUserEmail) {
+                            $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
+                        }
                         $mail['to'] = $options['author_email'];
                         $mail['toName'] = null;
                         $mail['reply-to'] = $submitted['email'];
@@ -337,6 +342,10 @@ class ContactUs extends AbstractHelper
                     else {
                         // Send the notification message to administrators.
                         $mail = [];
+                        if ($sendWithUserEmail) {
+                            $mail['from'] = $contactMessage->email();
+                            $mail['fromName'] = $contactMessage->name();
+                        }
                         $mail['to'] = $this->getNotifyRecipients($options);
                         $mail['subject'] = $this->getMailSubject($options)
                             ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
@@ -360,6 +369,10 @@ class ContactUs extends AbstractHelper
                             );
 
                             $mail = [];
+                            if ($sendWithUserEmail) {
+                                $notifyRecipients = $this->getNotifyRecipients($options);
+                                $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
+                            }
                             $mail['to'] = $submitted['from'];
                             $mail['toName'] = $submitted['name'] ?: null;
                             $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
@@ -645,6 +658,7 @@ SQL;
     {
         $view = $this->getView();
         $defaultParams = [
+            'fromName' => null,
             'toName' => null,
             'subject' => sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle()),
             'body' => null,
@@ -680,6 +694,10 @@ SQL;
         $replyTo = is_array($params['reply-to']) ? $params['reply-to'] : [$params['reply-to']];
         foreach ($replyTo as $r) {
             $message->addReplyTo($r);
+        }
+        if ($params['from']) {
+            $message
+                ->setFrom($params['from'], $params['fromName']);
         }
         try {
             $this->mailer->send($message);

@@ -145,6 +145,7 @@ return [
             'contactus_notify_recipients' => [],
             'contactus_author' => 'disabled',
             'contactus_author_only' => false,
+            'contactus_send_with_user_email' => false,
             'contactus_create_zip' => 'original',
             'contactus_delete_zip' => 30,
         ],
