@@ -126,6 +126,9 @@ class ContactUs extends AbstractHelper
         $sendWithUserEmail = (bool) $view->setting('contactus_send_with_user_email');
 
         // Manage list of resource ids automatically, if any.
+        // "resource_ids" is used for standard forms and fields for complex
+        // forms with multiple specific fields.
+        // TODO Manage "resource_ids" in backend, not only in js.
         $fields = empty($options['fields'])
             ? ['id' => ['type' => 'hidden']]
             : ($options['fields'] + ['id' => ['type' => 'hidden']]);
@@ -184,9 +187,9 @@ class ContactUs extends AbstractHelper
 
             $postFields = [];
             if ($fields) {
-                // Manage exception for list of id and security, because fields
+                // Manage exception for list of ids and security, because fields
                 // are not fully checked.
-                $params['fields']['id'] = array_filter(array_map('intval', $params['fields']['id'] ?? []));
+                $params['fields']['id'] = array_values(array_filter(array_map('intval', $params['fields']['id'] ?? [])));
                 foreach (array_keys($fields) as $name) {
                     $params['fields[' . $name . ']'] = $params['fields'][$name] ?? null;
                     $postFields[$name] = $params['fields'][$name] ?? null;
@@ -695,7 +698,7 @@ SQL;
         foreach ($replyTo as $r) {
             $message->addReplyTo($r);
         }
-        if ($params['from']) {
+        if (!empty($params['from'])) {
             $message
                 ->setFrom($params['from'], $params['fromName']);
         }

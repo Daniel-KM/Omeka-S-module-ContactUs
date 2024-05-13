@@ -6,4 +6,7 @@
 
 // Display the form with the specified resource.
 
-echo $this->contactUs(['resource' => $resource]);
+echo $this->contactUs([
+    'resource' => $resource,
+    'heading' => $this->translate('Contact us'),
+]);
