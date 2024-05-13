@@ -16,6 +16,9 @@ example for an institutional repository of student works.
 The form is fully available by api, so it can be used by a third party client,
 like any web or phone app.
 
+The module is compatible with module [Selection], that allows to store a list of
+resources.
+
 
 Installation
 ------------
@@ -40,7 +43,7 @@ the module to `ContactUs`.
 
 ```sh
 cd modules
-git clone https://gitlab.com/Daniel-KM/Omeka-S-module-Contact-Us ContactUs
+git clone https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs ContactUs
 ```
 
 Then install it like any other Omeka module and follow the config instructions.
@@ -99,7 +102,7 @@ The partial is themable: copy the file `common/contact-us.phtml` in your theme.
 The contact us list of message is available in the left sidebar and can be
 managed: mark read, set spam, delete.
 
-### Multicheckbox in item/browse or search results
+### Multicheckbox in item/browse, search results or selection
 
 To send contact message with selected items, add the form as above and add a
 checkbox aside each result in the theme template, for example in "item/browse.phtml"
@@ -108,6 +111,11 @@ or "search/resource-list.phtml":
 ```php
 <input form="contact-us" class="contact-us-resource" type="checkbox" name="fields[id][]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add this resource to the message to send') ?>"/>
 ```
+
+To be automatically managed, the name of the input should be `fields[id][]` for
+now. If you use `resource_ids[]`, it is automatically managed via js. Don't
+forget to set the attribute `form="contact-us"`, or use some js to set it before
+submission.
 
 
 Development
@@ -210,6 +218,7 @@ Copyright
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[Selection]: https://gitlab.com/Daniel-KM/Omeka-S-module-Selection
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
