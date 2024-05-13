@@ -26,7 +26,7 @@ $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
 $entityManager = $services->get('Omeka\EntityManager');
 
-$config = require dirname(__DIR__, 2) . '/config/module.config.php';
+$configModule = require dirname(__DIR__, 2) . '/config/module.config.php';
 
 if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.57')) {
     $message = new \Omeka\Stdlib\Message(
@@ -93,7 +93,7 @@ if (version_compare($oldVersion, '3.3.8.4', '<')) {
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
-        $siteSettings->set('contactus_notify_body', $config['contactus']['site_settings']['contactus_notify_body']);
+        $siteSettings->set('contactus_notify_body', $configModule['contactus']['site_settings']['contactus_notify_body']);
         $siteSettings->set('contactus_notify_subject', $siteSettings->get('contactus_subject'));
         $siteSettings->delete('contactus_subject');
     }
@@ -121,7 +121,7 @@ if (version_compare($oldVersion, '3.3.8.5', '<')) {
         $siteSettings->delete('contactus_newsletter');
         $siteSettings->delete('contactus_newsletter_label');
         $siteSettings->delete('contactus_attach_file');
-        $siteSettings->set('contactus_consent_label', $config['contactus']['site_settings']['contactus_consent_label']);
+        $siteSettings->set('contactus_consent_label', $configModule['contactus']['site_settings']['contactus_consent_label']);
     }
 
     $sql = <<<'SQL'
@@ -175,8 +175,8 @@ ALTER TABLE `contact_message`
 SQL;
     $connection->executeStatement($sql);
 
-    $settings->set('contactus_to_author_subject', $config['contactus']['site_settings']['contactus_to_author_subject']);
-    $settings->set('contactus_to_author_body', $config['contactus']['site_settings']['contactus_to_author_body']);
+    $settings->set('contactus_to_author_subject', $configModule['contactus']['site_settings']['contactus_to_author_subject']);
+    $settings->set('contactus_to_author_body', $configModule['contactus']['site_settings']['contactus_to_author_body']);
 
     $message = new PsrMessage(
         'It’s now possible to set a specific message when contacting author.' // @translate
@@ -263,6 +263,26 @@ if (version_compare($oldVersion, '3.4.13', '<')) {
     $settings->set('contactus_create_zip', $settings->get('contactus_create_zip', 'original') ?: 'original');
     $message = new PsrMessage(
         'A new button allows to create a zip for any contact.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
+
+if (version_compare($oldVersion, '3.4.14', '<')) {
+    /** @var \Omeka\Settings\SiteSettings $siteSettings */
+    $siteSettings = $services->get('Omeka\Settings\Site');
+    $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
+    foreach ($ids as $id) {
+        $siteSettings->setTargetId($id);
+        $siteSettings->set('contactus_append_resource_show', $configModule['contactus']['site_settings']['contactus_append_resource_show']);
+        $siteSettings->set('contactus_append_items_browse', $configModule['contactus']['site_settings']['contactus_append_items_browse']);
+    }
+    $message = new PsrMessage(
+        'Two new options allow to append the contact form to resource pages. They are disabled by default, so check them if you need them.' // @translate
+    );
+    $messenger->addWarning($message);
+
+    $message = new PsrMessage(
+        'A new option allows to use the user email to send message. It is not recommended because many emails providers reject them as spam. Use it only if you manage your own domain.' // @translate
     );
     $messenger->addSuccess($message);
 }
