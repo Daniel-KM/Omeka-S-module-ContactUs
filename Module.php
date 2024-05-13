@@ -220,6 +220,11 @@ class Module extends AbstractModule
     public function handleViewShowAfterResource(Event $event): void
     {
         $view = $event->getTarget();
+        $resourceName = $view->resource->resourceName();
+        $append = $this->getServiceLocator()->get('Omeka\Settings\Site')->get('contactus_append_resource_show', []);
+        if (!in_array($resourceName, $append)) {
+            return;
+        }
         echo $view->contactUs([
             'resource' => $view->resource,
             'attach_file' => false,
@@ -229,6 +234,10 @@ class Module extends AbstractModule
 
     public function handleViewBrowse(Event $event): void
     {
+        $append = $this->getServiceLocator()->get('Omeka\Settings\Site')->get('contactus_append_items_browse');
+        if (!$append) {
+            return;
+        }
         $view = $event->getTarget();
         echo $view->contactUs([
             'attach_file' => false,

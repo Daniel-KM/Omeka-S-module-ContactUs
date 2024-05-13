@@ -2,6 +2,7 @@
 
 namespace ContactUs\Form;
 
+use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
@@ -156,6 +157,33 @@ info@example2.org', // @translate
                     'placeholder' => 'How many are zero plus 1 (in number)? = 1
 How many are one plus 1 (in number)? = 2', // @translate
                     'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_append_resource_show',
+                'type' => CommonElement\OptionalMultiCheckbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Append to resource page (deprecated, for themes without resource block)', // @translate
+                    'value_options' => [
+                        'items' => 'Items', // @translate
+                        'medias' => 'Medias', // @translate
+                        'item_sets' => 'Item sets', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'contactus_append_resource_show',
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_append_items_browse',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Append to items browse page', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_append_items_browse',
                 ],
             ])
         ;

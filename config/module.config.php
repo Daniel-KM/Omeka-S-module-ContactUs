@@ -220,6 +220,8 @@ Subject: {subject}
                 'How many are three plus 3 (in number)?' // @translate
                     => '6',
             ],
+            'contactus_append_resource_show' => [],
+            'contactus_append_items_browse' => false,
         ],
         'block_settings' => [
             'contactUs' => [
