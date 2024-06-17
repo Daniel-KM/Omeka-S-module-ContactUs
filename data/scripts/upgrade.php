@@ -286,3 +286,19 @@ if (version_compare($oldVersion, '3.4.14', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.15', '<')) {
+    /** @var \Omeka\Settings\SiteSettings $siteSettings */
+    $siteSettings = $services->get('Omeka\Settings\Site');
+    $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
+    foreach ($ids as $id) {
+        $siteSettings->setTargetId($id);
+        $siteSettings->set('contactus_confirmation_newsletter_subject', $configModule['contactus']['site_settings']['contactus_confirmation_newsletter_subject']);
+        $siteSettings->set('contactus_confirmation_newsletter_body', $configModule['contactus']['site_settings']['contactus_confirmation_newsletter_body']);
+    }
+
+    $message = new PsrMessage(
+        'A new block allows to display a form to subscribe to a newsletter.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
