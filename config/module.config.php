@@ -186,6 +186,12 @@ Your message:
 Subject: {subject}
 
 {message}', // @translate
+            'contactus_confirmation_newsletter_subject' => 'Subscription to newsletter of {main_title}', // @translate
+            'contactus_confirmation_newsletter_body' => 'Hi,
+
+Thank you for subscribing to our newsletter.
+
+Sincerely,', // @translate
             'contactus_to_author_subject' => 'Message to the author', // @translate
             'contactus_to_author_body' => 'Hi {user_name},
 

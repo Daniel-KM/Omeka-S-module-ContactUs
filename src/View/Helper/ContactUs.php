@@ -399,8 +399,13 @@ class ContactUs extends AbstractHelper
                             }
                             $mail['to'] = $submitted['from'];
                             $mail['toName'] = $submitted['name'] ?: null;
-                            $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
-                            $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
+                            if ($newsletterOnly) {
+                                $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_newsletter_subject'];
+                                $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_newsletter_body'];
+                            } else {
+                                $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
+                                $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
+                            }
                             $mail['subject'] = $this->fillMessage($translate($subject), $submitted);
                             $mail['body'] = $this->fillMessage($translate($body), $submitted);
 

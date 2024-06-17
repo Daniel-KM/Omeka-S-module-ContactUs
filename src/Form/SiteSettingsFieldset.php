@@ -98,6 +98,30 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_confirmation_newsletter_subject',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Subject of the confirmation for subscription to newsletter', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_confirmation_newsletter_subject',
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_confirmation_newsletter_body',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Confirmation message for subscription to newsletter', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {object}, {subject}, {ip}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_confirmation_newsletter_body',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_to_author_subject',
                 'type' => Element\Text::class,
                 'options' => [
