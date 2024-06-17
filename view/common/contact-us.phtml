@@ -25,7 +25,7 @@ $escape = $this->plugin('escapeHtml');
     <?php if ($message): ?>
     <p class="explanation <?= $status ?>"><?= $message ?></p>
     <?php endif; ?>
-    <?php if ($form): ?>
+    <?php if ($status !== 'success' && $form): ?>
     <?= $this->form($form) ?>
     <?php endif; ?>
 </div>
