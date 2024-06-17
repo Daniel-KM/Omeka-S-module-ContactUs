@@ -32,6 +32,7 @@ return [
     'block_layouts' => [
         'invokables' => [
             'contactUs' => Site\BlockLayout\ContactUs::class,
+            'newsletter' => Site\BlockLayout\Newsletter::class,
         ],
     ],
     'resource_page_block_layouts' => [
@@ -42,11 +43,13 @@ return [
     'form_elements' => [
         'invokables' => [
             Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
+            Form\NewsletterFieldset::class => Form\NewsletterFieldset::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
         'factories' => [
             Form\ContactUsForm::class => Service\Form\FormFactory::class,
+            Form\NewsletterForm::class => Service\Form\FormFactory::class,
         ],
     ],
     'controllers' => [
@@ -235,6 +238,16 @@ Subject: {subject}
                 'newsletter_label' => 'Subscribe to the newsletter', // @translate
                 'fields' => [],
                 'attach_file' => false,
+                'antispam' => true,
+                'questions' => [],
+                'template' => '',
+            ],
+            'newsletter' => [
+                'heading' => null,
+                'confirmation_enabled' => true,
+                'confirmation_subject' => '',
+                'confirmation_body' => '',
+                'consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate
                 'antispam' => true,
                 'questions' => [],
                 'template' => '',

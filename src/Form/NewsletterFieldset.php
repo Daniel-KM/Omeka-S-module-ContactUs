@@ -11,7 +11,7 @@ use Omeka\Form\Element as OmekaElement;
  * @see \ContactUs\Form\ContactUsFieldset
  * @see \ContactUs\Form\NewsletterFieldset
  */
-class ContactUsFieldset extends Fieldset
+class NewsletterFieldset extends Fieldset
 {
     public function init(): void
     {
@@ -59,16 +59,6 @@ class ContactUsFieldset extends Fieldset
                 ],
             ])
             ->add([
-                'name' => 'o:block[__blockIndex__][o:data][attach_file]',
-                'type' => Element\Checkbox::class,
-                'options' => [
-                    'label' => 'Allow to attach a file', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_attach_file',
-                ],
-            ])
-            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][consent_label]',
                 'type' => Element\Text::class,
                 'options' => [
@@ -76,39 +66,6 @@ class ContactUsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'contactus_consent_label',
-                ],
-            ])
-            ->add([
-                'name' => 'o:block[__blockIndex__][o:data][newsletter]',
-                'type' => Element\Checkbox::class,
-                'options' => [
-                    'label' => 'Add a checkbox for a newsletter', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_newsletter',
-                ],
-            ])
-            ->add([
-                'name' => 'o:block[__blockIndex__][o:data][newsletter_label]',
-                'type' => Element\Text::class,
-                'options' => [
-                    'label' => 'Label for the newsletter', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_newsletter_label',
-                ],
-            ])
-            ->add([
-                'name' => 'o:block[__blockIndex__][o:data][fields]',
-                'type' => OmekaElement\ArrayTextarea::class,
-                'options' => [
-                    'label' => 'Other fields', // @translate
-                    'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. The elements may be adapted via the theme.', // @translate
-                    'as_key_value' => true,
-                ],
-                'attributes' => [
-                    'id' => 'contactus_fields',
-                    'placeholder' => 'phone = Phone', // @translate
                 ],
             ])
             ->add([
@@ -121,21 +78,6 @@ class ContactUsFieldset extends Fieldset
                     'id' => 'contactus_antispam',
                 ],
             ])
-            ->add([
-                'name' => 'o:block[__blockIndex__][o:data][questions]',
-                'type' => OmekaElement\ArrayTextarea::class,
-                'options' => [
-                    'label' => 'List of antispam questions/answers', // @translate
-                    'info' => 'See the block "Contact us" for a simple list. Separate questions and answer with a "=". Questions may be translated.', // @translate
-                    'as_key_value' => true,
-                ],
-                'attributes' => [
-                    'id' => 'contactus_questions',
-                    'placeholder' => 'How many are zero plus 1 (in number)? = 1
-How many are one plus 1 (in number)? = 2', // @translate
-                    'rows' => 5,
-                ],
-            ])
         ;
         if (class_exists('BlockPlus\Form\Element\TemplateSelect')) {
             $this
@@ -144,8 +86,8 @@ How many are one plus 1 (in number)? = 2', // @translate
                     'type' => \BlockPlus\Form\Element\TemplateSelect::class,
                     'options' => [
                         'label' => 'Template to display', // @translate
-                        'info' => 'Templates are in folder "common/block-layout" of the theme and should start with "contact-us".', // @translate
-                        'template' => 'common/block-layout/contact-us',
+                        'info' => 'Templates are in folder "common/block-layout" of the theme and should start with "newsletter".', // @translate
+                        'template' => 'common/block-layout/newsletter',
                     ],
                     'attributes' => [
                         'class' => 'chosen-select',

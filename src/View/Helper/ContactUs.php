@@ -4,6 +4,7 @@ namespace ContactUs\View\Helper;
 
 use Common\Stdlib\PsrMessage;
 use ContactUs\Form\ContactUsForm;
+use ContactUs\Form\NewsletterForm;
 use Laminas\Form\FormElementManager;
 use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
@@ -70,9 +71,11 @@ class ContactUs extends AbstractHelper
             'template' => null,
             'resource' => null,
             'heading' => null,
+            'confirmation_enabled' => false,
             'html' => null,
-            'attach_file' => null,
+            'attach_file' => false,
             'consent_label' => null,
+            'newsletter_only' => false,
             'newsletter_label' => null,
             'notify_recipients' => null,
             'contact' => 'us',
@@ -134,6 +137,7 @@ class ContactUs extends AbstractHelper
             : ($options['fields'] + ['id' => ['type' => 'hidden']]);
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
+        $newsletterOnly = !empty($options['newsletter_only']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
         $antispam = empty($user)
@@ -183,7 +187,9 @@ class ContactUs extends AbstractHelper
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
             ];
-            $form = $this->contactUsForm($formOptions);
+            $form = $newsletterOnly
+                ? $this->getFormNewsletter($formOptions)
+                : $this->getFormContactUs($formOptions);
 
             $postFields = [];
             if ($fields) {
@@ -202,22 +208,30 @@ class ContactUs extends AbstractHelper
                 $submitted = $form->getData();
                 if ($user) {
                     $submitted['from'] = $user->getEmail();
-                    $submitted['name'] = $user->getName();
+                    $submitted['name'] = $newsletterOnly ? $user->getName() : null;
                 }
 
                 $fileData = $attachFile ? $view->params()->fromFiles() : [];
 
-                // If spam, return a success message, but don't send email.
+                // If spam, store the message and return a success message, but
+                // don't send email.
+
                 // Status is checked below.
                 $status = 'success';
-                $message = new PsrMessage(
-                    $isContactAuthor
-                        ? 'Thank you for your message {name}. It will be sent to the author as soon as possible.' // @translate
-                        : 'Thank you for your message {name}. We will answer you as soon as possible.', // @translate
-                    $submitted['name']
-                        ? ['name' => sprintf('%s (%s)', $submitted['name'], $submitted['from'])]
-                        : ['name' => $submitted['from']]
-                );
+                if ($newsletterOnly) {
+                    $message = new PsrMessage(
+                        'Thank you for subscribing to our newsletter.' // @translate
+                    );
+                } else {
+                    $message = new PsrMessage(
+                        $isContactAuthor
+                            ? 'Thank you for your message {name}. It will be sent to the author as soon as possible.' // @translate
+                            : 'Thank you for your message {name}. We will answer you as soon as possible.', // @translate
+                        $submitted['name']
+                            ? ['name' => sprintf('%s (%s)', $submitted['name'], $submitted['from'])]
+                            : ['name' => $submitted['from']]
+                    );
+                }
 
                 $site = $this->currentSite();
 
@@ -241,13 +255,13 @@ class ContactUs extends AbstractHelper
                 $data = [
                     'o:owner' => $user,
                     'o:email' => $submitted['from'],
-                    'o:name' => $submitted['name'],
+                    'o:name' => $newsletterOnly ? null : $submitted['name'],
                     'o:resource' => !empty($options['resource']) ? ['o:id' => $options['resource']->id()] : null,
                     'o:site' => ['o:id' => $site->id()],
-                    'o-module-contact:subject' => $submitted['subject'],
-                    'o-module-contact:body' => $submitted['message'],
+                    'o-module-contact:subject' => $newsletterOnly ? 'Subscribe newsletter' : $submitted['subject'],
+                    'o-module-contact:body' => $newsletterOnly ? 'Subscribe newsletter' : $submitted['message'],
                     'o-module-contact:fields' => $postFields,
-                    'o-module-contact:newsletter' => $newsletterLabel ? $submitted['newsletter'] === 'yes' : null,
+                    'o-module-contact:newsletter' => $newsletterOnly ? true : ($newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
                     'o-module-contact:is_spam' => $isSpam,
                     'o-module-contact:to_author' => $isContactAuthor,
                 ];
@@ -364,12 +378,19 @@ class ContactUs extends AbstractHelper
                         }
                         // Send the confirmation message to the visitor.
                         elseif ($options['confirmation_enabled']) {
-                            $message = new PsrMessage(
-                                'Thank you for your message {name}. Check your confirmation mail. We will answer you soon.', // @translate
-                                $submitted['name']
-                                    ? ['name' => sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])]
-                                    : ['name' => $submitted['from']]
-                            );
+                            if ($newsletterOnly) {
+                                $message = new PsrMessage(
+                                    'Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}.', // @translate
+                                    ['email' => $submitted['from']]
+                                );
+                            } else {
+                                $message = new PsrMessage(
+                                    'Thank you for your message {name}. Check your confirmation email. We will answer you soon.', // @translate
+                                    $submitted['name']
+                                        ? ['name' => sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])]
+                                        : ['name' => $submitted['from']]
+                                );
+                            }
 
                             $mail = [];
                             if ($sendWithUserEmail) {
@@ -438,26 +459,30 @@ class ContactUs extends AbstractHelper
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
             ];
-            $form = $this->contactUsForm($formOptions);
+            $form = $newsletterOnly
+                ? $this->getFormNewsletter($formOptions)
+                : $this->getFormContactUs($formOptions);
         }
 
-        if ($user):
+        if ($user) {
             $form->get('from')
                 ->setValue($user->getEmail())
                 ->setAttribute('disabled', 'disabled');
-            $form->get('name')
-                ->setValue($user->getName())
-                ->setAttribute('disabled', 'disabled');
-        endif;
+            if (!$newsletterOnly) {
+                $form->get('name')
+                    ->setValue($user->getName())
+                    ->setAttribute('disabled', 'disabled');
+            }
+        }
 
-        if ($options['resource']):
+        if ($options['resource']) {
             $answer = 'About resource %s (%s).'; // @translate
             $form->get('message')
                 ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
-        endif;
+        }
 
         $form->init();
-        $form->setName('contact-us');
+        $form->setName($newsletterOnly ? 'newsletter' : 'contact-us');
 
         return $view->partial(
             $template,
@@ -473,11 +498,11 @@ class ContactUs extends AbstractHelper
         );
     }
 
-    protected function contactUsForm(array $formOptions): ContactUsForm
+    protected function getFormContactUs(array $formOptions): ContactUsForm
     {
         /** @var \ContactUs\Form\ContactUsForm $form */
         $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
-        $form
+        return $form
             ->setFields($formOptions['fields'])
             ->setAttachFile($formOptions['attach_file'])
             ->setConsentLabel($formOptions['consent_label'])
@@ -487,7 +512,18 @@ class ContactUs extends AbstractHelper
             ->setCheckAnswer($formOptions['check_answer'])
             ->setUser($formOptions['user'])
             ->setIsContactAuthor($formOptions['contact'] === 'author');
-        return $form;
+    }
+
+    protected function getFormNewsletter(array $formOptions): NewsletterForm
+    {
+        /** @var \ContactUs\Form\NewsletterForm $form */
+        $form = $this->formElementManager->get(NewsletterForm::class, $formOptions);
+        return $form
+            ->setConsentLabel($formOptions['consent_label'])
+            ->setQuestion($formOptions['question'])
+            ->setAnswer($formOptions['answer'])
+            ->setCheckAnswer($formOptions['check_answer'])
+            ->setUser($formOptions['user']);
     }
 
     /**
