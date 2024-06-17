@@ -19,6 +19,8 @@ like any web or phone app.
 The module is compatible with module [Selection], that allows to store a list of
 resources.
 
+A block allows to display a form to subscribe to a newsletter too.
+
 
 Installation
 ------------
@@ -52,7 +54,9 @@ Then install it like any other Omeka module and follow the config instructions.
 Quick start
 -----------
 
-The form can be placed anywhere in the site.
+The module adds two blocks for site pages: Contact Us and Newsletter.
+
+The blocks can be placed anywhere in the site.
 
 ### Config
 
@@ -212,6 +216,9 @@ Copyright
 
 * Copyright Daniel Berthereau, 2018-2024 (see [Daniel-KM] on GitLab)
 
+The feature to display a block to subscribe to a newsletter was implemented for
+the digital library of the city of [Saint-Quentin].
+
 
 [Contact Us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
@@ -226,5 +233,6 @@ Copyright
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [MIT]: http://opensource.org/licenses/MIT
+[Saint-Quentin]: https://saintquentinartethistoire.fr
 [GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
