@@ -19,7 +19,8 @@ like any web or phone app.
 The module is compatible with module [Selection], that allows to store a list of
 resources.
 
-A block allows to display a form to subscribe to a newsletter too.
+A block allows to display a form to subscribe or unsubscribe to a newsletter too.
+The newsletter is not managed inside Omeka.
 
 
 Installation
@@ -45,7 +46,7 @@ the module to `ContactUs`.
 
 ```sh
 cd modules
-git clone https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs ContactUs
+git clone https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs.git ContactUs
 ```
 
 Then install it like any other Omeka module and follow the config instructions.
@@ -81,16 +82,31 @@ your theme.
 When submitted, the site admin will receive the email, and a confirmation email
 will be sent to the visitor.
 
-If you want to use the "Contact us" page in all your sites, you can use the
-module [Block Plus], that has a special block to duplicate a page in multiple places.
+If you want to use the "Contact us" page in all your sites, you may use the
+module [Block Plus], that has a special block to duplicate a page in multiple
+places.
 
 ### Resource pages
 
-The form is displayed automatically on item set, item or media show pages and
-item browse page. The settings can be set for each site.
+#### Resource blocks 
 
-To manage the display more precisely, use the module [Blocks Disposition], or
-add the following code in your theme:
+The module has three resource blocks that can be used in new themes: 
+- A form that includes the id of the current resource;
+- A button that displays the same form on click;
+- A template that indicates that the resource is selected or not with a
+  checkbox, that is commonly replaced by a basket via css.
+
+#### Events
+
+For old themes, the form may be displayed automatically on item set, item or
+media show pages and item browse page. The settings can be set for each site.
+
+To manage the display more precisely, use the the module [Blocks Disposition].
+
+### View helpers
+
+For custom themes, the forms are available through the helper ContactUs. So you
+may add the following code in your theme:
 
 ```php
 // For a single resource.
@@ -99,7 +115,11 @@ echo $this->contactUs(['resource' => $resource]);
 echo $this->contactUs();
 ```
 
-The partial is themable: copy the file `common/contact-us.phtml` in your theme.
+Other helpers are `ContactUsSelection`,  `ContactUsSelection`, `ContactUsSelectionList`
+and `ContactUsSelector`.
+
+All the view helpers use themplates that are themable. For example, copy the
+file `common/contact-us.phtml` in your theme.
 
 ### Admin interface
 
@@ -170,7 +190,8 @@ message.
 TODO
 ----
 
-- [ ] Fix consent label.
+- [ ] Remove code related to cookie/container, as it is managed by session now.
+- [x] Fix consent label.
 
 
 Warning
