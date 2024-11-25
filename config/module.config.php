@@ -43,6 +43,7 @@ return [
         'invokables' => [
             'contactUs' => Site\ResourcePageBlockLayout\ContactUs::class,
             'contactUsButton' => Site\ResourcePageBlockLayout\ContactUsButton::class,
+            'contactUsSelector' => Site\ResourcePageBlockLayout\ContactUsSelector::class,
         ],
     ],
     'form_elements' => [
