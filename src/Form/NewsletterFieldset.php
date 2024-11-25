@@ -17,6 +17,16 @@ class NewsletterFieldset extends Fieldset
     {
         $this
             ->add([
+                'name' => 'o:block[__blockIndex__][o:data][unsubscribe]',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Checkbox to unsubscribe', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_unsubscribe',
+                ],
+            ])
+            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][confirmation_enabled]',
                 'type' => Element\Checkbox::class,
                 'options' => [
@@ -46,6 +56,16 @@ class NewsletterFieldset extends Fieldset
                 'attributes' => [
                     'id' => 'contactus_confirmation_body',
                     'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][unsubscribe_label]',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Label for the unsubscribe checkbox', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_unsubscribe_label',
                 ],
             ])
             ->add([

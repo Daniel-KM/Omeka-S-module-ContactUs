@@ -253,6 +253,8 @@ Subject: {subject}
                 'confirmation_subject' => '',
                 'confirmation_body' => '',
                 'consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate
+                'unsubscribe' => false,
+                'unsubscribe_label' => 'Unsubscribe', // @translate
                 'antispam' => true,
                 'questions' => [],
                 'template' => '',

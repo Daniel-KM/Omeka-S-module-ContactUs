@@ -75,6 +75,8 @@ class ContactUs extends AbstractHelper
             'html' => null,
             'attach_file' => false,
             'consent_label' => null,
+            'unsubscribe' => null,
+            'unsubscribe_label' => null,
             'newsletter_only' => false,
             'newsletter_label' => null,
             'notify_recipients' => null,
@@ -142,6 +144,8 @@ class ContactUs extends AbstractHelper
             : ($options['fields'] + ['id' => ['type' => 'hidden']]);
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
+        $unsubscribe = !empty($options['unsubscribe']);
+        $unsubscribeLabel = trim((string) $options['unsubscribe_label']);
         $newsletterOnly = !empty($options['newsletter_only']);
         $newsletterLabel = trim((string) $options['newsletter_label']);
 
@@ -186,6 +190,8 @@ class ContactUs extends AbstractHelper
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
+                'unsubscribe' => $unsubscribe,
+                'unsubscribe_label' => $unsubscribeLabel,
                 'question' => $question,
                 'answer' => $answer,
                 'check_answer' => $checkAnswer,
@@ -224,9 +230,17 @@ class ContactUs extends AbstractHelper
                 // Status is checked below.
                 $status = 'success';
                 if ($newsletterOnly) {
-                    $message = new PsrMessage(
-                        'Thank you for subscribing to our newsletter.' // @translate
-                    );
+                    if ($unsubscribe) {
+                        $message = new PsrMessage(
+                            'The unsubscription for {email} is confirmed.', // @translate
+                            ['email' => $submitted['from']]
+                        );
+                    } else {
+                        $message = new PsrMessage(
+                            'Thank you for subscribing to our newsletter, {name}.', // @translate
+                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                        );
+                    }
                 } else {
                     $message = new PsrMessage(
                         $isContactAuthor
@@ -263,10 +277,18 @@ class ContactUs extends AbstractHelper
                     'o:name' => $newsletterOnly ? null : $submitted['name'],
                     'o:resource' => !empty($options['resource']) ? ['o:id' => $options['resource']->id()] : null,
                     'o:site' => ['o:id' => $site->id()],
-                    'o-module-contact:subject' => $newsletterOnly ? 'Subscribe newsletter' : $submitted['subject'],
-                    'o-module-contact:body' => $newsletterOnly ? 'Subscribe newsletter' : $submitted['message'],
+                    'o-module-contact:subject' => $newsletterOnly
+                        ? $translate($formOptions['unsubscribe']
+                            ? 'Unsubscribe newsletter' // @translate
+                            : 'Subscribe newsletter') // @translate
+                        : $submitted['subject'],
+                    'o-module-contact:body' => $newsletterOnly
+                        ? $translate($formOptions['unsubscribe'] ? 'Unsubscribe newsletter' : 'Subscribe newsletter')
+                        : $submitted['message'],
                     'o-module-contact:fields' => $postFields,
-                    'o-module-contact:newsletter' => $newsletterOnly ? true : ($newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
+                    'o-module-contact:newsletter' => $newsletterOnly
+                        ? empty($formOptions['unsubscribe'])
+                        : ($newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
                     'o-module-contact:is_spam' => $isSpam,
                     'o-module-contact:to_author' => $isContactAuthor,
                 ];
@@ -474,6 +496,8 @@ class ContactUs extends AbstractHelper
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
+                'unsubscribe' => $unsubscribe,
+                'unsubscribe_label' => $unsubscribeLabel,
                 'question' => $question,
                 'answer' => $answer,
                 'check_answer' => $checkAnswer,
@@ -543,6 +567,8 @@ class ContactUs extends AbstractHelper
         $form = $this->formElementManager->get(NewsletterForm::class, $formOptions);
         return $form
             ->setConsentLabel($formOptions['consent_label'])
+            ->setUnsubscribe($formOptions['unsubscribe'])
+            ->setUnsubscribeLabel($formOptions['unsubscribe_label'])
             ->setQuestion($formOptions['question'])
             ->setAnswer($formOptions['answer'])
             ->setCheckAnswer($formOptions['check_answer'])

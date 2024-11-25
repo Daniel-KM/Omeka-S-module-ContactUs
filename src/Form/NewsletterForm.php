@@ -17,6 +17,8 @@ class NewsletterForm extends Form
 {
     protected $formOptions = [];
     protected $consentLabel = '';
+    protected $unsubscribe = false;
+    protected $unsubscribeLabel = 'Unsubscribe';
     protected $question = '';
     protected $answer = '';
     protected $checkAnswer = '';
@@ -27,6 +29,8 @@ class NewsletterForm extends Form
         parent::__construct($name, $options);
         $this->formOptions = $options['formOptions'] ?? [];
         $this->consentLabel = $options['consent_label'] ?? '';
+        $this->unsubscribe = !empty($options['unsubscribe']);
+        $this->unsubscribeLabel = $options['unsubscribe_label'] ?? 'Unsubscribe';
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
@@ -58,32 +62,50 @@ class NewsletterForm extends Form
                 ],
             ]);
 
-        if ($this->user || !$this->consentLabel) {
+        if ($this->unsubscribe) {
             $this
                 ->add([
-                    'name' => 'consent',
-                    'type' => Element\Hidden::class,
-                    'attributes' => [
-                        'id' => 'consent',
-                        'value' => true,
-                    ],
-                ]);
-        } else {
-            $this
-                ->add([
-                    'name' => 'consent',
+                    'name' => 'unsubscribe',
                     'type' => Element\Checkbox::class,
                     'options' => [
-                        'label' => $this->consentLabel,
+                        'label' => $this->unsubscribeLabel ?: 'Unsubscribe',
                         'label_attributes' => [
                             'class' => 'required',
                         ],
                     ],
                     'attributes' => [
-                        'id' => 'consent',
+                        'id' => 'unsubscribe',
                         'required' => true,
                     ],
                 ]);
+        } else {
+            if ($this->user || !$this->consentLabel) {
+                $this
+                    ->add([
+                        'name' => 'consent',
+                        'type' => Element\Hidden::class,
+                        'attributes' => [
+                            'id' => 'consent',
+                            'value' => true,
+                        ],
+                    ]);
+            } else {
+                $this
+                    ->add([
+                        'name' => 'consent',
+                        'type' => Element\Checkbox::class,
+                        'options' => [
+                            'label' => $this->consentLabel,
+                            'label_attributes' => [
+                                'class' => 'required',
+                            ],
+                        ],
+                        'attributes' => [
+                            'id' => 'consent',
+                            'required' => true,
+                        ],
+                    ]);
+            }
         }
 
         if ($this->question) {
@@ -156,6 +178,18 @@ class NewsletterForm extends Form
     public function setConsentLabel($consentLabel): self
     {
         $this->consentLabel = $consentLabel;
+        return $this;
+    }
+
+    public function setUnsubscribe($unsubscribe): self
+    {
+        $this->unsubscribe = (bool) $unsubscribe;
+        return $this;
+    }
+
+    public function setUnsubscribeLabel($unsubscribeLabel): self
+    {
+        $this->unsubscribeLabel = $unsubscribeLabel;
         return $this;
     }
 
