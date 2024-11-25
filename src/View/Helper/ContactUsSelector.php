@@ -18,6 +18,10 @@ class ContactUsSelector extends AbstractHelper
 
     /**
      * Display a contact us selector, checked or not.
+     *
+     * @var array $options Managed options:
+     * - template (string)
+     * - label (string): default is "Add to the selection for contact".
      */
     public function __invoke(AbstractResourceEntityRepresentation $resource, array $options = []): string
     {
@@ -34,6 +38,7 @@ class ContactUsSelector extends AbstractHelper
 
         $options += [
             'template' => null,
+            'label' => $view->translate('Add to the selection for contact'),
         ];
 
         $selectedResourceIds = $view->contactUsSelection();

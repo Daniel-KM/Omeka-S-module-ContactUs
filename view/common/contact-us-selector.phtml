@@ -5,12 +5,14 @@
  * @var bool $isSelected
  * @var array $selectedResourceIds
  * @var string $urlContactUsSelect
+ * @var string $label
+ *
+ * And passed options.
  */
 
 $plugins = $this->getHelperPluginManager();
 $identity = $plugins->get('identity');
 $assetUrl = $plugins->get('assetUrl');
-$translate = $plugins->get('translate');
 $headLink = $plugins->get('headLink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 $headScript = $plugins->get('headScript');
@@ -23,4 +25,4 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<input class="contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($translate('Add to the selection for contact')) ?>" data-url="<?= $urlContactUsSelect ?>" data-local-storage="<?= $user ? '0' : '1' ?>" />
+<input class="contact-us-resource contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($label) ?>" data-url="<?= $urlContactUsSelect ?>" data-local-storage="<?= $user ? '0' : '1' ?>" />
