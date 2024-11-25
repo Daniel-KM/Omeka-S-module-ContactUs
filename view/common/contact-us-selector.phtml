@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
+ * @var bool $isSelected
+ * @var array $selectedResourceIds
+ * @var string $urlContactUsSelect
+ */
+
+$plugins = $this->getHelperPluginManager();
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+$headLink = $plugins->get('headLink');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+$headScript = $plugins->get('headScript');
+
+$headLink
+    ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
+$headScript
+    ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
+?>
+
+<input class="contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($translate('Add to the selection for contact')) ?>" data-url="<?= $urlContactUsSelect ?>" />

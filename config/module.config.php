@@ -25,6 +25,9 @@ return [
         ],
     ],
     'view_helpers' => [
+        'invokables' => [
+            'contactUsSelector' => View\Helper\ContactUsSelector::class,
+        ],
         'factories' => [
             'contactUs' => Service\ViewHelper\ContactUsFactory::class,
         ],
