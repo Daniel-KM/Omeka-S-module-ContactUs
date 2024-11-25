@@ -26,28 +26,39 @@ class ContactUsSelector extends AbstractHelper
     public function __invoke(AbstractResourceEntityRepresentation $resource, array $options = []): string
     {
         /**
-         * The contact us selector url is stored statically for performance reason.
+         * Some data are stored statically for performance reason.
          */
+        static $partial = null;
+        static $defaultLabel = null;
+        static $maxResources = null;
+        static $contactUsSelection = null;
         static $urlContactUsSelect = null;
 
-        $view = $this->getView();
-
         if (is_null($urlContactUsSelect)) {
-            $urlContactUsSelect = $view->url('site/contact-us', ['action' => 'select'], true);
+            $plugins = $this->getView()->getHelperPluginManager();
+            $url = $plugins->get('url');
+            $partial = $plugins->get('partial');
+            $translate = $plugins->get('translate');
+            $siteSetting = $plugins->get('siteSetting');
+            $contactUsSelection = $plugins->get('contactUsSelection');
+            $urlContactUsSelect = $url('site/contact-us', ['action' => 'select'], true);
+            $maxResources = (int) $siteSetting('contactus_selection_max');
+            $defaultLabel = $translate('Add to the selection for contact'); // @translate
         }
 
         $options += [
             'template' => null,
-            'label' => $view->translate('Add to the selection for contact'),
+            'label' => $defaultLabel,
         ];
 
-        $selectedResourceIds = $view->contactUsSelection();
+        $selectedResourceIds = $contactUsSelection();
 
         $template = $options['template'] ?: self::PARTIAL_NAME;
 
-        return $view->partial($template, [
+        return $partial($template, [
             'resource' => $resource,
             'isSelected' => in_array($resource->id(), $selectedResourceIds),
+            'maxResources' => $maxResources,
             'selectedResourceIds' => $selectedResourceIds,
             'urlContactUsSelect' => $urlContactUsSelect,
         ] + $options);

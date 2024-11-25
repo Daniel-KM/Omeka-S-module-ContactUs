@@ -82,7 +82,38 @@ class IndexController extends AbstractActionController
 
         $requestedResourceIds = $this->requestedResourceIds();
 
-        $newSelecteds = $this->viewHelpers()->get('contactUsSelection')($requestedResourceIds);
+        // TODO Factorize with view helper ContactUsSelector?
+
+        $contactUsSelection = $this->viewHelpers()->get('contactUsSelection');
+
+        // Manage the case where there the max number is set.
+        $max = (int) $this->siteSettings()->get('contactus_selection_max');
+        $isFail = false;
+        if ($max) {
+            $alreadySelecteds = $contactUsSelection();
+            $existings = array_intersect($requestedResourceIds, $alreadySelecteds);
+            $news = array_diff($requestedResourceIds, $alreadySelecteds);
+            $newsSelectedsWithoutDeleted = array_diff($alreadySelecteds, $existings);
+            $newSelecteds = array_merge($newsSelectedsWithoutDeleted, $news);
+            $countNewSelecteds = count($newSelecteds);
+            $isFail = $max && $countNewSelecteds > $max;
+        }
+
+        // Here, the max is already applied if needed.
+        $newSelecteds = $contactUsSelection($requestedResourceIds);
+
+        if ($isFail) {
+            return new JsonModel([
+                'status' => 'fail',
+                'data' => [
+                    'selected_resources' => $newSelecteds,
+                ],
+                'message' => sprintf(
+                    $this->translate('It is not possible to select more than %d resources.'), // @translate
+                    $max
+                ),
+            ]);
+        }
 
         return new JsonModel([
             'status' => 'success',

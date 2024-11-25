@@ -27,6 +27,32 @@
             element.show();
         };
 
+        const dialogMessage = function (message) {
+            // Use a dialog to display a message.
+            var dialog = document.querySelector('dialog.popup-message');
+            if (!dialog) {
+                dialog = `
+<dialog class="popup popup-dialog popup-message">
+    <div class="popup-background">
+        <div class="popup-panel">
+            <div class="popup-header">
+                <button type="button" class="popup-header-close-button" title="Close" autofocus="autofocus">
+                    <span class="popup-close">X</span>
+                </button>
+            </div>
+            <div class="popup-contents">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+</dialog>`;
+                $('body').append(dialog);
+                dialog = document.querySelector('dialog.popup-message');
+            }
+            dialog.innerHTML = dialog.innerHTML.replace('{{ message }}', message);
+            dialog.showModal();
+        };
+
         /**
          * Check if a resource is selected (local session).
          */
@@ -45,7 +71,7 @@
         /**
          * On load, check/uncheck contact us selection from local storage.
          */
-       $('.contact-us-basket[data-local-storage="1"]').each(function(i, obj) {
+       $('.contact-us-selection[data-local-storage="1"]').each(function(i, obj) {
             // Don't check the template itself during the init.
             const resourceId = $(this).val();
             if (!isNaN(resourceId)) {
@@ -54,7 +80,7 @@
         });
 
         /**
-         * Prepare page selection for contact when the local storage is used.
+         * On load, prepare the selection list for contact for visitor with local storage.
          */
         $('.resource-list.contact-us-template').each(function() {
             /**
@@ -229,13 +255,14 @@
          *
          * The selection list may be limited by the max size of selections.
          */
-        $('body').on('click', '.contact-us-basket', function() {
+        $('body').on('click', '.contact-us-selection', function() {
             const checkbox = $(this);
             const resourceId = parseInt(checkbox.val());
             if (!resourceId) {
                 return;
             }
 
+            // For visitor.
             if (checkbox.data('localStorage')) {
                 const selectedResourceIds = localStorage.getItem('contactus_selectedIds')
                     ? JSON.parse(localStorage.getItem('contactus_selectedIds'))
@@ -252,6 +279,7 @@
                 return;
             }
 
+            // For user.
             const url = checkbox.data('url');
             $.ajax({
                 url: url,
@@ -259,11 +287,8 @@
                 // beforeSend: beforeSpin(checkbox),
             })
             .done(function(data) {
-                if (data.status === 'success') {
-                    // Nothing to do for now.
-                    // const selectedResources = data.data.selected_resources;
-                } else if (data.status === 'error') {
-                    alert(data.message ? data.message : 'An error occurred.');
+                if (data.status !== 'success') {
+                    dialogMessage(data.message ? data.message : 'An error occurred.');
                 }
             })
             .fail(function(jqXHR, errorMsg) {

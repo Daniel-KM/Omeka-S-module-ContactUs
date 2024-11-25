@@ -3,6 +3,7 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
  * @var bool $isSelected
+ * @var int $maxResources
  * @var array $selectedResourceIds
  * @var string $urlContactUsSelect
  * @var string $label
@@ -25,4 +26,4 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<input class="contact-us-resource contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($label) ?>" data-url="<?= $urlContactUsSelect ?>" data-local-storage="<?= $user ? '0' : '1' ?>" />
+<input class="contact-us-resource contact-us-selection" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($label) ?>" data-url="<?= $urlContactUsSelect ?>" data-local-storage="<?= $user ? '0' : '1' ?>" data-max-resources="<?= $maxResources ?>"/>
