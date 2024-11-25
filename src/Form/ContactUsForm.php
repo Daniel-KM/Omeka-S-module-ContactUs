@@ -10,6 +10,7 @@ use Omeka\Entity\User;
 
 class ContactUsForm extends Form
 {
+    protected $formOptions = [];
     protected $fields = [];
     protected $attachFile = false;
     protected $consentLabel = '';
@@ -43,25 +44,59 @@ class ContactUsForm extends Form
 
         // "From" is used instead of "email" to avoid some basic spammers.
         if ($this->user) {
-            $this
-                ->add([
-                    'name' => 'from',
-                    'type' => Element\Hidden::class,
-                    'attributes' => [
-                        'id' => 'from',
-                        'value' => $this->user->getEmail(),
-                        'required' => false,
-                    ],
-                ])
-                ->add([
-                    'name' => 'name',
-                    'type' => Element\Hidden::class,
-                    'attributes' => [
-                        'id' => 'name',
-                        'value' => $this->user->getName(),
-                        'required' => false,
-                    ],
-                ]);
+            if (!empty($this->formOptions['form_display_user_email_hidden'])) {
+                $this
+                    ->add([
+                        'name' => 'from',
+                        'type' => Element\Hidden::class,
+                        'attributes' => [
+                            'id' => 'from',
+                            'value' => $this->user->getEmail(),
+                            'required' => false,
+                        ],
+                    ]);
+            } else {
+                $this
+                    ->add([
+                        'name' => 'from',
+                        'type' => Element\Email::class,
+                        'options' => [
+                            'label' => 'Email', // @translate
+                        ],
+                        'attributes' => [
+                            'id' => 'from',
+                            'value' => $this->user->getEmail(),
+                            'readonly' => 'readonly',
+                            'pattern' => '[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,}',
+                        ],
+                    ]);
+            }
+            if (!empty($this->formOptions['form_display_user_name_hidden'])) {
+                $this
+                    ->add([
+                        'name' => 'name',
+                        'type' => Element\Hidden::class,
+                        'attributes' => [
+                            'id' => 'name',
+                            'value' => $this->user->getName(),
+                            'required' => false,
+                        ],
+                    ]);
+            } else {
+                $this
+                    ->add([
+                        'name' => 'name',
+                        'type' => Element\Text::class,
+                        'options' => [
+                            'label' => 'Name', // @translate
+                        ],
+                        'attributes' => [
+                            'id' => 'name',
+                            'value' => $this->user->getName(),
+                            'required' => false,
+                        ],
+                    ]);
+            }
         } else {
             $this
                 ->add([
@@ -322,6 +357,12 @@ class ContactUsForm extends Form
                 ],
             ]);
         }
+    }
+
+    public function setFormOptions(array $formOptions): self
+    {
+        $this->formOptions = $formOptions;
+        return $this;
     }
 
     public function setFields(?array $fields): self

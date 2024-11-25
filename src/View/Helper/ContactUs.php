@@ -88,6 +88,8 @@ class ContactUs extends AbstractHelper
             'contact' => 'us',
             'author_email' => null,
             'confirmation_enabled' => false,
+            'form_display_user_email_hidden' => false,
+            'form_display_user_name_hidden' => false,
         ];
         $this->mailer = $mailer;
         $this->api = $api;
@@ -205,6 +207,8 @@ class ContactUs extends AbstractHelper
                 'check_answer' => $checkAnswer,
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
+                'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
+                'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
             ];
             $form = $newsletterOnly
                 ? $this->getFormNewsletter($formOptions)
@@ -227,6 +231,7 @@ class ContactUs extends AbstractHelper
                 $submitted = $form->getData();
                 if ($user) {
                     $submitted['from'] = $user->getEmail();
+                    // TODO What is the purpose of removing user name only for contact, not newsletter?
                     $submitted['name'] = $newsletterOnly ? $user->getName() : null;
                 }
 
@@ -511,6 +516,8 @@ class ContactUs extends AbstractHelper
                 'check_answer' => $checkAnswer,
                 'user' => $user,
                 'contact' => $isContactAuthor ? 'author' : 'us',
+                'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
+                'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
             ];
             $form = $newsletterOnly
                 ? $this->getFormNewsletter($formOptions)
@@ -559,6 +566,7 @@ class ContactUs extends AbstractHelper
         /** @var \ContactUs\Form\ContactUsForm $form */
         $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
         return $form
+            ->setFormOptions($formOptions)
             ->setFields($formOptions['fields'])
             ->setAttachFile($formOptions['attach_file'])
             ->setConsentLabel($formOptions['consent_label'])
@@ -567,7 +575,8 @@ class ContactUs extends AbstractHelper
             ->setAnswer($formOptions['answer'])
             ->setCheckAnswer($formOptions['check_answer'])
             ->setUser($formOptions['user'])
-            ->setIsContactAuthor($formOptions['contact'] === 'author');
+            ->setIsContactAuthor($formOptions['contact'] === 'author')
+        ;
     }
 
     protected function getFormNewsletter(array $formOptions): NewsletterForm
@@ -575,13 +584,15 @@ class ContactUs extends AbstractHelper
         /** @var \ContactUs\Form\NewsletterForm $form */
         $form = $this->formElementManager->get(NewsletterForm::class, $formOptions);
         return $form
+            ->setFormOptions($formOptions)
             ->setConsentLabel($formOptions['consent_label'])
             ->setUnsubscribe($formOptions['unsubscribe'])
             ->setUnsubscribeLabel($formOptions['unsubscribe_label'])
             ->setQuestion($formOptions['question'])
             ->setAnswer($formOptions['answer'])
             ->setCheckAnswer($formOptions['check_answer'])
-            ->setUser($formOptions['user']);
+            ->setUser($formOptions['user'])
+        ;
     }
 
     /**
