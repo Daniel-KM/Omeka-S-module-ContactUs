@@ -26,12 +26,12 @@ return [
     ],
     'view_helpers' => [
         'invokables' => [
-            'contactUsSelectionList' => View\Helper\ContactUsSelectionList::class,
             'contactUsSelector' => View\Helper\ContactUsSelector::class,
         ],
         'factories' => [
             'contactUs' => Service\ViewHelper\ContactUsFactory::class,
             'contactUsSelection' => Service\ViewHelper\ContactUsSelectionFactory::class,
+            'contactUsSelectionList' => Service\ViewHelper\ContactUsSelectionListFactory::class,
         ],
     ],
     'block_layouts' => [

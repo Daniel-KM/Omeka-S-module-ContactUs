@@ -16,7 +16,17 @@ class ContactUsSelectionList extends AbstractHelper
     const PARTIAL_NAME = 'common/contact-us-selection-list';
 
     /**
-     * <Display a contact us selector, checked or not.
+     * @var bool
+     */
+    protected $isGuestActive = false;
+
+    public function __construct(bool $isGuestActive)
+    {
+        $this->isGuestActive = $isGuestActive;
+    }
+
+    /**
+     * Display a contact us selector, checked or not.
      */
     public function __invoke(array $options = []): string
     {
@@ -26,12 +36,18 @@ class ContactUsSelectionList extends AbstractHelper
             'template' => null,
         ];
 
+        $user = $view->identity();
         $selectedResourceIds = $view->contactUsSelection();
 
         $template = $options['template'] ?: self::PARTIAL_NAME;
 
         return $view->partial($template, [
+            'site' => $view->currentSite(),
+            'user' => $user,
             'resourceIds' => $selectedResourceIds,
+            'isGuestActive' => $this->isGuestActive,
+            'isSession' => !$user,
+            'isPost' => $view->params()->fromPost(),
         ] + $options);
     }
 }

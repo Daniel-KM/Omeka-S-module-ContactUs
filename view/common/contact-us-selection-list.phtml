@@ -1,10 +1,18 @@
 <?php
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Entity\User $user
  * @var array $resourceIds
+ * @var bool $isGuestActive
+ * @var bool $isSession
+ * @var bool $isPost
+ *
+ * @todo Factorize contact-us-selection-list with contact-us/site/index/browse.
  */
 
 $plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
 $api = $plugins->get('api');
 $escape = $plugins->get('escapeHtml');
 $assetUrl = $plugins->get('assetUrl');
@@ -12,6 +20,7 @@ $translate = $plugins->get('translate');
 $headLink = $plugins->get('headLink');
 $thumbnail = $plugins->get('thumbnail');
 $siteSetting = $plugins->get('siteSetting');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $headScript = $plugins->get('headScript');
 
 $filterLocale = (bool) $siteSetting('filter_locale_values');
@@ -23,11 +32,16 @@ $untitled = $translate('[Untitled]');
 $headingTerm = $siteSetting('browse_heading_property_term');
 $bodyTerm = $siteSetting('browse_body_property_term');
 
-$defaultThumbnail = '<img src="' . $assetUrl('thumbnails/default.png', 'Omeka', true) . '" title="' . $translate('No media') . '"/>';
+$defaultThumbnailUrl = $assetUrl('thumbnails/default.png', 'Omeka', true);
+$defaultThumbnailLabel = $translate('No media');
+$defaultThumbnail = '<img src="' . $defaultThumbnailUrl . '" title="' . $defaultThumbnailLabel . '"/>';
 
-// For now, contact us is only possible with items and api resources is not available.
-/** @var \Omeka\Api\Representation\ItemRepresentation $resources */
-$resources = $resourceIds ? $api->search('items', ['id' => $resourceIds])->getContent() : [];
+if (!$isSession) {
+    // For now, contact us is only possible with items and api resources is not available.
+    /** @var \Omeka\Api\Representation\ItemRepresentation $resources */
+    $resources = $resourceIds ? $api->search('items', ['id' => $resourceIds])->getContent() : [];
+}
+
 
 $headLink
     ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
@@ -35,7 +49,7 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<?php if ($resources): ?>
+<?php if (!empty($resources)): ?>
 
 <ul class="resource-list">
     <?php
@@ -55,10 +69,30 @@ $headScript
     <?php endforeach; ?>
 </ul>
 
+<?php elseif ($isSession): ?>
+
+<div class="browse-controls contact-us-template hidden" style="display: none;" data-label-count-singular="<?= $translate('%d resource') ?>" data-label-count-plural="<?= $translate('%d resources') ?>">
+    <span class="row-count">{total_resources}</span>
+</div>
+
+<ul class="resource-list contact-us-template hidden" style="display: none;" data-url-api="<?= $url('api/default', ['resource' => 'items']) ?>" data-url-base-item="<?= $url('site/resource', ['controller' => 'item'], true)?>" data-default-untitled="<?= $untitled ?>" data-default-thumbnail-url="<?= $escapeAttr($defaultThumbnailUrl) ?>" data-default-thumbnail-label="<?= $escapeAttr($defaultThumbnailLabel) ?>">
+    <li class="resource item">
+        <a class="resource-link" href="{resource_url}">
+            <img src="{thumbnail_url}" title="{thumbnail_label}"/>
+            <span class="resource-name">{resource_title}</span>
+            <div class="description">{resource_description}</div>
+        </a>
+    </li>
+</ul>
+
+<p class="no-resource contact-us-template hidden" style="display: none;">
+    <?= $translate('No resource is selected.') ?>
+</p>
+
 <?php else: ?>
 
-<p class="no-resources">
-    <?= $translate('No selection') ?>
+<p class="no-resource">
+    <?= $translate('No resource selected.') ?>
 </p>
 
 <?php endif; ?>

@@ -1,4 +1,9 @@
 @media screen {
+    [hidden],
+    .hidden {
+        display: none;
+    }
+
     .newsletter-block .error,
     .contact-us-block .error {
         color: red;

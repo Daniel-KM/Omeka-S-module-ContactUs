@@ -7,6 +7,8 @@
  * @var bool $isGuestActive
  * @var bool $isSession
  * @var bool $isPost
+ *
+ * @todo Factorize contact-us-selection-list with contact-us/site/index/browse.
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -88,7 +90,7 @@ $headScript
     <span class="row-count">{total_resources}</span>
 </div>
 
-<ul class="resource-list contact-us-template hidden" style="display: none;" data-url-api="<?= $url('api/default', ['resource' => 'items']) ?>" data-url-base-item="<?= $url('site/resource', ['controller' => 'item'], true)?>" data-default-untitled="<?= $untitled ?>" data-default-thumbnail-url="<?= $escapeAttr($defaultThumbnailUrl) ?>" data-default-thumbnail-label="<?= $escapeAttr($defaultThumbnailLabel) ?>"/>
+<ul class="resource-list contact-us-template hidden" style="display: none;" data-url-api="<?= $url('api/default', ['resource' => 'items']) ?>" data-url-base-item="<?= $url('site/resource', ['controller' => 'item'], true)?>" data-default-untitled="<?= $untitled ?>" data-default-thumbnail-url="<?= $escapeAttr($defaultThumbnailUrl) ?>" data-default-thumbnail-label="<?= $escapeAttr($defaultThumbnailLabel) ?>">
     <li class="resource item">
         <a class="resource-link" href="{resource_url}">
             <img src="{thumbnail_url}" title="{thumbnail_label}"/>
@@ -105,7 +107,7 @@ $headScript
 <?php else: ?>
 
 <p class="no-resource">
-    <?= $translate('No resource is selected.') ?>
+    <?= $translate('No resource selected.') ?>
 </p>
 
 <?php endif; ?>
@@ -120,7 +122,7 @@ $headScript
     </button>
 </div>
 
-<div class="contact-us-form <?php if ($isPost): ?>after-post"<?php else: ?> hidden" style="display: none;"<?php endif; ?>>
+<div class="contact-us-form <?= $isPost ?'after-post' : 'hidden" style="display: none;' ?>">
     <?= $this->contactUs([
         'heading' => $translate('Complete the request'),
         'fields' => [
