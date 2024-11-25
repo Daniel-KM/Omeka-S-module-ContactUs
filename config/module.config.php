@@ -284,6 +284,7 @@ Subject: {subject}
             'contactus_append_resource_show' => [],
             'contactus_append_items_browse' => false,
             'contactus_label_selection' => 'Selection for contact', // @translate
+            'contactus_label_guest_link' => 'My selection for contact', // @translate
         ],
         'user_settings' => [
             'contactus_selected_resources' => [],

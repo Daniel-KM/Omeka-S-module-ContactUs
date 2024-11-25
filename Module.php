@@ -200,6 +200,13 @@ class Module extends AbstractModule
             [$this, 'handleViewBrowse']
         );
 
+        // Guest integration.
+        $sharedEventManager->attach(
+            \Guest\Controller\Site\GuestController::class,
+            'guest.widgets',
+            [$this, 'handleGuestWidgets']
+        );
+
         $sharedEventManager->attach(
             \Omeka\Form\SettingForm::class,
             'form.add_elements',
@@ -245,5 +252,23 @@ class Module extends AbstractModule
             'attach_file' => false,
             'newsletter_label' => '',
         ]);
+    }
+
+
+    public function handleGuestWidgets(Event $event): void
+    {
+        $widgets = $event->getParam('widgets');
+        $services = $this->getServiceLocator();
+        $plugins = $services->get('ViewHelperManager');
+        $partial = $plugins->get('partial');
+        $translate = $plugins->get('translate');
+        $siteSettings = $services->get('Omeka\Settings\Site');
+
+        $widget = [];
+        $widget['label'] = $siteSettings->get('contactus_label', $translate('Contact us')); // @translate
+        $widget['content'] = $partial('guest/site/guest/widget/contact-us');
+        $widgets['contact-us'] = $widget;
+
+        $event->setParam('widgets', $widgets);
     }
 }

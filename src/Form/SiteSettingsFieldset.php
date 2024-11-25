@@ -247,6 +247,17 @@ How many are one plus 1 (in number)? = 2', // @translate
                     'id' => 'contactus_label_selection',
                 ],
             ])
+            ->add([
+                'name' => 'contactus_label_guest_link',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Label for the link in guest account', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_label_guest_link',
+                ],
+            ])
         ;
     }
 }
