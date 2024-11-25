@@ -6,7 +6,7 @@ use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
 use Laminas\Mvc\Controller\AbstractActionController;
 
-class ZipController extends AbstractActionController
+class IndexController extends AbstractActionController
 {
     /**
      * @var \Doctrine\ORM\EntityManager;
@@ -26,7 +26,7 @@ class ZipController extends AbstractActionController
         $this->messageAdapter = $messageAdapter;
     }
 
-    public function indexAction()
+    public function zipAction()
     {
         // Here, the id is the id with the token of the message.
         $id = $this->params('id');

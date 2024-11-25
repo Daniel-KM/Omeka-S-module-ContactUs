@@ -54,7 +54,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            'ContactUs\Controller\Zip' => Service\Controller\ZipControllerFactory::class,
+            'ContactUs\Controller\Index' => Service\Controller\IndexControllerFactory::class,
             'ContactUs\Controller\Admin\ContactMessage' => Service\Controller\ContactMessageControllerFactory::class,
         ],
     ],
@@ -106,14 +106,15 @@ return [
             'contact-us' => [
                 'type' => \Laminas\Router\Http\Segment::class,
                 'options' => [
-                    'route' => '/contact-us/zip/:id',
+                    'route' => '/contact-us/:action[/:id]',
                     'constraints' => [
                         'id' => '\d+\.[a-zA-Z0-9]+',
+                        'action' => 'zip',
                     ],
                     'defaults' => [
                         '__NAMESPACE__' => 'ContactUs\Controller',
-                        'controller' => 'Zip',
-                        'action' => 'index',
+                        'controller' => 'Index',
+                        'action' => 'zip',
                     ],
                 ],
             ],

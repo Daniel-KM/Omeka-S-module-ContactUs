@@ -222,7 +222,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function zipUrl(): string
     {
         $url = $this->getViewHelper('Url');
-        return $url('contact-us', ['id' => $this->resource->getId() . '.' . $this->token()], ['force_canonical' => true]);
+        return $url('contact-us', ['action' => 'zip', 'id' => $this->resource->getId() . '.' . $this->token()], ['force_canonical' => true]);
     }
 
     public function created(): DateTime

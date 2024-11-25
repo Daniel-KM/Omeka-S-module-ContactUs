@@ -2,15 +2,15 @@
 
 namespace ContactUs\Service\Controller;
 
-use ContactUs\Controller\ZipController;
+use ContactUs\Controller\IndexController;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class ZipControllerFactory implements FactoryInterface
+class IndexControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        return new ZipController(
+        return new IndexController(
             $services->get('Omeka\EntityManager'),
             $services->get('Omeka\ApiAdapterManager')->get('contact_messages')
         );
