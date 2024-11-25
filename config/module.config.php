@@ -236,7 +236,6 @@ Subject: {subject}
         ],
         'block_settings' => [
             'contactUs' => [
-                'heading' => null,
                 'confirmation_enabled' => true,
                 'confirmation_subject' => '',
                 'confirmation_body' => '',
@@ -250,7 +249,6 @@ Subject: {subject}
                 'template' => '',
             ],
             'newsletter' => [
-                'heading' => null,
                 'confirmation_enabled' => true,
                 'confirmation_subject' => '',
                 'confirmation_body' => '',

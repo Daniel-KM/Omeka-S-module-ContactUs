@@ -17,16 +17,6 @@ class ContactUsFieldset extends Fieldset
     {
         $this
             ->add([
-                'name' => 'o:block[__blockIndex__][o:data][heading]',
-                'type' => Element\Text::class,
-                'options' => [
-                    'label' => 'Block title', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_heading',
-                ],
-            ])
-            ->add([
                 'name' => 'o:block[__blockIndex__][o:data][confirmation_enabled]',
                 'type' => Element\Checkbox::class,
                 'options' => [
