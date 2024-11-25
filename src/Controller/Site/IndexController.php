@@ -54,6 +54,7 @@ class IndexController extends AbstractActionController
             'resourceIds' => $resourceIds,
             'isGuestActive' => $this->isGuestActive,
             'isSession' => !$user,
+            'isPost' => $this->getRequest()->isPost(),
         ]);
 
         $route = $this->status()->getRouteMatch()->getMatchedRouteName();

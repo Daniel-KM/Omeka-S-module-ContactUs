@@ -6,6 +6,7 @@
  * @var array $resourceIds
  * @var bool $isGuestActive
  * @var bool $isSession
+ * @var bool $isPost
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -119,7 +120,7 @@ $headScript
     </button>
 </div>
 
-<div class="contact-us-form hidden" style="display: none;">
+<div class="contact-us-form <?php if ($isPost): ?>after-post"<?php else: ?> hidden" style="display: none;"<?php endif; ?>>
     <?= $this->contactUs([
         'heading' => $translate('Complete the request'),
         'fields' => [
