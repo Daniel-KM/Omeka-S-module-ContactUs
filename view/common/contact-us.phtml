@@ -5,6 +5,7 @@
  * @var \ContactUs\Form\ContactUsForm $form
  * @var string $heading
  * @var string $html Passed directly from the options.
+ * @var bool $asButton Passed directly from the options.
  * @var ?\Common\Stdlib\PsrMessage $message Message of success or error to the user.
  * @var string $status "success" or "error"
  * @var string $contact "us" or "author"
@@ -12,7 +13,8 @@
 
 // Note: you may use css grid / flex to quick adapt the form and reorder fields.
 
-$escape = $this->plugin('escapeHtml');
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
 ?>
 
 <div class="contact-us-block">

@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
+ */
+
+// Display the checkbox to add to the current resource to the list for contact
+// The checkbox may look like a button via css.
+
+echo $this->contactUs([
+    'template' => 'common/contact-us-button',
+    'resource' => $resource,
+    'heading' => $this->translate('Contact us'),
+    'as_button' => true,
+]);

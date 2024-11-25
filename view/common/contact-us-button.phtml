@@ -1,0 +1,53 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
+ * @var \ContactUs\Form\ContactUsForm|\ContactUs\Form\NewsletterForm $form
+ * @var string $heading
+ * @var string $html Passed directly from the options.
+ * @var bool $asButton Passed directly from the options.
+ * @var ?\Common\Stdlib\PsrMessage $message Message of success or error to the user.
+ * @var string $status "success" or "error"
+ * @var string $contact "us" or "author"
+ */
+
+// Note: you may use css grid / flex to quick adapt the form and reorder fields.
+
+$plugins = $this->getHelperPluginManager();
+$escape = $this->plugin('escapeHtml');
+$translate = $this->plugin('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+$assetUrl = $plugins->get('assetUrl');
+$headScript = $plugins->get('headScript');
+
+$headScript
+    ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
+?>
+
+<button class="contact-us-button contact-us-write" title="<?= $escapeAttr($translate('Send a message')) ?>" data-id="<?= $resource->id() ?>">
+    <span class="contact-us-write"><?= $escapeAttr($translate('Send a message')) ?></span>
+</button>
+
+<dialog class="popup popup-contact-us" data-id="<?= $resource->id() ?>">
+    <div class="popup-background">
+        <div class="popup-panel">
+            <div class="popup-header">
+                <button type="button" class="popup-header-close-button" title="<?= $translate('Close') ?>">
+                    <span class="popup-close">X</span>
+                </button>
+            </div>
+            <div class="popup-contents">
+                <?php if (!empty($heading)): ?>
+                <h4><?= $escape($heading) ?></h4>
+                <?php endif; ?>
+                <?= $html ?? '' ?>
+                <?php if ($message): ?>
+                <p class="explanation <?= $status ?>"><?= $message ?></p>
+                <?php endif; ?>
+                <?php if ($status !== 'success' && $form): ?>
+                <?= $this->form($form) ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</dialog>

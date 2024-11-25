@@ -8,4 +8,12 @@
         content: "*";
         color: red;
     }
+    .popup-header {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .popup-header-close-button {
+        margin: 12px;
+        padding: 12px;
+    }
 }

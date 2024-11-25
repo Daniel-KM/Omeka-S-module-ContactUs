@@ -6,11 +6,11 @@ use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
 use Omeka\Site\ResourcePageBlockLayout\ResourcePageBlockLayoutInterface;
 
-class ContactUs implements ResourcePageBlockLayoutInterface
+class ContactUsButton implements ResourcePageBlockLayoutInterface
 {
     public function getLabel() : string
     {
-        return 'Contact Us (form)'; // @translate
+        return 'Contact Us (form as button)'; // @translate
     }
 
     public function getCompatibleResourceNames() : array
@@ -23,7 +23,7 @@ class ContactUs implements ResourcePageBlockLayoutInterface
 
     public function render(PhpRenderer $view, AbstractResourceEntityRepresentation $resource) : string
     {
-        return $view->partial('common/resource-page-block-layout/contact-us', [
+        return $view->partial('common/resource-page-block-layout/contact-us-button', [
             'resource' => $resource,
         ]);
     }

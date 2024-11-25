@@ -25,6 +25,11 @@ class ContactUs extends AbstractHelper
     const PARTIAL_NAME = 'common/contact-us';
 
     /**
+     * The partial view script for button.
+     */
+    const PARTIAL_NAME_BUTTON = 'common/contact-us-button';
+
+    /**
      * @var FormElementManager
      */
     protected $formElementManager;
@@ -71,8 +76,8 @@ class ContactUs extends AbstractHelper
             'template' => null,
             'resource' => null,
             'heading' => null,
-            'confirmation_enabled' => false,
             'html' => null,
+            'as_button' => false,
             'attach_file' => false,
             'consent_label' => null,
             'unsubscribe' => null,
@@ -82,6 +87,7 @@ class ContactUs extends AbstractHelper
             'notify_recipients' => null,
             'contact' => 'us',
             'author_email' => null,
+            'confirmation_enabled' => false,
         ];
         $this->mailer = $mailer;
         $this->api = $api;
@@ -102,7 +108,8 @@ class ContactUs extends AbstractHelper
 
         $view = $this->getView();
 
-        $template = $options['template'] ?: self::PARTIAL_NAME;
+        $template = $options['template']
+            ?: ($options['as_button'] ? self::PARTIAL_NAME_BUTTON : self::PARTIAL_NAME);
 
         $isContactAuthor = $options['contact'] === 'author';
         if ($isContactAuthor) {
@@ -118,6 +125,7 @@ class ContactUs extends AbstractHelper
                     [
                         'heading' => $options['heading'],
                         'html' => $options['html'],
+                        'asButton' => $options['as_button'],
                         'form' => null,
                         'message' => $this->errorMessage,
                         'status' => 'error',
@@ -536,6 +544,7 @@ class ContactUs extends AbstractHelper
             [
                 'heading' => $options['heading'],
                 'html' => $options['html'],
+                'asButton' => $options['as_button'],
                 'form' => $form,
                 'message' => $message ? $message->setTranslator($view->translator()) : null,
                 'status' => $status,
