@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace ContactUs\Controller;
+namespace ContactUs\Controller\Site;
 
 use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
@@ -26,6 +27,25 @@ class IndexController extends AbstractActionController
     ) {
         $this->entityManager = $entityManager;
         $this->messageAdapter = $messageAdapter;
+    }
+
+    public function indexAction()
+    {
+        $params = $this->params()->fromRoute();
+        $params['action'] = 'browse';
+        return $this->forward()->dispatch('ContactUs\Controller\Site\Index', $params);
+    }
+
+    public function browseAction()
+    {
+        $user = $this->identity();
+        $resourceIds = $this->viewHelpers()->get('contactUsSelection')();
+
+        return new ViewModel([
+            'site' => $this->currentSite(),
+            'user' => $user,
+            'resourceIds' => $resourceIds,
+        ]);
     }
 
     /**

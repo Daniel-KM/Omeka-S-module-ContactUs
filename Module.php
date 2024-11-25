@@ -76,7 +76,7 @@ class Module extends AbstractModule
             )
             ->allow(
                 null,
-                ['ContactUs\Controller\Index']
+                ['ContactUs\Controller\Site\Index']
             );
             // Add possibility to list search own entities.
             // Admins can admin messages (browse, flag, delete, etc.).

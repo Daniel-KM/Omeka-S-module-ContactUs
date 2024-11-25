@@ -61,7 +61,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            'ContactUs\Controller\Index' => Service\Controller\IndexControllerFactory::class,
+            'ContactUs\Controller\Site\Index' => Service\Controller\IndexControllerFactory::class,
             'ContactUs\Controller\Admin\ContactMessage' => Service\Controller\ContactMessageControllerFactory::class,
         ],
     ],
@@ -72,14 +72,14 @@ return [
                     'contact-us' => [
                         'type' => \Laminas\Router\Http\Segment::class,
                         'options' => [
-                            'route' => '/contact-us/:action',
+                            'route' => '/contact-us[/:action]',
                             'constraints' => [
-                                'action' => 'select',
+                                'action' => 'browse|select',
                             ],
                             'defaults' => [
-                                '__NAMESPACE__' => 'ContactUs\Controller',
+                                '__NAMESPACE__' => 'ContactUs\Controller\Site',
                                 'controller' => 'Index',
-                                'action' => 'select',
+                                'action' => 'browse',
                             ],
                         ],
                     ],
@@ -137,7 +137,7 @@ return [
                         'action' => 'zip',
                     ],
                     'defaults' => [
-                        '__NAMESPACE__' => 'ContactUs\Controller',
+                        '__NAMESPACE__' => 'ContactUs\Controller\Site',
                         'controller' => 'Index',
                         'action' => 'zip',
                     ],

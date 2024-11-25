@@ -2,7 +2,7 @@
 
 namespace ContactUs\Service\Controller;
 
-use ContactUs\Controller\IndexController;
+use ContactUs\Controller\Site\IndexController;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
