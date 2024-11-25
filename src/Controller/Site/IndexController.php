@@ -21,12 +21,19 @@ class IndexController extends AbstractActionController
      */
     protected $messageAdapter;
 
+    /**
+     * @var bool
+     */
+    protected $isGuestActive = false;
+
     public function __construct(
         EntityManager $entityManager,
-        MessageAdapter $messageAdapter
+        MessageAdapter $messageAdapter,
+        bool $isGuestActive
     ) {
         $this->entityManager = $entityManager;
         $this->messageAdapter = $messageAdapter;
+        $this->isGuestActive = $isGuestActive;
     }
 
     public function indexAction()
@@ -41,11 +48,20 @@ class IndexController extends AbstractActionController
         $user = $this->identity();
         $resourceIds = $this->viewHelpers()->get('contactUsSelection')();
 
-        return new ViewModel([
+        $view = new ViewModel([
             'site' => $this->currentSite(),
             'user' => $user,
             'resourceIds' => $resourceIds,
+            'isGuestActive' => $this->isGuestActive,
         ]);
+
+        $route = $this->status()->getRouteMatch()->getMatchedRouteName();
+        if ($route === 'site/guest/contact-us') {
+            $view
+                ->setTemplate('guest/site/guest/contact-us-browse');
+        }
+
+        return $view;
     }
 
     /**

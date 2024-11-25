@@ -83,6 +83,29 @@ return [
                             ],
                         ],
                     ],
+                    'guest' => [
+                        // The default values for the guest user route are kept
+                        // to avoid issues for visitors when an upgrade of
+                        // module Guest occurs or when it is disabled.
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/guest',
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'contact-us' => [
+                                'type' => \Laminas\Router\Http\Literal::class,
+                                'options' => [
+                                    'route' => '/contact-us',
+                                    'defaults' => [
+                                        '__NAMESPACE__' => 'ContactUs\Controller\Site',
+                                        'controller' => 'Index',
+                                        'action' => 'browse',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'admin' => [
