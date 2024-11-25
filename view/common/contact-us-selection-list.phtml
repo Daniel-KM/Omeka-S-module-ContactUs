@@ -35,6 +35,8 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
+<?php if ($resources): ?>
+
 <ul class="resource-list">
     <?php
     foreach ($resources as $resource):
@@ -52,3 +54,11 @@ $headScript
         </li>
     <?php endforeach; ?>
 </ul>
+
+<?php else: ?>
+
+<p class="no-resources">
+    <?= $translate('No selection') ?>
+</p>
+
+<?php endif; ?>
