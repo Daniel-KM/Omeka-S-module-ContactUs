@@ -92,7 +92,7 @@ class ContactUsFieldset extends Fieldset
                 'name' => 'o:block[__blockIndex__][o:data][fields]',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
-                    'label' => 'Other fields', // @translate
+                    'label' => 'Other fields to append to form', // @translate
                     'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. The elements may be adapted via the theme.', // @translate
                     'as_key_value' => true,
                 ],

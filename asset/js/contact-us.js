@@ -252,14 +252,25 @@
             });
         });
 
+        /**
+         * Display the contact us form, that may be a dialog or a div.
+         */
         $(document).on('click', 'button.contact-us-write', function() {
-            const resourceId = $(this).data('id');
-            const dialog = document.querySelector('dialog[data-id="' + resourceId + '"]');
-            dialog.showModal();
+            const dialog = document.querySelector('dialog.popup-contact-us');
+            if (dialog) {
+                dialog.showModal();
+            } else {
+                $('.contact-us-form').removeClass('hidden').show();
+            }
         });
 
         $(document).on('click', '.popup-header-close-button', function(e) {
-            this.closest('dialog').close();
+            const dialog = this.closest('dialog.popup');
+            if (dialog) {
+                dialog.close();
+            } else {
+                $(this).closest('.popup').addClass('hidden').hide();
+            }
         });
 
     });

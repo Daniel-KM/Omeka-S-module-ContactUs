@@ -77,6 +77,8 @@ class ContactUs extends AbstractHelper
             'resource' => null,
             'heading' => null,
             'html' => null,
+            // Fields may contain a list of resource ids with key "id".
+            'fields' => [],
             'as_button' => false,
             'attach_file' => false,
             'consent_label' => null,
@@ -148,7 +150,8 @@ class ContactUs extends AbstractHelper
         // Manage list of resource ids automatically, if any.
         // "resource_ids" is used for standard forms and fields for complex
         // forms with multiple specific fields.
-        // TODO Manage "resource_ids" in backend, not only in js.
+        // TODO Manage "resource_ids" in backend, not only in js. But useless: already via fields[id] anyway.
+
         $fields = empty($options['fields'])
             ? ['id' => ['type' => 'hidden']]
             : ($options['fields'] + ['id' => ['type' => 'hidden']]);
@@ -571,6 +574,7 @@ class ContactUs extends AbstractHelper
         $form = $this->formElementManager->get(ContactUsForm::class, $formOptions);
         return $form
             ->setFormOptions($formOptions)
+            // Append specific fields, included resource ids, to the form.
             ->setFields($formOptions['fields'])
             ->setAttachFile($formOptions['attach_file'])
             ->setConsentLabel($formOptions['consent_label'])

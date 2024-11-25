@@ -110,3 +110,23 @@ $headScript
 <?php endif; ?>
 
 <?php $this->trigger('view.browse.after'); ?>
+
+<?php //= $this->contactUsButton() ?>
+
+<div class="contact-us-tools">
+    <button class="contact-us-button contact-us-write contact-us-fill-form">
+        <span class="contact-us-write"><?= $escapeAttr($translate('Fill the form')) ?></span>
+    </button>
+</div>
+
+<div class="contact-us-form hidden" style="display: none;">
+    <?= $this->contactUs([
+        'heading' => $translate('Complete the request'),
+        'fields' => [
+            'id' => [
+                'value' => $resourceIds,
+                'type' => 'hidden',
+            ],
+        ],
+    ]) ?>
+</div>
