@@ -169,6 +169,7 @@ class ContactUsForm extends Form
             if ($name === 'id') {
                 $name = 'id[]';
             }
+            // "class" and "required" should be passed as keys of "attributes".
             $isMultiple = substr($name, -2) === '[]';
             if ($isMultiple) {
                 $fieldType = $data['type'] ?? Element\Select::class;
@@ -181,16 +182,20 @@ class ContactUsForm extends Form
                         'name' => 'fields[' . substr($name, 0, -2) . '][]',
                         'type' => $fieldType,
                         'options' => [
-                            'label' => $data['label'] ?? null,
-                            'value_options' => $data['value_options'] ?? [],
-                        ],
+                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                        ] + ($data['options'] ?? []),
                         'attributes' => [
                             'id' => 'fields-' . substr($name, 0, -2),
-                            'class' => $data['class'] ?? '',
+                            // Kept for compatibility. Use attributes instead.
+                            'class' => $data['class'] ?? $data['attributes']['class'] ?? '',
                             'multiple' => 'multiple',
                             'value' => $fieldValue,
-                            'required' => !empty($data['required']),
-                        ],
+                            'required' => isset($data['required'])
+                                // Kept for compatibility. Use attributes instead.
+                                ? !empty($data['required'])
+                                : !empty($data['attributes']['required']),
+                        ] + ($data['attributes'] ?? []),
                     ]);
             } else {
                 $fieldValue = isset($data['value']) ? (is_array($data['value']) ? json_encode($data['value'], 320) : (string) $data['value']) : '';
@@ -199,15 +204,19 @@ class ContactUsForm extends Form
                         'name' => 'fields[' . $name . ']',
                         'type' => $data['type'] ?? Element\Text::class,
                         'options' => [
-                            'label' => $data['label'] ?? null,
-                            'value_options' => $data['value_options'] ?? [],
-                        ],
+                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                        ] + ($data['options'] ?? []),
                         'attributes' => [
                             'id' => 'fields-' . $name,
-                            'class' => $data['class'] ?? '',
+                            // Kept for compatibility. Use attributes instead.
+                            'class' => $data['class'] ?? $data['attributes']['class'] ?? '',
                             'value' => $fieldValue,
-                            'required' => !empty($data['required']),
-                        ],
+                            'required' => isset($data['required'])
+                            // Kept for compatibility. Use attributes instead.
+                                ? !empty($data['required'])
+                                : !empty($data['attributes']['required']),
+                        ] + ($data['attributes'] ?? []),
                     ]);
             }
         }
