@@ -264,17 +264,37 @@
 
             // For visitor.
             if (checkbox.data('localStorage')) {
-                const selectedResourceIds = localStorage.getItem('contactus_selectedIds')
+                const maxResources = checkbox.data('max-resources') ? parseInt(checkbox.data('max-resources')) : 0;
+                let selectedResourceIds = localStorage.getItem('contactus_selectedIds')
                     ? JSON.parse(localStorage.getItem('contactus_selectedIds'))
                     : [];
+                let hasDialog = false;
                 const isSelected = selectedResourceIds.includes(resourceId);
                 const isChecked = $(this)[0].checked
                 if (isSelected && !isChecked) {
                     selectedResourceIds.splice(selectedResourceIds.indexOf(resourceId), 1);
                     localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
                 } else if (!isSelected && isChecked) {
-                    selectedResourceIds.push(resourceId);
+                    if (maxResources && selectedResourceIds.length >= maxResources) {
+                        // Uncheck the box.
+                        hasDialog = true;
+                        checkbox.prop('checked', false);
+                        let message = checkbox.data('message-fail');
+                        dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
+                    } else {
+                        selectedResourceIds.push(resourceId);
+                        localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
+                    }
+                }
+                // For visitors with a larger selection list before a change of
+                // the config, slice the list.
+                if (maxResources && selectedResourceIds.length >= maxResources) {
+                    selectedResourceIds = selectedResourceIds.splice(0, maxResources);
                     localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
+                    if (!hasDialog) {
+                        let message = checkbox.data('message-fail');
+                        dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
+                    }
                 }
                 return;
             }
@@ -288,7 +308,10 @@
             })
             .done(function(data) {
                 if (data.status !== 'success') {
-                    dialogMessage(data.message ? data.message : 'An error occurred.');
+                    // Uncheck the box.
+                    checkbox.prop('checked', false);
+                    let message = checkbox.data('message-fail');
+                    dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
                 }
             })
             .fail(function(jqXHR, errorMsg) {
