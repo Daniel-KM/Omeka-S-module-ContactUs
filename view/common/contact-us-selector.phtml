@@ -8,11 +8,14 @@
  */
 
 $plugins = $this->getHelperPluginManager();
+$identity = $plugins->get('identity');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $headLink = $plugins->get('headLink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 $headScript = $plugins->get('headScript');
+
+$user = $identity();
 
 $headLink
     ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
@@ -20,4 +23,4 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<input class="contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($translate('Add to the selection for contact')) ?>" data-url="<?= $urlContactUsSelect ?>" />
+<input class="contact-us-basket" type="checkbox" <?= $isSelected ? 'checked="checked" ' : '' ?>name="id[]" value="<?= $resource->id() ?>" title="<?= $escapeAttr($translate('Add to the selection for contact')) ?>" data-url="<?= $urlContactUsSelect ?>" data-local-storage="<?= $user ? '0' : '1' ?>" />

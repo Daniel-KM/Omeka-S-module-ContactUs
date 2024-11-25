@@ -27,13 +27,43 @@
             element.show();
         };
 
+        /**
+         * Check/uncheck contact us selection on load from local storage.
+         */
+        $('.contact-us-basket[data-local-storage="1"]').each(function(i, obj) {
+            let selectedResourceIds = localStorage.getItem('contactus_selectedIds');
+            if (selectedResourceIds !== null) {
+                selectedResourceIds = JSON.parse(selectedResourceIds);
+                const resourceId = parseInt($(this).val());
+                const isSelected = selectedResourceIds.includes(resourceId);
+                $(this).prop('checked', isSelected);
+            }
+        });
+
         $('body').on('click', '.contact-us-basket', function() {
             const checkbox = $(this);
-            const id = checkbox.val();
+            const resourceId = parseInt(checkbox.val());
+
+            if (checkbox.data('localStorage')) {
+                const selectedResourceIds = localStorage.getItem('contactus_selectedIds')
+                    ? JSON.parse(localStorage.getItem('contactus_selectedIds'))
+                    : [];
+                const isSelected = selectedResourceIds.includes(resourceId);
+                const isChecked = $(this)[0].checked
+                if (isSelected && !isChecked) {
+                    selectedResourceIds.splice(selectedResourceIds.indexOf(resourceId), 1);
+                    localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
+                } else if (!isSelected && isChecked) {
+                    selectedResourceIds.push(resourceId);
+                    localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
+                }
+                return;
+            }
+
             const url = checkbox.data('url');
             $.ajax({
                 url: url,
-                data: id ? { id: id } : null,
+                data: resourceId ? { id: resourceId } : null,
                 // beforeSend: beforeSpin(checkbox),
             })
             .done(function(data) {
