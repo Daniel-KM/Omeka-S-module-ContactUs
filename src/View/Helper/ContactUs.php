@@ -91,6 +91,11 @@ class ContactUs extends AbstractHelper
      */
     public function __invoke(array $options = []): string
     {
+        // When the contact form is set multiple times on a page, it may be
+        // stored multiple times, so these flags avoid to duplicate messages.
+        static $isPostStored = null;
+        static $messageSent = null;
+
         $options += $this->defaultOptions;
 
         $view = $this->getView();
@@ -265,9 +270,20 @@ class ContactUs extends AbstractHelper
                     'o-module-contact:is_spam' => $isSpam,
                     'o-module-contact:to_author' => $isContactAuthor,
                 ];
-                $response = $this->api->__invoke($form)->create('contact_messages', $data, $fileData);
+                $response = null;
+                if ($isPostStored === null) {
+                    $response = $this->api->__invoke($form)->create('contact_messages', $data, $fileData);
+                    $isFirst = true;
+                    $isPostStored = !empty($response);
+                } else {
+                    $isFirst = false;
+                    $response = $isPostStored;
+                }
 
-                if (!$response) {
+                // The message is already sent. Just keep the response.
+                if (!$isFirst) {
+                    $message = $messageSent;
+                } elseif (!$response) {
                     $formMessages = $form->getMessages();
                     $errorMessages = [];
                     foreach ($formMessages as $formKeyMessages) {
@@ -488,6 +504,8 @@ class ContactUs extends AbstractHelper
 
         $form->init();
         $form->setName($newsletterOnly ? 'newsletter' : 'contact-us');
+
+        $messageSent = $message;
 
         return $view->partial(
             $template,
