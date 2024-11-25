@@ -236,6 +236,17 @@ How many are one plus 1 (in number)? = 2', // @translate
                     'id' => 'contactus_append_items_browse',
                 ],
             ])
+            ->add([
+                'name' => 'contactus_label_selection',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Label for the page Selection for contact', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_label_selection',
+                ],
+            ])
         ;
     }
 }

@@ -46,7 +46,7 @@ $headScript
 <?= $breadcrumbs() ?>
 <?php endif; ?>
 
-<?= $this->pageTitle($translate('Selection for contact'), 2) ?>
+<?= $this->pageTitle($siteSetting('contactus_label_selection', $translate('Selection for contact')), 2) ?>
 
 <?php $this->trigger('view.browse.before'); ?>
 
