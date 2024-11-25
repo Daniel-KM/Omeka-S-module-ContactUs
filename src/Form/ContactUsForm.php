@@ -120,6 +120,7 @@ class ContactUsForm extends Form
         ;
 
         foreach ($this->fields ?? [] as $name => $data) {
+            // Manage multiple attached resource ids.
             if ($name === 'id') {
                 $name = 'id[]';
             }
@@ -130,7 +131,7 @@ class ContactUsForm extends Form
             if ($isMultiple) {
                 $fieldType = $data['type'] ?? Element\Select::class;
                 $fieldValue = isset($data['value']) ? (is_array($data['value']) ? $data['value'] : [$data['value']]) : [];
-                if ($fieldType === 'hidden' || $fieldType === Element\Hidden::class) {
+                if (strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class) {
                     $fieldValue = json_encode($fieldValue);
                 }
                 $this
@@ -138,7 +139,7 @@ class ContactUsForm extends Form
                         'name' => 'fields[' . substr($name, 0, -2) . '][]',
                         'type' => $fieldType,
                         'options' => [
-                            'label' => $data['label'] ?? '',
+                            'label' => $data['label'] ?? null,
                             'value_options' => $data['value_options'] ?? [],
                         ],
                         'attributes' => [
@@ -149,17 +150,18 @@ class ContactUsForm extends Form
                         ],
                     ]);
             } else {
+                $fieldValue = isset($data['value']) ? (is_array($data['value']) ? json_encode($data['value'], 320) : (string) $data['value']) : '';
                 $this
                     ->add([
                         'name' => 'fields[' . $name . ']',
                         'type' => $data['type'] ?? Element\Text::class,
                         'options' => [
-                            'label' => $data['label'] ?? '',
+                            'label' => $data['label'] ?? null,
                         ],
                         'attributes' => [
                             'id' => 'fields-' . $name,
                             'class' => $data['class'] ?? '',
-                            'value' => $data['value'] ?? '',
+                            'value' => $fieldValue,
                         ],
                     ]);
             }
