@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-17 00:00+0000\n"
+"POT-Creation-Date: 2024-10-28 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: data/scripts/upgrade.php:33 Module.php:95
+#: data/scripts/upgrade.php:36 Module.php:95
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
@@ -36,9 +36,28 @@ msgstr ""
 msgid "Remove Contact Us files"
 msgstr "Supprimer les fichiers du module"
 
-#: src/Controller/Admin/ContactMessageController.php:408
+#: Module.php:270
+#: view/common/resource-page-block-layout/contact-us-button.phtml:13
+#: view/common/resource-page-block-layout/contact-us.phtml:11
+msgid "Contact us"
+msgstr "Contactez-nous"
+
+#: src/Controller/Admin/ContactMessageController.php:304
+msgid "There is no resources or files."
+msgstr "Il n’y a aucune ressource ou fichier."
+
+#: src/Controller/Admin/ContactMessageController.php:422
 msgid "An error occurred."
 msgstr "Une erreur est survenue."
+
+#: src/Controller/Site/IndexController.php:112
+#, php-format
+msgid "It is not possible to select more than %d resources."
+msgstr "Il n’est pas possible de choisir plus de %d ressources."
+
+#: src/Controller/Site/IndexController.php:228
+msgid "An internal error occurred."
+msgstr "Une erreur interne s'est produite."
 
 #: src/Job/ZipResources.php:266
 msgid ""
@@ -51,7 +70,7 @@ msgstr ""
 "indiqué pour l’instant (clé [file_store][local][base_uri]) de façon à gérer "
 "les tâches en arrière-plan."
 
-#: src/Site/BlockLayout/ContactUs.php:98
+#: src/Site/BlockLayout/ContactUs.php:99
 msgid ""
 "Append a form to allow visitors to contact us. Site settings are used when "
 "following fields are empty."
@@ -59,30 +78,65 @@ msgstr ""
 "Ajouter un formulaire de contact pour les visiteurs. Les paramètres du site "
 "sont utilisés quand les chaînes sont vides."
 
-#: src/Site/BlockLayout/Newsletter.php:57
+#: src/Site/BlockLayout/Newsletter.php:58
 msgid "Append a form to allow visitors to subscribe to a newsletter."
 msgstr ""
 "Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une "
 "infolettre."
 
-#: src/View/Helper/ContactUs.php:300 src/View/Helper/ContactUs.php:368
-#: src/View/Helper/ContactUs.php:707 src/View/Helper/ContactUs.php:774
+#: src/View/Helper/ContactUs.php:302 src/View/Helper/ContactUs.php:306
+msgid "Unsubscribe newsletter"
+msgstr "Se désabonner de l’infolettre"
+
+#: src/View/Helper/ContactUs.php:358 src/View/Helper/ContactUs.php:426
+#: src/View/Helper/ContactUs.php:783 src/View/Helper/ContactUs.php:850
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:306
+#: src/View/Helper/ContactUs.php:364
 #, php-format
 msgid "newsletter: %s"
 msgstr "infolettre : %s"
 
-#: src/View/Helper/ContactUs.php:647
+#: src/View/Helper/ContactUs.php:723
 msgid "[Unknown resource]"
 msgstr "[Ressource inconnue]"
 
-#: view/common/resource-page-block-layout/contact-us.phtml:11
-msgid "Contact us"
-msgstr "Contactez-nous"
+#: src/View/Helper/ContactUsSelector.php:46
+msgid "Add to the selection for contact"
+msgstr "Ajouter à la sélection pour le contact"
+
+#: view/common/contact-us-button.phtml:31
+msgid "Send a message"
+msgstr "Envoyer le message"
+
+#: view/common/contact-us-selection-list.phtml:36
+#: view/contact-us/site/index/browse.phtml:38
+msgid "No media"
+msgstr "Pas de média"
+
+#: view/common/contact-us-selection-list.phtml:74
+#: view/contact-us/site/index/browse.phtml:99
+#, php-format
+msgid "%d resource"
+msgstr "%d ressource"
+
+#: view/common/contact-us-selection-list.phtml:74
+#: view/contact-us/site/index/browse.phtml:99
+#, php-format
+msgid "%d resources"
+msgstr "%d ressources"
+
+#: view/common/contact-us-selection-list.phtml:89
+#: view/contact-us/site/index/browse.phtml:115
+msgid "No resource is selected."
+msgstr "Pas de ressource sélectionnée."
+
+#: view/common/contact-us-selection-list.phtml:95
+#: view/contact-us/site/index/browse.phtml:121
+msgid "No resource selected."
+msgstr "Aucune ressource sélectionnée."
 
 #: view/contact-us/admin/contact-message/batch-delete-confirm.phtml:12
 msgid "Delete contact messages"
@@ -92,164 +146,193 @@ msgstr "Supprimer les messages de contact"
 msgid "Are you sure you would like to delete the selected messages?"
 msgstr "Êtes-vous sûr de vouloir supprimer les messages sélectionnés ?"
 
-#: view/contact-us/admin/contact-message/browse.phtml:27
+#: view/contact-us/admin/contact-message/browse.phtml:28
 msgid "Sender name"
 msgstr "Nom de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:31
+#: view/contact-us/admin/contact-message/browse.phtml:32
 msgid "Sender email"
 msgstr "Mail de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:35
-#: view/contact-us/admin/contact-message/browse.phtml:118
+#: view/contact-us/admin/contact-message/browse.phtml:36
+#: view/contact-us/admin/contact-message/browse.phtml:119
 msgid "Date sent"
 msgstr "Date d’envoi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:46
+#: view/contact-us/admin/contact-message/browse.phtml:47
 msgid "Contact messages"
 msgstr "Messages de contact"
 
-#: view/contact-us/admin/contact-message/browse.phtml:64
-#: view/contact-us/admin/contact-message/browse.phtml:67
+#: view/contact-us/admin/contact-message/browse.phtml:65
+#: view/contact-us/admin/contact-message/browse.phtml:68
 msgid "Read"
 msgstr "Lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:67
+#: view/contact-us/admin/contact-message/browse.phtml:68
 msgid "Set read"
 msgstr "Marquer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:71
-#: view/contact-us/admin/contact-message/browse.phtml:74
+#: view/contact-us/admin/contact-message/browse.phtml:72
+#: view/contact-us/admin/contact-message/browse.phtml:75
 msgid "not-read"
 msgstr "non lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:74
+#: view/contact-us/admin/contact-message/browse.phtml:75
 msgid "Set not read"
 msgstr "Marquer non lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:78
-#: view/contact-us/admin/contact-message/browse.phtml:81
+#: view/contact-us/admin/contact-message/browse.phtml:79
+#: view/contact-us/admin/contact-message/browse.phtml:82
 msgid "Set spam"
 msgstr "Marquer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:85
-#: view/contact-us/admin/contact-message/browse.phtml:88
+#: view/contact-us/admin/contact-message/browse.phtml:86
+#: view/contact-us/admin/contact-message/browse.phtml:89
 msgid "Set not spam"
 msgstr "Marquer non-spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:103
+#: view/contact-us/admin/contact-message/browse.phtml:104
 msgid "There are no messages."
 msgstr "Il n’y a pas de message."
 
-#: view/contact-us/admin/contact-message/browse.phtml:115
+#: view/contact-us/admin/contact-message/browse.phtml:116
 msgid "Message"
 msgstr "Message"
 
-#: view/contact-us/admin/contact-message/browse.phtml:117
-#: view/contact-us/admin/contact-message/show-details.phtml:25
+#: view/contact-us/admin/contact-message/browse.phtml:118
+#: view/contact-us/admin/contact-message/show-details.phtml:24
 msgid "Sender"
 msgstr "Expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:134
-#: view/contact-us/admin/contact-message/show-details.phtml:83
+#: view/contact-us/admin/contact-message/browse.phtml:135
+#: view/contact-us/admin/contact-message/show-details.phtml:91
 msgid "Message to author"
 msgstr "Message à l’auteur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:144
 #: view/contact-us/admin/contact-message/browse.phtml:145
+#: view/contact-us/admin/contact-message/browse.phtml:146
 msgid "Toggle read"
 msgstr "Basculer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:151
 #: view/contact-us/admin/contact-message/browse.phtml:152
+#: view/contact-us/admin/contact-message/browse.phtml:153
 msgid "Toggle spam"
 msgstr "Basculer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:160
 #: view/contact-us/admin/contact-message/browse.phtml:161
+#: view/contact-us/admin/contact-message/browse.phtml:162
 msgid "Toggle zip"
 msgstr "Basculer zip"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:22
+#: view/contact-us/admin/contact-message/show-details.phtml:21
 #, php-format
 msgid "message #%d"
 msgstr "message #%d"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:25
+#: view/contact-us/admin/contact-message/show-details.phtml:24
 msgid "(public)"
 msgstr "(public)"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:47
+msgid "Link to the zipped file when created"
+msgstr "Lien vers le fichier zippé après création"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:50
 msgid "Multiple resources"
 msgstr "Ressources multiples"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:49
+#: view/contact-us/admin/contact-message/show-details.phtml:52
 #, php-format
 msgid "%d items (admin)"
 msgstr "%d contenus (admin)"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:52
+#: view/contact-us/admin/contact-message/show-details.phtml:55
 #, php-format
 msgid "%d items (public)"
 msgstr "%d contenus (public)"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:58
+#: view/contact-us/admin/contact-message/show-details.phtml:60
 msgid "Link to the zipped files when created"
 msgstr "Lien vers les fichiers zippés après création"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:76
+#: view/contact-us/admin/contact-message/show-details.phtml:63
+msgid "Attached resources"
+msgstr "Ressources attachées"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:84
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:81
+#: view/contact-us/admin/contact-message/show-details.phtml:89
 msgid "Infos"
 msgstr "Infos"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:83
+#: view/contact-us/admin/contact-message/show-details.phtml:91
 msgid "Message to us"
 msgstr "Message pour nous"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:84
+#: view/contact-us/admin/contact-message/show-details.phtml:92
 #, php-format
 msgid "Is read: %s"
 msgstr "Est lu : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:85
+#: view/contact-us/admin/contact-message/show-details.phtml:93
 #, php-format
 msgid "Is spam: %s"
 msgstr "Est spam : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:86
+#: view/contact-us/admin/contact-message/show-details.phtml:94
 #, php-format
 msgid "Has zip: %s"
 msgstr "A un zip : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:91
+#: view/contact-us/admin/contact-message/show-details.phtml:99
 msgid "[No subject]"
 msgstr "[Pas de sujet]"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:106
+#: view/contact-us/admin/contact-message/show-details.phtml:114
 msgid "Attached file"
 msgstr "Fichier attaché"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:108
+#: view/contact-us/admin/contact-message/show-details.phtml:116
 #, php-format
 msgid "Media type: %s"
 msgstr "Type de média : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:113
+#: view/contact-us/admin/contact-message/show-details.phtml:121
 msgid "Warning: content from an anonymous user"
 msgstr "Attention : contenu d’un visiteur anonyme"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:115
+#: view/contact-us/admin/contact-message/show-details.phtml:123
 msgid "Warning: content from a guest user"
 msgstr "Attention : contenu de l’utilisateur invité"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:123
+#: view/contact-us/admin/contact-message/show-details.phtml:131
 msgid "Newsletter"
 msgstr "Infolettre"
 
-#: data/scripts/upgrade.php:113
+#: view/contact-us/site/index/browse.phtml:59
+msgid "Selection for contact"
+msgstr "Sélection pour contact"
+
+#: view/contact-us/site/index/browse.phtml:63
+#, php-format
+msgid "There is a limit of %d resources by request"
+msgstr "Il y a une limite de %d ressources par demande."
+
+#: view/contact-us/site/index/browse.phtml:132
+msgid "Fill the form"
+msgstr "Remplir le formulaire"
+
+#: view/contact-us/site/index/browse.phtml:138
+msgid "Complete the request"
+msgstr "Compléter la demande"
+
+#: view/guest/site/guest/widget/contact-us.phtml:16
+msgid "My selection for contact"
+msgstr "Ma sélection pour le contact"
+
+#: data/scripts/upgrade.php:116
 msgid ""
 "A checkbox for consent has been added to the user form. You may update the "
 "default label in site settings"
@@ -257,12 +340,12 @@ msgstr ""
 "Une case à cocher a été ajoutée au formulaire de contact. Vous pouvez "
 "modifier le libellé par défaut dans les paramètres du site"
 
-#: data/scripts/upgrade.php:182
+#: data/scripts/upgrade.php:185
 msgid "It’s now possible to set a specific message when contacting author."
 msgstr ""
 "Il est désormais possible de définir un message pour contacter l’auteur."
 
-#: data/scripts/upgrade.php:186
+#: data/scripts/upgrade.php:189
 msgid ""
 "It’s now possible to contact authors of a resource via the view helper "
 "contactUs()."
@@ -270,12 +353,12 @@ msgstr ""
 "Il est désormais possible de contacter les auteurs d’une ressource via le "
 "\"helper\" de vue contactUs()."
 
-#: data/scripts/upgrade.php:212
+#: data/scripts/upgrade.php:215
 msgid "It’s now possible to append specific fields to the form."
 msgstr ""
 "Il est désormais possible d’ajouter des champs spécifiques au formulaire."
 
-#: data/scripts/upgrade.php:217
+#: data/scripts/upgrade.php:220
 msgid ""
 "It’s now possible to add a contact form in item/show for themes supporting "
 "resource blocks."
@@ -283,7 +366,7 @@ msgstr ""
 "Il est désormais possible d’'ajouter un formulaire de contact dans la page "
 "du contenu pour les thèmes gérant les blocs de ressources."
 
-#: data/scripts/upgrade.php:224
+#: data/scripts/upgrade.php:227
 msgid ""
 "It’s now possible to add a contact form in item/browse and to send a list of "
 "resource ids (need a line in theme)."
@@ -291,7 +374,7 @@ msgstr ""
 "Il est désormais possible de contacter les auteurs d’une ressource et "
 "d’envoyer une liste de ressources (nécessite une ligne dans le thème)."
 
-#: data/scripts/upgrade.php:252
+#: data/scripts/upgrade.php:255
 msgid ""
 "It’s now possible to prepare a zip file of asked files to send to a visitor "
 "via a link. See {link}settings{link_end}."
@@ -299,11 +382,11 @@ msgstr ""
 "Il est désormais possible de préparer un fichier zip en réponse à une "
 "demande d’un visiteur via un lien. Voir les {link}paramètres{link_end}."
 
-#: data/scripts/upgrade.php:265
+#: data/scripts/upgrade.php:268
 msgid "A new button allows to create a zip for any contact."
 msgstr "Un nouveau bouton permet de créer un zip pour tout contact."
 
-#: data/scripts/upgrade.php:280
+#: data/scripts/upgrade.php:283
 msgid ""
 "Two new options allow to append the contact form to resource pages. They are "
 "disabled by default, so check them if you need them."
@@ -312,7 +395,7 @@ msgstr ""
 "pages de ressources. Elles sont désactivées par défaut et vous devez donc "
 "les activer si vous en avez besoin."
 
-#: data/scripts/upgrade.php:285
+#: data/scripts/upgrade.php:288
 msgid ""
 "A new option allows to use the user email to send message. It is not "
 "recommended because many emails providers reject them as spam. Use it only "
@@ -323,38 +406,103 @@ msgstr ""
 "de mails les rejettent comme spam. Utilisez le seulement si vous gérez votre "
 "propre domaine."
 
-#: data/scripts/upgrade.php:301
+#: data/scripts/upgrade.php:304
 msgid "A new block allows to display a form to subscribe to a newsletter."
 msgstr ""
 "Un nouveau bloc permet d’afficher un formulaire d’abonnement à une "
 "infolettre."
 
+#: data/scripts/upgrade.php:347
+msgid ""
+"The option \"heading\" was removed from blocks Contact Us and Newsletter and "
+"replaced by a block Heading (if module Block Plus is present) or Html. "
+"Remove it in the following files before upgrade and automatic conversion: "
+"{json}"
+msgstr ""
+"L’option « titre » (heading) a été supprimée des blocs de Contact et "
+"Infolettre et remplacé par un bloc Titre (si le module Block Plus est "
+"présent) ou Html. Supprimer le dans les fichiers suivants avant mise à jour "
+"et conversion automatique : {json}"
+
+#: data/scripts/upgrade.php:425
+msgid ""
+"The setting \"template\" was moved to the new block layout settings "
+"available since Omeka S v4.1. You may check pages for styles: {json}"
+msgstr ""
+"Le paramètre « template » a été déplacé dans les nouveaux paramètres de bloc "
+"depuis Omeka S v4.1. Vous pouvez vérifier les pages pour les styles : {json}"
+
+#: data/scripts/upgrade.php:435
+msgid ""
+"The option \"heading\" was removed from blocks Contact Us and Newsletter. "
+"New block \"Heading\" (if module Block Plus is present) or \"Html\" was "
+"prepended to all blocks that had a filled heading. You may check pages for "
+"styles: {json}"
+msgstr ""
+"L’option « titre » (heading) a été supprimée des blocs de Contact et "
+"Infolettre. Un nouveau bloc « Titre » (Heading) (si le module Block Plus est "
+"présent) ou « Html » a été ajouté lorsque nécessaire.Vous pouvez vérifier "
+"les styles dans les pages : {json}"
+
+#: data/scripts/upgrade.php:458
+msgid "New options were added to set message after posting mail."
+msgstr ""
+"De nouvelles options ont été ajoutées pour définir le message après envoi du "
+"mail."
+
+#: data/scripts/upgrade.php:463
+msgid "It is now possible to unsubscribe to a newsletter."
+msgstr "Il est désormais possible de se désabonner à l’infolettre."
+
+#: data/scripts/upgrade.php:468
+msgid ""
+"A new page allows the user or the visitor to see all the selected resources."
+msgstr ""
+"Une nouvelle page permet à l’utilisateur ou au visiteur de voir toutes les "
+"ressources sélectionnées."
+
+#: data/scripts/upgrade.php:473
+msgid ""
+"The number of selected items can be set in site settings. It is limited to "
+"25 by default."
+msgstr ""
+"Le nombre contenus sélectionnés peut être défini dans les paramètres de "
+"site. Il est limité à 25 par défaut."
+
 #: Module.php:106
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
 
-#: src/View/Helper/ContactUs.php:223
-msgid "Thank you for subscribing to our newsletter."
-msgstr "Merci pour votre abonnement à l’infolettre."
+#: src/View/Helper/ContactUs.php:251
+msgid "The unsubscription for {email} is confirmed."
+msgstr "Le désabonnement pour le mail {email} a été confirmé."
 
-#: src/View/Helper/ContactUs.php:228
+#: src/View/Helper/ContactUs.php:256
+msgid "Thank you for subscribing to our newsletter, {name}."
+msgstr "Merci pour votre abonnement à l’infolettre, {name}."
+
+#: src/View/Helper/ContactUs.php:263
 msgid ""
-"Thank you for your message {name}. It will be sent to the author as soon as "
+"Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
-"Merci pour votre message {name}. Il sera envoyé à l’auteur dès que possible."
+"Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
 
-#: src/View/Helper/ContactUs.php:229
+#: src/View/Helper/ContactUs.php:268
 msgid ""
-"Thank you for your message {name}. We will answer you as soon as possible."
+"Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
-"Merci pour votre message {name}. Nous vous répondrons dès que possible."
+"Merci pour votre message, {name}. Nous vous répondrons dès que possible."
 
-#: src/View/Helper/ContactUs.php:282 src/View/Helper/ContactUs.php:435
+#: src/View/Helper/ContactUs.php:303
+msgid "Subscribe newsletter"
+msgstr "S’abonner à l’infolettre"
+
+#: src/View/Helper/ContactUs.php:340 src/View/Helper/ContactUs.php:497
 msgid "There is an error: {errors}"
 msgstr "Il y a une erreur : {errors}"
 
-#: src/View/Helper/ContactUs.php:318
+#: src/View/Helper/ContactUs.php:376
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
@@ -362,11 +510,11 @@ msgstr ""
 "Merci pour votre message {name}. Vérifiez le message de confirmation. "
 "L’auteur le recevra bientôt."
 
-#: src/View/Helper/ContactUs.php:353
+#: src/View/Helper/ContactUs.php:411
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
 
-#: src/View/Helper/ContactUs.php:376
+#: src/View/Helper/ContactUs.php:434
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
@@ -375,41 +523,25 @@ msgstr ""
 "le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
 "recevez pas de réponse."
 
-#: src/View/Helper/ContactUs.php:383
-msgid ""
-"Thank you for subscribing to our newsletter. Check the confirmation email "
-"sent to {email}."
-msgstr ""
-"Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
-"confirmation envoyé à {email}."
-
-#: src/View/Helper/ContactUs.php:388
-msgid ""
-"Thank you for your message {name}. Check your confirmation email. We will "
-"answer you soon."
-msgstr ""
-"Merci pour votre message {name}. Vérifiez le message de confirmation. Nous "
-"répondrons très bientôt."
-
-#: src/View/Helper/ContactUs.php:416
+#: src/View/Helper/ContactUs.php:478
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:439
+#: src/View/Helper/ContactUs.php:501
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
-#: src/View/Helper/ContactUs.php:484
+#: src/View/Helper/ContactUs.php:550
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:540
+#: src/View/Helper/ContactUs.php:616
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/View/Helper/ContactUs.php:555 src/View/Helper/ContactUs.php:581
+#: src/View/Helper/ContactUs.php:631 src/View/Helper/ContactUs.php:657
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -417,19 +549,19 @@ msgstr ""
 "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
 "d’informations."
 
-#: src/View/Helper/ContactUs.php:576
+#: src/View/Helper/ContactUs.php:652
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/View/Helper/ContactUs.php:672
+#: src/View/Helper/ContactUs.php:748
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr "Contact Us : Certains mails de notification ne sont pas valides."
 
-#: src/View/Helper/ContactUs.php:717
+#: src/View/Helper/ContactUs.php:793
 msgid "The message has no content to send."
 msgstr "Le message n’a pas de contenu à envoyer."
 
-#: src/View/Helper/ContactUs.php:751
+#: src/View/Helper/ContactUs.php:827
 msgid "Error when sending email. Arguments:\\n{json}"
 msgstr "Erreur lors de l’envoi du mail. Arguments :\\n{json}"
 
@@ -526,7 +658,7 @@ msgid "Notification message for admin"
 msgstr "Message de notification pour l’administrateur"
 
 #: src/Form/SiteSettingsFieldset.php:58 src/Form/SiteSettingsFieldset.php:93
-#: src/Form/SiteSettingsFieldset.php:141 src/Form/ContactUsFieldset.php:54
+#: src/Form/SiteSettingsFieldset.php:141 src/Form/ContactUsFieldset.php:44
 #: src/Form/NewsletterFieldset.php:54
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
@@ -536,17 +668,17 @@ msgstr ""
 "{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
 "{ip}."
 
-#: src/Form/SiteSettingsFieldset.php:70 src/Form/ContactUsFieldset.php:33
+#: src/Form/SiteSettingsFieldset.php:70 src/Form/ContactUsFieldset.php:23
 #: src/Form/NewsletterFieldset.php:33
 msgid "Send a confirmation email"
 msgstr "Envoyer un message de confirmation"
 
-#: src/Form/SiteSettingsFieldset.php:81 src/Form/ContactUsFieldset.php:43
+#: src/Form/SiteSettingsFieldset.php:81 src/Form/ContactUsFieldset.php:33
 #: src/Form/NewsletterFieldset.php:43
 msgid "Subject of the confirmation email"
 msgstr "Sujet du message de confirmation"
 
-#: src/Form/SiteSettingsFieldset.php:92 src/Form/ContactUsFieldset.php:53
+#: src/Form/SiteSettingsFieldset.php:92 src/Form/ContactUsFieldset.php:43
 #: src/Form/NewsletterFieldset.php:53
 msgid "Confirmation message"
 msgstr "Message de confirmation"
@@ -571,20 +703,32 @@ msgstr ""
 msgid "Subject of the email to author"
 msgstr "Sujet du message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:140 config/module.config.php:195
+#: src/Form/SiteSettingsFieldset.php:140 config/module.config.php:246
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:153 src/Form/SiteSettingsFieldset.php:164
-#: src/Form/ContactUsFieldset.php:118 src/Form/NewsletterFieldset.php:75
+#: src/Form/SiteSettingsFieldset.php:153
+msgid "Message displayed on site after post"
+msgstr "Message affiché sur le site après l’envoi"
+
+#: src/Form/SiteSettingsFieldset.php:154 src/Form/SiteSettingsFieldset.php:167
+msgid "Possible placeholders: {name}, {email}."
+msgstr "Jokers possibles : {name}, {email}."
+
+#: src/Form/SiteSettingsFieldset.php:166
+msgid "Message displayed on site after post for newsletter"
+msgstr "Message affiché sur le site après l’envoi pour l’infolettre"
+
+#: src/Form/SiteSettingsFieldset.php:179 src/Form/SiteSettingsFieldset.php:190
+#: src/Form/ContactUsFieldset.php:108 src/Form/NewsletterFieldset.php:85
 msgid "Enable simple antispam for visitors"
 msgstr "Activer l’anti-spam simple pour les visiteurs"
 
-#: src/Form/SiteSettingsFieldset.php:175 src/Form/ContactUsFieldset.php:128
+#: src/Form/SiteSettingsFieldset.php:201 src/Form/ContactUsFieldset.php:118
 msgid "List of antispam questions/answers"
 msgstr "Liste de questions/réponses anti-spam"
 
-#: src/Form/SiteSettingsFieldset.php:176 src/Form/ContactUsFieldset.php:129
+#: src/Form/SiteSettingsFieldset.php:202 src/Form/ContactUsFieldset.php:119
 msgid ""
 "See the block \"Contact us\" for a simple list. Separate questions and "
 "answer with a \"=\". Questions may be translated."
@@ -592,7 +736,7 @@ msgstr ""
 "Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et "
 "les réponses avec un signe \"=\". Les questions peuvent être traduites."
 
-#: src/Form/SiteSettingsFieldset.php:181 src/Form/ContactUsFieldset.php:134
+#: src/Form/SiteSettingsFieldset.php:207 src/Form/ContactUsFieldset.php:124
 msgid ""
 "How many are zero plus 1 (in number)? = 1\n"
 "How many are one plus 1 (in number)? = 2"
@@ -600,19 +744,31 @@ msgstr ""
 "Combien font zéro plus 1 (en nombre) ? = 1\n"
 "Combien font un plus 1 (en nombre) ? = 2"
 
-#: src/Form/SiteSettingsFieldset.php:191
+#: src/Form/SiteSettingsFieldset.php:217
 msgid "Append to resource page (deprecated, for themes without resource block)"
 msgstr ""
 "Ajouter à la page de ressource (obsolète, pour les thèmes sans bloc de "
 "ressource)"
 
-#: src/Form/SiteSettingsFieldset.php:194
+#: src/Form/SiteSettingsFieldset.php:220
 msgid "Medias"
 msgstr "Médias"
 
-#: src/Form/SiteSettingsFieldset.php:207
+#: src/Form/SiteSettingsFieldset.php:233
 msgid "Append to items browse page"
 msgstr "Ajouter à la page de la liste des items"
+
+#: src/Form/SiteSettingsFieldset.php:244
+msgid "Label for the page Selection for contact"
+msgstr "Libellé pour la page Sélection pour le contact"
+
+#: src/Form/SiteSettingsFieldset.php:255
+msgid "Label for the link in guest account"
+msgstr "Libellé pour le lien dans le compte Invité"
+
+#: src/Form/SiteSettingsFieldset.php:266
+msgid "Maximum number of items to store in selection"
+msgstr "Nombre maximum de contenus pour la sélection"
 
 #: src/Form/SettingsFieldset.php:28
 msgid "Default emails to notify"
@@ -684,39 +840,35 @@ msgstr "Carré"
 msgid "Remove zip files after some days"
 msgstr "Supprimer les fichiers zip après quelques jours"
 
-#: src/Form/ContactUsForm.php:174
+#: src/Form/ContactUsForm.php:230
 msgid "Attach a file"
 msgstr "Joindre un fichier"
 
-#: src/Form/ContactUsForm.php:259 src/Form/NewsletterForm.php:117
+#: src/Form/ContactUsForm.php:315 src/Form/NewsletterForm.php:142
 msgid "Send message"
 msgstr "Envoyer le message"
 
-#: src/Form/ContactUsFieldset.php:23 src/Form/NewsletterFieldset.php:23
-msgid "Block title"
-msgstr "Titre du bloc"
-
-#: src/Form/ContactUsFieldset.php:65
+#: src/Form/ContactUsFieldset.php:55
 msgid "Allow to attach a file"
 msgstr "Autoriser l’envoi de fichier"
 
-#: src/Form/ContactUsFieldset.php:75 src/Form/NewsletterFieldset.php:65
+#: src/Form/ContactUsFieldset.php:65 src/Form/NewsletterFieldset.php:75
 msgid "Label for the consent checkbox"
 msgstr "Libellé pour la case à cocher du consentement"
 
-#: src/Form/ContactUsFieldset.php:85
+#: src/Form/ContactUsFieldset.php:75
 msgid "Add a checkbox for a newsletter"
 msgstr "Ajouter une case à cocher pour l’infolettre"
 
-#: src/Form/ContactUsFieldset.php:95
+#: src/Form/ContactUsFieldset.php:85
 msgid "Label for the newsletter"
 msgstr "Libellé pour l’infolettre"
 
-#: src/Form/ContactUsFieldset.php:105
-msgid "Other fields"
-msgstr "Autres champs"
+#: src/Form/ContactUsFieldset.php:95
+msgid "Other fields to append to form"
+msgstr "Autres champs à ajouter au formulaire"
 
-#: src/Form/ContactUsFieldset.php:106
+#: src/Form/ContactUsFieldset.php:96
 msgid ""
 "Set the name (ascii only and no space) and the label separated by a \"=\", "
 "one by line. The elements may be adapted via the theme."
@@ -724,29 +876,17 @@ msgstr ""
 "Indiquer le nom (ascii et sans espace) et le libellé séparés par un « = », "
 "un par ligne. Les éléments peuvent être adaptés via le thème."
 
-#: src/Form/ContactUsFieldset.php:111
+#: src/Form/ContactUsFieldset.php:101
 msgid "phone = Phone"
 msgstr "telephone = Téléphone"
 
-#: src/Form/ContactUsFieldset.php:146 src/Form/NewsletterFieldset.php:88
-msgid "Template to display"
-msgstr "Gabarit à afficher"
+#: src/Form/NewsletterFieldset.php:23
+msgid "Checkbox to unsubscribe"
+msgstr "Case à cocher pour se désabonner"
 
-#: src/Form/ContactUsFieldset.php:147
-msgid ""
-"Templates are in folder \"common/block-layout\" of the theme and should "
-"start with \"contact-us\"."
-msgstr ""
-"Les gabarits sont dans le dossier \"common/block-layout\" du thème et "
-"doivent commencer avec \"contact-us\"."
-
-#: src/Form/NewsletterFieldset.php:89
-msgid ""
-"Templates are in folder \"common/block-layout\" of the theme and should "
-"start with \"newsletter\"."
-msgstr ""
-"Les gabarits sont dans le dossier « common/block-layout » du thème et "
-"doivent commencer avec « newsletter »."
+#: src/Form/NewsletterFieldset.php:65
+msgid "Label for the unsubscribe checkbox"
+msgstr "Libellé pour la case à cocher du désabonnement"
 
 #: src/Api/Adapter/MessageAdapter.php:419
 msgid "Error loading or saving base64 file."
@@ -782,48 +922,55 @@ msgstr ""
 msgid "No contact messages submitted."
 msgstr "Aucun message de contact envoyé."
 
-#: src/Controller/Admin/ContactMessageController.php:190
-#: src/Controller/Admin/ContactMessageController.php:249
-msgid "An internal error occurred."
-msgstr "Une erreur interne s'est produite."
-
 #: src/Controller/Admin/ContactMessageController.php:241
 msgid "Unknown key."
 msgstr "Clé inconnue."
 
-#: src/Controller/ZipController.php:34
+#: src/Controller/Admin/ContactMessageController.php:297
+msgid "success"
+msgstr "succès"
+
+#: src/Controller/Site/IndexController.php:131
 msgid "No resource set."
 msgstr "Aucune ressource définie."
 
-#: src/Controller/ZipController.php:42
+#: src/Controller/Site/IndexController.php:139
 msgid "Resource is invalid."
 msgstr "La ressource est incorrecte."
 
-#: src/Controller/ZipController.php:48
+#: src/Controller/Site/IndexController.php:145
 msgid "No message found."
 msgstr "Aucun message trouvé."
 
-#: src/Controller/ZipController.php:55
+#: src/Controller/Site/IndexController.php:152
 msgid "Resource does not exist."
 msgstr "La ressource n’existe pas."
 
-#: src/Controller/ZipController.php:59
+#: src/Controller/Site/IndexController.php:156
 msgid "Resource has no file."
 msgstr "La ressource n’a pas de fichier."
 
-#: src/Controller/ZipController.php:71
+#: src/Controller/Site/IndexController.php:168
 msgid "No zip found: too much old."
 msgstr "Aucun zip trouvé : trop ancien."
 
-#: src/Controller/ZipController.php:76
+#: src/Controller/Site/IndexController.php:173
 msgid "No zip found."
 msgstr "Aucun zip trouvé."
 
-#: src/Site/ResourcePageBlockLayout/ContactUs.php:13
-msgid "Contact Us"
-msgstr "Contactez-nous"
+#: src/Site/ResourcePageBlockLayout/ContactUsSelector.php:13
+msgid "Contact Us (selector)"
+msgstr "Contactez-nous (sélecteur)"
 
-#: src/Site/BlockLayout/ContactUs.php:44
+#: src/Site/ResourcePageBlockLayout/ContactUsButton.php:13
+msgid "Contact Us (form as button)"
+msgstr "Contact Us (formulaire avec un bouton)"
+
+#: src/Site/ResourcePageBlockLayout/ContactUs.php:13
+msgid "Contact Us (form)"
+msgstr "Contactez-nous (formulaire)"
+
+#: src/Site/BlockLayout/ContactUs.php:45
 msgid ""
 "To create antispam, each question must be separated from the answer by a "
 "\"=\"."
@@ -831,7 +978,7 @@ msgstr ""
 "Pour créer un anti-spam, chaque question doit être séparée de la réponse "
 "avec un signe \"=\"."
 
-#: src/Site/BlockLayout/ContactUs.php:62
+#: src/Site/BlockLayout/ContactUs.php:63
 msgid ""
 "To append fields, each row must contain a name and a label separated by a "
 "\"=\"."
@@ -839,11 +986,11 @@ msgstr ""
 "Pour ajouter des champs, chaque ligne doit contenir un nom et un libellé "
 "séparés par un « = »."
 
-#: config/module.config.php:144
+#: config/module.config.php:193
 msgid "The contact message doesn’t exist."
 msgstr "Le message de contact n’existe pas."
 
-#: config/module.config.php:158
+#: config/module.config.php:209
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -869,11 +1016,11 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:170
+#: config/module.config.php:221
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
-#: config/module.config.php:171
+#: config/module.config.php:222
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -913,11 +1060,11 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:189
+#: config/module.config.php:240
 msgid "Subscription to newsletter of {main_title}"
 msgstr "S’abonner à l’infolettre de {main_title}"
 
-#: config/module.config.php:190
+#: config/module.config.php:241
 msgid ""
 "Hi,\n"
 "\n"
@@ -931,7 +1078,7 @@ msgstr ""
 "\n"
 "Bien cordialement,"
 
-#: config/module.config.php:196
+#: config/module.config.php:247
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -966,47 +1113,63 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:212
+#: config/module.config.php:261
+msgid ""
+"Thank you for your message. Check your confirmation email sent to {email}. "
+"We will answer you soon."
+msgstr ""
+"Merci pour votre message. Vérifiez le message de confirmation envoyé à "
+"{email}. Nous répondrons très bientôt."
+
+#: config/module.config.php:262
+msgid ""
+"Thank you for subscribing to our newsletter. Check the confirmation email "
+"sent to {email}."
+msgstr ""
+"Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
+"confirmation envoyé à {email}."
+
+#: config/module.config.php:265
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:214
+#: config/module.config.php:267
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:216
+#: config/module.config.php:269
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:218
+#: config/module.config.php:271
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:220
+#: config/module.config.php:273
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:222
+#: config/module.config.php:275
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:224
+#: config/module.config.php:277
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:226
+#: config/module.config.php:279
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:228
+#: config/module.config.php:281
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:230
+#: config/module.config.php:283
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:242 config/module.config.php:256
+#: config/module.config.php:302 config/module.config.php:315
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -1014,9 +1177,36 @@ msgstr ""
 "J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour "
 "répondre à ce message."
 
-#: config/module.config.php:244
+#: config/module.config.php:304
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
+
+#: config/module.config.php:317
+msgid "Unsubscribe"
+msgstr "Se désabonner"
+
+#~ msgid "Block title"
+#~ msgstr "Titre du bloc"
+
+#~ msgid "Other fields"
+#~ msgstr "Autres champs"
+
+#~ msgid "Template to display"
+#~ msgstr "Gabarit à afficher"
+
+#~ msgid ""
+#~ "Templates are in folder \"common/block-layout\" of the theme and should "
+#~ "start with \"contact-us\"."
+#~ msgstr ""
+#~ "Les gabarits sont dans le dossier \"common/block-layout\" du thème et "
+#~ "doivent commencer avec \"contact-us\"."
+
+#~ msgid ""
+#~ "Templates are in folder \"common/block-layout\" of the theme and should "
+#~ "start with \"newsletter\"."
+#~ msgstr ""
+#~ "Les gabarits sont dans le dossier « common/block-layout » du thème et "
+#~ "doivent commencer avec « newsletter »."
 
 #~ msgid ""
 #~ "The zip is created when the message is set \"read\" and removed when set "
