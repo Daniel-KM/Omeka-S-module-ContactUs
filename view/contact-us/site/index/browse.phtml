@@ -80,12 +80,16 @@ $headScript
             <?php if ($body): ?>
             <div class="description"><?= $escape($body) ?></div>
             <?php endif; ?>
+            <?= $this->contactUsSelector($resource) ?>
         </li>
     <?php endforeach; ?>
 </ul>
 
-<?php elseif ($isSession): ?>
+<?php elseif ($isSession):
 
+    $maxResources = (int) $siteSetting('contactus_selection_max');
+    $urlContactUsSelect = $url('site/contact-us', ['action' => 'select'], true);
+    ?>
 <div class="browse-controls contact-us-template hidden" style="display: none;" data-label-count-singular="<?= $translate('%d resource') ?>" data-label-count-plural="<?= $translate('%d resources') ?>">
     <span class="row-count">{total_resources}</span>
 </div>
@@ -95,8 +99,9 @@ $headScript
         <a class="resource-link" href="{resource_url}">
             <img src="{thumbnail_url}" title="{thumbnail_label}"/>
             <span class="resource-name">{resource_title}</span>
-            <div class="description">{resource_description}</div>
         </a>
+        <div class="description">{resource_description}</div>
+        <input class="contact-us-resource contact-us-selection" type="checkbox" name="id[]" value="{resource_id}" {resource_id_checked} title="{resource_title}" data-url="<?= $urlContactUsSelect ?>" data-local-storage="1" data-max-resources="<?= $maxResources ?>" data-message-fail=""/>
     </li>
 </ul>
 

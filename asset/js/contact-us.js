@@ -28,17 +28,28 @@
         };
 
         /**
-         * Check/uncheck contact us selection on load from local storage.
+         * Check if a resource is selected (local session).
          */
-        $('.contact-us-basket[data-local-storage="1"]').each(function(i, obj) {
+        const isSelectedForContact = function (resourceId) {
             let selectedResourceIds = localStorage.getItem('contactus_selectedIds');
             if (selectedResourceIds !== null) {
                 selectedResourceIds = JSON.parse(selectedResourceIds);
-                const resourceId = parseInt($(this).val());
+                resourceId = parseInt(resourceId);
                 if (resourceId) {
-                    const isSelected = selectedResourceIds.includes(resourceId);
-                    $(this).prop('checked', isSelected);
+                    return selectedResourceIds.includes(resourceId);
                 }
+            }
+            return false;
+        };
+
+        /**
+         * On load, check/uncheck contact us selection from local storage.
+         */
+       $('.contact-us-basket[data-local-storage="1"]').each(function(i, obj) {
+            // Don't check the template itself during the init.
+            const resourceId = $(this).val();
+            if (!isNaN(resourceId)) {
+                $(this).prop('checked', isSelectedForContact(resourceId));
             }
         });
 
@@ -50,7 +61,7 @@
              * Escape text as html.
              */
             const escapeHtml = function(string) {
-                return string
+                return ('' + string)
                     .replace(/&/g, '&amp;')
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;')
@@ -76,9 +87,7 @@
                                 output = output.replace(match, val);
                                 break;
                             case '{thumbnail_url}':
-                                val = resource['o:thumbnail']
-                                    ? resource['o:thumbnail']
-                                    : (resource['thumbnail_display_urls'] ? resource['thumbnail_display_urls']['medium'] : null);
+                                val = resource['thumbnail_display_urls'] ? resource['thumbnail_display_urls']['medium'] : null;
                                 val = val ? val : defaultThumbnailUrl;
                                 output = output.replace(match, val);
                                 break;
@@ -87,6 +96,14 @@
                                     ? (resource['o:title'] ? resource['o:title'] : defaultThumbnailLabel)
                                     : defaultThumbnailLabel;
                                 output = output.replace(match, escapeHtml(val));
+                                break;
+                            case '{resource_id}':
+                                val = resource['o:id'] ? resource['o:id'] : '';
+                                output = output.replace(match, escapeHtml(val));
+                                break;
+                            case '{resource_id_checked}':
+                                val = resource['o:id'] ? resource['o:id'] : '';
+                                output = output.replace(match, isSelectedForContact(val) ? 'checked="checked"' : '');
                                 break;
                             case '{resource_title}':
                                 val = resource['o:title'] ? resource['o:title'] : defaultUntitled;
@@ -207,6 +224,11 @@
 
         });
 
+        /**
+         * Update selection when the user or visitor click selection checkbox.
+         *
+         * The selection list may be limited by the max size of selections.
+         */
         $('body').on('click', '.contact-us-basket', function() {
             const checkbox = $(this);
             const resourceId = parseInt(checkbox.val());
