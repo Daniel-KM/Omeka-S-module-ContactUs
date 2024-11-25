@@ -16,6 +16,7 @@ trait ContactUsTestTrait
             ->setEmail($owner ? $owner->getEmail() : $email)
             ->setBody('test message body')
             ->setIp('127.0.0.1')
+            ->setCreated(new \DateTime)
         ;
         $entityManager = $this->services->get('Omeka\EntityManager');
         $entityManager->persist($contactMessage);

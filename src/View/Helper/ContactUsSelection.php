@@ -25,7 +25,7 @@ class ContactUsSelection extends AbstractHelper
     /**
      * Update (toggle) selected resources of the current user or visitor.
      *
-     * Set null to reset the selection.
+     * Set false to reset the selection.
      *
      * Warning: if a max number of resources is set for the selection (25 by
      * default), some of them may be skipped silently, so a warning should be
@@ -60,6 +60,8 @@ class ContactUsSelection extends AbstractHelper
 
     /**
      * Select resource(s) to add or remove to the user selection for contact us.
+     *
+     * @param array $resourceIds If null, the selection list is reset.
      */
     protected function toggleDb(?array $resourceIds): array
     {
@@ -90,6 +92,8 @@ class ContactUsSelection extends AbstractHelper
 
     /**
      * Select resource(s) to add or remove to a local selection for contact us.
+     *
+     * @param array $resourceIds If null, the selection list is reset.
      */
     protected function toggleSession(?array $resourceIds): array
     {

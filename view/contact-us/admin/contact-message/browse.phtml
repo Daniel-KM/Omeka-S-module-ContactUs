@@ -20,6 +20,7 @@ $userIsAllowed = $plugins->get('userIsAllowed');
 
 $this->headLink()->appendStylesheet($assetUrl('css/contact-us-admin.css', 'ContactUs'));
 $this->headScript()->appendFile($assetUrl('js/contact-us-admin.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
+
 $this->htmlElement('body')->appendAttribute('class', 'contact-message contact-messages browse');
 
 $sortHeadings = [

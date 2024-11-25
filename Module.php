@@ -234,6 +234,7 @@ class Module extends AbstractModule
         if (!in_array($resourceName, $append)) {
             return;
         }
+        /** @see \ContactUs\View\Helper\ContactUs */
         echo $view->contactUs([
             'resource' => $view->resource,
             'attach_file' => false,
@@ -248,6 +249,7 @@ class Module extends AbstractModule
             return;
         }
         $view = $event->getTarget();
+        /** @see \ContactUs\View\Helper\ContactUs */
         echo $view->contactUs([
             'attach_file' => false,
             'newsletter_label' => '',

@@ -258,19 +258,23 @@ class ContactUs extends AbstractHelper
                         );
                     }
                 } else {
-                    $message = new PsrMessage(
-                        $isContactAuthor
-                            ? 'Thank you for your message {name}. It will be sent to the author as soon as possible.' // @translate
-                            : 'Thank you for your message {name}. We will answer you as soon as possible.', // @translate
-                        $submitted['name']
-                            ? ['name' => sprintf('%s (%s)', $submitted['name'], $submitted['from'])]
-                            : ['name' => $submitted['from']]
-                    );
+                    if ($isContactAuthor) {
+                        $message = new PsrMessage(
+                            'Thank you for your message, {name}. It will be sent to the author as soon as possible.', // @translate
+                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                        );
+                    } else {
+                        $message = new PsrMessage(
+                            'Thank you for your message, {name}. We will answer you as soon as possible.', // @translate
+                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                        );
+                    }
                 }
 
                 $site = $this->currentSite();
 
-                // Manage the specific field for multiple ids.
+                // Manage the specific field for multiple ids and convert it
+                // into a resource when possible.
                 if (empty($postFields['id'])) {
                     unset($postFields['id']);
                 } elseif (is_array($postFields['id']) && count($postFields['id']) === 1 && empty($options['resource'])) {

@@ -7,7 +7,6 @@
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $i18n = $plugins->get('i18n');
-$setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
@@ -58,7 +57,7 @@ $site = $resource->site();
             <?php endif; ?>
         </div>
         <div class="value">
-            <a download="download" href="<?= $message->zipUrl() ?>"><?= $translate('Link to the zipped files when created') ?></a>
+            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped files when created') ?></a>
         </div>
         <?php else: ?>
         <h4><?= $escape($translate('Attached resources')) ?></h4>

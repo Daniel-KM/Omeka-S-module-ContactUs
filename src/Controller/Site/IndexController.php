@@ -12,12 +12,12 @@ use Laminas\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
     /**
-     * @var \Doctrine\ORM\EntityManager;
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
 
     /**
-     * @var \ContactUs\Api\Adapter\MessageAdapter;
+     * @var \ContactUs\Api\Adapter\MessageAdapter
      */
     protected $messageAdapter;
 
