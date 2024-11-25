@@ -6,9 +6,7 @@ use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\Session\Container;
 use Laminas\View\Model\JsonModel;
-use Omeka\Entity\User;
 
 class IndexController extends AbstractActionController
 {
@@ -44,12 +42,16 @@ class IndexController extends AbstractActionController
             return $this->jsonErrorNotFound();
         }
 
-        $user = $this->identity();
-        $resourcesData = $this->requestedResources();
+        $requestedResourceIds = $this->requestedResourceIds();
 
-        return $user
-            ? $this->toggleDb($resourcesData['resource_ids'], $resourcesData['is_multiple'], $user)
-            : $this->toggleSession($resourcesData['resource_ids'], $resourcesData['is_multiple']);
+        $newSelecteds = $this->viewHelpers()->get('contactUsSelection')($requestedResourceIds);
+
+        return new JsonModel([
+            'status' => 'success',
+            'data' => [
+                'selected_resources' => $newSelecteds,
+            ],
+        ]);
     }
 
     public function zipAction()
@@ -111,14 +113,13 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Get selected resources from the query and prepare them.
+     * Get selected resources from the query and check them.
      */
-    protected function requestedResources(): array
+    protected function requestedResourceIds(): array
     {
         $params = $this->params();
         $id = $params->fromQuery('id');
 
-        $isEmpty = !$id;
         $isMultiple = is_array($id);
         $ids = $isMultiple ? $id : array_filter([$id]);
 
@@ -136,45 +137,7 @@ class IndexController extends AbstractActionController
             }
         }
 
-        return [
-            'has_result' => !$isEmpty,
-            'is_multiple' => $isMultiple,
-            'resource_ids' => $resourceIds,
-        ];
-    }
-
-    /**
-     * Select resource(s) to add or remove to a selection for contact us.
-     */
-    protected function toggleDb(array $resourceIds, bool $isMultiple, User $user): array
-    {
-        $userSettings = $this->userSettings();
-        $alreadySelecteds = $userSettings->get('contactus_selected_resources') ?: [];
-        $newSelecteds = array_values(array_diff($resourceIds, $alreadySelecteds));
-        $userSettings->set('contactus_selected_resources', $newSelecteds);
-        return new JsonModel([
-            'status' => 'success',
-            'data' => [
-                'selected_resources' => $newSelecteds,
-            ],
-        ]);
-    }
-
-    /**
-     * Select resource(s) to add or remove to a local selection for contact us.
-     */
-    protected function toggleSession(array $resourceIds, bool $isMultiple)
-    {
-        $container = new Container('ContactUsSelection');
-        $alreadySelecteds = $container->selected_resources ?? [];
-        $newSelecteds = array_values(array_diff($resourceIds, $alreadySelecteds));
-        $container->selected_resources = $newSelecteds;
-        return new JsonModel([
-            'status' => 'success',
-            'data' => [
-                'selected_resources' => $newSelecteds,
-            ],
-        ]);
+        return $resourceIds;
     }
 
     protected function jsonErrorNotFound(): JsonModel

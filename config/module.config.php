@@ -30,6 +30,7 @@ return [
         ],
         'factories' => [
             'contactUs' => Service\ViewHelper\ContactUsFactory::class,
+            'contactUsSelection' => Service\ViewHelper\ContactUsSelectionFactory::class,
         ],
     ],
     'block_layouts' => [
