@@ -122,12 +122,17 @@ class ContactUsForm extends Form
         ;
 
         foreach ($this->fields ?? [] as $name => $data) {
+            if (!is_array($data)) {
+                $data = [
+                    'label' => $data,
+                    'type' => Element\Text::class,
+                ];
+                // Update original fields to prepare required input fields below.
+                $this->fields[$name] = $data;
+            }
             // Manage multiple attached resource ids.
             if ($name === 'id') {
                 $name = 'id[]';
-            }
-            if (!is_array($data)) {
-                $data = ['label' => $data, 'type' => Element\Text::class];
             }
             $isMultiple = substr($name, -2) === '[]';
             if ($isMultiple) {
@@ -149,6 +154,7 @@ class ContactUsForm extends Form
                             'class' => $data['class'] ?? '',
                             'multiple' => 'multiple',
                             'value' => $fieldValue,
+                            'required' => !empty($data['required']),
                         ],
                     ]);
             } else {
@@ -159,11 +165,13 @@ class ContactUsForm extends Form
                         'type' => $data['type'] ?? Element\Text::class,
                         'options' => [
                             'label' => $data['label'] ?? null,
+                            'value_options' => $data['value_options'] ?? [],
                         ],
                         'attributes' => [
                             'id' => 'fields-' . $name,
                             'class' => $data['class'] ?? '',
                             'value' => $fieldValue,
+                            'required' => !empty($data['required']),
                         ],
                     ]);
             }
@@ -278,6 +286,25 @@ class ContactUsForm extends Form
                 ],
             ])
         ;
+
+        // Add an input filter for all fields because the theme may adapt them.
+        foreach ($this->fields ?? [] as $name => $data) {
+            // Manage multiple attached resource ids.
+            if ($name === 'id') {
+                $name = 'id[]';
+            }
+            if (empty($data['required'])) {
+                $isMultiple = substr($name, -2) === '[]';
+                $inputFilter
+                    ->add([
+                        'name' => $isMultiple
+                            ? 'fields[' . substr($name, 0, -2) . '][]'
+                            : 'fields[' . $name . ']',
+                        'required' => false,
+                    ]);
+            }
+        }
+
         if ($this->question) {
             $inputFilter->add([
                 'name' => 'answer',
