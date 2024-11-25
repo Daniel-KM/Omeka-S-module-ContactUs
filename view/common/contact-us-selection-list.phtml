@@ -1,0 +1,54 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array $resourceIds
+ */
+
+$plugins = $this->getHelperPluginManager();
+$api = $plugins->get('api');
+$escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+$headLink = $plugins->get('headLink');
+$thumbnail = $plugins->get('thumbnail');
+$siteSetting = $plugins->get('siteSetting');
+$headScript = $plugins->get('headScript');
+
+$filterLocale = (bool) $siteSetting('filter_locale_values');
+$siteLang = $plugins->get('lang')();
+$lang = $filterLocale ? $siteLang : null;
+$langValue = $filterLocale ? [$siteLang, ''] : null;
+$untitled = $translate('[Untitled]');
+
+$headingTerm = $siteSetting('browse_heading_property_term');
+$bodyTerm = $siteSetting('browse_body_property_term');
+
+$defaultThumbnail = '<img src="' . $assetUrl('thumbnails/default.png', 'Omeka', true) . '" title="' . $translate('No media') . '"/>';
+
+// For now, contact us is only possible with items and api resources is not available.
+/** @var \Omeka\Api\Representation\ItemRepresentation $resources */
+$resources = $resourceIds ? $api->search('items', ['id' => $resourceIds])->getContent() : [];
+
+$headLink
+    ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
+$headScript
+    ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
+?>
+
+<ul class="resource-list">
+    <?php
+    foreach ($resources as $resource):
+        $heading = $headingTerm ? $resource->value($headingTerm, ['default' => $untitled, 'lang' => $langValue]) : $resource->displayTitle($untitled, $lang);
+        $body = $bodyTerm ? $resource->value($bodyTerm, ['lang' => $langValue]) : $resource->displayDescription(null, $lang);
+        $resourceType = $resource->getControllerName();
+        $thumbnailResource = $thumbnail($resource, 'medium') ?: $defaultThumbnail;
+        $linkContent = sprintf('%1$s<span class="resource-name">%2$s</span>', $thumbnailResource, $escape($heading));
+        ?>
+        <li class="resource <?= $resourceType ?>">
+            <?= $resource->linkRaw($linkContent, null, ['class' => 'resource-link']) ?>
+            <?php if ($body): ?>
+            <div class="description"><?= $escape($body) ?></div>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>
