@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
- * @var \ContactUs\Api\Representation\messageRepresentation $resource
+ * @var \ContactUs\Api\Representation\MessageRepresentation $resource
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -34,6 +34,7 @@ $site = $resource->site();
     </div>
     <div class="meta-group">
         <?php $attachedResource = $message->resource(); ?>
+        <?php $attachedResourceIds = $message->resourceIds(); ?>
         <?php if ($attachedResource): ?>
         <?php $attachedResourceName = $attachedResource->getControllerName(); ?>
         <h4><?= $escape($translate(ucfirst($attachedResourceName))) ?> <span class="fa resource-name <?= $attachedResourceName ?>" aria-label="<?= $attachedResourceName ?>"></span></h4>
@@ -43,20 +44,28 @@ $site = $resource->site();
             <span class="o-icon-private" aria-label="<?= $translate('Private') ?>"></span>
             <?php endif; ?>
         </div>
-        <?php elseif (!empty($fields['id'])): ?>
+        <div class="value">
+            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped file when created') ?></a>
+        </div>
+        <?php elseif ($attachedResourceIds): ?>
         <h4><?= $escape($translate('Multiple resources')) ?></h4>
         <div class="value">
-            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items (admin)'), count($fields['id'])) ?></a>
+            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $attachedResourceIds]])) ?>"><?= sprintf($translate('%d items (admin)'), count($attachedResourceIds)) ?></a>
             <?php if ($site): ?>
             <div>
-                <a class="resource-name" href="<?= $escapeAttr($url('site/resource', ['controller' => 'item', 'action' => 'browse', 'site-slug' => $site->slug()], ['query' => ['id' => $fields['id']]])) ?>"><?= sprintf($translate('%d items (public)'), count($fields['id'])) ?></a>
+                <a class="resource-name" href="<?= $escapeAttr($url('site/resource', ['controller' => 'item', 'action' => 'browse', 'site-slug' => $site->slug()], ['query' => ['id' => $attachedResourceIds]])) ?>"><?= sprintf($translate('%d items (public)'), count($attachedResourceIds)) ?></a>
             </div>
             <?php endif; ?>
         </div>
-        <?php endif; ?>
         <div class="value">
             <a download="download" href="<?= $message->zipUrl() ?>"><?= $translate('Link to the zipped files when created') ?></a>
         </div>
+        <?php else: ?>
+        <h4><?= $escape($translate('Attached resources')) ?></h4>
+        <div class="value">
+            <span><?= $escape($translate('None')) ?></span>
+        </div>
+        <?php endif; ?>
     </div>
     <div class="meta-group">
         <?php if ($site): ?>

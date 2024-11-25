@@ -25,7 +25,7 @@ $(document).ready(function() {
                 var row = button.closest('.contact-message')
                 var iconLink = row.find('.toggle-property.' + property);
                 iconLink.data('status', status);
-                if (data.status !== 'success' && data.message.length) {
+                if (data.status !== 'success' && data.message && data.message.length) {
                     alert(data.message);
                 }
             })

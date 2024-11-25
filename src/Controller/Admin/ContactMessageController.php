@@ -280,10 +280,12 @@ class ContactMessageController extends AbstractActionController
         $contactMessage = $this->api()->read('contact_messages', $id)->getContent();
 
         $hasZip = $contactMessage->hasZip();
+        $message = null;
         if ($hasZip) {
             @unlink($contactMessage->zipFilepath());
+            $status = 'success';
             $hasZip = false;
-        } elseif ($contactMessage->resourceIds()) {
+        } else if ($contactMessage->resourceIds()) {
             $type = $this->settings()->get('contactus_create_zip', 'original');
             $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
                 'id' => $contactMessage->resourceIds(),
@@ -292,12 +294,18 @@ class ContactMessageController extends AbstractActionController
                 'baseUri' => 'contactus',
                 'type' => $type,
             ]);
-            // $this->messenger()->addSuccess('A zip with the files is created in background.');
+            $status = 'success';
             $hasZip = true;
+            // Useless message: it is quick.
+            // $message = $this->translate('A zip with the files is created in background.'); // @translate
+        } else {
+            $status = 'fail';
+            $hasZip = false;
+            $message = $this->translate('There is no resources or files.'); // @translate
         }
 
-        return new JsonModel([
-            'status' => 'success',
+        $output = [
+            'status' => $status,
             'data' => [
                 'action' => [
                     'property' => 'o-module-contact:has_zip',
@@ -305,7 +313,13 @@ class ContactMessageController extends AbstractActionController
                     'status' => $hasZip ? 'zip' : 'no-zip',
                 ],
             ],
-        ]);
+        ];
+
+        if ($message) {
+            $output['message'] = $message;
+        }
+
+        return new JsonModel($output);
     }
 
     protected function deleteZips(): void
