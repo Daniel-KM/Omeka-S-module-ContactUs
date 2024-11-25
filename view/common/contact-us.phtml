@@ -15,6 +15,14 @@
 
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
+$headLink = $plugins->get('headLink');
+$headScript = $plugins->get('headScript');
+
+$headLink
+    ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
+$headScript
+    ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
 <div class="contact-us-block">

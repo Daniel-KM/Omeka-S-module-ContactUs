@@ -4,7 +4,11 @@ namespace ContactUs\Controller;
 
 use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
+use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Session\Container;
+use Laminas\View\Model\JsonModel;
+use Omeka\Entity\User;
 
 class IndexController extends AbstractActionController
 {
@@ -24,6 +28,28 @@ class IndexController extends AbstractActionController
     ) {
         $this->entityManager = $entityManager;
         $this->messageAdapter = $messageAdapter;
+    }
+
+    /**
+     * Update (toggle) selected resources of the current user or visitor.
+     *
+     * The resources to toggle are set in the query with the key id or id[].
+     *
+     * @return \Laminas\View\Model\JsonModel Indicate success/error and list all
+     * selected resources.
+     */
+    public function selectAction()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return $this->jsonErrorNotFound();
+        }
+
+        $user = $this->identity();
+        $resourcesData = $this->requestedResources();
+
+        return $user
+            ? $this->toggleDb($resourcesData['resource_ids'], $resourcesData['is_multiple'], $user)
+            : $this->toggleSession($resourcesData['resource_ids'], $resourcesData['is_multiple']);
     }
 
     public function zipAction()
@@ -81,6 +107,93 @@ class IndexController extends AbstractActionController
             'filename' => $id . '.zip',
             'disposition_mode' => 'attachment',
             'cache' => true,
+        ]);
+    }
+
+    /**
+     * Get selected resources from the query and prepare them.
+     */
+    protected function requestedResources(): array
+    {
+        $params = $this->params();
+        $id = $params->fromQuery('id');
+
+        $isEmpty = !$id;
+        $isMultiple = is_array($id);
+        $ids = $isMultiple ? $id : array_filter([$id]);
+
+        $api = $this->api();
+
+        // Check resources.
+        // Search resources is currently not possible in Omeka S v
+        $resourceIds = [];
+        foreach ($ids as $id) {
+            try {
+                $api->read('resources', ['id' => $id])->getContent();
+                $resourceIds[] = $id;
+            } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                continue;
+            }
+        }
+
+        return [
+            'has_result' => !$isEmpty,
+            'is_multiple' => $isMultiple,
+            'resource_ids' => $resourceIds,
+        ];
+    }
+
+    /**
+     * Select resource(s) to add or remove to a selection for contact us.
+     */
+    protected function toggleDb(array $resourceIds, bool $isMultiple, User $user): array
+    {
+        $userSettings = $this->userSettings();
+        $alreadySelecteds = $userSettings->get('contactus_selected_resources') ?: [];
+        $newSelecteds = array_values(array_diff($resourceIds, $alreadySelecteds));
+        $userSettings->set('contactus_selected_resources', $newSelecteds);
+        return new JsonModel([
+            'status' => 'success',
+            'data' => [
+                'selected_resources' => $newSelecteds,
+            ],
+        ]);
+    }
+
+    /**
+     * Select resource(s) to add or remove to a local selection for contact us.
+     */
+    protected function toggleSession(array $resourceIds, bool $isMultiple)
+    {
+        $container = new Container('ContactUsSelection');
+        $alreadySelecteds = $container->selected_resources ?? [];
+        $newSelecteds = array_values(array_diff($resourceIds, $alreadySelecteds));
+        $container->selected_resources = $newSelecteds;
+        return new JsonModel([
+            'status' => 'success',
+            'data' => [
+                'selected_resources' => $newSelecteds,
+            ],
+        ]);
+    }
+
+    protected function jsonErrorNotFound(): JsonModel
+    {
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_404);
+        return new JsonModel([
+            'status' => 'error',
+            'message' => $this->translate('Not found'), // @translate
+        ]);
+    }
+
+    protected function jsonInternalError(): JsonModel
+    {
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_500);
+        return new JsonModel([
+            'status' => 'error',
+            'message' => $this->translate('An internal error occurred.'), // @translate
         ]);
     }
 }

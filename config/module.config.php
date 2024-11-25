@@ -61,6 +61,24 @@ return [
     ],
     'router' => [
         'routes' => [
+            'site' => [
+                'child_routes' => [
+                    'contact-us' => [
+                        'type' => \Laminas\Router\Http\Segment::class,
+                        'options' => [
+                            'route' => '/contact-us/:action',
+                            'constraints' => [
+                                'action' => 'select',
+                            ],
+                            'defaults' => [
+                                '__NAMESPACE__' => 'ContactUs\Controller',
+                                'controller' => 'Index',
+                                'action' => 'select',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'admin' => [
                 'child_routes' => [
                     'contact-message' => [
@@ -234,6 +252,9 @@ Subject: {subject}
             ],
             'contactus_append_resource_show' => [],
             'contactus_append_items_browse' => false,
+        ],
+        'user_settings' => [
+            'contactus_selected_resources' => [],
         ],
         'block_settings' => [
             'contactUs' => [
