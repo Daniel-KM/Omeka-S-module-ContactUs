@@ -58,6 +58,12 @@ $headScript
 
 <?= $this->pageTitle($siteSetting('contactus_label_selection', $translate('Selection for contact')), 2) ?>
 
+<?php if ($maxContactUsResources = (int) $siteSetting('contactus_selection_max')): ?>
+<p class="contact-us-warn">
+    <?= sprintf($translate('There is a limit of %d resources by request'), $maxContactUsResources) ?>
+</p>
+<?php endif; ?>
+
 <?php $this->trigger('view.browse.before'); ?>
 
 <?php if (!empty($resources)): ?>

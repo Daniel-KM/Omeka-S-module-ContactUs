@@ -27,6 +27,10 @@ class ContactUsSelection extends AbstractHelper
      *
      * Set null to reset the selection.
      *
+     * Warning: if a max number of resources is set for the selection (25 by
+     * default), some of them may be skipped silently, so a warning should be
+     * done earlier via php or js.
+     *
      * @var array|int|null|false $resourceIds List of resources to add/remove
      * from the selection. Set an empty array or null to get the current list.
      * Set false to reset the list.
@@ -60,13 +64,26 @@ class ContactUsSelection extends AbstractHelper
     protected function toggleDb(?array $resourceIds): array
     {
         if ($resourceIds === null) {
-            $newSelecteds = [];
-        } else {
-            $alreadySelecteds = $this->userSettings->get('contactus_selected_resources') ?: [];
-            $existings = array_intersect($resourceIds, $alreadySelecteds);
-            $news = array_diff($resourceIds, $alreadySelecteds);
-            $newSelecteds = array_merge(array_diff($alreadySelecteds, $existings), $news);
+            $this->userSettings->set('contactus_selected_resources', []);
+            return [];
         }
+
+        $alreadySelecteds = $this->userSettings->get('contactus_selected_resources') ?: [];
+
+        if (!count($resourceIds)) {
+            return $alreadySelecteds;
+        }
+
+        $existings = array_intersect($resourceIds, $alreadySelecteds);
+        $news = array_diff($resourceIds, $alreadySelecteds);
+        $newsSelectedsWithoutDeleted = array_diff($alreadySelecteds, $existings);
+        $newSelecteds = array_merge($newsSelectedsWithoutDeleted, $news);
+
+        $max = (int) $this->getView()->siteSetting('contactus_selection_max');
+        if ($max) {
+            $newSelecteds = array_slice($newSelecteds, 0, $max);
+        }
+
         $this->userSettings->set('contactus_selected_resources', $newSelecteds);
         return $newSelecteds;
     }
@@ -78,13 +95,25 @@ class ContactUsSelection extends AbstractHelper
     {
         $container = new Container('ContactUsSelection');
         if ($resourceIds === null) {
-            $newSelecteds = [];
-        } else {
-            $alreadySelecteds = $container->selected_resources ?? [];
-            $existings = array_intersect($resourceIds, $alreadySelecteds);
-            $news = array_diff($resourceIds, $alreadySelecteds);
-            $newSelecteds = array_merge(array_diff($alreadySelecteds, $existings), $news);
+            $container->selected_resources = [];
+            return [];
         }
+
+        $alreadySelecteds = $container->selected_resources ?? [];
+
+        if (!count($resourceIds)) {
+            return $alreadySelecteds;
+        }
+
+        $existings = array_intersect($resourceIds, $alreadySelecteds);
+        $news = array_diff($resourceIds, $alreadySelecteds);
+        $newSelecteds = array_merge(array_diff($alreadySelecteds, $existings), $news);
+
+        $max = (int) $this->getView()->siteSetting('contactus_selection_max');
+        if ($max) {
+            $newSelecteds = array_slice($newSelecteds, 0, $max);
+        }
+
         $container->selected_resources = $newSelecteds;
         return $newSelecteds;
     }

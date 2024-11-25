@@ -258,6 +258,17 @@ How many are one plus 1 (in number)? = 2', // @translate
                     'id' => 'contactus_label_guest_link',
                 ],
             ])
+            ->add([
+                'name' => 'contactus_selection_max',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Maximum number of items to store in selection', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_selection_max',
+                ],
+            ])
         ;
     }
 }

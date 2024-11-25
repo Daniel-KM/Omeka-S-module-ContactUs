@@ -193,6 +193,7 @@ return [
         'The contact message doesn’t exist.', // @translate
     ],
     'contactus' => [
+        // Main settings.
         'settings' => [
             'contactus_notify_recipients' => [],
             'contactus_author' => 'disabled',
@@ -201,6 +202,7 @@ return [
             'contactus_create_zip' => 'original',
             'contactus_delete_zip' => 30,
         ],
+        // Site settings.
         'site_settings' => [
             'contactus_notify_recipients' => [],
             'contactus_notify_subject' => '',
@@ -285,10 +287,13 @@ Subject: {subject}
             'contactus_append_items_browse' => false,
             'contactus_label_selection' => 'Selection for contact', // @translate
             'contactus_label_guest_link' => 'My selection for contact', // @translate
+            'contactus_selection_max' => 25,
         ],
+        // User settings.
         'user_settings' => [
             'contactus_selected_resources' => [],
         ],
+        // Block settings.
         'block_settings' => [
             'contactUs' => [
                 'confirmation_enabled' => true,
