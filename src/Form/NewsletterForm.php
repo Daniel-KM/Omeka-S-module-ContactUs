@@ -15,6 +15,7 @@ use Omeka\Entity\User;
  */
 class NewsletterForm extends Form
 {
+    protected $formOptions = [];
     protected $consentLabel = '';
     protected $question = '';
     protected $answer = '';
@@ -24,10 +25,12 @@ class NewsletterForm extends Form
     public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
+        $this->formOptions = $options['formOptions'] ?? [];
         $this->consentLabel = $options['consent_label'] ?? '';
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
+        $this->user = $options['user'] ?? null;
     }
 
     public function init(): void
@@ -142,6 +145,12 @@ class NewsletterForm extends Form
                 ],
             ]);
         }
+    }
+
+    public function setFormOptions(array $formOptions): self
+    {
+        $this->formOptions = $formOptions;
+        return $this;
     }
 
     public function setConsentLabel($consentLabel): self

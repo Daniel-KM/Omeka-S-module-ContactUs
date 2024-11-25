@@ -23,6 +23,7 @@ class ContactUsForm extends Form
     public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
+        $this->formOptions = $options['formOptions'] ?? [];
         $this->fields = $options['fields'] ?? [];
         $this->attachFile = !empty($options['attach_file']);
         $this->consentLabel = $options['consent_label'] ?? '';
@@ -30,6 +31,7 @@ class ContactUsForm extends Form
         $this->question = $options['question'] ?? '';
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
+        $this->user = $options['user'] ?? null;
         $this->isContactAuthor = ($options['contact'] ?? null) === 'author';
     }
 
