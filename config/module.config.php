@@ -232,6 +232,8 @@ From: {name} <{email}>
 Subject: {subject}
 
 {message}', // @translate
+            'contactus_confirmation_message' => 'Thank you for your message. Check your confirmation email sent to {email}. We will answer you soon.', // @translate
+            'contactus_confirmation_message_newsletter' => 'Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}.', // @translate
             'contactus_antispam' => true,
             'contactus_questions' => [
                 'How many are zero plus 1 (in number)?' // @translate

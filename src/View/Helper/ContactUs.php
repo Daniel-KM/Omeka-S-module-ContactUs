@@ -430,18 +430,22 @@ class ContactUs extends AbstractHelper
                         // Send the confirmation message to the visitor.
                         elseif ($options['confirmation_enabled']) {
                             if ($newsletterOnly) {
-                                $message = new PsrMessage(
-                                    'Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}.', // @translate
-                                    ['email' => $submitted['from']]
-                                );
+                                $message = $view->siteSetting('contactus_confirmation_message_newsletter')
+                                    ?: $translate($this->defaultOptions['confirmation_message_newsletter']);
                             } else {
-                                $message = new PsrMessage(
-                                    'Thank you for your message {name}. Check your confirmation email. We will answer you soon.', // @translate
-                                    $submitted['name']
-                                        ? ['name' => sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])]
-                                        : ['name' => $submitted['from']]
-                                );
+                                $message = $view->siteSetting('contactus_confirmation_message')
+                                    ?: $translate($this->defaultOptions['confirmation_message']);
                             }
+                            $placeholders = [];
+                            if (mb_strpos($message, '{email}') !== false) {
+                                $placeholders['email'] = $submitted['from'];
+                            }
+                            if (mb_strpos($message, '{name}') !== false) {
+                                $placeholders['name'] = $submitted['name']
+                                    ? $submitted['name']
+                                    : $submitted['from'];
+                            }
+                            $message = new PsrMessage($message, $placeholders);
 
                             $mail = [];
                             if ($sendWithUserEmail) {

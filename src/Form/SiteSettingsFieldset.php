@@ -146,6 +146,32 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_confirmation_message',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Message displayed on site after post', // @translate
+                    'info' => 'Possible placeholders: {name}, {email}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_confirmation_message',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_confirmation_message_newsletter',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Message displayed on site after post for newsletter', // @translate
+                    'info' => 'Possible placeholders: {name}, {email}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_confirmation_message_newsletter',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_antispam',
                 'type' => Element\Checkbox::class,
                 'options' => [
