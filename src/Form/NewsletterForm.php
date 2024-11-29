@@ -23,6 +23,7 @@ class NewsletterForm extends Form
     protected $answer = '';
     protected $checkAnswer = '';
     protected $user = null;
+    protected $recaptcha = false;
 
     public function __construct($name = null, $options = [])
     {
@@ -35,6 +36,7 @@ class NewsletterForm extends Form
         $this->answer = $options['answer'] ?? '';
         $this->checkAnswer = $options['check_answer'] ?? '';
         $this->user = $options['user'] ?? null;
+        $this->recaptcha = $options['recaptcha'] ?? false;
     }
 
     public function init(): void
@@ -132,6 +134,13 @@ class NewsletterForm extends Form
                     ],
                 ]);
         }
+
+        if ($this->recaptcha) {
+            $this->add([
+                'type' => \Omeka\Form\Element\Recaptcha::class,
+            ]);
+        }
+
 
         $this
             ->add([

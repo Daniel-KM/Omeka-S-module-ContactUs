@@ -20,6 +20,7 @@ class ContactUsForm extends Form
     protected $checkAnswer = '';
     protected $user = null;
     protected $isContactAuthor = false;
+    protected $recaptcha = false;
 
     public function __construct($name = null, $options = [])
     {
@@ -34,6 +35,7 @@ class ContactUsForm extends Form
         $this->checkAnswer = $options['check_answer'] ?? '';
         $this->user = $options['user'] ?? null;
         $this->isContactAuthor = ($options['contact'] ?? null) === 'author';
+        $this->recaptcha = $options['recaptcha'] ?? false;
     }
 
     public function init(): void
@@ -304,6 +306,12 @@ class ContactUsForm extends Form
                         'value' => substr(md5($this->question), 0, 16),
                     ],
                 ]);
+        }
+
+        if ($this->recaptcha) {
+            $this->add([
+                'type' => \Omeka\Form\Element\Recaptcha::class,
+            ]);
         }
 
         $this
