@@ -306,7 +306,7 @@ Subject: {subject}
                 'attach_file' => false,
                 'antispam' => true,
                 'questions' => [],
-                'template' => '',
+                'recaptcha' => false,
             ],
             'newsletter' => [
                 'confirmation_enabled' => true,
@@ -317,7 +317,7 @@ Subject: {subject}
                 'unsubscribe_label' => 'Unsubscribe', // @translate
                 'antispam' => true,
                 'questions' => [],
-                'template' => '',
+                'recaptcha' => false,
             ],
         ],
     ],

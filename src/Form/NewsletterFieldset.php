@@ -88,6 +88,31 @@ class NewsletterFieldset extends Fieldset
                     'id' => 'contactus_antispam',
                 ],
             ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][questions]',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'List of antispam questions/answers', // @translate
+                    'info' => 'See the block "Newsletter" for a simple list. Separate questions and answer with a "=". Questions may be translated.', // @translate
+                    'as_key_value' => true,
+                ],
+                'attributes' => [
+                    'id' => 'contactus_questions',
+                    'placeholder' => 'How many are zero plus 1 (in number)? = 1
+How many are one plus 1 (in number)? = 2', // @translate
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][recaptcha]',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Enable Google Recaptcha antispam for visitors', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_recaptcha',
+                ],
+            ])
         ;
     }
 }

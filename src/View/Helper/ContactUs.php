@@ -212,7 +212,7 @@ class ContactUs extends AbstractHelper
                 'contact' => $isContactAuthor ? 'author' : 'us',
                 'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
                 'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
-                'recaptcha' => $options['recaptcha'],
+                'recaptcha' => !empty($options['recaptcha']),
             ];
             $form = $newsletterOnly
                 ? $this->getFormNewsletter($formOptions)
@@ -530,7 +530,7 @@ class ContactUs extends AbstractHelper
                 'contact' => $isContactAuthor ? 'author' : 'us',
                 'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
                 'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
-                'recaptcha' => $options['recaptcha'],
+                'recaptcha' => !empty($options['recaptcha']),
             ];
             $form = $newsletterOnly
                 ? $this->getFormNewsletter($formOptions)

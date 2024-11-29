@@ -141,7 +141,6 @@ class NewsletterForm extends Form
             ]);
         }
 
-
         $this
             ->add([
                 'name' => 'submit',
