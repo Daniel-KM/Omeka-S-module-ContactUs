@@ -24,6 +24,9 @@ $escapeAttr = $plugins->get('escapeHtmlAttr');
 $headScript = $plugins->get('headScript');
 $translatePlural = $plugins->get('translatePlural');
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
+$guestNavigation = $user && $plugins->has('guestNavigation') ? $plugins->get('guestNavigation')() : null;
+
+$hasGuestNav = $guestNavigation && $guestNavigation->getContainer()->count();
 
 $filterLocale = (bool) $siteSetting('filter_locale_values');
 $siteLang = $plugins->get('lang')();
@@ -52,8 +55,14 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<?php if ($breadcrumbs): ?>
+<?php if ($breadcrumbs && !$hasGuestNav): ?>
 <?= $breadcrumbs() ?>
+<?php endif; ?>
+
+<?php if ($hasGuestNav): ?>
+<nav class="navigation-guest">
+    <?= $guestNavigation->menu()->renderMenu() ?>
+</nav>
 <?php endif; ?>
 
 <?= $this->pageTitle($siteSetting('contactus_label_selection', $translate('Selection for contact')), 2) ?>
