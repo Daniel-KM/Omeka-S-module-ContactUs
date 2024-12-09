@@ -32,14 +32,14 @@ $headScript
 </button>
 
 <dialog class="popup popup-dialog popup-contact-us contact-us-form" data-id="<?= $resource->id() ?>">
-    <div class="popup-background">
-        <div class="popup-panel">
-            <div class="popup-header">
-                <button type="button" class="popup-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
-                    <span class="popup-close">X</span>
+    <div class="dialog-background">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                    <span class="dialog-close">🗙</span>
                 </button>
             </div>
-            <div class="popup-contents">
+            <div class="dialog-contents">
                 <?php if (!empty($heading)): ?>
                 <h4><?= $escape($heading) ?></h4>
                 <?php endif; ?>

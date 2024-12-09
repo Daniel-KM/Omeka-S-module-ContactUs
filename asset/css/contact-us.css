@@ -17,8 +17,11 @@
         display: flex;
         justify-content: flex-end;
     }
-    .popup-header-close-button {
-        margin: 12px;
-        padding: 12px;
+
+    .dialog-header-close-button {
+        display: block;
+        margin-left: auto;
+        padding: 0;
+        background-color: transparent;
     }
 }
