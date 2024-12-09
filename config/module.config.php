@@ -34,6 +34,18 @@ return [
             'contactUsSelectionList' => Service\ViewHelper\ContactUsSelectionListFactory::class,
         ],
     ],
+    'form_elements' => [
+        'invokables' => [
+            Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
+            Form\NewsletterFieldset::class => Form\NewsletterFieldset::class,
+            Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
+            Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
+        ],
+        'factories' => [
+            Form\ContactUsForm::class => Service\Form\FormFactory::class,
+            Form\NewsletterForm::class => Service\Form\FormFactory::class,
+        ],
+    ],
     'block_layouts' => [
         'invokables' => [
             'contactUs' => Site\BlockLayout\ContactUs::class,
@@ -47,16 +59,9 @@ return [
             'contactUsSelector' => Site\ResourcePageBlockLayout\ContactUsSelector::class,
         ],
     ],
-    'form_elements' => [
+    'navigation_links' => [
         'invokables' => [
-            Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
-            Form\NewsletterFieldset::class => Form\NewsletterFieldset::class,
-            Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
-            Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
-        ],
-        'factories' => [
-            Form\ContactUsForm::class => Service\Form\FormFactory::class,
-            Form\NewsletterForm::class => Service\Form\FormFactory::class,
+            'contactUsBasket' => Site\Navigation\Link\Basket::class,
         ],
     ],
     'controllers' => [
