@@ -27,11 +27,11 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<button class="contact-us-button contact-us-write" data-id="<?= $resource->id() ?>">
+<button class="contact-us-button contact-us-write"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
     <span class="contact-us-write"><?= $escapeAttr($translate('Send a message')) ?></span>
 </button>
 
-<dialog class="popup popup-dialog popup-contact-us contact-us-form" data-id="<?= $resource->id() ?>">
+<dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
     <div class="dialog-background">
         <div class="dialog-panel">
             <div class="dialog-header">
