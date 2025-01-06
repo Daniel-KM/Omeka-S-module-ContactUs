@@ -1,5 +1,11 @@
-(function() {
+'use strict';
+
+(function ($) {
     $(document).ready(function() {
+
+        /**
+         * @see ContactUs, Guest, Selection, TwoFactorAuth.
+         */
 
         const beforeSpin = function (element) {
             var span = $(element).find('span');
@@ -27,30 +33,55 @@
             element.show();
         };
 
-        const dialogMessage = function (message) {
-            // Use a dialog to display a message.
+        /**
+         * Get the main message of jSend output, in particular for status fail.
+         */
+        const jSendMessage = function(data) {
+            if (typeof data !== 'object') {
+                return null;
+            }
+            if (data.message) {
+                return data.message;
+            }
+            if (!data.data) {
+                return null;
+            }
+            for (let value of Object.values(data.data)) {
+                if (typeof value === 'string' && value.length) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        const dialogMessage = function (message, nl2br = false) {
+            // Use a dialog to display a message, that should be escaped.
             var dialog = document.querySelector('dialog.popup-message');
             if (!dialog) {
                 dialog = `
-<dialog class="popup popup-dialog popup-message">
-    <div class="popup-background">
-        <div class="popup-panel">
-            <div class="popup-header">
-                <button type="button" class="popup-header-close-button" title="Close" autofocus="autofocus">
-                    <span class="popup-close">X</span>
-                </button>
-            </div>
-            <div class="popup-contents">
-                {{ message }}
+    <dialog class="popup popup-dialog dialog-message popup-message" data-is-dynamic="1">
+        <div class="dialog-background">
+            <div class="dialog-panel">
+                <div class="dialog-header">
+                    <button type="button" class="dialog-header-close-button" title="Close" autofocus="autofocus">
+                        <span class="dialog-close">🗙</span>
+                    </button>
+                </div>
+                <div class="dialog-contents">
+                    {{ message }}
+                </div>
             </div>
         </div>
-    </div>
-</dialog>`;
+    </dialog>`;
                 $('body').append(dialog);
-                dialog = document.querySelector('dialog.popup-message');
+                dialog = document.querySelector('dialog.dialog-message');
+            }
+            if (nl2br) {
+                message = message.replace(/(?:\r\n|\r|\n)/g, '<br/>');
             }
             dialog.innerHTML = dialog.innerHTML.replace('{{ message }}', message);
             dialog.showModal();
+            $(dialog).trigger('o:dialog-opened');
         };
 
         /**
@@ -205,7 +236,6 @@
                     .removeClass('contact-us-template hidden')
                     .removeData()
                     .show();
-
             }
 
             // Update the resource list if any.
@@ -315,7 +345,17 @@
                 }
             })
             .fail(function(jqXHR, errorMsg) {
-                alert(jqXHR.responseText, errorMsg);
+                const data = xhr.responseJSON;
+                if (data && data.status === 'fail') {
+                    // Fail is always an email/password error here.
+                    let msg = jSendMessage(data);
+                    dialogMessage(msg ? msg : 'Check input', true);
+                    form[0].reset();
+                } else {
+                    // Error is a server error (in particular cannot send mail).
+                    let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
+                    dialogMessage(msg, true);
+                }
             })
             .always(function () {
                 // afterSpin(checkbox)
@@ -329,19 +369,23 @@
             const dialog = document.querySelector('dialog.popup-contact-us');
             if (dialog) {
                 dialog.showModal();
+                $(dialog).trigger('o:dialog-opened');
             } else {
                 $('.contact-us-form').removeClass('hidden').show();
             }
         });
 
-        $(document).on('click', '.popup-header-close-button', function(e) {
+        $(document).on('click', '.dialog-header-close-button', function(e) {
             const dialog = this.closest('dialog.popup');
             if (dialog) {
                 dialog.close();
+                if (dialog.hasAttribute('data-is-dynamic') && dialog.getAttribute('data-is-dynamic')) {
+                    dialog.remove();
+                }
             } else {
                 $(this).closest('.popup').addClass('hidden').hide();
             }
         });
 
     });
-})();
+})(jQuery);

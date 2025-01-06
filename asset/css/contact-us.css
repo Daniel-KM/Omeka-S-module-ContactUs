@@ -13,7 +13,7 @@
         content: "*";
         color: red;
     }
-    .popup-header {
+    .dialog-header {
         display: flex;
         justify-content: flex-end;
     }
