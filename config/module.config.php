@@ -79,7 +79,7 @@ return [
                         'options' => [
                             'route' => '/contact-us[/:action]',
                             'constraints' => [
-                                'action' => 'browse|select',
+                                'action' => 'browse|select|send-mail',
                             ],
                             'defaults' => [
                                 '__NAMESPACE__' => 'ContactUs\Controller\Site',
@@ -162,7 +162,7 @@ return [
                     'route' => '/contact-us/:action[/:id]',
                     'constraints' => [
                         'id' => '\d+\.[a-zA-Z0-9]+',
-                        'action' => 'zip',
+                        'action' => 'send-mail|zip',
                     ],
                     'defaults' => [
                         '__NAMESPACE__' => 'ContactUs\Controller\Site',

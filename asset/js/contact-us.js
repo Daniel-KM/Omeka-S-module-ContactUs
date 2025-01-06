@@ -363,6 +363,46 @@
         });
 
         /**
+         * Submit the contact us form via ajax when inside a dialog, via button.
+         */
+        $(document).on('submit', 'dialog #contact-us', function(ev) {
+            ev.preventDefault();
+            const form = $(this);
+            const urlForm = form.attr('action') ? form.attr('action') : window.location.href;
+            const submitButton = form.find('[type=submit]');
+            $
+                .ajax({
+                    type: 'POST',
+                    url: urlForm,
+                    data: form.serialize(),
+                    beforeSend: beforeSpin(submitButton),
+                })
+                .done(function(data) {
+                    // Success to send message.
+                    // So close the form and display the message.
+                    // form[0].reset();
+                    $(form).closest('dialog')[0].close();
+                    let msg = jSendMessage(data);
+                    dialogMessage(msg ? msg : 'Email successfully sent.', true);
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    const data = xhr.responseJSON;
+                    if (data && data.status === 'fail') {
+                        let msg = jSendMessage(data);
+                        dialogMessage(msg ? msg : 'Check input', true);
+                    } else {
+                        $(form).closest('dialog')[0].close();
+                        // Error is a server error (in particular cannot send mail).
+                        let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
+                        dialogMessage(msg, true);
+                    }
+                })
+                .always(function () {
+                    afterSpin(submitButton)
+                });
+        });
+
+        /**
          * Display the contact us form, that may be a dialog or a div.
          */
         $(document).on('click', 'button.contact-us-write', function() {

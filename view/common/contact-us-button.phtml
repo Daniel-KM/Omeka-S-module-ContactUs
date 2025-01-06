@@ -14,7 +14,7 @@
 // Note: you may use css grid / flex to quick adapt the form and reorder fields.
 
 $plugins = $this->getHelperPluginManager();
-$escape = $plugins->get('escapeHtml');
+$partial = $plugins->get('partial');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $headLink = $plugins->get('headLink');
@@ -31,26 +31,4 @@ $headScript
     <span class="contact-us-write"><?= $escapeAttr($translate('Send a message')) ?></span>
 </button>
 
-<dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
-    <div class="dialog-background">
-        <div class="dialog-panel">
-            <div class="dialog-header">
-                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
-                    <span class="dialog-close">🗙</span>
-                </button>
-            </div>
-            <div class="dialog-contents">
-                <?php if (!empty($heading)): ?>
-                <h4><?= $escape($heading) ?></h4>
-                <?php endif; ?>
-                <?= $html ?? '' ?>
-                <?php if ($message): ?>
-                <p class="explanation <?= $status ?>"><?= $message ?></p>
-                <?php endif; ?>
-                <?php if ($status !== 'success' && $form): ?>
-                <?= $this->form($form) ?>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</dialog>
+<?= $partial('common/dialog/contact-us') ?>

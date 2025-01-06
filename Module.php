@@ -74,6 +74,8 @@ class Module extends AbstractModule
                 [Api\Adapter\MessageAdapter::class],
                 ['read', 'search']
             )
+            // Anybody can browse, select, send email.
+            // TODO Not zip.
             ->allow(
                 null,
                 ['ContactUs\Controller\Site\Index']

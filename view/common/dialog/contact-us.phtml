@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
+ * @var \ContactUs\Form\ContactUsForm|\ContactUs\Form\NewsletterForm $form
+ * @var string $heading
+ * @var string $html Passed directly from the options.
+ * @var bool $asButton Passed directly from the options.
+ * @var ?\Common\Stdlib\PsrMessage $message Message of success or error to the user.
+ * @var string $status "success" or "error"
+ * @var string $contact "us" or "author"
+ */
+
+// Note: you may use css grid / flex to quick adapt the form and reorder fields.
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+?>
+
+<dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
+    <div class="dialog-background">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                    <span class="dialog-close">🗙</span>
+                </button>
+            </div>
+            <div class="dialog-contents">
+                <?php if (!empty($heading)): ?>
+                <h4><?= $escape($heading) ?></h4>
+                <?php endif; ?>
+                <?= $html ?? '' ?>
+                <?php if ($message): ?>
+                <p class="explanation <?= $status ?>"><?= $message ?></p>
+                <?php endif; ?>
+                <?php if ($status !== 'success' && $form): ?>
+                <?= $this->form($form) ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</dialog>

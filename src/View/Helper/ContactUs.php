@@ -100,8 +100,11 @@ class ContactUs extends AbstractHelper
 
     /**
      * Display the contact us form.
+     *
+     * @return string|array Array is used only to return data after a post
+     * submitted via a dialog.
      */
-    public function __invoke(array $options = []): string
+    public function __invoke(array $options = [])
     {
         // When the contact form is set multiple times on a page, it may be
         // stored multiple times, so these flags avoid to duplicate messages.
@@ -111,6 +114,9 @@ class ContactUs extends AbstractHelper
         $options += $this->defaultOptions;
 
         $view = $this->getView();
+
+        $params = $view->params()->fromPost();
+        $isPost = !empty($params);
 
         $template = $options['template']
             ?: ($options['as_button'] ? self::PARTIAL_NAME_BUTTON : self::PARTIAL_NAME);
@@ -124,19 +130,20 @@ class ContactUs extends AbstractHelper
             $options['author_email'] = $this->authorEmail($options);
             // Early return when there is no author email.
             if (empty($options['author_email'])) {
-                return $view->partial(
-                    $template,
-                    [
-                        'heading' => $options['heading'],
-                        'html' => $options['html'],
-                        'asButton' => $options['as_button'],
-                        'form' => null,
-                        'message' => $this->errorMessage,
-                        'status' => 'error',
-                        'resource' => $options['resource'],
-                        'contact' => 'author',
-                    ]
-                );
+                $args = [
+                    'heading' => $options['heading'],
+                    'html' => $options['html'],
+                    'asButton' => $options['as_button'],
+                    'form' => null,
+                    'resource' => $options['resource'],
+                    'contact' => 'author',
+                    'status' => 'error',
+                    'message' => $this->errorMessage,
+                ];
+                return $isPost
+                    // Only status and message are really needed.
+                    ? $args
+                    : $view->partial($template, $args);
             }
         }
 
@@ -144,6 +151,8 @@ class ContactUs extends AbstractHelper
 
         $user = $view->identity();
         $translate = $view->plugin('translate');
+
+        $site = $this->currentSite();
 
         $sendWithUserEmail = (bool) $view->setting('contactus_send_with_user_email');
 
@@ -183,8 +192,7 @@ class ContactUs extends AbstractHelper
             $options['questions'] = $this->checkAntispamOptions($options['questions']);
         }
 
-        $params = $view->params()->fromPost();
-        if ($params) {
+        if ($isPost) {
             if ($antispam) {
                 $isSpam = $this->checkSpam($options, $params);
                 if (!$isSpam) {
@@ -271,8 +279,6 @@ class ContactUs extends AbstractHelper
                         );
                     }
                 }
-
-                $site = $this->currentSite();
 
                 // Manage the specific field for multiple ids and convert it
                 // into a resource when possible.
@@ -559,19 +565,33 @@ class ContactUs extends AbstractHelper
 
         $messageSent = $message;
 
-        return $view->partial(
-            $template,
-            [
-                'heading' => $options['heading'],
-                'html' => $options['html'],
-                'asButton' => $options['as_button'],
-                'form' => $form,
-                'message' => $message ? $message->setTranslator($view->translator()) : null,
-                'status' => $status,
-                'resource' => $options['resource'],
-                'contact' => $isContactAuthor ? 'author' : 'us',
-            ]
-        );
+        $args = [
+            'heading' => $options['heading'],
+            'html' => $options['html'],
+            'asButton' => $options['as_button'],
+            'form' => $form,
+            'resource' => $options['resource'],
+            'contact' => $isContactAuthor ? 'author' : 'us',
+            'status' => $status,
+            'message' => $message ? $message->setTranslator($view->translator()) : null,
+        ];
+
+        if ($options['as_button']) {
+            $plugins = $this->view->getHelperPluginManager();
+            $url = $plugins->get('url');
+            $form->setAttribute('action', $site
+                ? $url('site/contact-us', ['action' => 'send-mail'], true)
+                : $url('contact-us', ['action' => 'send-mail'])
+            );
+            // With a button, the submit is managed by ajax, so return json.
+            // Else, the button and dialog are displayed directly.
+            if ($isPost) {
+                // Only status and message are really needed.
+                return $args;
+            }
+        }
+
+        return $view->partial($template, $args);
     }
 
     protected function getFormContactUs(array $formOptions): ContactUsForm

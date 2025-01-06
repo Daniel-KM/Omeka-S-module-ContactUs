@@ -123,6 +123,39 @@ class IndexController extends AbstractActionController
         return $this->jSend(self::SUCCESS, ['selected_resources' => $newSelecteds]);
     }
 
+    public function sendMailAction()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return $this->jSend(self::FAIL, [
+                'message' => $this->translate('Not an ajax request') // @translate
+            ], null, Response::STATUS_CODE_412);
+        }
+
+        // Data are checked inside contact us.
+        $contactUs = $this->viewHelpers()->get('contactUs');
+
+        $data = $this->params()->fromPost();
+        $data['as_button'] = true;
+        // $data['is_ajax'] => true;
+
+        $result = $contactUs($data);
+        if (!is_array($result)) {
+            throw new \Omeka\Mvc\Exception\RuntimeException('Not ajax.'); // @translate
+        }
+
+        $message = (string) $result['message'];
+        if ($result['status'] === self::SUCCESS) {
+            $data = ['msg' => true];
+        } elseif ($result['status'] === self::FAIL) {
+            $data = ['msg' => $message];
+            $message = null;
+        } else {
+            $data = [];
+        }
+
+        return $this->jSend($result['status'], $data, $message);
+    }
+
     public function zipAction()
     {
         // Here, the id is the id with the token of the message.
