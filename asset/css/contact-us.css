@@ -1,4 +1,4 @@
-@media screen {
+@media all {
     [hidden],
     .hidden {
         display: none;
