@@ -235,7 +235,7 @@ altered, and that no provisions are either added or removed herefrom.
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2018-2024 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2018-2025 (see [Daniel-KM] on GitLab)
 
 The feature to display a block to subscribe to a newsletter was implemented for
 the digital library of the city of [Saint-Quentin].
