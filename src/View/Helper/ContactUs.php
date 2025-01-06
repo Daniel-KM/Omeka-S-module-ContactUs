@@ -739,6 +739,10 @@ SQL;
      */
     protected function fillMessage($message, array $placeholders): string
     {
+        // Any field can be a placeholder, except array.
+        $placeholders += $placeholders['fields'] ?? [];
+        $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));
+
         $replace = [];
         foreach ($placeholders as $placeholder => $value) {
             $replace['{' . $placeholder . '}'] = $value;
