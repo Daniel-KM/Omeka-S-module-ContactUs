@@ -25,11 +25,11 @@ class ContactUsFactory implements FactoryInterface
             $defaultOptions[substr($key, 10)] = $siteSettings->get($key, $value);
         }
         return new ContactUs(
-            $services->get('FormElementManager'),
-            $defaultOptions,
-            $services->get('Omeka\Mailer'),
             $plugins->get('api'),
-            $plugins->get('messenger')
+            $services->get('FormElementManager'),
+            $services->get('Omeka\Mailer'),
+            $plugins->get('messenger'),
+            $defaultOptions
         );
     }
 }

@@ -30,14 +30,14 @@ class ContactUs extends AbstractHelper
     const PARTIAL_NAME_BUTTON = 'common/contact-us-button';
 
     /**
+     * @var Api
+     */
+    protected $api;
+
+    /**
      * @var FormElementManager
      */
     protected $formElementManager;
-
-    /**
-     * @var array
-     */
-    protected $defaultOptions;
 
     /**
      * @var Mailer
@@ -45,62 +45,81 @@ class ContactUs extends AbstractHelper
     protected $mailer;
 
     /**
-     * @var Api
-     */
-    protected $api;
-
-    /**
      * @var Messenger
      */
     protected $messenger;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $errorMessage;
+    protected $defaultOptions;
 
     /**
      * @var array
      */
     protected $currentOptions = [];
 
+    /**
+     * @var string
+     */
+    protected $errorMessage;
+
     public function __construct(
-        FormElementManager $formElementManager,
-        array $defaultOptions,
-        Mailer $mailer,
         Api $api,
-        Messenger $messenger
+        FormElementManager $formElementManager,
+        Mailer $mailer,
+        Messenger $messenger,
+        array $defaultOptions
     ) {
+        $this->api = $api;
         $this->formElementManager = $formElementManager;
+        $this->mailer = $mailer;
+        $this->messenger = $messenger;
         $this->defaultOptions = $defaultOptions + [
             'template' => null,
             'resource' => null,
             'heading' => null,
             'html' => null,
-            // Fields are the elements to add to the contact form.
-            // Exception: Fields may contain a list of resource ids on key "id".
             'fields' => [],
             'as_button' => false,
             'attach_file' => false,
             'consent_label' => null,
-            'unsubscribe' => null,
+            'unsubscribe' => false,
             'unsubscribe_label' => null,
             'newsletter_only' => false,
             'newsletter_label' => null,
-            'notify_recipients' => null,
+            'notify_recipients' => [],
             'contact' => 'us',
             'author_email' => null,
             'confirmation_enabled' => false,
             'form_display_user_email_hidden' => false,
             'form_display_user_name_hidden' => false,
         ];
-        $this->mailer = $mailer;
-        $this->api = $api;
-        $this->messenger = $messenger;
     }
 
     /**
-     * Display the contact us form.
+     * Display the contact us form or get posted data.
+     *
+     * @param array $options Managed and passed options.
+     * - template (string)
+     * - resource (AbstractEntityResourceRepresentation)
+     * - heading (string)
+     * - html (string)
+     * - fields (array): Fields are the elements to add to the contact form.
+     *   Exception: Fields may contain a list of resource ids on key "id".
+     * - as_button (bool)
+     * - attach_file (bool)
+     * - consent_label (string)
+     * - unsubscribe (bool)
+     * - unsubscribe_label (string)
+     * - newsletter_only (bool)
+     * - newsletter_label (string)
+     * - notify_recipients (array)
+     * - contact (string): "us" or "author".
+     * - author_email (string)
+     * - confirmation_enabled (bool)
+     * - form_display_user_email_hidden (false)
+     * - form_display_user_name_hidden (false)
      *
      * @return string|array Array is used only to return data after a post
      * submitted via a dialog.
@@ -885,7 +904,7 @@ SQL;
             return true;
         } catch (\Exception $e) {
             $view->logger()->err(
-                'Error when sending email. Arguments:\n{json}', // @translate
+                "Error when sending email. Arguments:\n{json}", // @translate
                 ['json' => json_encode($params, 448)]
             );
             return false;
