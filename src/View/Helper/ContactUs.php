@@ -77,7 +77,8 @@ class ContactUs extends AbstractHelper
             'resource' => null,
             'heading' => null,
             'html' => null,
-            // Fields may contain a list of resource ids with key "id".
+            // Fields are the elements to add to the contact form.
+            // Exception: Fields may contain a list of resource ids on key "id".
             'fields' => [],
             'as_button' => false,
             'attach_file' => false,
@@ -159,11 +160,40 @@ class ContactUs extends AbstractHelper
         // Manage list of resource ids automatically, if any.
         // "resource_ids" is used for standard forms and fields for complex
         // forms with multiple specific fields.
-        // TODO Manage "resource_ids" in backend, not only in js. But useless: already via fields[id] anyway.
+        // TODO Manage "resource_ids" in backend, not only in js. But useless: already via fields[id] anyway. So "resource_ids" should be deprecated.
 
-        $fields = empty($options['fields'])
-            ? ['id' => ['type' => 'hidden']]
-            : ($options['fields'] + ['id' => ['type' => 'hidden']]);
+        // The field "id" should be an array.
+        // When hidden, the value may or may not be converted.
+        if (empty($options['fields']['id']) || $options['fields']['id'] === '[]') {
+            $options['fields']['id'] = [];
+        } elseif (is_string($options['fields']['id'])
+            && (
+                (substr($options['fields']['id'], 0, 1) === '[' && substr($options['fields']['id'], -1) === ']')
+                || (substr($options['fields']['id'], 0, 1) === '{' && substr($options['fields']['id'], -1) === '}')
+            )
+        ) {
+            $options['fields']['id'] = json_decode($options['fields']['id'], true);
+        } elseif (!is_array($options['fields']['id'])) {
+            $options['fields']['id'] = [$options['fields']['id']];
+        }
+
+        // For fields, append the resource early.
+        if ($options['resource']) {
+            $options['fields']['id'][] = $options['resource']->id();
+        }
+
+        // The fields id should be integer and unique.
+        $options['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']))));
+
+        // The option fields are all specific fields set via the theme.
+        // They are added in the form. The list of ids is added automatically.
+        // For form, the fields id should be hidden.
+        $fieldsForForm = $options['fields'];
+        $fieldsForForm['id'] = [
+            'type' => 'hidden',
+            'value' => $fieldsForForm['id'],
+        ];
+
         $attachFile = !empty($options['attach_file']);
         $consentLabel = trim((string) $options['consent_label']);
         $unsubscribe = !empty($options['unsubscribe']);
@@ -207,7 +237,7 @@ class ContactUs extends AbstractHelper
 
             /** @var \ContactUs\Form\ContactUsForm $form */
             $formOptions = [
-                'fields' => $fields,
+                'fields' => $fieldsForForm,
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,
@@ -226,15 +256,21 @@ class ContactUs extends AbstractHelper
                 ? $this->getFormNewsletter($formOptions)
                 : $this->getFormContactUs($formOptions);
 
-            $postFields = [];
-            if ($fields) {
-                // Manage exception for list of ids and security, because fields
-                // are not fully checked.
-                $params['fields']['id'] = array_values(array_filter(array_map('intval', $params['fields']['id'] ?? [])));
-                foreach (array_keys($fields) as $name) {
-                    $params['fields[' . $name . ']'] = $params['fields'][$name] ?? null;
-                    $postFields[$name] = $params['fields'][$name] ?? null;
-                    unset($params['fields'][$name]);
+            // TODO Remove this normalization of posted data. For old themes.
+            // Add the options fields to the posted fields.
+            $postedFields = [];
+            if ($fieldsForForm) {
+                // Manage exception for list of ids and security, because hidden
+                // fields are not fully checked.
+                $fieldIds = ($params['fields']['id'] ?? []) ?: [];
+                if (!empty($fieldIds) && !is_array($fieldIds)) {
+                    $fieldIdsJson = json_decode($fieldIds, true);
+                    $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
+                }
+                $params['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
+                foreach (array_keys($fieldsForForm) as $name) {
+                    $params['fields'][$name] ??= null;
+                    $postedFields[$name] = $params['fields'][$name];
                 }
             }
 
@@ -282,13 +318,12 @@ class ContactUs extends AbstractHelper
 
                 // Manage the specific field for multiple ids and convert it
                 // into a resource when possible.
-                if (empty($postFields['id'])) {
-                    unset($postFields['id']);
-                } elseif (is_array($postFields['id']) && count($postFields['id']) === 1 && empty($options['resource'])) {
+                if (empty($postedFields['id'])) {
+                    unset($postedFields['id']);
+                } elseif (is_array($postedFields['id']) && count($postedFields['id']) === 1 && empty($options['resource'])) {
                     try {
-                        $fieldResource = $this->api->__invoke()->read('resources', ['id' => (int) $postFields['id']])->getContent();
-                        $options['resource'] = $fieldResource;
-                        unset($postFields['id']);
+                        $options['resource'] = $this->api->__invoke()->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
+                        unset($postedFields['id']);
                     } catch (\Exception $e) {
                         // Nothing to do.
                     }
@@ -312,7 +347,7 @@ class ContactUs extends AbstractHelper
                     'o-module-contact:body' => $newsletterOnly
                         ? $translate($formOptions['unsubscribe'] ? 'Unsubscribe newsletter' : 'Subscribe newsletter')
                         : $submitted['message'],
-                    'o-module-contact:fields' => $postFields,
+                    'o-module-contact:fields' => $postedFields,
                     'o-module-contact:newsletter' => $newsletterOnly
                         ? empty($formOptions['unsubscribe'])
                         : ($newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
@@ -523,7 +558,7 @@ class ContactUs extends AbstractHelper
                 $checkAnswer = '';
             }
             $formOptions = [
-                'fields' => $fields,
+                'fields' => $fieldsForForm,
                 'attach_file' => $attachFile,
                 'consent_label' => $consentLabel,
                 'newsletter_label' => $newsletterLabel,

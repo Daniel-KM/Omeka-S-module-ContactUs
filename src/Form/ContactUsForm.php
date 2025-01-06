@@ -4,6 +4,7 @@ namespace ContactUs\Form;
 
 use Laminas\Filter;
 use Laminas\Form\Element;
+use Laminas\Form\Fieldset;
 use Laminas\Form\Form;
 use Laminas\Validator;
 use Omeka\Entity\User;
@@ -158,70 +159,7 @@ class ContactUsForm extends Form
             ])
         ;
 
-        foreach ($this->fields ?? [] as $name => $data) {
-            if (!is_array($data)) {
-                $data = [
-                    'label' => $data,
-                    'type' => Element\Text::class,
-                ];
-                // Update original fields to prepare required input fields below.
-                $this->fields[$name] = $data;
-            }
-            // Manage multiple attached resource ids.
-            if ($name === 'id') {
-                $name = 'id[]';
-            }
-            // "class" and "required" should be passed as keys of "attributes".
-            $isMultiple = substr($name, -2) === '[]';
-            if ($isMultiple) {
-                $fieldType = $data['type'] ?? Element\Select::class;
-                $fieldValue = isset($data['value']) ? (is_array($data['value']) ? $data['value'] : [$data['value']]) : [];
-                if (strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class) {
-                    $fieldValue = json_encode($fieldValue);
-                }
-                $this
-                    ->add([
-                        'name' => 'fields[' . substr($name, 0, -2) . '][]',
-                        'type' => $fieldType,
-                        'options' => [
-                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
-                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
-                        ] + ($data['options'] ?? []),
-                        'attributes' => [
-                            'id' => 'fields-' . substr($name, 0, -2),
-                            // Kept for compatibility. Use attributes instead.
-                            'class' => $data['class'] ?? $data['attributes']['class'] ?? '',
-                            'multiple' => 'multiple',
-                            'value' => $fieldValue,
-                            'required' => isset($data['required'])
-                                // Kept for compatibility. Use attributes instead.
-                                ? !empty($data['required'])
-                                : !empty($data['attributes']['required']),
-                        ] + ($data['attributes'] ?? []),
-                    ]);
-            } else {
-                $fieldValue = isset($data['value']) ? (is_array($data['value']) ? json_encode($data['value'], 320) : (string) $data['value']) : '';
-                $this
-                    ->add([
-                        'name' => 'fields[' . $name . ']',
-                        'type' => $data['type'] ?? Element\Text::class,
-                        'options' => [
-                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
-                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
-                        ] + ($data['options'] ?? []),
-                        'attributes' => [
-                            'id' => 'fields-' . $name,
-                            // Kept for compatibility. Use attributes instead.
-                            'class' => $data['class'] ?? $data['attributes']['class'] ?? '',
-                            'value' => $fieldValue,
-                            'required' => isset($data['required'])
-                            // Kept for compatibility. Use attributes instead.
-                                ? !empty($data['required'])
-                                : !empty($data['attributes']['required']),
-                        ] + ($data['attributes'] ?? []),
-                    ]);
-            }
-        }
+        $fieldsFieldset = $this->appendFields();
 
         if ($this->attachFile) {
             $this
@@ -237,7 +175,8 @@ class ContactUsForm extends Form
                 ]);
         }
 
-        if ($this->user || !$this->consentLabel) {
+        $useHiddenConsent = $this->user || !$this->consentLabel;
+        if ($useHiddenConsent) {
             $this
                 ->add([
                     'name' => 'consent',
@@ -339,21 +278,26 @@ class ContactUsForm extends Form
             ])
         ;
 
+        if ($this->newsletterLabel) {
+            $inputFilter
+                ->add([
+                    'name' => 'newsletter',
+                    'required' => false,
+                ]);
+        }
+
         // Add an input filter for all fields because the theme may adapt them.
-        foreach ($this->fields ?? [] as $name => $data) {
-            // Manage multiple attached resource ids.
-            if ($name === 'id') {
-                $name = 'id[]';
-            }
-            if (empty($data['required'])) {
-                $isMultiple = substr($name, -2) === '[]';
-                $inputFilter
-                    ->add([
-                        'name' => $isMultiple
-                            ? 'fields[' . substr($name, 0, -2) . '][]'
-                            : 'fields[' . $name . ']',
-                        'required' => false,
-                    ]);
+        if ($fieldsFieldset) {
+            $inputFilterFields = $inputFilter->get('fields');
+            foreach ($fieldsFieldset->getElements() as $name => $element) {
+                $isRequired = (bool) $element->getAttribute('required');
+                if (!$isRequired) {
+                    $inputFilterFields
+                        ->add([
+                            'name' => $name,
+                            'required' => false,
+                        ]);
+                }
             }
         }
 
@@ -375,6 +319,125 @@ class ContactUsForm extends Form
             ]);
         }
     }
+
+    /**
+     * Fields are passed from theme, so may be badly or partially formatted.
+     */
+    protected function appendFields(): ?Fieldset
+    {
+        if (empty($this->fields)) {
+            return null;
+        }
+
+        $this
+            ->add([
+                'name' => 'fields',
+                'type' => Fieldset::class,
+                'options' => [
+                    'label' => 'Subject', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'subject',
+                    'required' => false,
+                ],
+            ]);
+
+        /** @var \Laminas\Form\Fieldset $fieldsFieldset */
+        $fieldsFieldset = $this->get('fields');
+
+        foreach ($this->fields as $name => $data) {
+            // Update original field to prepare field and required input field.
+            if (!is_array($data)) {
+                $data = [
+                    'label' => $data,
+                    'type' => Element\Text::class,
+                    'options' => [],
+                    'attributes' => [],
+                ];
+                $this->fields[$name] = $data;
+            } else {
+                $data['options'] ??= [];
+                $data['attributes'] ??= [];
+            }
+
+            // "value", "multiple", "required", and "class" should be passed as
+            // keys of "attributes". First level keys are kept for compatibility
+            // with old themes.
+            $fieldValue = $data['value'] ?? $data['attributes']['value'] ?? null;
+            $isMultiple = is_array($fieldValue)
+                || !empty($data['attributes']['multiple'])
+                || $name === 'id'
+                || substr($name, -2) === '[]';
+            $isRequired = isset($data['required'])
+                ? !empty($data['required'])
+                : !empty($data['attributes']['required']);
+            $class = $data['class'] ?? $data['attributes']['class'] ?? '';
+            $nameNotArray = substr($name, -2) === '[]' ? substr($name, -2) : $name;
+
+            if ($isMultiple) {
+                // The value should be an array.
+                if ($fieldValue === null || $fieldValue === '' || $fieldValue === []) {
+                    $fieldValue = [];
+                } elseif (!is_array($fieldValue)) {
+                    $fieldValueJson = json_decode($fieldValue, true);
+                    $fieldValue = is_array($fieldValueJson) ? $fieldValueJson : [$fieldValue];
+                }
+                $fieldType = $data['type'] ?? Element\Select::class;
+                if (strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class) {
+                    $fieldsFieldset
+                        ->add([
+                            'name' => $nameNotArray,
+                            'type' => Element\Hidden::class,
+                            'attributes' => [
+                                'id' => 'fields-' . $nameNotArray,
+                                'class' => $class,
+                                'value' => json_encode($fieldValue, 320),
+                            ],
+                        ]);
+                } else {
+                    $fieldsFieldset
+                        ->add([
+                            'name' => $nameNotArray,
+                            'type' => $fieldType,
+                            'options' => [
+                                'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                                'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                            ] + $data['options'],
+                            'attributes' => [
+                                'id' => 'fields-' . $nameNotArray,
+                                // Kept for compatibility. Use attributes instead.
+                                'class' => $class,
+                                'value' => $fieldValue,
+                                'required' => $isRequired,
+                            ] + $data['attributes'],
+                        ]);
+                }
+            } else {
+                // The value should be a scalar or a string.
+                $fieldValue = isset($data['value'])
+                    ? (is_array($data['value']) ? json_encode($data['value'], 320) : (string) $data['value'])
+                    : '';
+                $fieldsFieldset
+                    ->add([
+                        'name' => $nameNotArray,
+                        'type' => $data['type'] ?? Element\Text::class,
+                        'options' => [
+                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                        ] + $data['options'],
+                        'attributes' => [
+                            'id' => 'fields-' . $name,
+                            'class' => $class,
+                            'value' => $fieldValue,
+                            'required' => $isRequired,
+                        ] + $data['attributes'],
+                    ]);
+            }
+        }
+
+        return $fieldsFieldset;
+    }
+
 
     public function setFormOptions(array $formOptions): self
     {
