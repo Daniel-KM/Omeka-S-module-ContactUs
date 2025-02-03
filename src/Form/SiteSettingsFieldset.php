@@ -172,6 +172,17 @@ info@example2.org', // @translate
                 ],
             ])
             ->add([
+                'name' => 'contactus_consent_label',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Label for the consent checkbox', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_consent_label',
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_antispam',
                 'type' => Element\Checkbox::class,
                 'options' => [
