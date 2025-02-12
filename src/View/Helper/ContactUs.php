@@ -94,6 +94,13 @@ class ContactUs extends AbstractHelper
             'confirmation_enabled' => false,
             'form_display_user_email_hidden' => false,
             'form_display_user_name_hidden' => false,
+            'to_author_subject' => '',
+            'to_author_body' => '',
+            'notify_body' => '',
+            'confirmation_newsletter_subject' => '',
+            'confirmation_newsletter_body' => '',
+            'confirmation_subject' => '',
+            'confirmation_body' => '',
         ];
     }
 
@@ -758,6 +765,10 @@ class ContactUs extends AbstractHelper
      */
     protected function fillMessage($message, array $placeholders): string
     {
+        if (!is_string($message)) {
+            return '';
+        }
+
         // Any field can be a placeholder, except array.
         $placeholders += $placeholders['fields'] ?? [];
         $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));

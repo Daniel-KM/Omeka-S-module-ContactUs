@@ -21,7 +21,9 @@ class ContactUsFactory implements FactoryInterface
         $plugins = $services->get('ControllerPluginManager');
         $siteSettings = $services->get('Omeka\Settings\Site');
         $defaultOptions = [];
-        foreach ($services->get('Config')['contactus']['site_settings'] as $key => $value) {
+        $config = $services->get('Config');
+        $config_site_settings = $config['contactus']['site_settings'] ?? [];
+        foreach ($config_site_settings as $key => $value) {
             $defaultOptions[substr($key, 10)] = $siteSettings->get($key, $value);
         }
         return new ContactUs(
