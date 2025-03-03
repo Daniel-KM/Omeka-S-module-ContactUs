@@ -4,7 +4,7 @@
     $(document).ready(function() {
 
         /**
-         * @see ContactUs, Guest, Selection, TwoFactorAuth.
+         * @see ContactUs, Guest, SearchHistory, Selection, TwoFactorAuth.
          */
 
         const beforeSpin = function (element) {

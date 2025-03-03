@@ -31,9 +31,11 @@ class SettingsFieldset extends Fieldset
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
-                    'placeholder' => 'First email is used for confirmation.
-contact@example.org
-info@example2.org', // @translate
+                    'placeholder' => <<<'TXT'
+                        First email is used for confirmation.
+                        contact@example.org
+                        info@example2.org
+                        TXT, // @translate
                     'rows' => 5,
                 ],
             ])

@@ -51,36 +51,36 @@ if (version_compare($oldVersion, '3.3.8', '<')) {
 
 if (version_compare($oldVersion, '3.3.8.1', '<')) {
     $sqls = <<<'SQL'
-CREATE TABLE `contact_message` (
-    `id` INT AUTO_INCREMENT NOT NULL,
-    `owner_id` INT DEFAULT NULL,
-    `resource_id` INT DEFAULT NULL,
-    `site_id` INT DEFAULT NULL,
-    `email` VARCHAR(190) NOT NULL,
-    `name` VARCHAR(190) DEFAULT NULL,
-    `subject` LONGTEXT DEFAULT NULL,
-    `body` LONGTEXT NOT NULL,
-    `source` LONGTEXT DEFAULT NULL,
-    `media_type` VARCHAR(190) DEFAULT NULL,
-    `storage_id` VARCHAR(190) DEFAULT NULL,
-    `extension` VARCHAR(255) DEFAULT NULL,
-    `request_url` VARCHAR(1024) DEFAULT NULL,
-    `ip` VARCHAR(45) NOT NULL,
-    `user_agent` TEXT DEFAULT NULL,
-    `is_read` TINYINT(1) DEFAULT 0 NOT NULL,
-    `is_spam` TINYINT(1) DEFAULT 0 NOT NULL,
-    `newsletter` TINYINT(1) DEFAULT NULL,
-    `created` DATETIME NOT NULL,
-    UNIQUE INDEX UNIQ_2C9211FE5CC5DB90 (`storage_id`),
-    INDEX IDX_2C9211FE7E3C61F9 (`owner_id`),
-    INDEX IDX_2C9211FE89329D25 (`resource_id`),
-    INDEX IDX_2C9211FEF6BD1646 (`site_id`),
-    PRIMARY KEY(`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE89329D25 FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE SET NULL;
-ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FEF6BD1646 FOREIGN KEY (`site_id`) REFERENCES `site` (`id`) ON DELETE SET NULL;
-SQL;
+        CREATE TABLE `contact_message` (
+            `id` INT AUTO_INCREMENT NOT NULL,
+            `owner_id` INT DEFAULT NULL,
+            `resource_id` INT DEFAULT NULL,
+            `site_id` INT DEFAULT NULL,
+            `email` VARCHAR(190) NOT NULL,
+            `name` VARCHAR(190) DEFAULT NULL,
+            `subject` LONGTEXT DEFAULT NULL,
+            `body` LONGTEXT NOT NULL,
+            `source` LONGTEXT DEFAULT NULL,
+            `media_type` VARCHAR(190) DEFAULT NULL,
+            `storage_id` VARCHAR(190) DEFAULT NULL,
+            `extension` VARCHAR(255) DEFAULT NULL,
+            `request_url` VARCHAR(1024) DEFAULT NULL,
+            `ip` VARCHAR(45) NOT NULL,
+            `user_agent` TEXT DEFAULT NULL,
+            `is_read` TINYINT(1) DEFAULT 0 NOT NULL,
+            `is_spam` TINYINT(1) DEFAULT 0 NOT NULL,
+            `newsletter` TINYINT(1) DEFAULT NULL,
+            `created` DATETIME NOT NULL,
+            UNIQUE INDEX UNIQ_2C9211FE5CC5DB90 (`storage_id`),
+            INDEX IDX_2C9211FE7E3C61F9 (`owner_id`),
+            INDEX IDX_2C9211FE89329D25 (`resource_id`),
+            INDEX IDX_2C9211FEF6BD1646 (`site_id`),
+            PRIMARY KEY(`id`)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+        ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+        ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FE89329D25 FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE SET NULL;
+        ALTER TABLE `contact_message` ADD CONSTRAINT FK_2C9211FEF6BD1646 FOREIGN KEY (`site_id`) REFERENCES `site` (`id`) ON DELETE SET NULL;
+        SQL;
     try {
         foreach (explode(";\n", $sqls) as $sql) {
             $connection->executeStatement($sql);
@@ -103,11 +103,11 @@ if (version_compare($oldVersion, '3.3.8.4', '<')) {
 
     // Just to hide the data. Will be removed when the page will be resaved.
     $sql = <<<'SQL'
-UPDATE site_page_block
-SET
-    data = REPLACE(data, '"notify_recipients":', '"_old_notify_recipients":')
-WHERE layout = "contactUs";
-SQL;
+        UPDATE site_page_block
+        SET
+            data = REPLACE(data, '"notify_recipients":', '"_old_notify_recipients":')
+        WHERE layout = "contactUs";
+        SQL;
     $connection->executeStatement($sql);
 }
 
@@ -128,54 +128,54 @@ if (version_compare($oldVersion, '3.3.8.5', '<')) {
     }
 
     $sql = <<<'SQL'
-UPDATE site_page_block
-SET
-    data = REPLACE(
-        data,
-        '"confirmation_enabled":',
-        '"consent_label":"I allow the site owner to store my name and my email to answer to this message.","confirmation_enabled":'
-    )
-WHERE layout = "contactUs";
-SQL;
+        UPDATE site_page_block
+        SET
+            data = REPLACE(
+                data,
+                '"confirmation_enabled":',
+                '"consent_label":"I allow the site owner to store my name and my email to answer to this message.","confirmation_enabled":'
+            )
+        WHERE layout = "contactUs";
+        SQL;
     $connection->executeStatement($sql);
 }
 
 if (version_compare($oldVersion, '3.3.8.7', '<')) {
     $sql = <<<'SQL'
-ALTER TABLE `contact_message`
-    DROP FOREIGN KEY FK_2C9211FE7E3C61F9;
-ALTER TABLE `contact_message`
-    CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
-    CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
-    CHANGE `site_id` `site_id` INT DEFAULT NULL,
-    CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
-    CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
-    CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
-    CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
-    CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
-    CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
-    CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
-ALTER TABLE `contact_message`
-    ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE SET NULL;
-SQL;
+        ALTER TABLE `contact_message`
+            DROP FOREIGN KEY FK_2C9211FE7E3C61F9;
+        ALTER TABLE `contact_message`
+            CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
+            CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
+            CHANGE `site_id` `site_id` INT DEFAULT NULL,
+            CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
+            CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
+            CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
+            CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
+            CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
+            CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
+            CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
+        ALTER TABLE `contact_message`
+            ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE SET NULL;
+        SQL;
     $connection->executeStatement($sql);
 }
 
 if (version_compare($oldVersion, '3.3.8.8', '<')) {
     $sql = <<<'SQL'
-ALTER TABLE `contact_message`
-    ADD `to_author` TINYINT(1) DEFAULT '0' NOT NULL AFTER `is_spam`,
-    CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
-    CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
-    CHANGE `site_id` `site_id` INT DEFAULT NULL,
-    CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
-    CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
-    CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
-    CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
-    CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
-    CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
-    CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
-SQL;
+        ALTER TABLE `contact_message`
+            ADD `to_author` TINYINT(1) DEFAULT '0' NOT NULL AFTER `is_spam`,
+            CHANGE `owner_id` `owner_id` INT DEFAULT NULL,
+            CHANGE `resource_id` `resource_id` INT DEFAULT NULL,
+            CHANGE `site_id` `site_id` INT DEFAULT NULL,
+            CHANGE `name` `name` VARCHAR(190) DEFAULT NULL,
+            CHANGE `media_type` `media_type` VARCHAR(190) DEFAULT NULL,
+            CHANGE `storage_id` `storage_id` VARCHAR(190) DEFAULT NULL,
+            CHANGE `extension` `extension` VARCHAR(190) DEFAULT NULL,
+            CHANGE `request_url` `request_url` VARCHAR(1024) DEFAULT NULL COLLATE `latin1_bin`,
+            CHANGE `user_agent` `user_agent` VARCHAR(1024) DEFAULT NULL,
+            CHANGE `newsletter` `newsletter` TINYINT(1) DEFAULT NULL;
+        SQL;
     $connection->executeStatement($sql);
 
     $settings->set('contactus_author', $localConfig['contactus']['settings']['contactus_author']);
@@ -201,22 +201,22 @@ SQL;
 
 if (version_compare($oldVersion, '3.3.8.11', '<')) {
     $sql = <<<'SQL'
-UPDATE `contact_message`
-SET `resource_id` = SUBSTRING_INDEX(`request_url`, '/', -1)
-WHERE `resource_id` IS NULL
-    AND `request_url` IS NOT NULL 
-    AND SUBSTRING_INDEX(`request_url`, '/', -1) REGEXP '^[0-9]+$'
-;
-SQL;
+        UPDATE `contact_message`
+        SET `resource_id` = SUBSTRING_INDEX(`request_url`, '/', -1)
+        WHERE `resource_id` IS NULL
+            AND `request_url` IS NOT NULL 
+            AND SUBSTRING_INDEX(`request_url`, '/', -1) REGEXP '^[0-9]+$'
+        ;
+        SQL;
     $connection->executeStatement($sql);
 }
 
 if (version_compare($oldVersion, '3.4.8.13', '<')) {
     $sql = <<<'SQL'
-ALTER TABLE `contact_message`
-    ADD `fields` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)' AFTER `body`
-;
-SQL;
+        ALTER TABLE `contact_message`
+            ADD `fields` LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)' AFTER `body`
+        ;
+        SQL;
     $connection->executeStatement($sql);
 
     $message = new PsrMessage(
@@ -239,20 +239,20 @@ if (version_compare($oldVersion, '3.4.10', '<')) {
 
 if (version_compare($oldVersion, '3.4.11', '<')) {
     $sql = <<<'SQL'
-ALTER TABLE `contact_message`
-    ADD `modified` DATETIME DEFAULT NULL AFTER `created`
-;
-SQL;
+        ALTER TABLE `contact_message`
+            ADD `modified` DATETIME DEFAULT NULL AFTER `created`
+        ;
+        SQL;
     $connection->executeStatement($sql);
 
     // Set modified for all old messages.
     $sql = <<<'SQL'
-UPDATE `contact_message`
-SET `modified` = `created`
-WHERE `is_read` IS NOT NULL
-    OR `is_spam` IS NOT NULL
-;
-SQL;
+        UPDATE `contact_message`
+        SET `modified` = `created`
+        WHERE `is_read` IS NOT NULL
+            OR `is_spam` IS NOT NULL
+        ;
+        SQL;
     $connection->executeStatement($sql);
 
     $settings->set('contactus_create_zip', $settings->get('contactus_zip') ?: '');

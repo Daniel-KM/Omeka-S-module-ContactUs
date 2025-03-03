@@ -211,58 +211,66 @@ return [
         'site_settings' => [
             'contactus_notify_recipients' => [],
             'contactus_notify_subject' => '',
-            'contactus_notify_body' => 'A user has contacted you.
-
-email: {email}
-name: {name}
-ip: {ip}
-
-{newsletter}
-subject: {subject}
-message:
-
-{message}', // @translate
+            'contactus_notify_body' => <<<'MAIL'
+                A user has contacted you.
+                
+                email: {email}
+                name: {name}
+                ip: {ip}
+                
+                {newsletter}
+                subject: {subject}
+                message:
+                
+                {message}
+                MAIL, // @translate
             'contactus_confirmation_enabled' => true,
             'contactus_confirmation_subject' => 'Confirmation contact', // @translate
-            'contactus_confirmation_body' => 'Hi {name},
-
-Thanks to contact us!
-
-We will answer you as soon as possible.
-
-Sincerely,
-
-{main_title}
-{main_url}
-
---
-
-{newsletter}
-Your message:
-Subject: {subject}
-
-{message}', // @translate
+            'contactus_confirmation_body' => <<<'MAIL'
+                Hi {name},
+                
+                Thanks to contact us!
+                
+                We will answer you as soon as possible.
+                
+                Sincerely,
+                
+                {main_title}
+                {main_url}
+                
+                --
+                
+                {newsletter}
+                Your message:
+                Subject: {subject}
+                
+                {message}
+                MAIL, // @translate
             'contactus_confirmation_newsletter_subject' => 'Subscription to newsletter of {main_title}', // @translate
-            'contactus_confirmation_newsletter_body' => 'Hi,
-
-Thank you for subscribing to our newsletter.
-
-Sincerely,', // @translate
+            'contactus_confirmation_newsletter_body' => <<<'MAIL'
+                Hi,
+                
+                Thank you for subscribing to our newsletter.
+                
+                Sincerely,
+                MAIL, // @translate
             'contactus_to_author_subject' => 'Message to the author', // @translate
-            'contactus_to_author_body' => 'Hi {user_name},
-
-The visitor {name} ({email} made the following request about a resource on {main_title}:
-
-Thanks to reply directly to the email above and do not use "reply".
-
-Sincerely,
-
---
-
-From: {name} <{email}>
-Subject: {subject}
-
-{message}', // @translate
+            'contactus_to_author_body' => <<<'MAIL'
+                Hi {user_name},
+                
+                The visitor {name} ({email} made the following request about a resource on {main_title}:
+                
+                Thanks to reply directly to the email above and do not use "reply".
+                
+                Sincerely,
+                
+                --
+                
+                From: {name} <{email}>
+                Subject: {subject}
+                
+                {message}
+                MAIL, // @translate
             'contactus_confirmation_message' => 'Thank you for your message. Check your confirmation email sent to {email}. We will answer you soon.', // @translate
             'contactus_confirmation_message_newsletter' => 'Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}.', // @translate
             'contactus_consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate

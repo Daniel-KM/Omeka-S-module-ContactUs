@@ -714,14 +714,14 @@ class ContactUs extends AbstractHelper
             $propertyId = (int) $this->api->searchOne('properties', ['term' => $propertyEmail], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
             $connection = $resource->getServiceLocator()->get('Omeka\Connection');
             $sql = <<<'SQL'
-SELECT `value`
-FROM `value`
-WHERE `resource_id` = :resource_id
-    AND `property_id` = :property_id
-    AND `value` IS NOT NULL
-    AND `value` != ""
-LIMIT 1;
-SQL;
+                SELECT `value`
+                FROM `value`
+                WHERE `resource_id` = :resource_id
+                    AND `property_id` = :property_id
+                    AND `value` IS NOT NULL
+                    AND `value` != ""
+                LIMIT 1;
+                SQL;
             $email = $connection->executeQuery($sql, ['resource_id' => (int) $resource->id(), 'property_id' => $propertyId], ['resource_id' => \Doctrine\DBAL\ParameterType::INTEGER, 'property_id' => \Doctrine\DBAL\ParameterType::INTEGER])->fetchOne();
         } else {
             // Disabled.

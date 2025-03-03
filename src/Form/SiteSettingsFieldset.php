@@ -31,9 +31,11 @@ class SiteSettingsFieldset extends Fieldset
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
-                    'placeholder' => 'Let empty to use main settings. First email is used for confirmation.
-contact@example.org
-info@example2.org', // @translate
+                    'placeholder' => <<<'TXT'
+                        Let empty to use main settings. First email is used for confirmation.
+                        contact@example.org
+                        info@example2.org
+                        TXT, // @translate
                     'rows' => 5,
                 ],
             ])
@@ -215,8 +217,10 @@ info@example2.org', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_questions',
-                    'placeholder' => 'How many are zero plus 1 (in number)? = 1
-How many are one plus 1 (in number)? = 2', // @translate
+                    'placeholder' => <<<'TXT'
+                        How many are zero plus 1 (in number)? = 1
+                        How many are one plus 1 (in number)? = 2
+                        TXT, // @translate
                     'rows' => 5,
                 ],
             ])
