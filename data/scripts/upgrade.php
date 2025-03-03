@@ -178,8 +178,16 @@ ALTER TABLE `contact_message`
 SQL;
     $connection->executeStatement($sql);
 
-    $settings->set('contactus_to_author_subject', $localConfig['contactus']['site_settings']['contactus_to_author_subject']);
-    $settings->set('contactus_to_author_body', $localConfig['contactus']['site_settings']['contactus_to_author_body']);
+    $settings->set('contactus_author', $localConfig['contactus']['settings']['contactus_author']);
+
+    /** @var \Omeka\Settings\SiteSettings $siteSettings */
+    $siteSettings = $services->get('Omeka\Settings\Site');
+    $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
+    foreach ($ids as $id) {
+        $siteSettings->setTargetId($id);
+        $siteSettings->set('contactus_to_author_subject', $localConfig['contactus']['site_settings']['contactus_to_author_subject']);
+        $siteSettings->set('contactus_to_author_body', $localConfig['contactus']['site_settings']['contactus_to_author_body']);
+    }
 
     $message = new PsrMessage(
         'It’s now possible to set a specific message when contacting author.' // @translate
@@ -473,4 +481,10 @@ if (version_compare($oldVersion, '3.4.16', '<')) {
         'The number of selected items can be set in site settings. It is limited to 25 by default.' // @translate
     );
     $messenger->addSuccess($message);
+}
+
+if (version_compare($oldVersion, '3.4.19', '<')) {
+    if (!$settings->get('contactus_author')) {
+        $settings->set('contactus_author', $localConfig['contactus']['settings']['contactus_author']);
+    }
 }
