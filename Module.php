@@ -163,9 +163,9 @@ class Module extends AbstractModule
         $html .= '</p>';
 
         $html .= '<p>';
-        $html .= sprintf(
-            $t->translate('All contact messages and files will be removed (folder "{folder}").'), // @translate
-            $basePath . '/' . self::STORE_PREFIX
+        $html .= new PsrMessage(
+            'All contact messages and files will be removed (folder "{folder}").', // @translate
+            ['folder' => $basePath . '/' . self::STORE_PREFIX]
         );
         $html .= '</p>';
 

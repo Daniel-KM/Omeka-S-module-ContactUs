@@ -10,7 +10,7 @@ class ContactUsSelector implements ResourcePageBlockLayoutInterface
 {
     public function getLabel() : string
     {
-        return 'Contact Us (selector)'; // @translate
+        return 'Contact Us: Selector'; // @translate
     }
 
     public function getCompatibleResourceNames() : array

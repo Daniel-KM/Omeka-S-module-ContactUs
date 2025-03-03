@@ -904,8 +904,8 @@ SQL;
             return true;
         } catch (\Exception $e) {
             $view->logger()->err(
-                "Error when sending email. Arguments:\n{json}", // @translate
-                ['json' => json_encode($params, 448)]
+                "Error when sending email ({msg}). Arguments:\n{json}", // @translate
+                ['msg' => $e->getMessage(), 'json' => $params]
             );
             return false;
         }

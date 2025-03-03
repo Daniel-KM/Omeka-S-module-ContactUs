@@ -10,7 +10,7 @@ class ContactUs implements ResourcePageBlockLayoutInterface
 {
     public function getLabel() : string
     {
-        return 'Contact Us (form)'; // @translate
+        return 'Contact Us: Form'; // @translate
     }
 
     public function getCompatibleResourceNames() : array
