@@ -27,7 +27,7 @@ $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 ?>
 
-<button class="contact-us-button contact-us-write"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
+<button class="button contact-us-button contact-us-write"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
     <span class="contact-us-write"><?= $escapeAttr($translate('Send a message')) ?></span>
 </button>
 
