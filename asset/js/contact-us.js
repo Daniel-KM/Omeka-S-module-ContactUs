@@ -344,7 +344,7 @@
                     dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
                 }
             })
-            .fail(function(jqXHR, errorMsg) {
+            .fail(function (xhr, textStatus, errorThrown) {
                 const data = xhr.responseJSON;
                 if (data && data.status === 'fail') {
                     // Fail is always an email/password error here.
