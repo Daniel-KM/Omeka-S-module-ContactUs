@@ -488,3 +488,10 @@ if (version_compare($oldVersion, '3.4.19', '<')) {
         $settings->set('contactus_author', $localConfig['contactus']['settings']['contactus_author']);
     }
 }
+
+if (version_compare($oldVersion, '3.4.21', '<')) {
+    $message = new PsrMessage(
+        'It is now possible to define specific fields for the contact us form via the main or site settings.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
