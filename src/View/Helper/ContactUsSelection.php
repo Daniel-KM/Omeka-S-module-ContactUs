@@ -48,7 +48,7 @@ class ContactUsSelection extends AbstractHelper
         } else {
             $isMultiple = is_array($resourceIds);
             if (!$isMultiple) {
-               $resourceIds = [$resourceIds];
+                $resourceIds = [$resourceIds];
             }
             $resourceIds = array_filter(array_map('intval', $resourceIds));
         }

@@ -258,7 +258,6 @@ class Module extends AbstractModule
         ]);
     }
 
-
     public function handleGuestWidgets(Event $event): void
     {
         $widgets = $event->getParam('widgets');

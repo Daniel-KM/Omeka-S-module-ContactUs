@@ -438,7 +438,6 @@ class ContactUsForm extends Form
         return $fieldsFieldset;
     }
 
-
     public function setFormOptions(array $formOptions): self
     {
         $this->formOptions = $formOptions;

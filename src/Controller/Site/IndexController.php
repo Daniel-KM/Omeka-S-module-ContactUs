@@ -6,10 +6,7 @@ use Common\Stdlib\PsrMessage;
 use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\Mvc\Exception\RuntimeException;
-use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -128,7 +125,7 @@ class IndexController extends AbstractActionController
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
             return $this->jSend(self::FAIL, [
-                'message' => $this->translate('Not an ajax request') // @translate
+                'message' => $this->translate('Not an ajax request'), // @translate
             ], null, Response::STATUS_CODE_412);
         }
 
@@ -241,116 +238,5 @@ class IndexController extends AbstractActionController
         }
 
         return $resourceIds;
-    }
-
-
-    /**
-     * Send output via json according to jSend.
-     *
-     * Notes:
-     * - Unlike jSend, any status can have a main message and a code.
-     * - For statuses fail and error, the error messages are taken from
-     *   messenger messages when not set.
-     *
-     * @see https://github.com/omniti-labs/jsend
-     *
-     * @throws \Laminas\Mvc\Exception\RuntimeException
-     * @deprecated Use \Common\Mvc\Controller\Plugin\JSend (since Common version 3.4.65).
-     */
-    protected function jSend(
-        string $status,
-        ?array $data = null,
-        ?string $message = null,
-        ?int $httpStatusCode = null,
-        ?int $code = null
-    ) {
-        switch ($status) {
-            case self::SUCCESS:
-                $json = [
-                    'status' => self::SUCCESS,
-                    'data' => $data,
-                ];
-                if (isset($message) && strlen($message)) {
-                    $json['message'] = $message;
-                }
-                if (isset($code)) {
-                    $json['code'] = $code;
-                }
-                break;
-
-            case self::FAIL:
-                if (!$data) {
-                    $message = $message
-                        ?: $this->translatedMessages('error')
-                        ?: $this->translate('Check your input for invalid data.'); // @translate
-                    $data = ['fail' => $message];
-                }
-                $json = [
-                    'status' => self::FAIL,
-                    'data' => $data,
-                ];
-                if (isset($message) && strlen($message)) {
-                    $json['message'] = $message;
-                }
-                if (isset($code)) {
-                    $json['code'] = $code;
-                }
-                $httpStatusCode ??= Response::STATUS_CODE_400;
-                break;
-
-            case self::ERROR:
-                $message = $message
-                    ?: $this->translatedMessages('error')
-                    ?: $this->translate('An internal error has occurred.'); // @translate
-                $json = [
-                    'status' => self::ERROR,
-                    'message' => $message,
-                ];
-                if ($data) {
-                    $json['data'] = $data;
-                }
-                if (isset($code)) {
-                    $json['code'] = $code;
-                }
-                $httpStatusCode ??= Response::STATUS_CODE_500;
-                break;
-
-            default:
-                throw new RuntimeException(sprintf('The status "%s" is not supported by jSend.', $status)); // @translate
-        }
-
-        if ($httpStatusCode) {
-            /** @var \Laminas\Http\Response $response */
-            $response = $this->getResponse();
-            $response->setStatusCode($httpStatusCode);
-        }
-
-        return new JsonModel($json);
-    }
-
-    /**
-     * @deprecated Use $this->viewHelpers()->get('messages')->getTranslatedMessages() (since Common version 3.4.65).
-     */
-    protected function translatedMessages(string $type, bool $asArray = false)
-    {
-        /** @var \Common\View\Helper\Messages $messages */
-        $messages = $this->viewHelpers()->get('messages');
-        if (method_exists($messages, 'getTranslatedMessages')) {
-            $msgs = $messages->getTranslatedMessages();
-        } else {
-            $translate = $this->translate();
-            $translator = $translate->getTranslator();
-            $msgs = array_map(
-                fn ($msg) => $msg instanceof TranslatorAwareInterface
-                    ? $msg->setTranslator($translator)->translate()
-                    : $translate($msg),
-                $messages->get()
-            );
-        }
-
-        $msgs = $msgs[$type] ?? [];
-        return $asArray
-            ? $msgs
-            : implode("\n", $msgs);
     }
 }

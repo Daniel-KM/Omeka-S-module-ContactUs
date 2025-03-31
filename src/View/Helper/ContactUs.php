@@ -127,6 +127,13 @@ class ContactUs extends AbstractHelper
      * - confirmation_enabled (bool)
      * - form_display_user_email_hidden (false)
      * - form_display_user_name_hidden (false)
+     * - to_author_subject (string)
+     * - to_author_body (string)
+     * - notify_body (string)
+     * - confirmation_newsletter_subject (string)
+     * - confirmation_newsletter_body (string)
+     * - confirmation_subject (string)
+     * - confirmation_body (string)
      *
      * @return string|array Array is used only to return data after a post
      * submitted via a dialog.
@@ -764,10 +771,10 @@ class ContactUs extends AbstractHelper
     /**
      * Fill a message with placeholders (moustache style).
      */
-    protected function fillMessage($message, array $placeholders): string
+    protected function fillMessage(?string $message, array $placeholders): string
     {
-        if (!is_string($message)) {
-            return '';
+        if (empty($message)) {
+            return (string) $message;
         }
 
         // Any field can be a placeholder, except array.
@@ -977,6 +984,6 @@ class ContactUs extends AbstractHelper
      */
     protected function fixEndOfLine($string): string
     {
-        return str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], (string) $string);
+        return str_replace(["\r\n", "\n\r", "\r"], "\n", (string) $string);
     }
 }
