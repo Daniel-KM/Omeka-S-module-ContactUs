@@ -334,10 +334,10 @@ class ContactUsForm extends Form
                 'name' => 'fields',
                 'type' => Fieldset::class,
                 'options' => [
-                    'label' => 'Subject', // @translate
+                    'label' => 'More info', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'subject',
+                    'id' => 'fields',
                     'required' => false,
                 ],
             ]);

@@ -58,6 +58,7 @@ class IndexController extends AbstractActionController
         $view = new ViewModel([
             'site' => $this->currentSite(),
             'user' => $user,
+            'fields' => $this->fallbackSettings()->get('contactus_fields', ['site', 'global']) ?: [],
             'resourceIds' => $resourceIds,
             'isGuestActive' => $this->isGuestActive,
             'isSession' => !$user,

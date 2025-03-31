@@ -3,6 +3,7 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Omeka\Entity\User $user
+ * @var array $fields
  * @var array $resourceIds
  * @var bool $isGuestActive
  * @var bool $isSession
@@ -149,7 +150,7 @@ $headScript
             'id' => [
                 'value' => $resourceIds,
                 'type' => 'hidden',
-            ],
+            ] + $fields,
         ],
     ]) ?>
 </div>

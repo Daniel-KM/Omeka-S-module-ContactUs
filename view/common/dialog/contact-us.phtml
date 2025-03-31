@@ -3,6 +3,7 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
  * @var \ContactUs\Form\ContactUsForm|\ContactUs\Form\NewsletterForm $form
+ * @var array $fields
  * @var string $heading
  * @var string $html Passed directly from the options.
  * @var bool $asButton Passed directly from the options.
@@ -16,6 +17,9 @@
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
+
+// Prepare hierarchical names for "fields" when plugin form() is not used.
+$form->prepare();
 ?>
 
 <dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>

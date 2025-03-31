@@ -21,6 +21,20 @@ class SettingsFieldset extends Fieldset
             ->setAttribute('id', 'contact-us')
             ->setOption('element_groups', $this->elementGroups)
             ->add([
+                'name' => 'contactus_fields',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Specific fields to append to form', // @translate
+                    'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
+                    'as_key_value' => true,
+                ],
+                'attributes' => [
+                    'id' => 'contactus_fields',
+                    'placeholder' => 'phone = Phone', // @translate
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_notify_recipients',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [

@@ -3,6 +3,7 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
  * @var \ContactUs\Form\ContactUsForm|\ContactUs\Form\NewsletterForm $form
+ * @var array $fields
  * @var string $heading
  * @var string $html Passed directly from the options.
  * @var bool $asButton Passed directly from the options.
@@ -23,6 +24,9 @@ $headLink
     ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
 $headScript
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
+
+// Prepare hierarchical names for "fields" when plugin form() is not used.
+$form->prepare();
 ?>
 
 <div class="contact-us-block">

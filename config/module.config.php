@@ -200,6 +200,7 @@ return [
     'contactus' => [
         // Main settings.
         'settings' => [
+            'contactus_fields' => [],
             'contactus_notify_recipients' => [],
             'contactus_author' => 'disabled',
             'contactus_author_only' => false,
@@ -209,6 +210,7 @@ return [
         ],
         // Site settings.
         'site_settings' => [
+            'contactus_fields' => [],
             'contactus_notify_recipients' => [],
             'contactus_notify_subject' => '',
             'contactus_notify_body' => <<<'MAIL'

@@ -125,6 +125,11 @@ class ContactUs extends AbstractBlockLayout implements TemplateableBlockLayoutIn
         $vars['block'] = $block;
         $vars['options'] = $options;
 
+        // If fields are empty, use the site settings or the main settings.
+        if (empty($vars['options']['fields'])) {
+            $vars['options']['fields'] = $view->fallbackSetting('contactus_fields', ['site', 'global']) ?: [];
+        }
+
         return $view->partial($templateViewScript, $vars);
     }
 

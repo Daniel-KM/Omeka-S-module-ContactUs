@@ -631,6 +631,7 @@ class ContactUs extends AbstractHelper
             'html' => $options['html'],
             'asButton' => $options['as_button'],
             'form' => $form,
+            'fields' => $options['fields'],
             'resource' => $options['resource'],
             'contact' => $isContactAuthor ? 'author' : 'us',
             'status' => $status,
