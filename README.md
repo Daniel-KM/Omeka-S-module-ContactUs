@@ -66,9 +66,10 @@ Fill the options in the main settings, the site settings and the page block.
 For subjects and messages, you can use placeholders for customization. They
 should be wrapped with `{` and `}`: "from", "email", "name", "site_title",
 "site_url", "subject", "message", "ip", "newsletter". When there is a resource,
-you can use too "resource_id", "resource_title", "resource_url", and any
-property term, like "dcterms:date". Note that the property should exist in all
-cases, else it won't be filled.
+you can use too "resource", "resource_id", "resource_title", "resource_url", and
+any property term, like "dcterms:date". Note that the property should exist in
+all cases, else it won't be filled. For multiple resources, you may use "resources",
+"resources_ids", "resources_url", "resources_url_admin".
 
 ### Static pages
 
@@ -140,6 +141,9 @@ To be automatically managed, the name of the input should be `fields[id][]` for
 now. If you use `resource_ids[]`, it is automatically managed via js. Don't
 forget to set the attribute `form="contact-us"`, or use some js to set it before
 submission.
+
+The form can be completed with fields managed via the standard form events (`form.add_elements`)
+and `form.add_input_filters`, in the theme of via the module [User Profile].
 
 
 Development
@@ -248,6 +252,7 @@ the digital library of the city of [Saint-Quentin].
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [Selection]: https://gitlab.com/Daniel-KM/Omeka-S-module-Selection
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
+[User Profile]: https://gitlab.com/Daniel-KM/Omeka-S-module-UserProfile
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
