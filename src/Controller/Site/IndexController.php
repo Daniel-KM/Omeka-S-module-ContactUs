@@ -118,7 +118,10 @@ class IndexController extends AbstractActionController
             ))->setTranslator($this->translator()));
         }
 
-        return $this->jSend(self::SUCCESS, ['selected_resources' => $newSelecteds]);
+        return $this->jSend(
+            self::SUCCESS,
+            ['selected_resources' => $newSelecteds]
+        );
     }
 
     public function sendMailAction()

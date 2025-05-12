@@ -292,6 +292,9 @@
                 return;
             }
 
+            // The local storage is used in all cases, visitor or user.
+            // For user, the local storage is just synchronized with the results of the ajax request.
+
             // For visitor.
             if (checkbox.data('localStorage')) {
                 const maxResources = checkbox.data('max-resources') ? parseInt(checkbox.data('max-resources')) : 0;
@@ -343,6 +346,7 @@
                     let message = checkbox.data('message-fail');
                     dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
                 }
+                localStorage.setItem('contactus_selectedIds', JSON.stringify(data.data.selected_resources));
             })
             .fail(function (xhr, textStatus, errorThrown) {
                 const data = xhr.responseJSON;
