@@ -113,7 +113,7 @@ class IndexController extends AbstractActionController
             return $this->jSend(self::FAIL, [
                 'selected_resources' => $newSelecteds,
             ], (string) (new PsrMessage(
-                'It is not possible to select more than {total} resources.', // @translate
+                $this->siteSettings()->get('contactus_warn_limit', 'Warning: It is not possible to select more than {total} resources.'), // @translate
                 ['total' => $max]
             ))->setTranslator($this->translator()));
         }
