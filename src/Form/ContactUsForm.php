@@ -163,6 +163,7 @@ class ContactUsForm extends Form
             ])
         ;
 
+        // Keep FieldsFieldset to manage input.
         $fieldsFieldset = $this->appendFields();
 
         if ($this->attachFile) {
@@ -355,6 +356,8 @@ class ContactUsForm extends Form
         /** @var \Laminas\Form\Fieldset $fieldsFieldset */
         $fieldsFieldset = $this->get('fields');
 
+        $onlyHidden = true;
+
         foreach ($this->fields as $name => $data) {
             // Update original field to prepare field and required input field.
             if (!is_array($data)) {
@@ -393,7 +396,8 @@ class ContactUsForm extends Form
                     $fieldValue = is_array($fieldValueJson) ? $fieldValueJson : [$fieldValue];
                 }
                 $fieldType = $data['type'] ?? Element\Select::class;
-                if (strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class) {
+                $isHidden = strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class;
+                if ($isHidden) {
                     $fieldsFieldset
                         ->add([
                             'name' => $nameNotArray,
@@ -405,6 +409,7 @@ class ContactUsForm extends Form
                             ],
                         ]);
                 } else {
+                    $onlyHidden = false;
                     $fieldsFieldset
                         ->add([
                             'name' => $nameNotArray,
@@ -427,10 +432,13 @@ class ContactUsForm extends Form
                 $fieldValue = isset($data['value'])
                     ? (is_array($data['value']) ? json_encode($data['value'], 320) : (string) $data['value'])
                     : '';
+                $fieldType = $data['type'] ?? Element\Text::class;
+                $isHidden = strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class;
+                $onlyHidden = $onlyHidden && $isHidden;
                 $fieldsFieldset
                     ->add([
                         'name' => $nameNotArray,
-                        'type' => $data['type'] ?? Element\Text::class,
+                        'type' => $fieldType,
                         'options' => [
                             'label' => $data['label'] ?? $data['options']['label'] ?? null,
                             'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
@@ -443,6 +451,11 @@ class ContactUsForm extends Form
                         ] + $data['attributes'],
                     ]);
             }
+        }
+
+        if ($onlyHidden) {
+            $fieldsFieldset
+                ->setAttribute('class', 'hidden');
         }
 
         return $fieldsFieldset;
