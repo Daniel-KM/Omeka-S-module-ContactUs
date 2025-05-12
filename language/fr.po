@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-31 00:00+0000\n"
+"POT-Creation-Date: 2025-05-12 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:161
+#: Module.php:171
 msgid "WARNING:"
 msgstr "ATTENTION :"
 
-#: Module.php:173
+#: Module.php:183
 msgid "Remove Contact Us files"
 msgstr "Supprimer les fichiers du module"
 
-#: Module.php:271
+#: Module.php:281
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
@@ -44,8 +44,8 @@ msgstr "Il n’y a aucune ressource ou fichier."
 msgid "An error occurred."
 msgstr "Une erreur est survenue."
 
-#: src/Controller/Site/IndexController.php:86
-#: src/Controller/Site/IndexController.php:128
+#: src/Controller/Site/IndexController.php:84
+#: src/Controller/Site/IndexController.php:129
 msgid "Not an ajax request"
 msgstr "Requête non ajax"
 
@@ -74,16 +74,16 @@ msgstr ""
 "Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une "
 "infolettre."
 
-#: src/View/Helper/ContactUs.php:377 src/View/Helper/ContactUs.php:381
+#: src/View/Helper/ContactUs.php:379 src/View/Helper/ContactUs.php:383
 msgid "Unsubscribe newsletter"
 msgstr "Se désabonner de l’infolettre"
 
-#: src/View/Helper/ContactUs.php:433 src/View/Helper/ContactUs.php:501
+#: src/View/Helper/ContactUs.php:435 src/View/Helper/ContactUs.php:503
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:439
+#: src/View/Helper/ContactUs.php:441
 #, php-format
 msgid "newsletter: %s"
 msgstr "infolettre : %s"
@@ -275,24 +275,24 @@ msgstr "A un zip : %s"
 msgid "[No subject]"
 msgstr "[Pas de sujet]"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:114
+#: view/contact-us/admin/contact-message/show-details.phtml:116
 msgid "Attached file"
 msgstr "Fichier attaché"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:116
+#: view/contact-us/admin/contact-message/show-details.phtml:118
 #, php-format
 msgid "Media type: %s"
 msgstr "Type de média : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:121
+#: view/contact-us/admin/contact-message/show-details.phtml:123
 msgid "Warning: content from an anonymous user"
 msgstr "Attention : contenu d’un visiteur anonyme"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:123
+#: view/contact-us/admin/contact-message/show-details.phtml:125
 msgid "Warning: content from a guest user"
 msgstr "Attention : contenu de l’utilisateur invité"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:131
+#: view/contact-us/admin/contact-message/show-details.phtml:133
 msgid "Newsletter"
 msgstr "Infolettre"
 
@@ -466,42 +466,42 @@ msgstr ""
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
 
-#: Module.php:167
+#: Module.php:177
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 "Tous les messages de contact et tous les fichiers seront supprimés (dossier "
 "\"{folder}\")."
 
-#: src/View/Helper/ContactUs.php:329
+#: src/View/Helper/ContactUs.php:331
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Le désabonnement pour le mail {email} a été confirmé."
 
-#: src/View/Helper/ContactUs.php:334
+#: src/View/Helper/ContactUs.php:336
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Merci pour votre abonnement à l’infolettre, {name}."
 
-#: src/View/Helper/ContactUs.php:341
+#: src/View/Helper/ContactUs.php:343
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
 "Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
 
-#: src/View/Helper/ContactUs.php:346
+#: src/View/Helper/ContactUs.php:348
 msgid ""
 "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 "Merci pour votre message, {name}. Nous vous répondrons dès que possible."
 
-#: src/View/Helper/ContactUs.php:378
+#: src/View/Helper/ContactUs.php:380
 msgid "Subscribe newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: src/View/Helper/ContactUs.php:415 src/View/Helper/ContactUs.php:572
+#: src/View/Helper/ContactUs.php:417 src/View/Helper/ContactUs.php:574
 msgid "There is an error: {errors}"
 msgstr "Il y a une erreur : {errors}"
 
-#: src/View/Helper/ContactUs.php:451
+#: src/View/Helper/ContactUs.php:453
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
@@ -509,11 +509,11 @@ msgstr ""
 "Merci pour votre message {name}. Vérifiez le message de confirmation. "
 "L’auteur le recevra bientôt."
 
-#: src/View/Helper/ContactUs.php:486
+#: src/View/Helper/ContactUs.php:488
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
 
-#: src/View/Helper/ContactUs.php:509
+#: src/View/Helper/ContactUs.php:511
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
@@ -522,25 +522,25 @@ msgstr ""
 "le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
 "recevez pas de réponse."
 
-#: src/View/Helper/ContactUs.php:553
+#: src/View/Helper/ContactUs.php:555
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:576
+#: src/View/Helper/ContactUs.php:578
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
-#: src/View/Helper/ContactUs.php:626
+#: src/View/Helper/ContactUs.php:628
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:707
+#: src/View/Helper/ContactUs.php:709
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/View/Helper/ContactUs.php:722 src/View/Helper/ContactUs.php:748
+#: src/View/Helper/ContactUs.php:724 src/View/Helper/ContactUs.php:750
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -548,23 +548,23 @@ msgstr ""
 "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
 "d’informations."
 
-#: src/View/Helper/ContactUs.php:743
+#: src/View/Helper/ContactUs.php:745
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/View/Helper/ContactUs.php:822
+#: src/View/Helper/ContactUs.php:840
 msgid "[Unknown resource]"
 msgstr "[Ressource inconnue]"
 
-#: src/View/Helper/ContactUs.php:847
+#: src/View/Helper/ContactUs.php:865
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr "Contact Us : Certains mails de notification ne sont pas valides."
 
-#: src/View/Helper/ContactUs.php:892
+#: src/View/Helper/ContactUs.php:910
 msgid "The message has no content to send."
 msgstr "Le message n’a pas de contenu à envoyer."
 
-#: src/View/Helper/ContactUs.php:926
+#: src/View/Helper/ContactUs.php:944
 msgid ""
 "Error when sending email ({msg}). Arguments:\n"
 "{json}"
@@ -664,11 +664,16 @@ msgstr ""
 "La liste des destinataires par défaut, un par ligne. Le premier email est "
 "utilisé pour le message de confirmation."
 
-#: src/Form/SiteSettingsFieldset.php:48 src/Form/SiteSettingsFieldset.php:234
-#: src/Form/SettingsFieldset.php:48 src/Form/ContactUsFieldset.php:124
-#: src/Form/NewsletterFieldset.php:101
-msgid "placeholder"
-msgstr "joker"
+#: src/Form/SiteSettingsFieldset.php:48
+msgid ""
+"Let empty to use main settings. First email is used for confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
+msgstr ""
+"Laisser vide pour utiliser les paramètres généraux. Le premier email est "
+"utilisé pour le message de confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
 
 #: src/Form/SiteSettingsFieldset.php:61
 msgid "Notification email subject for admin"
@@ -679,15 +684,16 @@ msgid "Notification message for admin"
 msgstr "Message de notification pour l’administrateur"
 
 #: src/Form/SiteSettingsFieldset.php:74 src/Form/SiteSettingsFieldset.php:109
-#: src/Form/SiteSettingsFieldset.php:157 src/Form/ContactUsFieldset.php:44
-#: src/Form/NewsletterFieldset.php:54
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
+"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
+"{resource}, {resource_id}, {resource_title}, {resource_url}, {resources}, "
+"{resources_ids}, {resources_url}, {resources_url_admin}."
 msgstr ""
-"Les jokers possibles sont : {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
-"{ip}."
+"Jokers possibles : {main_title}, {main_url}, {site_title}, {site_url}, "
+"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
+"{resource}, {resource_id}, {resource_title}, {resource_url}, {resources}, "
+"{resources_ids}, {resources_url}, {resources_url_admin}."
 
 #: src/Form/SiteSettingsFieldset.php:86 src/Form/ContactUsFieldset.php:23
 #: src/Form/NewsletterFieldset.php:33
@@ -728,6 +734,16 @@ msgstr "Sujet du message à l’auteur"
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
+#: src/Form/SiteSettingsFieldset.php:157 src/Form/ContactUsFieldset.php:44
+#: src/Form/NewsletterFieldset.php:54
+msgid ""
+"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
+"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
+msgstr ""
+"Les jokers possibles sont : {main_title}, {main_url}, {site_title}, "
+"{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
+"{ip}."
+
 #: src/Form/SiteSettingsFieldset.php:169
 msgid "Message displayed on site after post"
 msgstr "Message affiché sur le site après l’envoi"
@@ -762,6 +778,15 @@ msgid ""
 msgstr ""
 "Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et "
 "les réponses avec un signe \"=\". Les questions peuvent être traduites."
+
+#: src/Form/SiteSettingsFieldset.php:234 src/Form/ContactUsFieldset.php:124
+#: src/Form/NewsletterFieldset.php:101
+msgid ""
+"How many are zero plus 1 (in number)? = 1\n"
+"How many are one plus 1 (in number)? = 2"
+msgstr ""
+"Combien font zéro plus 1 (en nombre) ? = 1\n"
+"Combien font un plus 1 (en nombre) ? = 2"
 
 #: src/Form/SiteSettingsFieldset.php:246
 msgid "Append to resource page (deprecated, for themes without resource block)"
@@ -824,6 +849,16 @@ msgstr ""
 "La liste des destinataires par défaut, une par ligne. Le premier email est "
 "utilisé pour le message de confirmation."
 
+#: src/Form/SettingsFieldset.php:48
+msgid ""
+"First email is used for confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
+msgstr ""
+"Le premier email est utilisé pour la confirmation.\n"
+"contact@example.org\n"
+"info@example2.org"
+
 #: src/Form/SettingsFieldset.php:61
 msgid "Property where email of the author is stored"
 msgstr "Propriété dans laquelle le mail de l’auteur est enregistrée"
@@ -872,11 +907,11 @@ msgstr "Carré"
 msgid "Remove zip files after some days"
 msgstr "Supprimer les fichiers zip après quelques jours"
 
-#: src/Form/ContactUsForm.php:170
+#: src/Form/ContactUsForm.php:175
 msgid "Attach a file"
 msgstr "Joindre un fichier"
 
-#: src/Form/ContactUsForm.php:262 src/Form/NewsletterForm.php:150
+#: src/Form/ContactUsForm.php:267 src/Form/NewsletterForm.php:154
 msgid "Send message"
 msgstr "Envoyer le message"
 
@@ -973,39 +1008,39 @@ msgstr "Clé inconnue."
 msgid "success"
 msgstr "succès"
 
-#: src/Controller/Site/IndexController.php:116
-msgid "It is not possible to select more than {total} resources."
-msgstr "Il n’est pas possible de choisir plus de {total} ressources."
+#: src/Controller/Site/IndexController.php:114
+msgid "Warning: It is not possible to select more than {total} resources."
+msgstr "Rappel : il n’est pas possible de choisir plus de {total} ressources."
 
-#: src/Controller/Site/IndexController.php:141
+#: src/Controller/Site/IndexController.php:142
 msgid "Not ajax."
 msgstr "Non ajax."
 
-#: src/Controller/Site/IndexController.php:162
+#: src/Controller/Site/IndexController.php:163
 msgid "No resource set."
 msgstr "Aucune ressource définie."
 
-#: src/Controller/Site/IndexController.php:170
+#: src/Controller/Site/IndexController.php:171
 msgid "Resource is invalid."
 msgstr "La ressource est incorrecte."
 
-#: src/Controller/Site/IndexController.php:176
+#: src/Controller/Site/IndexController.php:177
 msgid "No message found."
 msgstr "Aucun message trouvé."
 
-#: src/Controller/Site/IndexController.php:183
+#: src/Controller/Site/IndexController.php:184
 msgid "Resource does not exist."
 msgstr "La ressource n’existe pas."
 
-#: src/Controller/Site/IndexController.php:187
+#: src/Controller/Site/IndexController.php:188
 msgid "Resource has no file."
 msgstr "La ressource n’a pas de fichier."
 
-#: src/Controller/Site/IndexController.php:199
+#: src/Controller/Site/IndexController.php:200
 msgid "No zip found: too much old."
 msgstr "Aucun zip trouvé : trop ancien."
 
-#: src/Controller/Site/IndexController.php:204
+#: src/Controller/Site/IndexController.php:205
 msgid "No zip found."
 msgstr "Aucun zip trouvé."
 
@@ -1055,28 +1090,127 @@ msgid "The contact message doesn’t exist."
 msgstr "Le message de contact n’existe pas."
 
 #: config/module.config.php:216
-msgid "contactus_notify_body"
-msgstr "contactus_notify_body"
+msgid ""
+"A user has contacted you.\n"
+"\n"
+"email: {email}\n"
+"name: {name}\n"
+"ip: {ip}\n"
+"\n"
+"{newsletter}\n"
+"subject: {subject}\n"
+"message:\n"
+"\n"
+"{message}"
+msgstr ""
+"Un visiteur vous a contacté.\n"
+"\n"
+"mail : {email}\n"
+"nom : {name}\n"
+"ip : {ip}\n"
+"\n"
+"{newsletter}\n"
+"sujet : {subject}\n"
+"message :\n"
+"\n"
+"{message}"
 
 #: config/module.config.php:230
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
 #: config/module.config.php:231
-msgid "contactus_confirmation_body"
-msgstr "contactus_confirmation_body"
+msgid ""
+"Hi {name},\n"
+"\n"
+"Thanks to contact us!\n"
+"\n"
+"We will answer you as soon as possible.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{main_title}\n"
+"{main_url}\n"
+"\n"
+"--\n"
+"\n"
+"{newsletter}\n"
+"Your message:\n"
+"Subject: {subject}\n"
+"\n"
+"{message}"
+msgstr ""
+"Bonjour {name},\n"
+"\n"
+"Merci de nous contacter !\n"
+"\n"
+"Nous vous répondrons dès que possible.\n"
+"\n"
+"Bien cordialement,\n"
+"\n"
+"{main_title}\n"
+"{main_url}\n"
+"\n"
+"--\n"
+"\n"
+"{newsletter}\n"
+"Votre message:\n"
+"Sujet : {subject}\n"
+"\n"
+"{message}"
 
 #: config/module.config.php:251
 msgid "Subscription to newsletter of {main_title}"
 msgstr "S’abonner à l’infolettre de {main_title}"
 
 #: config/module.config.php:252
-msgid "contactus_confirmation_newsletter_body"
-msgstr "contactus_confirmation_newsletter_body"
+msgid ""
+"Hi,\n"
+"\n"
+"Thank you for subscribing to our newsletter.\n"
+"\n"
+"Sincerely,"
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Merci de vous être abonné à notre infolettre.\n"
+"\n"
+"Bien cordialement,"
 
 #: config/module.config.php:260
-msgid "contactus_to_author_body"
-msgstr "contactus_to_author_body"
+msgid ""
+"Hi {user_name},\n"
+"\n"
+"The visitor {name} ({email} made the following request about a resource on "
+"{main_title}:\n"
+"\n"
+"Thanks to reply directly to the email above and do not use \"reply\".\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"--\n"
+"\n"
+"From: {name} <{email}>\n"
+"Subject: {subject}\n"
+"\n"
+"{message}"
+msgstr ""
+"Bonjour {user_name},\n"
+"\n"
+"Le visiteur {name} ({email}) a formulé une demande à propos de la ressource "
+"{main_title} :\n"
+"\n"
+"Merci de répondre directement au mail ci-dessus et de ne pas utiliser "
+"\"répondre\".\n"
+"\n"
+"Bien cordialement,\n"
+"\n"
+"--\n"
+"\n"
+"De : {name} <{email}>\n"
+"Sujet : {subject}\n"
+"\n"
+"{message}"
 
 #: config/module.config.php:276
 msgid ""
@@ -1094,8 +1228,8 @@ msgstr ""
 "Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
 "confirmation envoyé à {email}."
 
-#: config/module.config.php:278 config/module.config.php:319
-#: config/module.config.php:332
+#: config/module.config.php:278 config/module.config.php:320
+#: config/module.config.php:333
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -1103,53 +1237,72 @@ msgstr ""
 "J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour "
 "répondre à ce message."
 
-#: config/module.config.php:281
+#: config/module.config.php:279
+msgid "It is not possible to select more than {total} resources."
+msgstr "Il n’est pas possible de choisir plus de {total} ressources."
+
+#: config/module.config.php:282
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:283
+#: config/module.config.php:284
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:285
+#: config/module.config.php:286
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:287
+#: config/module.config.php:288
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:289
+#: config/module.config.php:290
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:291
+#: config/module.config.php:292
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:293
+#: config/module.config.php:294
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:295
+#: config/module.config.php:296
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:297
+#: config/module.config.php:298
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:299
+#: config/module.config.php:300
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:321
+#: config/module.config.php:322
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: config/module.config.php:334
+#: config/module.config.php:335
 msgid "Unsubscribe"
 msgstr "Se désabonner"
+
+#~ msgid "placeholder"
+#~ msgstr "joker"
+
+#~ msgid "contactus_notify_body"
+#~ msgstr "contactus_notify_body"
+
+#~ msgid "contactus_confirmation_body"
+#~ msgstr "contactus_confirmation_body"
+
+#~ msgid "contactus_confirmation_newsletter_body"
+#~ msgstr "contactus_confirmation_newsletter_body"
+
+#~ msgid "contactus_to_author_body"
+#~ msgstr "contactus_to_author_body"
 
 #~ msgid "Check your input for invalid data."
 #~ msgstr "Vérifiez votre saisie ou des données incorrectes."
@@ -1163,143 +1316,6 @@ msgstr "Se désabonner"
 #, php-format
 #~ msgid "The status \"%s\" is not supported by jSend."
 #~ msgstr "Le statut « %s » n’est pas pris en charge par jSend."
-
-#~ msgid ""
-#~ "Let empty to use main settings. First email is used for confirmation.\n"
-#~ "contact@example.org\n"
-#~ "info@example2.org"
-#~ msgstr ""
-#~ "Laisser vide pour utiliser les paramètres généraux. Le premier email est "
-#~ "utilisé pour le message de confirmation.\n"
-#~ "contact@example.org\n"
-#~ "info@example2.org"
-
-#~ msgid ""
-#~ "How many are zero plus 1 (in number)? = 1\n"
-#~ "How many are one plus 1 (in number)? = 2"
-#~ msgstr ""
-#~ "Combien font zéro plus 1 (en nombre) ? = 1\n"
-#~ "Combien font un plus 1 (en nombre) ? = 2"
-
-#~ msgid ""
-#~ "First email is used for confirmation.\n"
-#~ "contact@example.org\n"
-#~ "info@example2.org"
-#~ msgstr ""
-#~ "Le premier email est utilisé pour la confirmation.\n"
-#~ "contact@example.org\n"
-#~ "info@example2.org"
-
-#~ msgid ""
-#~ "A user has contacted you.\n"
-#~ "\n"
-#~ "email: {email}\n"
-#~ "name: {name}\n"
-#~ "ip: {ip}\n"
-#~ "\n"
-#~ "{newsletter}\n"
-#~ "subject: {subject}\n"
-#~ "message:\n"
-#~ "\n"
-#~ "{message}"
-#~ msgstr ""
-#~ "Un visiteur vous a contacté.\n"
-#~ "\n"
-#~ "mail : {email}\n"
-#~ "nom : {name}\n"
-#~ "ip : {ip}\n"
-#~ "\n"
-#~ "{newsletter}\n"
-#~ "sujet : {subject}\n"
-#~ "message :\n"
-#~ "\n"
-#~ "{message}"
-
-#~ msgid ""
-#~ "Hi {name},\n"
-#~ "\n"
-#~ "Thanks to contact us!\n"
-#~ "\n"
-#~ "We will answer you as soon as possible.\n"
-#~ "\n"
-#~ "Sincerely,\n"
-#~ "\n"
-#~ "{main_title}\n"
-#~ "{main_url}\n"
-#~ "\n"
-#~ "--\n"
-#~ "\n"
-#~ "{newsletter}\n"
-#~ "Your message:\n"
-#~ "Subject: {subject}\n"
-#~ "\n"
-#~ "{message}"
-#~ msgstr ""
-#~ "Bonjour {name},\n"
-#~ "\n"
-#~ "Merci de nous contacter !\n"
-#~ "\n"
-#~ "Nous vous répondrons dès que possible.\n"
-#~ "\n"
-#~ "Bien cordialement,\n"
-#~ "\n"
-#~ "{main_title}\n"
-#~ "{main_url}\n"
-#~ "\n"
-#~ "--\n"
-#~ "\n"
-#~ "{newsletter}\n"
-#~ "Votre message:\n"
-#~ "Sujet : {subject}\n"
-#~ "\n"
-#~ "{message}"
-
-#~ msgid ""
-#~ "Hi,\n"
-#~ "\n"
-#~ "Thank you for subscribing to our newsletter.\n"
-#~ "\n"
-#~ "Sincerely,"
-#~ msgstr ""
-#~ "Bonjour,\n"
-#~ "\n"
-#~ "Merci de vous être abonné à notre infolettre.\n"
-#~ "\n"
-#~ "Bien cordialement,"
-
-#~ msgid ""
-#~ "Hi {user_name},\n"
-#~ "\n"
-#~ "The visitor {name} ({email} made the following request about a resource "
-#~ "on {main_title}:\n"
-#~ "\n"
-#~ "Thanks to reply directly to the email above and do not use \"reply\".\n"
-#~ "\n"
-#~ "Sincerely,\n"
-#~ "\n"
-#~ "--\n"
-#~ "\n"
-#~ "From: {name} <{email}>\n"
-#~ "Subject: {subject}\n"
-#~ "\n"
-#~ "{message}"
-#~ msgstr ""
-#~ "Bonjour {user_name},\n"
-#~ "\n"
-#~ "Le visiteur {name} ({email}) a formulé une demande à propos de la "
-#~ "ressource {main_title} :\n"
-#~ "\n"
-#~ "Merci de répondre directement au mail ci-dessus et de ne pas utiliser "
-#~ "\"répondre\".\n"
-#~ "\n"
-#~ "Bien cordialement,\n"
-#~ "\n"
-#~ "--\n"
-#~ "\n"
-#~ "De : {name} <{email}>\n"
-#~ "Sujet : {subject}\n"
-#~ "\n"
-#~ "{message}"
 
 #~ msgid "Block title"
 #~ msgstr "Titre du bloc"
