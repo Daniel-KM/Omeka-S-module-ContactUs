@@ -2,6 +2,7 @@
 
 namespace ContactUs\Controller\Site;
 
+use Common\Mvc\Controller\Plugin\JSend;
 use Common\Stdlib\PsrMessage;
 use ContactUs\Api\Adapter\MessageAdapter;
 use Doctrine\ORM\EntityManager;
@@ -11,10 +12,6 @@ use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    const ERROR = 'error';
-    const FAIL = 'fail';
-    const SUCCESS = 'success';
-
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -50,6 +47,7 @@ class IndexController extends AbstractActionController
     public function browseAction()
     {
         $user = $this->identity();
+
         $resourceIds = $this->viewHelpers()->get('contactUsSelection')();
 
         $view = new ViewModel([
@@ -82,7 +80,7 @@ class IndexController extends AbstractActionController
     public function selectAction()
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'message' => $this->translate('Not an ajax request'), // @translate
             ], null, Response::STATUS_CODE_412);
         }
@@ -110,7 +108,7 @@ class IndexController extends AbstractActionController
         $newSelecteds = $contactUsSelection($requestedResourceIds);
 
         if ($isFail) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'selected_resources' => $newSelecteds,
             ], (string) (new PsrMessage(
                 $this->siteSettings()->get('contactus_warn_limit', 'Warning: It is not possible to select more than {total} resources.'), // @translate
@@ -119,7 +117,7 @@ class IndexController extends AbstractActionController
         }
 
         return $this->jSend(
-            self::SUCCESS,
+            JSend::SUCCESS,
             ['selected_resources' => $newSelecteds]
         );
     }
@@ -127,7 +125,7 @@ class IndexController extends AbstractActionController
     public function sendMailAction()
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'message' => $this->translate('Not an ajax request'), // @translate
             ], null, Response::STATUS_CODE_412);
         }
@@ -145,9 +143,9 @@ class IndexController extends AbstractActionController
         }
 
         $message = (string) $result['message'];
-        if ($result['status'] === self::SUCCESS) {
+        if ($result['status'] === JSend::SUCCESS) {
             $data = ['msg' => true];
-        } elseif ($result['status'] === self::FAIL) {
+        } elseif ($result['status'] === JSend::FAIL) {
             $data = ['msg' => $message];
             $message = null;
         } else {

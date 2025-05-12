@@ -2,7 +2,7 @@
 
 namespace ContactUs;
 
-if (!class_exists(\Common\TraitModule::class)) {
+if (!class_exists('Common\TraitModule', false)) {
     require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
@@ -112,26 +112,36 @@ class Module extends AbstractModule
         }
     }
 
-    protected function postInstall(): void
+    protected function isSettingTranslatable(string $settingsType, string $name): bool
     {
-        $services = $this->getServiceLocator();
-        $translate = $services->get('ControllerPluginManager')->get('translate');
-
-        // Prepare all translations one time.
         $translatables = [
-            'contactus_confirmation_subject',
-            'contactus_confirmation_body',
-            'contactus_confirmation_newsletter_subject',
-            'contactus_confirmation_newsletter_body',
-            'contactus_to_author_subject',
-            'contactus_to_author_body',
-            // 'contactus_questions',
+            'site_settings' => [
+                'contactus_notify_subject',
+                'contactus_notify_body',
+                'contactus_confirmation_subject',
+                'contactus_confirmation_body',
+                'contactus_confirmation_newsletter_subject',
+                'contactus_confirmation_newsletter_body',
+                'contactus_to_author_subject',
+                'contactus_to_author_body',
+                'contactus_confirmation_message',
+                'contactus_confirmation_message_newsletter',
+                'contactus_consent_label',
+                'contactus_label_selection',
+                'contactus_label_guest_link',
+                // 'contactus_questions',
+            ],
+            'block_settings' => [
+                'confirmation_subject',
+                'confirmation_body',
+                'consent_label',
+                'newsletter_label',
+                'unsubscribe_label',
+                // 'questions' => [],
+            ],
         ];
-
-        $config = $this->getConfig()['contactus']['site_settings'];
-        $translatables = array_filter(array_map(fn ($v) => !empty($config[$v]) ? $translate($config[$v]) : null, array_combine($translatables, $translatables)));
-
-        $this->manageSiteSettings('update', $translatables);
+        return isset($translatables[$settingsType])
+            && in_array($name, $translatables[$settingsType]);
     }
 
     protected function postUninstall(): void

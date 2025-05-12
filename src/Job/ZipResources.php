@@ -60,7 +60,7 @@ class ZipResources extends AbstractJob
             return;
         }
 
-        if (!class_exists('ZipArchive')) {
+        if (!class_exists('ZipArchive', false)) {
             $this->logger()->err('The php extension "php-zip" must be installed.'); // @translate
             return;
         }
@@ -159,7 +159,7 @@ class ZipResources extends AbstractJob
     {
         $services = $this->getServiceLocator();
 
-        if (!class_exists('ZipArchive')) {
+        if (!class_exists('ZipArchive', false)) {
             $this->logger->err('The php extension "php-zip" must be installed.'); // @translate
             return false;
         }
