@@ -216,7 +216,9 @@ class ContactUs extends AbstractHelper
         }
 
         // The fields id should be integer and unique.
-        $options['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']))));
+        $options['fields']['id'] = isset($options['fields']['id']['value'])
+            ? array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']['value']))))
+            : array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']))));
 
         // The option fields are all specific fields set via the theme.
         // They are added in the form. The list of ids is added automatically.
@@ -777,8 +779,24 @@ class ContactUs extends AbstractHelper
             return (string) $message;
         }
 
-        // Any field can be a placeholder, except array.
+        $plugins = $this->view->getHelperPluginManager();
+        $url = $plugins->get('url');
+        $site = $this->currentSite();
+        $translate = $plugins->get('translate');
+
+        // Any field can be a placeholder, except array (except ids).
         $placeholders += $placeholders['fields'] ?? [];
+        if (!empty($placeholders['id'])) {
+            $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
+            $idTitles = $this->api->search('items', ['id' => $placeholders['id']],  ['initialize' => false, 'returnScalar' => 'title'])->getContent();
+            $baseUrlItem = rtrim($url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => 'item', 'id' => '00'], ['force_canonical' => true]), '/0');
+            $baseLink = '<a href="' . $baseUrlItem . '/%1$d">%2$s</a>';
+            $placeholders['resources'] = implode(', ', array_map(fn($k, $v) => sprintf($baseLink, $k, $v), array_keys($idTitles), $idTitles));
+            $baseLink = '#<a href="' . $baseUrlItem . '/%1$d">%1$d</a>';
+            $placeholders['resources_ids'] = implode(', ', array_map(fn($v) => sprintf($baseLink, $v), array_keys($idTitles)));
+            $placeholders['resources_url'] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+            $placeholders['resources_url_admin'] = $url('admin/default', ['controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+        }
         $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));
 
         $replace = [];
@@ -786,20 +804,19 @@ class ContactUs extends AbstractHelper
             $replace['{' . $placeholder . '}'] = $value;
         }
 
-        $plugins = $this->view->getHelperPluginManager();
-        $url = $plugins->get('url');
-        $site = $this->currentSite();
-        $translate = $plugins->get('translate');
-
         // Placehoders are the submitted values: from, email, name, site_title,
-        // site_url, subject, message, ip.
+        // site_url, subject, message, ip, resources.
 
         $defaultPlaceholders = [
             '{ip}' => (new RemoteAddress())->getIpAddress(),
             '{main_title}' => $this->mailer->getInstallationTitle(),
             '{main_url}' => $url('top', [], ['force_canonical' => true]),
             '{site_title}' => $site->title(),
-            '{site_url}' => $site->siteUrl(),
+            '{site_url}' => $site->siteUrl(null, true),
+            '{resources}' => '',
+            '{resources_ids}' => '',
+            '{resources_url}' => '',
+            '{resources_url_admin}' => '',
         ];
         $replace += $defaultPlaceholders;
 
