@@ -106,7 +106,9 @@ $site = $resource->site();
         if ($key === 'id') continue; ?>
     <div class="meta-group">
         <h4><?= $key ?></h4>
-        <div class="value"><?= $escape($value) ?></div>
+        <?php foreach (is_array($value) ? $value : [$value] as $val): ?>
+        <div class="value"><?= $escape($val) ?></div>
+        <?php endforeach; ?>
     </div>
     <?php endforeach; ?>
     <?php if ($fileUrl = $message->assetUrl()): ?>
