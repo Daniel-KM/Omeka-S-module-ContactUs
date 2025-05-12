@@ -42,8 +42,8 @@ return [
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
         'factories' => [
-            Form\ContactUsForm::class => Service\Form\FormFactory::class,
-            Form\NewsletterForm::class => Service\Form\FormFactory::class,
+            Form\ContactUsForm::class => Service\Form\ContactUsFormFactory::class,
+            Form\NewsletterForm::class => Service\Form\NewsletterFormFactory::class,
         ],
     ],
     'block_layouts' => [

@@ -2,6 +2,8 @@
 
 namespace ContactUs\Form;
 
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\EventManager\Event;
 use Laminas\Filter;
 use Laminas\Form\Element;
 use Laminas\Form\Form;
@@ -15,6 +17,8 @@ use Omeka\Entity\User;
  */
 class NewsletterForm extends Form
 {
+    use EventManagerAwareTrait;
+
     protected $formOptions = [];
     protected $consentLabel = '';
     protected $unsubscribe = false;
@@ -151,6 +155,9 @@ class NewsletterForm extends Form
                 ],
             ]);
 
+        $event = new Event('form.add_elements', $this);
+        $this->getEventManager()->triggerEvent($event);
+
         $inputFilter = $this->getInputFilter();
         $inputFilter
             ->add([
@@ -175,6 +182,9 @@ class NewsletterForm extends Form
                 ],
             ]);
         }
+
+        $event = new Event('form.add_input_filters', $this, ['inputFilter' => $inputFilter]);
+        $this->getEventManager()->triggerEvent($event);
     }
 
     public function setFormOptions(array $formOptions): self

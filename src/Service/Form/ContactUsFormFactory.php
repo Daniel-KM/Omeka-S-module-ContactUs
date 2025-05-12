@@ -2,13 +2,16 @@
 
 namespace ContactUs\Service\Form;
 
+use ContactUs\Form\ContactUsForm;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class FormFactory implements FactoryInterface
+class ContactUsFormFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        return new $requestedName(null, $options ?? []);
+        $form = new ContactUsForm(null, $options ?? []);
+        $form->setEventManager($services->get('EventManager'));
+        return $form;
     }
 }

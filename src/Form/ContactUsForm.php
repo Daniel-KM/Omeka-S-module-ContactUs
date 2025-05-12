@@ -2,6 +2,8 @@
 
 namespace ContactUs\Form;
 
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\EventManager\Event;
 use Laminas\Filter;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
@@ -11,6 +13,8 @@ use Omeka\Entity\User;
 
 class ContactUsForm extends Form
 {
+    use EventManagerAwareTrait;
+
     protected $formOptions = [];
     protected $fields = [];
     protected $attachFile = false;
@@ -263,6 +267,9 @@ class ContactUsForm extends Form
                 ],
             ]);
 
+        $event = new Event('form.add_elements', $this);
+        $this->getEventManager()->triggerEvent($event);
+
         $inputFilter = $this->getInputFilter();
         $inputFilter
             ->add([
@@ -318,6 +325,9 @@ class ContactUsForm extends Form
                 ],
             ]);
         }
+
+        $event = new Event('form.add_input_filters', $this, ['inputFilter' => $inputFilter]);
+        $this->getEventManager()->triggerEvent($event);
     }
 
     /**
