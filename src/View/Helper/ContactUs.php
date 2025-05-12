@@ -823,7 +823,8 @@ class ContactUs extends AbstractHelper
         if (!empty($this->currentOptions['resource'])) {
             $replace['{resource_id}'] = $this->currentOptions['resource']->id();
             $replace['{resource_title}'] = $this->currentOptions['resource']->displayTitle();
-            $replace['{resource_url}'] = $this->currentOptions['resource']->siteUrl();
+            $replace['{resource_url}'] = $this->currentOptions['resource']->siteUrl(null, true);
+            $replace['{resource}'] = sprintf('<a href="%1$s">%2$s</a>', $replace['{resource_url}'], $replace['{resource_title}']);
             $resourceJson = json_decode(json_encode($this->currentOptions['resource']), true);
             foreach ($resourceJson as $term => $value) {
                 if (!is_array($value) || empty($value) || !isset(reset($value)['type'])) {
