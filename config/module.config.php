@@ -306,6 +306,7 @@ return [
             'contactus_label_selection' => 'Selection for contact', // @translate
             'contactus_label_guest_link' => 'My selection for contact', // @translate
             'contactus_selection_max' => 25,
+            'contactus_selection_include_resources' => false,
         ],
         // User settings.
         'user_settings' => [

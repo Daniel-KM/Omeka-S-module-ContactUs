@@ -310,6 +310,19 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'contactus_selection_max',
                 ],
             ])
+
+            ->add([
+                'name' => 'contactus_selection_include_resources',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Include resources in response', // @translate
+                    'info' => 'Some themes may require resources to be included in response when selecting a resource. This option avoids an api request via js on public side, but slow response.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_selection_include_resources',
+                ],
+            ])
         ;
     }
 }

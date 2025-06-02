@@ -89,10 +89,12 @@ class IndexController extends AbstractActionController
 
         // TODO Factorize with view helper ContactUsSelector?
 
+        /** @var \ContactUs\View\Helper\ContactUsSelection $contactUsSelection */
         $contactUsSelection = $this->viewHelpers()->get('contactUsSelection');
 
         // Manage the case where there the max number is set.
-        $max = (int) $this->siteSettings()->get('contactus_selection_max');
+        $siteSettings = $this->siteSettings();
+        $max = (int) $siteSettings->get('contactus_selection_max');
         $isFail = false;
         if ($max) {
             $alreadySelecteds = $contactUsSelection();
@@ -107,19 +109,21 @@ class IndexController extends AbstractActionController
         // Here, the max is already applied if needed.
         $newSelecteds = $contactUsSelection($requestedResourceIds);
 
+        $output = [
+            'selected_resources' => $newSelecteds,
+        ];
+        if ($siteSettings->get('contactus_selection_include_resources')) {
+            $output['resources'] = $this->listResources($newSelecteds);
+        }
+
         if ($isFail) {
-            return $this->jSend(JSend::FAIL, [
-                'selected_resources' => $newSelecteds,
-            ], (string) (new PsrMessage(
+            return $this->jSend(JSend::FAIL, $output, (string) (new PsrMessage(
                 $this->siteSettings()->get('contactus_warn_limit', 'Warning: It is not possible to select more than {total} resources.'), // @translate
                 ['total' => $max]
             ))->setTranslator($this->translator()));
         }
 
-        return $this->jSend(
-            JSend::SUCCESS,
-            ['selected_resources' => $newSelecteds]
-        );
+        return $this->jSend(JSend::SUCCESS, $output);
     }
 
     public function sendMailAction()
@@ -239,5 +243,25 @@ class IndexController extends AbstractActionController
         }
 
         return $resourceIds;
+    }
+
+    /**
+     * List of resources as json-ld.
+     */
+    protected function listResources(array $resourceIds): array
+    {
+        if (!$resourceIds) {
+            return [];
+        }
+        $api = $this->api();
+        $result = array_fill_keys($resourceIds, null);
+        foreach ($resourceIds as $id) {
+            try {
+                $result[$id] = $api->read('resources', ['id' => $id])->getContent()->jsonSerialize();
+            } catch (\Exception $e) {
+                // Skip. Normally, the list is already checked.
+            }
+        }
+        return $result;
     }
 }
