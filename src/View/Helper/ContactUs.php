@@ -790,12 +790,21 @@ class ContactUs extends AbstractHelper
             $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
             $idTitles = $this->api->search('items', ['id' => $placeholders['id']],  ['initialize' => false, 'returnScalar' => 'title'])->getContent();
             $baseUrlItem = rtrim($url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => 'item', 'id' => '00'], ['force_canonical' => true]), '/0');
-            $baseLink = '<a href="' . $baseUrlItem . '/%1$d">%2$s</a>';
-            $placeholders['resources'] = implode(', ', array_map(fn($k, $v) => sprintf($baseLink, $k, $v), array_keys($idTitles), $idTitles));
-            $baseLink = '#<a href="' . $baseUrlItem . '/%1$d">%1$d</a>';
-            $placeholders['resources_ids'] = implode(', ', array_map(fn($v) => sprintf($baseLink, $v), array_keys($idTitles)));
+            // {resources}: list of urls.
+            $placeholders['resources'] = implode(', ', array_map(fn($v) => "$baseUrlItem/$v", array_keys($idTitles)));
+            // {resources_ids}: list of ids.
+            $placeholders['resources_ids'] = implode(', ', array_keys($idTitles));
+            // {resources_urls}: list of urls. Alias of {resource}.
+            $placeholders['resources_urls'] = implode(', ', array_map(fn($v) => "$baseUrlItem/$v", array_keys($idTitles)));
+            // {resources_url}: single url to all selected resources.
             $placeholders['resources_url'] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+            // {resources_url_admin}: single url to all selected resources.
             $placeholders['resources_url_admin'] = $url('admin/default', ['controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+            // Html.
+            // TODO Manage html mail.
+            // {resources_links}: list of links.
+            $baseLink = '<a href="' . $baseUrlItem . '/%1$d">%2$s</a>';
+            $placeholders['resources_links'] = implode(', ', array_map(fn($k, $v) => sprintf($baseLink, $k, $v ?: $translate('[No title]')), array_keys($idTitles), $idTitles));
         }
         $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));
 
@@ -815,16 +824,22 @@ class ContactUs extends AbstractHelper
             '{site_url}' => $site->siteUrl(null, true),
             '{resources}' => '',
             '{resources_ids}' => '',
+            '{resources_urls}' => '',
             '{resources_url}' => '',
             '{resources_url_admin}' => '',
+            // Html.
+            '{resources_links}' => '',
         ];
         $replace += $defaultPlaceholders;
 
+        // Fill the single resource.
         if (!empty($this->currentOptions['resource'])) {
+            $replace['{resource}'] = $this->currentOptions['resource']->siteUrl(null, true);
             $replace['{resource_id}'] = $this->currentOptions['resource']->id();
             $replace['{resource_title}'] = $this->currentOptions['resource']->displayTitle();
-            $replace['{resource_url}'] = $this->currentOptions['resource']->siteUrl(null, true);
-            $replace['{resource}'] = sprintf('<a href="%1$s">%2$s</a>', $replace['{resource_url}'], $replace['{resource_title}']);
+            $replace['{resource_url}'] = $replace['{resource}'];
+            $replace['{resource_url_admin}'] = $this->currentOptions['resource']->adminUrl();
+            $replace['{resource_link}'] = sprintf('<a href="%1$s">%2$s</a>', $replace['{resource_url}'], $replace['{resource_title}']);
             $resourceJson = json_decode(json_encode($this->currentOptions['resource']), true);
             foreach ($resourceJson as $term => $value) {
                 if (!is_array($value) || empty($value) || !isset(reset($value)['type'])) {
@@ -845,7 +860,7 @@ class ContactUs extends AbstractHelper
             }
         }
 
-        return str_replace(array_keys($replace), array_values($replace), $message);
+        return strtr($message, $replace);
     }
 
     protected function getNotifyRecipients(array $options): array
