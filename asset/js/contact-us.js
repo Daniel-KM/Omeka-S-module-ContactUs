@@ -389,6 +389,7 @@
                     $(form).closest('dialog')[0].close();
                     let msg = jSendMessage(data);
                     dialogMessage(msg ? msg : 'Email successfully sent.', true);
+                    $(document).trigger('o:contact-us-email-sent', data);
                 })
                 .fail(function (xhr, textStatus, errorThrown) {
                     const data = xhr.responseJSON;
