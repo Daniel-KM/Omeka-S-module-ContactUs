@@ -495,3 +495,15 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.23', '<')) {
+    $message = new PsrMessage(
+        'New fields were added for messages.' // @translate
+    );
+    $messenger->addSuccess($message);
+
+    $message = new PsrMessage(
+        'Existing fields for messages were clarified. You may need to check your config.' // @translate
+    );
+    $messenger->addWarning($message);
+}
