@@ -28,6 +28,8 @@ class ContactUsFactory implements FactoryInterface
         }
         return new ContactUs(
             $plugins->get('api'),
+            $services->get('Omeka\ApiManager'),
+            $services->get('Common\EasyMeta'),
             $services->get('FormElementManager'),
             $services->get('Omeka\Mailer'),
             $plugins->get('messenger'),

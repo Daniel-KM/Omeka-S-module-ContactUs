@@ -2,6 +2,7 @@
 
 namespace ContactUs\View\Helper;
 
+use Common\Stdlib\EasyMeta;
 use Common\Stdlib\PsrMessage;
 use ContactUs\Form\ContactUsForm;
 use ContactUs\Form\NewsletterForm;
@@ -9,6 +10,7 @@ use Laminas\Form\FormElementManager;
 use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
+use Omeka\Api\Manager as ApiManager;
 use Omeka\Mvc\Controller\Plugin\Api;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Mailer;
@@ -30,9 +32,19 @@ class ContactUs extends AbstractHelper
     const PARTIAL_NAME_BUTTON = 'common/contact-us-button';
 
     /**
-     * @var Api
+     * @var \Omeka\Api\Manager
      */
     protected $api;
+
+    /**
+     * @var \Omeka\Mvc\Controller\Plugin\Api
+     */
+    protected $apiPlugin;
+
+    /**
+     * @var \Common\Stdlib\EasyMeta
+     */
+    protected $easyMeta;
 
     /**
      * @var FormElementManager
@@ -66,12 +78,16 @@ class ContactUs extends AbstractHelper
 
     public function __construct(
         Api $api,
+        ApiManager $apiManager,
+        EasyMeta $easyMeta,
         FormElementManager $formElementManager,
         Mailer $mailer,
         Messenger $messenger,
         array $defaultOptions
     ) {
-        $this->api = $api;
+        $this->api = $apiManager;
+        $this->apiPlugin = $api;
+        $this->easyMeta = $easyMeta;
         $this->formElementManager = $formElementManager;
         $this->mailer = $mailer;
         $this->messenger = $messenger;
@@ -357,7 +373,7 @@ class ContactUs extends AbstractHelper
                     unset($postedFields['id']);
                 } elseif (is_array($postedFields['id']) && count($postedFields['id']) === 1 && empty($options['resource'])) {
                     try {
-                        $options['resource'] = $this->api->__invoke()->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
+                        $options['resource'] = $this->api->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
                         unset($postedFields['id']);
                     } catch (\Exception $e) {
                         // Nothing to do.
@@ -391,7 +407,7 @@ class ContactUs extends AbstractHelper
                 ];
                 $response = null;
                 if ($isPostStored === null) {
-                    $response = $this->api->__invoke($form)->create('contact_messages', $data, $fileData);
+                    $response = $this->apiPlugin->__invoke($form)->create('contact_messages', $data, $fileData);
                     $isFirst = true;
                     $isPostStored = !empty($response);
                 } else {
@@ -729,7 +745,7 @@ class ContactUs extends AbstractHelper
         } elseif (strpos($propertyEmail, ':')) {
             // The email should be an hidden field for security, so it is not
             // possible to get the value directly, so use a direct query.
-            $propertyId = (int) $this->api->searchOne('properties', ['term' => $propertyEmail], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
+            $propertyId = $this->easyMeta->propertyId($propertyEmail);
             $connection = $resource->getServiceLocator()->get('Omeka\Connection');
             $sql = <<<'SQL'
                 SELECT `value`
