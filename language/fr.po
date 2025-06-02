@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-12 00:00+0000\n"
+"POT-Creation-Date: 2025-06-02 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -45,7 +45,7 @@ msgid "An error occurred."
 msgstr "Une erreur est survenue."
 
 #: src/Controller/Site/IndexController.php:84
-#: src/Controller/Site/IndexController.php:129
+#: src/Controller/Site/IndexController.php:143
 msgid "Not an ajax request"
 msgstr "Requête non ajax"
 
@@ -74,16 +74,16 @@ msgstr ""
 "Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une "
 "infolettre."
 
-#: src/View/Helper/ContactUs.php:379 src/View/Helper/ContactUs.php:383
+#: src/View/Helper/ContactUs.php:395 src/View/Helper/ContactUs.php:399
 msgid "Unsubscribe newsletter"
 msgstr "Se désabonner de l’infolettre"
 
-#: src/View/Helper/ContactUs.php:435 src/View/Helper/ContactUs.php:503
+#: src/View/Helper/ContactUs.php:451 src/View/Helper/ContactUs.php:520
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:441
+#: src/View/Helper/ContactUs.php:458
 #, php-format
 msgid "newsletter: %s"
 msgstr "infolettre : %s"
@@ -462,6 +462,18 @@ msgstr ""
 "Il est désormais possible d’ajouter des champs spécifiques au formulaire via "
 "les paramètres généraux ou les paramètres du site."
 
+#: data/scripts/upgrade.php:501
+msgid "New fields were added for messages."
+msgstr "De nouveaux champs ont été ajoutés pour les messages."
+
+#: data/scripts/upgrade.php:506
+msgid ""
+"Existing fields for messages were clarified. You may need to check your "
+"config."
+msgstr ""
+"Les champs existants pour les messages ont été clarifiés. Vous pouvez "
+"vérifier votre configuration."
+
 #: Module.php:108
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
@@ -472,36 +484,36 @@ msgstr ""
 "Tous les messages de contact et tous les fichiers seront supprimés (dossier "
 "\"{folder}\")."
 
-#: src/View/Helper/ContactUs.php:331
+#: src/View/Helper/ContactUs.php:347
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Le désabonnement pour le mail {email} a été confirmé."
 
-#: src/View/Helper/ContactUs.php:336
+#: src/View/Helper/ContactUs.php:352
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Merci pour votre abonnement à l’infolettre, {name}."
 
-#: src/View/Helper/ContactUs.php:343
+#: src/View/Helper/ContactUs.php:359
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
 "Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
 
-#: src/View/Helper/ContactUs.php:348
+#: src/View/Helper/ContactUs.php:364
 msgid ""
 "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 "Merci pour votre message, {name}. Nous vous répondrons dès que possible."
 
-#: src/View/Helper/ContactUs.php:380
+#: src/View/Helper/ContactUs.php:396
 msgid "Subscribe newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: src/View/Helper/ContactUs.php:417 src/View/Helper/ContactUs.php:574
+#: src/View/Helper/ContactUs.php:433 src/View/Helper/ContactUs.php:591
 msgid "There is an error: {errors}"
 msgstr "Il y a une erreur : {errors}"
 
-#: src/View/Helper/ContactUs.php:453
+#: src/View/Helper/ContactUs.php:470
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
@@ -509,11 +521,11 @@ msgstr ""
 "Merci pour votre message {name}. Vérifiez le message de confirmation. "
 "L’auteur le recevra bientôt."
 
-#: src/View/Helper/ContactUs.php:488
+#: src/View/Helper/ContactUs.php:505
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
 
-#: src/View/Helper/ContactUs.php:511
+#: src/View/Helper/ContactUs.php:528
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
@@ -522,25 +534,25 @@ msgstr ""
 "le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
 "recevez pas de réponse."
 
-#: src/View/Helper/ContactUs.php:555
+#: src/View/Helper/ContactUs.php:572
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:578
+#: src/View/Helper/ContactUs.php:595
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
-#: src/View/Helper/ContactUs.php:628
+#: src/View/Helper/ContactUs.php:645
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:709
+#: src/View/Helper/ContactUs.php:726
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/View/Helper/ContactUs.php:724 src/View/Helper/ContactUs.php:750
+#: src/View/Helper/ContactUs.php:741 src/View/Helper/ContactUs.php:767
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -548,23 +560,23 @@ msgstr ""
 "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
 "d’informations."
 
-#: src/View/Helper/ContactUs.php:745
+#: src/View/Helper/ContactUs.php:762
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/View/Helper/ContactUs.php:840
+#: src/View/Helper/ContactUs.php:896
 msgid "[Unknown resource]"
 msgstr "[Ressource inconnue]"
 
-#: src/View/Helper/ContactUs.php:865
+#: src/View/Helper/ContactUs.php:933
 msgid "Contact Us: Some notification emails for module are invalid."
 msgstr "Contact Us : Certains mails de notification ne sont pas valides."
 
-#: src/View/Helper/ContactUs.php:910
+#: src/View/Helper/ContactUs.php:978
 msgid "The message has no content to send."
 msgstr "Le message n’a pas de contenu à envoyer."
 
-#: src/View/Helper/ContactUs.php:944
+#: src/View/Helper/ContactUs.php:1012
 msgid ""
 "Error when sending email ({msg}). Arguments:\n"
 "{json}"
@@ -684,16 +696,21 @@ msgid "Notification message for admin"
 msgstr "Message de notification pour l’administrateur"
 
 #: src/Form/SiteSettingsFieldset.php:74 src/Form/SiteSettingsFieldset.php:109
+#: src/Form/ContactUsFieldset.php:44
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{resource}, {resource_id}, {resource_title}, {resource_url}, {resources}, "
-"{resources_ids}, {resources_url}, {resources_url_admin}."
+"{fields}, {each specific field}, {resource}, {resource_id}, "
+"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
+"{property term}, {resources}, {resources_ids}, {resources_url}, "
+"{resources_url_admin}, {resources_links}, {resources::property term}."
 msgstr ""
 "Jokers possibles : {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{resource}, {resource_id}, {resource_title}, {resource_url}, {resources}, "
-"{resources_ids}, {resources_url}, {resources_url_admin}."
+"{fields}, {each specific field}, {resource}, {resource_id}, "
+"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
+"{property term}, {resources}, {resources_ids}, {resources_url}, "
+"{resources_url_admin}, {resources_links}, {resources::property term}."
 
 #: src/Form/SiteSettingsFieldset.php:86 src/Form/ContactUsFieldset.php:23
 #: src/Form/NewsletterFieldset.php:33
@@ -734,8 +751,7 @@ msgstr "Sujet du message à l’auteur"
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:157 src/Form/ContactUsFieldset.php:44
-#: src/Form/NewsletterFieldset.php:54
+#: src/Form/SiteSettingsFieldset.php:157 src/Form/NewsletterFieldset.php:54
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
@@ -826,6 +842,24 @@ msgstr "Libellé pour le lien dans le compte Invité"
 #: src/Form/SiteSettingsFieldset.php:307
 msgid "Maximum number of items to store in selection"
 msgstr "Nombre maximum de contenus pour la sélection"
+
+#: src/Form/SiteSettingsFieldset.php:319
+msgid "Include resources in response"
+msgstr "Inclure les ressources dans la réponse"
+
+#: src/Form/SiteSettingsFieldset.php:320
+msgid ""
+"Some themes may require resources to be included in response when selecting "
+"a resource. This option avoids an api request via js on public side, but "
+"slow response."
+msgstr ""
+"Certains thèmes ont besoin des notices complètes dans la réponse lorsqu’une "
+"ressource est mis dans le panier. Cette option évite une requête api via js "
+"dans le thème, mais ralentit la réponse."
+
+#: src/Form/SiteSettingsFieldset.php:331
+msgid "Include matching resource ids from module Selection in response"
+msgstr "Inclure les ids des ressources du module Sélection dans la réponse"
 
 #: src/Form/SettingsFieldset.php:29
 msgid ""
@@ -1008,39 +1042,39 @@ msgstr "Clé inconnue."
 msgid "success"
 msgstr "succès"
 
-#: src/Controller/Site/IndexController.php:114
+#: src/Controller/Site/IndexController.php:131
 msgid "Warning: It is not possible to select more than {total} resources."
 msgstr "Rappel : il n’est pas possible de choisir plus de {total} ressources."
 
-#: src/Controller/Site/IndexController.php:142
+#: src/Controller/Site/IndexController.php:156
 msgid "Not ajax."
 msgstr "Non ajax."
 
-#: src/Controller/Site/IndexController.php:163
+#: src/Controller/Site/IndexController.php:177
 msgid "No resource set."
 msgstr "Aucune ressource définie."
 
-#: src/Controller/Site/IndexController.php:171
+#: src/Controller/Site/IndexController.php:185
 msgid "Resource is invalid."
 msgstr "La ressource est incorrecte."
 
-#: src/Controller/Site/IndexController.php:177
+#: src/Controller/Site/IndexController.php:191
 msgid "No message found."
 msgstr "Aucun message trouvé."
 
-#: src/Controller/Site/IndexController.php:184
+#: src/Controller/Site/IndexController.php:198
 msgid "Resource does not exist."
 msgstr "La ressource n’existe pas."
 
-#: src/Controller/Site/IndexController.php:188
+#: src/Controller/Site/IndexController.php:202
 msgid "Resource has no file."
 msgstr "La ressource n’a pas de fichier."
 
-#: src/Controller/Site/IndexController.php:200
+#: src/Controller/Site/IndexController.php:214
 msgid "No zip found: too much old."
 msgstr "Aucun zip trouvé : trop ancien."
 
-#: src/Controller/Site/IndexController.php:205
+#: src/Controller/Site/IndexController.php:219
 msgid "No zip found."
 msgstr "Aucun zip trouvé."
 
@@ -1228,8 +1262,8 @@ msgstr ""
 "Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
 "confirmation envoyé à {email}."
 
-#: config/module.config.php:278 config/module.config.php:320
-#: config/module.config.php:333
+#: config/module.config.php:278 config/module.config.php:322
+#: config/module.config.php:335
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -1281,11 +1315,11 @@ msgstr "Combien font trois et 2 (en chiffres) ?"
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:322
+#: config/module.config.php:324
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: config/module.config.php:335
+#: config/module.config.php:337
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
