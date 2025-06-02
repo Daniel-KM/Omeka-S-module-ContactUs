@@ -789,7 +789,10 @@ class ContactUs extends AbstractHelper
         $resourceTerms = array_unique($matches['term'] ?? []);
 
         // Any field can be a placeholder, except array (except ids).
-        $placeholders += $placeholders['fields'] ?? [];
+        // Flatify array to simplify process.
+        $fields = $placeholders['fields'] ?? [];
+        $placeholders += $fields;
+
         if (!empty($placeholders['id'])) {
             $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
             $idTitles = $this->api->search('items', ['id' => $placeholders['id']], ['initialize' => false, 'returnScalar' => 'title'])->getContent();
@@ -827,6 +830,7 @@ class ContactUs extends AbstractHelper
             $baseLink = '<a href="' . $baseUrlItem . '/%1$d">%2$s</a>';
             $placeholders['resources_links'] = implode(', ', array_map(fn($k, $v) => sprintf($baseLink, $k, $v ?: $translate('[No title]')), array_keys($idTitles), $idTitles));
         }
+
         $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));
 
         $replace = [];
@@ -838,6 +842,7 @@ class ContactUs extends AbstractHelper
         // site_url, subject, message, ip, resources.
 
         $defaultPlaceholders = [
+            '{fields}' => '',
             '{ip}' => (new RemoteAddress())->getIpAddress(),
             '{main_title}' => $this->mailer->getInstallationTitle(),
             '{main_url}' => $url('top', [], ['force_canonical' => true]),
@@ -883,6 +888,17 @@ class ContactUs extends AbstractHelper
                 }
             }
             // TODO Clean unused terms.
+        }
+
+        if ($fields && strpos($message, '{fields}') !== false) {
+            $fieldsArray = [];
+            foreach ($fields as $field => $value) {
+                if ($value === '' || $field === 'id') {
+                    continue;
+                }
+                $fieldsArray[] = "* $field :\n$value";
+            }
+            $replace['{fields}'] = implode("\n\n", $fieldsArray);
         }
 
         return strtr($message, $replace);
