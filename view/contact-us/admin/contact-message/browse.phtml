@@ -16,6 +16,7 @@ $escape = $plugins->get('escapeHtml');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $userIsAllowed = $plugins->get('userIsAllowed');
 
 $this->headLink()->appendStylesheet($assetUrl('css/contact-us-admin.css', 'ContactUs'));
@@ -61,39 +62,39 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
     <?php if ($userIsAllowed(MessageAdapter::class, 'batch-update')): ?>
     <a href="#"
         class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escape($url('admin/contact-message/default', ['action' => 'batch-set-read'], true)) ?>"
-        aria-label="<?= $escape($translate('Read')) ?>"
+        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-read'], true)) ?>"
+        aria-label="<?= $escapeAttr($translate('Read')) ?>"
         data-property="is_read"
         data-status="read"
-        title="<?= $escape($translate('Read')) ?>"><?= $escape($translate('Set read')) ?></a>
+        title="<?= $escapeAttr($translate('Read')) ?>"><?= $escape($translate('Set read')) ?></a>
     <a href="#"
         class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escape($url('admin/contact-message/default', ['action' => 'batch-set-not-read'], true)) ?>"
-        aria-label="<?= $escape($translate('not-read')) ?>"
+        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-read'], true)) ?>"
+        aria-label="<?= $escapeAttr($translate('not-read')) ?>"
         data-property="is_read"
         data-status="not-read"
-        title="<?= $escape($translate('not-read')) ?>"><?= $escape($translate('Set not read')) ?></a>
+        title="<?= $escapeAttr($translate('not-read')) ?>"><?= $escape($translate('Set not read')) ?></a>
     <a href="#"
         class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escape($url('admin/contact-message/default', ['action' => 'batch-set-spam'], true)) ?>"
-        aria-label="<?= $escape($translate('Set spam')) ?>"
+        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-spam'], true)) ?>"
+        aria-label="<?= $escapeAttr($translate('Set spam')) ?>"
         data-property="is_spam"
         data-status="spam"
-        title="<?= $escape($translate('Set spam')) ?>"><?= $escape($translate('Set spam')) ?></a>
+        title="<?= $escapeAttr($translate('Set spam')) ?>"><?= $escape($translate('Set spam')) ?></a>
     <a href="#"
         class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escape($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
-        aria-label="<?= $escape($translate('Set not spam')) ?>"
+        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
+        aria-label="<?= $escapeAttr($translate('Set not spam')) ?>"
         data-property="is_spam"
         data-status="not-spam"
-        title="<?= $escape($translate('Set not spam')) ?>"><?= $escape($translate('Set not spam')) ?></a>
+        title="<?= $escapeAttr($translate('Set not spam')) ?>"><?= $escape($translate('Set not spam')) ?></a>
     <?php endif; ?>
     <?php if ($userIsAllowed(MessageAdapter::class, 'batch-delete')): ?>
     <a href="#"
         class="button delete batch-actions sidebar-content"
-        data-sidebar-content-url="<?= $escape($url(null, ['action' => 'batch-delete-confirm'], true)) ?>"
-        aria-label="<?= $escape($translate('Delete')) ?>"
-        title="<?= $escape($translate('Delete')) ?>"><?= $escape($translate('Delete')) ?></a>
+        data-sidebar-content-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-delete-confirm'], true)) ?>"
+        aria-label="<?= $escapeAttr($translate('Delete')) ?>"
+        title="<?= $escapeAttr($translate('Delete')) ?>"><?= $escape($translate('Delete')) ?></a>
     <?php endif; ?>
 </div>
 <?php endif; ?>
@@ -139,40 +140,40 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                     <?php if ($editRightContactUs): ?>
                     <li><a href="#"
                         class="toggle-property is_read o-icon-<?= $message->isRead() ? 'read' : 'not-read' ?>"
-                        data-toggle-url="<?= $escape($message->url('toggle-read')) ?>"
+                        data-toggle-url="<?= $escapeAttr($message->url('toggle-read')) ?>"
                         data-property="is_read"
                         data-status="<?= $message->isRead() ? 'read' : 'not-read' ?>"
-                        aria-label="<?= $escape($translate('Toggle read')) ?>"
-                        title="<?= $escape($translate('Toggle read')) ?>"></a></li>
+                        aria-label="<?= $escapeAttr($translate('Toggle read')) ?>"
+                        title="<?= $escapeAttr($translate('Toggle read')) ?>"></a></li>
                     <li><a href="#"
                         class="toggle-property is_spam o-icon-<?= $message->isSpam() ? 'spam' : 'not-spam' ?>"
-                        data-toggle-url="<?= $escape($message->url('toggle-spam')) ?>"
+                        data-toggle-url="<?= $escapeAttr($message->url('toggle-spam')) ?>"
                         data-property="is_spam"
                         data-status="<?= $message->isSpam() ? 'spam' : 'not-spam' ?>"
-                        aria-label="<?= $escape($translate('Toggle spam')) ?>"
-                        title="<?= $escape($translate('Toggle spam')) ?>"></a></li>
+                        aria-label="<?= $escapeAttr($translate('Toggle spam')) ?>"
+                        title="<?= $escapeAttr($translate('Toggle spam')) ?>"></a></li>
                     <?php endif; ?>
                     <?php if ($editRightContactUs): ?>
                     <li><a href="#"
                         class="toggle-property has_zip o-icon-<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
-                        data-toggle-url="<?= $escape($message->url('toggle-zip')) ?>"
+                        data-toggle-url="<?= $escapeAttr($message->url('toggle-zip')) ?>"
                         data-property="has_zip"
                         data-status="<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
-                        aria-label="<?= $escape($translate('Toggle zip')) ?>"
-                        title="<?= $escape($translate('Toggle zip')) ?>"></a></li>
+                        aria-label="<?= $escapeAttr($translate('Toggle zip')) ?>"
+                        title="<?= $escapeAttr($translate('Toggle zip')) ?>"></a></li>
                     <?php endif; ?>
                     <?php if ($message->userIsAllowed('delete')): ?>
                     <li><a href="#"
                         class="o-icon-delete sidebar-content"
-                        data-sidebar-content-url="<?= $escape($message->url('delete-confirm')) ?>"
-                        aria-label="<?= $escape($translate('Delete')) ?>"
-                        title="<?= $escape($translate('Delete')) ?>"></a></li>
+                        data-sidebar-content-url="<?= $escapeAttr($message->url('delete-confirm')) ?>"
+                        aria-label="<?= $escapeAttr($translate('Delete')) ?>"
+                        title="<?= $escapeAttr($translate('Delete')) ?>"></a></li>
                     <?php endif; ?>
                     <li><a href="#"
-                        data-sidebar-content-url="<?= $escape($message->url('show-details')) ?>"
+                        data-sidebar-content-url="<?= $escapeAttr($message->url('show-details')) ?>"
                         class="o-icon-more sidebar-content"
-                        aria-label="<?= $escape($translate('Details')) ?>"
-                        title="<?= $escape($translate('Details')) ?>"></a></li>
+                        aria-label="<?= $escapeAttr($translate('Details')) ?>"
+                        title="<?= $escapeAttr($translate('Details')) ?>"></a></li>
                 </ul>
             </td>
             <td>
@@ -199,8 +200,8 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
 <div class="sidebar">
     <a href="#"
         class="sidebar-close o-icon-close"
-        aria-label="<?= $escape($translate('Close')) ?>"
-        title="<?= $escape($translate('Close')) ?>"></a>
+        aria-label="<?= $escapeAttr($translate('Close')) ?>"
+        title="<?= $escapeAttr($translate('Close')) ?>"></a>
     <div class="sidebar-content"></div>
 </div>
 
