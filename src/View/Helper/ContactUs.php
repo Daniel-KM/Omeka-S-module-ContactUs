@@ -435,6 +435,7 @@ class ContactUs extends AbstractHelper
                         ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $submitted['message'] = $contactMessage->body();
                     $submitted['ip'] = $contactMessage->ip();
+                    $submitted['zip_url'] = $contactMessage->zipUrl();
 
                     if ($newsletterLabel) {
                         $submitted['newsletter'] = sprintf(
@@ -843,6 +844,7 @@ class ContactUs extends AbstractHelper
 
         $defaultPlaceholders = [
             '{fields}' => '',
+            '{zip_url}' => '',
             '{ip}' => (new RemoteAddress())->getIpAddress(),
             '{main_title}' => $this->mailer->getInstallationTitle(),
             '{main_url}' => $url('top', [], ['force_canonical' => true]),
