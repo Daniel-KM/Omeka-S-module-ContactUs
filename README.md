@@ -64,12 +64,19 @@ The blocks can be placed anywhere in the site.
 Fill the options in the main settings, the site settings and the page block.
 
 For subjects and messages, you can use placeholders for customization. They
-should be wrapped with `{` and `}`: "from", "email", "name", "site_title",
-"site_url", "subject", "message", "ip", "newsletter". When there is a resource,
-you can use too "resource", "resource_id", "resource_title", "resource_url", and
-any property term, like "dcterms:date". Note that the property should exist in
-all cases, else it won't be filled. For multiple resources, you may use "resources",
-"resources_ids", "resources_url", "resources_url_admin".
+should be wrapped with `{` and `}`: "{from}", "{email}", "{name}", "{site_title}",
+"{site_url}", "{subject}", "{message}", "{ip}", "{newsletter}". To get all
+fields, "{fields}" can be used, or "{specific field}" for each field.
+
+When there is a resource, you can use too "{resource}", "{resource_id}", "{resource_title}",
+"{resource_url}", "{resource_url_admin}", and any property term, like "{dcterms:date}".
+Note that for now, the property should exist in all cases, else it won't be filled.
+
+For multiple resources, you may use "{resources}", "{resources_ids}", "{resources_url}",
+"{resources_url_admin}" and any property term with "{resources::property term}".
+
+The url to the zip of files can be added with "{zip_url}". For security, the zip
+itself will be created only via the admin interface.
 
 ### Static pages
 
@@ -194,7 +201,7 @@ message.
 TODO
 ----
 
-- [ ] Remove code related to cookie/container, as it is managed by session now.
+- [ ] Remove code related to cookie/container, as it is managed by session now.
 - [x] Fix consent label.
 
 
@@ -250,6 +257,7 @@ the digital library of the city of [Saint-Quentin].
 [Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[ContactUs.zip]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs/releases
 [Selection]: https://gitlab.com/Daniel-KM/Omeka-S-module-Selection
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [User Profile]: https://gitlab.com/Daniel-KM/Omeka-S-module-UserProfile
@@ -259,6 +267,6 @@ the digital library of the city of [Saint-Quentin].
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [MIT]: http://opensource.org/licenses/MIT
-[Saint-Quentin]: https://saintquentinartethistoire.fr
+[Saint-Quentin]: https://www.saintquentinartethistoire.fr
 [GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
