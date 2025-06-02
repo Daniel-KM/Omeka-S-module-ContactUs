@@ -71,7 +71,7 @@ class SiteSettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Notification message for admin', // @translate
-                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {resources}, {resources_ids}, {resource_links}, {resources_url}, {resources_url_admin}.', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_body',
@@ -106,7 +106,7 @@ class SiteSettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Confirmation message', // @translate
-                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}.', // @translate
+                    'info' => 'Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_confirmation_body',

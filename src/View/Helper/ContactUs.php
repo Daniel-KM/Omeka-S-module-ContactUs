@@ -784,11 +784,15 @@ class ContactUs extends AbstractHelper
         $site = $this->currentSite();
         $translate = $plugins->get('translate');
 
+        $matches = [];
+        preg_match_all('~\{resources::(?<term>[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+)\}~m', $message, $matches);
+        $resourceTerms = array_unique($matches['term'] ?? []);
+
         // Any field can be a placeholder, except array (except ids).
         $placeholders += $placeholders['fields'] ?? [];
         if (!empty($placeholders['id'])) {
             $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
-            $idTitles = $this->api->search('items', ['id' => $placeholders['id']],  ['initialize' => false, 'returnScalar' => 'title'])->getContent();
+            $idTitles = $this->api->search('items', ['id' => $placeholders['id']], ['initialize' => false, 'returnScalar' => 'title'])->getContent();
             $baseUrlItem = rtrim($url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => 'item', 'id' => '00'], ['force_canonical' => true]), '/0');
             // {resources}: list of urls.
             $placeholders['resources'] = implode(', ', array_map(fn($v) => "$baseUrlItem/$v", array_keys($idTitles)));
@@ -800,6 +804,23 @@ class ContactUs extends AbstractHelper
             $placeholders['resources_url'] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
             // {resources_url_admin}: single url to all selected resources.
             $placeholders['resources_url_admin'] = $url('admin/default', ['controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+            // {resources::property term}: list of titles or identifiers, etc.
+            // This process is slower, so fill it only when needed.
+            if ($resourceTerms) {
+                $resources = $this->api->search('items', ['id' => $placeholders['id']])->getContent();
+                $vals = array_fill_keys($resourceTerms, []);
+                foreach ($resources as $resource) {
+                    foreach ($resourceTerms as $term) {
+                        $value = $resource->value($term);
+                        if ($value) {
+                            $vals[$term][] = (string) $value;
+                        }
+                    }
+                }
+                foreach ($vals as $term => $termVals) {
+                    $placeholders['resources::' . $term] = implode(', ', $termVals);
+                }
+            }
             // Html.
             // TODO Manage html mail.
             // {resources_links}: list of links.
@@ -830,6 +851,9 @@ class ContactUs extends AbstractHelper
             // Html.
             '{resources_links}' => '',
         ];
+        foreach ($matches['term'] ?? [] as $term) {
+            $defaultPlaceholders['{resource::' . $term . '}'] = '';
+        }
         $replace += $defaultPlaceholders;
 
         // Fill the single resource.
@@ -858,6 +882,7 @@ class ContactUs extends AbstractHelper
                     $replace['{' . $term . '}'] = $first['@value'];
                 }
             }
+            // TODO Clean unused terms.
         }
 
         return strtr($message, $replace);
