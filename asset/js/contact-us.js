@@ -347,6 +347,7 @@
                     dialogMessage(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
                 }
                 localStorage.setItem('contactus_selectedIds', JSON.stringify(data.data.selected_resources));
+                $(document).trigger('o:contact-us-selection-updated', data);
             })
             .fail(function (xhr, textStatus, errorThrown) {
                 const data = xhr.responseJSON;
