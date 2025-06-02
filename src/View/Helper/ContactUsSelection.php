@@ -2,6 +2,7 @@
 
 namespace ContactUs\View\Helper;
 
+use Doctrine\DBAL\Connection;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
 use Omeka\Settings\UserSettings;
@@ -13,12 +14,20 @@ use Omeka\Settings\UserSettings;
 class ContactUsSelection extends AbstractHelper
 {
     /**
+     * @var \Doctrine\DBAL\Connection;
+     */
+    protected $connection;
+
+    /**
      * @var \Omeka\Settings\UserSettings
      */
     protected $userSettings;
 
-    public function __construct(UserSettings $userSettings)
-    {
+    public function __construct(
+        Connection $connection,
+        UserSettings $userSettings
+    ) {
+        $this->connection = $connection;
         $this->userSettings = $userSettings;
     }
 
@@ -71,8 +80,10 @@ class ContactUsSelection extends AbstractHelper
         }
 
         $alreadySelecteds = $this->userSettings->get('contactus_selected_resources') ?: [];
+        $alreadySelecteds = $this->checkResourceIds($alreadySelecteds);
 
         if (!count($resourceIds)) {
+            $this->userSettings->set('contactus_selected_resources', $alreadySelecteds);
             return $alreadySelecteds;
         }
 
@@ -104,8 +115,10 @@ class ContactUsSelection extends AbstractHelper
         }
 
         $alreadySelecteds = $container->selected_resources ?? [];
+        $alreadySelecteds = $this->checkResourceIds($alreadySelecteds);
 
         if (!count($resourceIds)) {
+            $container->selected_resources = $alreadySelecteds;
             return $alreadySelecteds;
         }
 
@@ -120,5 +133,33 @@ class ContactUsSelection extends AbstractHelper
 
         $container->selected_resources = $newSelecteds;
         return $newSelecteds;
+    }
+
+    /**
+     * Check ids that may have been removed or made private.
+     *
+     * @todo Remove private resource from the list of selected resources via api search resources.
+     */
+    protected function checkResourceIds(array $ids): array
+    {
+        if (!$ids) {
+            return [];
+        }
+
+        // Ideally, the check should take visibility in account, but it is not
+        // possible with one query currently.
+        // TODO Use api search resources when possible.
+        // $result = $this->api-search('resources', ['id' => $ids], ['returnScalar' => 'id')->getContent();
+        $qb = $this->connection->createQueryBuilder();
+        $qb
+            ->select('id')
+            ->from('resource', 'resource')
+            ->where('resource.id IN (:ids)')
+            ->setParameter('ids', $ids, Connection::PARAM_INT_ARRAY)
+        ;
+        $result = $qb->execute()->fetchFirstColumn();
+
+        // Keep original order.
+        return array_values(array_intersect($ids, $result));
     }
 }
