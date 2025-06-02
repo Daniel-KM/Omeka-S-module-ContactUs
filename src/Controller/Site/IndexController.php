@@ -115,6 +115,16 @@ class IndexController extends AbstractActionController
         if ($siteSettings->get('contactus_selection_include_resources')) {
             $output['resources'] = $this->listResources($newSelecteds);
         }
+        // Append data from module "Selection".
+        if ($this->getPluginManager()->has('selectionContainer')
+            && $siteSettings->get('contactus_selections_include_ids')
+        ) {
+            // Get and flat selected records.
+            // TODO For now, only resources are managed, so no issues with "id".
+            $selectionRecords = $this->selectionContainer()->records ?? [];
+            $selectionRecords = array_column(array_merge(...$selectionRecords), 'id');
+            $output['selections'] = array_values(array_intersect($newSelecteds, $selectionRecords));
+        }
 
         if ($isFail) {
             return $this->jSend(JSend::FAIL, $output, (string) (new PsrMessage(

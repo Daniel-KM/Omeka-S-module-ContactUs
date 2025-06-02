@@ -323,6 +323,17 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'contactus_selection_include_resources',
                 ],
             ])
+            ->add([
+                'name' => 'contactus_selections_include_ids',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Include matching resource ids from module Selection in response', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_selections_include_ids',
+                ],
+            ])
         ;
     }
 }
