@@ -229,6 +229,8 @@ return [
                 message:
                 
                 {message}
+                
+                {fields}
                 MAIL, // @translate
             'contactus_confirmation_enabled' => true,
             'contactus_confirmation_subject' => 'Confirmation contact', // @translate
@@ -251,6 +253,8 @@ return [
                 Subject: {subject}
                 
                 {message}
+                
+                {fields}
                 MAIL, // @translate
             'contactus_confirmation_newsletter_subject' => 'Subscription to newsletter of {main_title}', // @translate
             'contactus_confirmation_newsletter_body' => <<<'MAIL'
@@ -276,6 +280,8 @@ return [
                 Subject: {subject}
                 
                 {message}
+                
+                {fields}
                 MAIL, // @translate
             'contactus_confirmation_message' => 'Thank you for your message. Check your confirmation email sent to {email}. We will answer you soon.', // @translate
             'contactus_confirmation_message_newsletter' => 'Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}.', // @translate
