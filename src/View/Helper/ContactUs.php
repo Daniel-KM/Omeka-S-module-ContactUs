@@ -836,6 +836,7 @@ class ContactUs extends AbstractHelper
         // Any field can be a placeholder, except array (except ids).
         // Flatify array to simplify process.
         $fields = $placeholders['fields'] ?? [];
+        $placeholders['email'] ??= $placeholders['from'];
         $placeholders += $fields;
 
         if (!empty($placeholders['id'])) {
