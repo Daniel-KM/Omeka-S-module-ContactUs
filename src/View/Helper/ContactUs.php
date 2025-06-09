@@ -112,6 +112,8 @@ class ContactUs extends AbstractHelper
             'unsubscribe_label' => null,
             'newsletter_only' => false,
             'newsletter_label' => null,
+            'sender_email' => null,
+            'sender_name' => null,
             'notify_recipients' => [],
             'contact' => 'us',
             'author_email' => null,
@@ -145,6 +147,8 @@ class ContactUs extends AbstractHelper
      * - unsubscribe_label (string)
      * - newsletter_only (bool)
      * - newsletter_label (string)
+     * - sender_email (string)
+     * - sender_name (string)
      * - notify_recipients (array)
      * - contact (string): "us" or "author".
      * - author_email (string)
@@ -208,11 +212,13 @@ class ContactUs extends AbstractHelper
         $this->currentOptions = $options;
 
         $user = $view->identity();
+        $setting = $view->plugin('setting');
+        $siteSetting = $view->plugin('siteSetting');
         $translate = $view->plugin('translate');
 
         $site = $this->currentSite();
 
-        $sendWithUserEmail = (bool) $view->setting('contactus_send_with_user_email');
+        $sendWithUserEmail = (bool) $setting('contactus_send_with_user_email');
 
         // Manage list of resource ids automatically, if any.
         // "resource_ids" is used for standard forms and fields for complex
@@ -476,6 +482,19 @@ class ContactUs extends AbstractHelper
                     // To set the name of email as empty string and not null
                     // avoid to parse email for name.
 
+                    $sender = $options['sender_email']
+                        ? [$options['sender_email'] => (string) $options['sender_name']]
+                        : ($siteSetting('contactus_sender_email')
+                            ? [$siteSetting('contactus_sender_email') => (string) $siteSetting('contactus_sender_name')]
+                            : ($setting('contactus_sender_email')
+                                ? [$setting('contactus_sender_email') => (string) $setting('contactus_sender_name')]
+                                : null));
+
+                    $notifyRecipients = $options['notify_recipients']
+                        ?: $siteSetting('contactus_notify_recipients')
+                        ?: $setting('contactus_notify_recipients')
+                        ?: [];
+
                     // Message to author (with copy to administrators if set).
                     if ($isContactAuthor) {
                         $message = new PsrMessage(
@@ -497,17 +516,16 @@ class ContactUs extends AbstractHelper
                         $subject = $this->fillMessage($translate($subject), $submitted);
                         $body = $this->fillMessage($translate($body), $submitted);
 
-                        $notifyRecipients = $this->getNotifyRecipients($options);
                         $from = $sendWithUserEmail
                             ? [$submitted['from'] => (string) $submitted['name']]
-                            : (reset($notifyRecipients) ?: null);
+                            : $sender;
                         $replyTo = $sendWithUserEmail
                             ? null
                             : [$submitted['from'] => (string) $submitted['name']];
                         $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
-                        $bcc = $view->setting('contactus_author_only')
+                        $bcc = $setting('contactus_author_only')
                             ? null
-                            : ($notifyRecipients ?: $view->setting('administrator_email') ?: null);
+                            : ($notifyRecipients ?: ($to ? null : $setting('administrator_email')) ?: null);
 
                         $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, $bcc, $replyTo);
                         if (!$result) {
@@ -522,19 +540,18 @@ class ContactUs extends AbstractHelper
                     else {
                         $subject = $this->getMailSubject($options)
                             ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
-                        $body = $view->siteSetting('contactus_notify_body')
+                        $body = $siteSetting('contactus_notify_body')
                             ?: $translate($this->defaultOptions['notify_body']);
                         $subject= $this->fillMessage($translate($subject), $submitted);
                         $body = $this->fillMessage($translate($body), $submitted);
 
                         // The message to the admin is always from admin to
                         // avoid issue, but with a reply-to.
-                        $notifyRecipients = $this->getNotifyRecipients($options);
-                        $from = reset($notifyRecipients) ?: null;
+                        $from = $sender;
                         $to = $notifyRecipients ?: null;
                         $replyTo = [$submitted['from'] => (string) $submitted['name']];
 
-                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, $replyTo);
+                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, null, $replyTo);
                         // When there is an issue, don't try to send other mail.
                         if (!$result) {
                             $status = 'error';
@@ -545,10 +562,10 @@ class ContactUs extends AbstractHelper
                         // Send the confirmation message to the visitor.
                         elseif ($options['confirmation_enabled']) {
                             if ($newsletterOnly) {
-                                $message = $view->siteSetting('contactus_confirmation_message_newsletter')
+                                $message = $siteSetting('contactus_confirmation_message_newsletter')
                                     ?: $translate($this->defaultOptions['confirmation_message_newsletter']);
                             } else {
-                                $message = $view->siteSetting('contactus_confirmation_message')
+                                $message = $siteSetting('contactus_confirmation_message')
                                     ?: $translate($this->defaultOptions['confirmation_message']);
                             }
                             $placeholders = [];
@@ -573,8 +590,7 @@ class ContactUs extends AbstractHelper
                             $body = $this->fillMessage($translate($body), $submitted);
 
                             // The message to the visitor is always from admin.
-                            $notifyRecipients = $this->getNotifyRecipients($options);
-                            $from = reset($notifyRecipients) ?: null;
+                            $from = $sender;
                             $to = [$submitted['from'] => (string) $submitted['name']];
 
                             $result = $this->sendEmail->__invoke($body, $subject, $to, $from);
@@ -932,43 +948,6 @@ class ContactUs extends AbstractHelper
         }
 
         return strtr($message, $replace);
-    }
-
-    protected function getNotifyRecipients(array $options): array
-    {
-        $view = $this->getView();
-
-        $list = $options['notify_recipients'] ?? [];
-        if (!$list) {
-            $list = $view->siteSetting('contactus_notify_recipients') ?: $view->setting('contactus_notify_recipients');
-        }
-
-        // Check emails.
-        if ($list) {
-            $originalList = array_filter($list);
-            $list = array_filter($originalList, fn ($v) => filter_var($v, FILTER_VALIDATE_EMAIL));
-            if (count($originalList) !== count($list)) {
-                $view->logger()->err('Contact Us: Some notification emails for module are invalid.'); // @translate
-            }
-        }
-
-        if (!count($list)) {
-            $site = $this->currentSite();
-            $owner = $site->owner();
-            $list = $owner ? [$owner->email()] : [$view->setting('administrator_email')];
-        }
-
-        $isContactAuthor = $options['contact'] === 'author';
-        if ($isContactAuthor) {
-            if ($view->setting('contactus_author_only', false)) {
-                // The author email should be checked.
-                $list = [$options['author_email']];
-            } else {
-                array_unshift($list, $options['author_email']);
-            }
-        }
-
-        return $list;
     }
 
     protected function currentSite(): ?\Omeka\Api\Representation\SiteRepresentation

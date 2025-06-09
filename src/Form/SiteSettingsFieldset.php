@@ -12,7 +12,7 @@ class SiteSettingsFieldset extends Fieldset
     protected $label = 'Contact us'; // @translate
 
     protected $elementGroups = [
-        'contact' => 'Contact', // @translate
+        'contact' => 'Contact Us', // @translate
     ];
 
     public function init(): void
@@ -20,6 +20,7 @@ class SiteSettingsFieldset extends Fieldset
         $this
             ->setAttribute('id', 'contact-us')
             ->setOption('element_groups', $this->elementGroups)
+
             ->add([
                 'name' => 'contactus_fields',
                 'type' => OmekaElement\ArrayTextarea::class,
@@ -34,25 +35,53 @@ class SiteSettingsFieldset extends Fieldset
                     'placeholder' => 'phone = Phone', // @translate
                 ],
             ])
+
+            ->add([
+                'name' => 'contactus_sender_email',
+                'type' => CommonElement\OptionalEmail::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Email of the sender (else no-reply user or administrator)', // @translate
+                    'info' => 'The no-reply email can be set via module EasyAdmin. The administrator email can set above.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_sender_email',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_sender_name',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Name of the sender when email above is set', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_sender_name',
+                    'required' => false,
+                ],
+            ])
+
             ->add([
                 'name' => 'contactus_notify_recipients',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Emails to notify', // @translate
-                    'info' => 'The list of recipients to notify, one by row. First email is used for confirmation.', // @translate
+                    'info' => 'The list of recipients to notify, one by row.', // @translate
+                    // TODO Check "The format "name <email>" can be used.", in particular when (string) null is used.
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
                     'placeholder' => <<<'TXT'
-                        Let empty to use main settings. First email is used for confirmation.
                         contact@example.org
                         info@example2.org
                         TXT, // @translate
-                    'rows' => 5,
+                    'rows' => 3,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_notify_subject',
                 'type' => Element\Text::class,
@@ -78,6 +107,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_confirmation_enabled',
                 'type' => Element\Checkbox::class,
@@ -113,6 +143,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_confirmation_newsletter_subject',
                 'type' => Element\Text::class,
@@ -137,6 +168,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_to_author_subject',
                 'type' => Element\Text::class,
@@ -161,6 +193,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_confirmation_message',
                 'type' => Element\Textarea::class,
@@ -187,6 +220,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_consent_label',
                 'type' => Element\Text::class,
@@ -198,6 +232,7 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'contactus_consent_label',
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_antispam',
                 'type' => Element\Checkbox::class,
@@ -238,6 +273,7 @@ class SiteSettingsFieldset extends Fieldset
                     'rows' => 5,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_append_resource_show',
                 'type' => CommonElement\OptionalMultiCheckbox::class,
@@ -277,6 +313,7 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'contactus_append_items_browse_individual',
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_label_selection',
                 'type' => Element\Text::class,
@@ -299,6 +336,7 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'contactus_label_guest_link',
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_selection_max',
                 'type' => CommonElement\OptionalNumber::class,

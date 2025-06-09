@@ -12,7 +12,7 @@ class SettingsFieldset extends Fieldset
     protected $label = 'Contact us'; // @translate
 
     protected $elementGroups = [
-        'contact' => 'Contact', // @translate
+        'contact' => 'Contact Us', // @translate
     ];
 
     public function init(): void
@@ -20,6 +20,7 @@ class SettingsFieldset extends Fieldset
         $this
             ->setAttribute('id', 'contact-us')
             ->setOption('element_groups', $this->elementGroups)
+
             ->add([
                 'name' => 'contactus_fields',
                 'type' => OmekaElement\ArrayTextarea::class,
@@ -34,25 +35,53 @@ class SettingsFieldset extends Fieldset
                     'placeholder' => 'phone = Phone', // @translate
                 ],
             ])
+
+            ->add([
+                'name' => 'contactus_sender_email',
+                'type' => CommonElement\OptionalEmail::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Email of the sender (else no-reply user or administrator)', // @translate
+                    'info' => 'The no-reply email can be set via module EasyAdmin. The administrator email can set above.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_sender_email',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_sender_name',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Name of the sender when email above is set', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_sender_name',
+                    'required' => false,
+                ],
+            ])
+
             ->add([
                 'name' => 'contactus_notify_recipients',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
                     'element_group' => 'contact',
-                    'label' => 'Default emails to notify', // @translate
-                    'info' => 'The default list of recipients to notify, one by row. First email is used for confirmation.', // @translate
+                    'label' => 'Emails to notify', // @translate
+                    'info' => 'The list of recipients to notify, one by row.', // @translate
+                    // TODO Check "The format "name <email>" can be used.", in particular when (string) null is used.
                 ],
                 'attributes' => [
                     'id' => 'contactus_notify_recipients',
                     'required' => false,
                     'placeholder' => <<<'TXT'
-                        First email is used for confirmation.
                         contact@example.org
                         info@example2.org
                         TXT, // @translate
-                    'rows' => 5,
+                    'rows' => 3,
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_author',
                 'type' => OmekaElement\PropertySelect::class,
@@ -98,6 +127,7 @@ class SettingsFieldset extends Fieldset
                     'id' => 'contactus_send_with_user_email',
                 ],
             ])
+
             ->add([
                 'name' => 'contactus_create_zip',
                 'type' => CommonElement\OptionalRadio::class,
