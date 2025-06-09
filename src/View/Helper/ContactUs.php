@@ -1005,6 +1005,6 @@ class ContactUs extends AbstractHelper
      */
     protected function fixEndOfLine($string): string
     {
-        return str_replace(["\r\n", "\n\r", "\r"], "\n", (string) $string);
+        return strtr((string) $string, ["\r\n" => "\n", "\n\r" => "\n", "\r" => "\n"]);
     }
 }
