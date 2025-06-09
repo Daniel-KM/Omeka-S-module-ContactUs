@@ -15,6 +15,7 @@ use Common\Stdlib\PsrMessage;
  * @var \Laminas\Log\Logger $logger
  * @var \Omeka\Settings\Settings $settings
  * @var \Doctrine\DBAL\Connection $connection
+ * @var \Omeka\Settings\SiteSettings $siteSettings
  * @var \Doctrine\ORM\EntityManager $entityManager
  * @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger
  */
@@ -27,6 +28,7 @@ $translate = $plugins->get('translate');
 $translator = $services->get('MvcTranslator');
 $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
+$siteSettings = $services->get('Omeka\Settings\Site');
 $entityManager = $services->get('Omeka\EntityManager');
 
 $localConfig = require dirname(__DIR__, 2) . '/config/module.config.php';
@@ -41,7 +43,6 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
 
 if (version_compare($oldVersion, '3.3.8', '<')) {
     $settings->delete('contactus_html');
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -92,7 +93,6 @@ if (version_compare($oldVersion, '3.3.8.1', '<')) {
 
 if (version_compare($oldVersion, '3.3.8.4', '<')) {
     $settings->delete('contactus_html');
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -117,7 +117,6 @@ if (version_compare($oldVersion, '3.3.8.5', '<')) {
     );
     $messenger->addNotice($message);
 
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -180,8 +179,6 @@ if (version_compare($oldVersion, '3.3.8.8', '<')) {
 
     $settings->set('contactus_author', $localConfig['contactus']['settings']['contactus_author']);
 
-    /** @var \Omeka\Settings\SiteSettings $siteSettings */
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -279,8 +276,6 @@ if (version_compare($oldVersion, '3.4.13', '<')) {
 }
 
 if (version_compare($oldVersion, '3.4.14', '<')) {
-    /** @var \Omeka\Settings\SiteSettings $siteSettings */
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -299,8 +294,6 @@ if (version_compare($oldVersion, '3.4.14', '<')) {
 }
 
 if (version_compare($oldVersion, '3.4.15', '<')) {
-    /** @var \Omeka\Settings\SiteSettings $siteSettings */
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
@@ -447,7 +440,6 @@ if (version_compare($oldVersion, '3.4.16', '<')) {
         $logger->warn($message->getMessage(), $message->getContext());
     }
 
-    $siteSettings = $services->get('Omeka\Settings\Site');
     $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
     foreach ($siteIds as $siteId) {
         $siteSettings->setTargetId($siteId);
@@ -504,6 +496,34 @@ if (version_compare($oldVersion, '3.4.23', '<')) {
 
     $message = new PsrMessage(
         'Existing fields for messages were clarified. You may need to check your config.' // @translate
+    );
+    $messenger->addWarning($message);
+}
+
+if (version_compare($oldVersion, '3.4.24', '<')) {
+    $list = $settings->get('contactus_notify_recipients');
+    $first = $list ? reset($list) : null;
+    if ($first) {
+        $settings->get('contactus_sender_email', $first);
+    }
+
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $list = $siteSettings->get('contactus_notify_recipients');
+        $first = $list ? reset($list) : null;
+        if ($first) {
+            $siteSettings->get('contactus_sender_email', $first);
+        }
+    }
+
+    $message = new PsrMessage(
+        'A new field allows to set the sender email. The first email of the list of emails for notification is no more used as sender. Check it if needed.' // @translate
+    );
+    $messenger->addWarning($message);
+
+    $message = new PsrMessage(
+        'Warning: there might be an issue with the option "Send with user email". So check it and try to send a message. Note that to send with user email is not recommended, unless you have a good smtp server.' // @translate
     );
     $messenger->addWarning($message);
 }
