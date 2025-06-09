@@ -46,6 +46,9 @@
             if (!data.data) {
                 return null;
             }
+            if (data.data.message) {
+                return data.data.message;
+            }
             for (let value of Object.values(data.data)) {
                 if (typeof value === 'string' && value.length) {
                     return value;
