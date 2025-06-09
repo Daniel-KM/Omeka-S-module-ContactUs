@@ -91,7 +91,8 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => 'contact',
-                    'label' => 'Use the user email to send message (warning: many email providers reject them as spam)', // @translate
+                    'label' => 'Use the user email to send message to author (warning: many email providers reject them as spam)', // @translate
+                    'info' => 'This option is not recommended, unless you have a good smtp server. If not set, the user email will be set as reply-to.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_send_with_user_email',

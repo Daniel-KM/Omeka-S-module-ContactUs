@@ -2,6 +2,7 @@
 
 namespace ContactUs\View\Helper;
 
+use Common\Mvc\Controller\Plugin\SendEmail;
 use Common\Stdlib\EasyMeta;
 use Common\Stdlib\PsrMessage;
 use ContactUs\Form\ContactUsForm;
@@ -62,6 +63,11 @@ class ContactUs extends AbstractHelper
     protected $messenger;
 
     /**
+     * @var SendEmail
+     */
+    protected $sendEmail;
+
+    /**
      * @var array
      */
     protected $defaultOptions;
@@ -83,6 +89,7 @@ class ContactUs extends AbstractHelper
         FormElementManager $formElementManager,
         Mailer $mailer,
         Messenger $messenger,
+        SendEmail $sendEmail,
         array $defaultOptions
     ) {
         $this->api = $apiManager;
@@ -91,6 +98,7 @@ class ContactUs extends AbstractHelper
         $this->formElementManager = $formElementManager;
         $this->mailer = $mailer;
         $this->messenger = $messenger;
+        $this->sendEmail = $sendEmail;
         $this->defaultOptions = $defaultOptions + [
             'template' => null,
             'resource' => null,
@@ -443,7 +451,6 @@ class ContactUs extends AbstractHelper
                     /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
                     $contactMessage = $response->getContent();
                     $submitted['from'] = $contactMessage->email();
-                    $submitted['email'] = $contactMessage->email();
                     $submitted['name'] = $contactMessage->name();
                     $submitted['site_title'] = $contactMessage->site()->title();
                     $submitted['site_url'] = $contactMessage->site()->siteUrl();
@@ -464,6 +471,11 @@ class ContactUs extends AbstractHelper
                         $submitted['newsletter'] = '';
                     }
 
+                    /** @see \Common\Mvc\Controller\Plugin\SendEmail */
+
+                    // To set the name of email as empty string and not null
+                    // avoid to parse email for name.
+
                     // Message to author (with copy to administrators if set).
                     if ($isContactAuthor) {
                         $message = new PsrMessage(
@@ -473,15 +485,6 @@ class ContactUs extends AbstractHelper
                                 : ['name' => $submitted['from']]
                         );
 
-                        $notifyRecipients = $this->getNotifyRecipients($options);
-
-                        $mail = [];
-                        if ($sendWithUserEmail) {
-                            $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
-                        }
-                        $mail['to'] = $options['author_email'];
-                        $mail['toName'] = null;
-                        $mail['reply-to'] = $submitted['email'];
                         $subject = $options['to_author_subject'] ?: $this->defaultOptions['to_author_subject'];
                         $body = $options['to_author_body'] ?: $this->defaultOptions['to_author_body'];
                         // Avoid issue with bad config.
@@ -491,14 +494,22 @@ class ContactUs extends AbstractHelper
                         if (strpos($body, '{message}') === false) {
                             $body .= "\n\n{message}";
                         }
-                        $mail['subject'] = $this->fillMessage($translate($subject), $submitted);
-                        $mail['body'] = $this->fillMessage($translate($body), $submitted);
+                        $subject = $this->fillMessage($translate($subject), $submitted);
+                        $body = $this->fillMessage($translate($body), $submitted);
 
-                        if (!$view->setting('contactus_author_only')) {
-                            $mail['bcc'] = $notifyRecipients ?: $view->setting('administrator_email');
-                        }
+                        $notifyRecipients = $this->getNotifyRecipients($options);
+                        $from = $sendWithUserEmail
+                            ? [$submitted['from'] => (string) $submitted['name']]
+                            : (reset($notifyRecipients) ?: null);
+                        $replyTo = $sendWithUserEmail
+                            ? null
+                            : [$submitted['from'] => (string) $submitted['name']];
+                        $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
+                        $bcc = $view->setting('contactus_author_only')
+                            ? null
+                            : ($notifyRecipients ?: $view->setting('administrator_email') ?: null);
 
-                        $result = $this->sendEmail($mail);
+                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, $bcc, $replyTo);
                         if (!$result) {
                             $status = 'error';
                             $message = new PsrMessage(
@@ -507,21 +518,24 @@ class ContactUs extends AbstractHelper
                         }
                     }
 
-                    // Message to administrators.
+                    // Notification message to administrators.
                     else {
-                        // Send the notification message to administrators.
-                        $mail = [];
-                        if ($sendWithUserEmail) {
-                            $mail['from'] = $contactMessage->email();
-                            $mail['fromName'] = $contactMessage->name();
-                        }
-                        $mail['to'] = $this->getNotifyRecipients($options);
-                        $mail['subject'] = $this->getMailSubject($options)
+                        $subject = $this->getMailSubject($options)
                             ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                         $body = $view->siteSetting('contactus_notify_body')
                             ?: $translate($this->defaultOptions['notify_body']);
-                        $mail['body'] = $this->fillMessage($body, $submitted);
-                        $result = $this->sendEmail($mail);
+                        $subject= $this->fillMessage($translate($subject), $submitted);
+                        $body = $this->fillMessage($translate($body), $submitted);
+
+                        // The message to the admin is always from admin to
+                        // avoid issue, but with a reply-to.
+                        $notifyRecipients = $this->getNotifyRecipients($options);
+                        $from = reset($notifyRecipients) ?: null;
+                        $to = $notifyRecipients ?: null;
+                        $replyTo = [$submitted['from'] => (string) $submitted['name']];
+
+                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, $replyTo);
+                        // When there is an issue, don't try to send other mail.
                         if (!$result) {
                             $status = 'error';
                             $message = new PsrMessage(
@@ -548,13 +562,6 @@ class ContactUs extends AbstractHelper
                             }
                             $message = new PsrMessage($message, $placeholders);
 
-                            $mail = [];
-                            if ($sendWithUserEmail) {
-                                $notifyRecipients = $this->getNotifyRecipients($options);
-                                $mail['from'] = reset($notifyRecipients) ?: $view->setting('administrator_email');
-                            }
-                            $mail['to'] = $submitted['from'];
-                            $mail['toName'] = $submitted['name'] ?: null;
                             if ($newsletterOnly) {
                                 $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_newsletter_subject'];
                                 $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_newsletter_body'];
@@ -562,10 +569,15 @@ class ContactUs extends AbstractHelper
                                 $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
                                 $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
                             }
-                            $mail['subject'] = $this->fillMessage($translate($subject), $submitted);
-                            $mail['body'] = $this->fillMessage($translate($body), $submitted);
+                            $subject = $this->fillMessage($translate($subject), $submitted);
+                            $body = $this->fillMessage($translate($body), $submitted);
 
-                            $result = $this->sendEmail($mail);
+                            // The message to the visitor is always from admin.
+                            $notifyRecipients = $this->getNotifyRecipients($options);
+                            $from = reset($notifyRecipients) ?: null;
+                            $to = [$submitted['from'] => (string) $submitted['name']];
+
+                            $result = $this->sendEmail->__invoke($body, $subject, $to, $from);
                             if (!$result) {
                                 $status = 'error';
                                 $message = new PsrMessage(
@@ -957,69 +969,6 @@ class ContactUs extends AbstractHelper
         }
 
         return $list;
-    }
-
-    /**
-     * Send an email.
-     *
-     * @param array $params The params are already checked (from, to, subject,
-     * body).
-     */
-    protected function sendEmail(array $params): bool
-    {
-        $view = $this->getView();
-        $defaultParams = [
-            'fromName' => null,
-            'toName' => null,
-            'subject' => sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle()),
-            'body' => null,
-            'to' => [],
-            'cc' => [],
-            'bcc' => [],
-            'reply-to' => [],
-        ];
-        $params += $defaultParams;
-        if (empty($params['body'])) {
-            $view->logger()->err(
-                'The message has no content to send.' // @translate
-            );
-            return false;
-        }
-
-        $message = $this->mailer->createMessage();
-        $message
-            ->setSubject($params['subject'])
-            ->setBody($params['body']);
-        $to = is_array($params['to']) ? $params['to'] : [$params['to']];
-        foreach ($to as $t) {
-            $message->addTo($t);
-        }
-        $cc = is_array($params['cc']) ? $params['cc'] : [$params['cc']];
-        foreach ($cc as $c) {
-            $message->addCc($c);
-        }
-        $bcc = is_array($params['bcc']) ? $params['bcc'] : [$params['bcc']];
-        foreach ($bcc as $b) {
-            $message->addBcc($b);
-        }
-        $replyTo = is_array($params['reply-to']) ? $params['reply-to'] : [$params['reply-to']];
-        foreach ($replyTo as $r) {
-            $message->addReplyTo($r);
-        }
-        if (!empty($params['from'])) {
-            $message
-                ->setFrom($params['from'], $params['fromName']);
-        }
-        try {
-            $this->mailer->send($message);
-            return true;
-        } catch (\Exception $e) {
-            $view->logger()->err(
-                "Error when sending email ({msg}). Arguments:\n{json}", // @translate
-                ['msg' => $e->getMessage(), 'json' => $params]
-            );
-            return false;
-        }
     }
 
     protected function currentSite(): ?\Omeka\Api\Representation\SiteRepresentation
