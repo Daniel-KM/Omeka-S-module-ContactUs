@@ -4,7 +4,7 @@
     $(document).ready(function() {
 
         /**
-         * @see ContactUs, Guest, SearchHistory, Selection, TwoFactorAuth.
+         * @see ContactUs, Contribute, Guest, SearchHistory, Selection, TwoFactorAuth.
          */
 
         const beforeSpin = function (element) {
@@ -85,6 +85,25 @@
             dialog.innerHTML = dialog.innerHTML.replace('{{ message }}', message);
             dialog.showModal();
             $(dialog).trigger('o:dialog-opened');
+        };
+
+        /**
+         * Manage ajax fail.
+         *
+         * @param {Object} xhr
+         * @param {string} textStatus
+         * @param {string} errorThrown
+         */
+        const handleAjaxFail = function(xhr, textStatus, errorThrown) {
+            const data = xhr.responseJSON;
+            if (data && data.status === 'fail') {
+                let msg = jSendMessage(data);
+                dialogMessage(msg ? msg : 'Check input', true);
+            } else {
+                // Error is a server error (in particular cannot send mail).
+                let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
+                dialogMessage(msg, true);
+            }
         };
 
         /**
@@ -360,9 +379,7 @@
                     dialogMessage(msg ? msg : 'Check input', true);
                     form[0].reset();
                 } else {
-                    // Error is a server error (in particular cannot send mail).
-                    let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
-                    dialogMessage(msg, true);
+                    handleAjaxFail(xhr, textStatus, errorThrown);
                 }
             })
             .always(function () {
@@ -394,18 +411,7 @@
                     dialogMessage(msg ? msg : 'Email successfully sent.', true);
                     $(document).trigger('o:contact-us-email-sent', data);
                 })
-                .fail(function (xhr, textStatus, errorThrown) {
-                    const data = xhr.responseJSON;
-                    if (data && data.status === 'fail') {
-                        let msg = jSendMessage(data);
-                        dialogMessage(msg ? msg : 'Check input', true);
-                    } else {
-                        $(form).closest('dialog')[0].close();
-                        // Error is a server error (in particular cannot send mail).
-                        let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
-                        dialogMessage(msg, true);
-                    }
-                })
+                .fail(handleAjaxFail)
                 .always(function () {
                     afterSpin(submitButton)
                 });
