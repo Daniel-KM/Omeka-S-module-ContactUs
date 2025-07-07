@@ -940,10 +940,19 @@ class ContactUs extends AbstractHelper
         if ($fields && strpos($message, '{fields}') !== false) {
             $fieldsArray = [];
             foreach ($fields as $field => $value) {
-                if ($value === '' || $field === 'id') {
+                if ($value === '' || $value === null || $value === [] || $field === 'id') {
                     continue;
                 }
-                $fieldsArray[] = "* $field :\n$value";
+                if (is_array($value)) {
+                    // TODO Recursive multiple value for sub-fieldset with multiple values? The use case will be very rare.
+                    if (is_array(reset($value))) {
+                        $fieldsArray[] = "* $field :\n" . json_encode($value, 2496);
+                    } else {
+                        $fieldsArray[] = "* $field :\n    *" . implode("\n    *", $value);
+                    }
+                } else {
+                    $fieldsArray[] = "* $field :\n$value";
+                }
             }
             $replace['{fields}'] = implode("\n\n", $fieldsArray);
         }
