@@ -925,6 +925,7 @@ class ContactUs extends AbstractHelper
             $replace['{resource_url}'] = $replace['{resource}'];
             $replace['{resource_url_admin}'] = $this->currentOptions['resource']->adminUrl(null, true);
             $replace['{resource_link}'] = sprintf('<a href="%1$s">%2$s</a>', $replace['{resource_url}'], $replace['{resource_title}']);
+            // TODO Don't use json_decode(json_encode()).
             $resourceJson = json_decode(json_encode($this->currentOptions['resource']), true);
             foreach ($resourceJson as $term => $value) {
                 if (!is_array($value) || empty($value) || !isset(reset($value)['type'])) {

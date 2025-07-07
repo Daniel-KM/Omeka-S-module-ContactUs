@@ -95,6 +95,7 @@ class MessageAdapter extends AbstractEntityAdapter
             $qb->andWhere('1 = 0');
             return;
         }
+
         $acl = $services->get('Omeka\Acl');
         if (!$acl->isAdminRole($user->getRole())) {
             $query['owner_id'] = [$user->getId()];
