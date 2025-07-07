@@ -22,10 +22,16 @@ class MessageRepresentation extends AbstractEntityRepresentation
 
     public function getJsonLd()
     {
+        $getDateTimeJsonLd = function (?\DateTime $dateTime): ?array {
+            return $dateTime
+                ? [
+                    '@value' => $dateTime->format('c'),
+                    '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
+                ]
+                : null;
+        };
+
         $owner = $this->owner();
-        if ($owner) {
-            $owner = $owner->getReference();
-        }
 
         $file = $this->filename();
         if ($file) {
@@ -41,34 +47,21 @@ class MessageRepresentation extends AbstractEntityRepresentation
         $linked = [];
         $resource = $this->resource();
         if ($resource) {
-            $linked['o:resource'] = $resource->getReference();
+            $linked['o:resource'] = $resource->getReference()->jsonSerialize();
         }
         $site = $this->site();
         if ($site) {
-            $linked['o:site'] = $site->getReference();
+            $linked['o:site'] = $site->getReference()->jsonSerialize();
         }
 
         $newsletter = $this->newsletter();
-        $newsletter = is_null($newsletter)
+        $newsletter = $newsletter === null
             ? []
             : ['o-module-contact:newsletter' => (bool) $newsletter];
 
-        $created = [
-            '@value' => $this->getDateTime($this->created()),
-            '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
-        ];
-
-        $modified = $this->modified();
-        if ($modified) {
-            $modified = [
-                '@value' => $this->getDateTime($modified),
-                '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime',
-            ];
-        }
-
         return [
             'o:id' => $this->id(),
-            'o:owner' => $owner,
+            'o:owner' => $owner ? $owner->getReference()->jsonSerialize() : null,
             'o:email' => $this->email(),
             'o:name' => $this->name(),
             'o-module-contact:subject' => $this->subject(),
@@ -87,8 +80,8 @@ class MessageRepresentation extends AbstractEntityRepresentation
             'o-module-contact:is_read' => $this->isRead(),
             'o-module-contact:is_spam' => $this->isSpam(),
             'o-module-contact:to_author' => $this->isToAuthor(),
-            'o:created' => $created,
-            'o:modified' => $modified,
+            'o:created' => $getDateTimeJsonLd($this->resource->getCreated()),
+            'o:modified' => $getDateTimeJsonLd($this->resource->getModified()),
         ];
     }
 
