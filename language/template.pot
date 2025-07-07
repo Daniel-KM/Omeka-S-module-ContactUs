@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 00:00+0000\n"
+"POT-Creation-Date: 2025-07-07 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -516,7 +516,7 @@ msgstr ""
 msgid "Contact administor for more information."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:930
+#: src/View/Helper/ContactUs.php:932
 msgid "[Unknown resource]"
 msgstr ""
 
@@ -882,15 +882,15 @@ msgid ""
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:419
+#: src/Api/Adapter/MessageAdapter.php:420
 msgid "Error loading or saving base64 file."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:448
+#: src/Api/Adapter/MessageAdapter.php:449
 msgid "The body cannot be empty."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:458
+#: src/Api/Adapter/MessageAdapter.php:459
 msgid "The ip cannot be empty."
 msgstr ""
 
@@ -967,12 +967,7 @@ msgstr ""
 msgid "Contact Us: Basket"
 msgstr ""
 
-#: src/Site/Navigation/Link/Basket.php:24
-#, php-format
-msgid "Invalid navigation: link without label (%s)"
-msgstr ""
-
-#: src/Site/Navigation/Link/Basket.php:34
+#: src/Site/Navigation/Link/Basket.php:30
 msgid "Basket"
 msgstr ""
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 00:00+0000\n"
+"POT-Creation-Date: 2025-07-07 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -584,7 +584,7 @@ msgstr ""
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/View/Helper/ContactUs.php:930
+#: src/View/Helper/ContactUs.php:932
 msgid "[Unknown resource]"
 msgstr "[Ressource inconnue]"
 
@@ -687,7 +687,7 @@ msgstr "Nom de l’expéditeur quand le mail est défini ci-dessus"
 
 #: src/Form/SiteSettingsFieldset.php:70 src/Form/SettingsFieldset.php:70
 msgid "Emails to notify"
-msgstr "Emails à informer"
+msgstr "Emails à notifier"
 
 #: src/Form/SiteSettingsFieldset.php:71 src/Form/SettingsFieldset.php:71
 msgid "The list of recipients to notify, one by row."
@@ -995,15 +995,15 @@ msgstr ""
 "Voir le bloc « Contactez-nous » pour une simple liste. Séparer les questions "
 "et les réponses avec un signe « = ». Les questions peuvent être traduites."
 
-#: src/Api/Adapter/MessageAdapter.php:419
+#: src/Api/Adapter/MessageAdapter.php:420
 msgid "Error loading or saving base64 file."
 msgstr "Erreur lors du chargement ou de la sauvegarde d’un fichier en base64."
 
-#: src/Api/Adapter/MessageAdapter.php:448
+#: src/Api/Adapter/MessageAdapter.php:449
 msgid "The body cannot be empty."
 msgstr "Le corps ne peut pas être vide."
 
-#: src/Api/Adapter/MessageAdapter.php:458
+#: src/Api/Adapter/MessageAdapter.php:459
 msgid "The ip cannot be empty."
 msgstr "L’ip ne peut pas être vide."
 
@@ -1082,12 +1082,7 @@ msgstr "Aucun zip trouvé."
 msgid "Contact Us: Basket"
 msgstr "Contactez-nous : Panier"
 
-#: src/Site/Navigation/Link/Basket.php:24
-#, php-format
-msgid "Invalid navigation: link without label (%s)"
-msgstr "Navigation invalide : lien sans libellé (%s)"
-
-#: src/Site/Navigation/Link/Basket.php:34
+#: src/Site/Navigation/Link/Basket.php:30
 msgid "Basket"
 msgstr "Panier"
 
@@ -1334,6 +1329,10 @@ msgstr "S’abonner à l’infolettre"
 #: config/module.config.php:347
 msgid "Unsubscribe"
 msgstr "Se désabonner"
+
+#, php-format
+#~ msgid "Invalid navigation: link without label (%s)"
+#~ msgstr "Navigation invalide : lien sans libellé (%s)"
 
 #~ msgid ""
 #~ "The list of recipients to notify, one by row. The format \"name <email>\" "
