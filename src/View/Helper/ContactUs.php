@@ -339,9 +339,17 @@ class ContactUs extends AbstractHelper
                 }
             }
 
+            /**
+             * @fixme There is a warning on php 8 on date and time validator that is not fixed in version 2.25, the last version supporting 7.4.
+             * @see \Laminas\Validator\DateStep::convertString() ligne 207: output may be false.
+             */
+            $errorReporting = error_reporting();
+            error_reporting($errorReporting & ~E_WARNING);
+
             $form->setData($params);
             if ($hasEmail && $form->isValid()) {
                 $submitted = $form->getData();
+                error_reporting($errorReporting);
                 if ($user) {
                     $submitted['from'] = $user->getEmail();
                     // TODO What is the purpose of removing user name only for contact, not newsletter?
@@ -604,6 +612,7 @@ class ContactUs extends AbstractHelper
                     }
                 }
             } else {
+                error_reporting($errorReporting);
                 $formMessages = $form->getMessages();
                 $errorMessages = [];
                 foreach ($formMessages as $formKeyMessages) {
