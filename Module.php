@@ -34,13 +34,22 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
 
-        // Since Omeka 1.4, modules are ordered, so Guest come after Selection.
-        if (!$acl->hasRole('guest')) {
-            $acl->addRole('guest');
+        // Since Omeka 1.4, modules are ordered, so Guest comes after Access.
+        // See \Guest\Module::onBootstrap(). Manage other roles too: contributor, etc.
+        if (class_exists('Guest\Module', false)) {
+            if (!$acl->hasRole('guest')) {
+                $acl->addRole('guest');
+            }
         }
-        if (!$acl->hasRole('guest_private')) {
-            $acl->addRole('guest_private');
+        if (class_exists('GuestPrivate\Module', false)) {
+            if (!$acl->hasRole('guest_private')) {
+                $acl->addRole('guest_private');
+            }
+            if (!$acl->hasRole('guest_private_site')) {
+                $acl->addRole('guest_private_site');
+            }
         }
+
         $roles = $acl->getRoles();
         $adminRoles = [
             \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
