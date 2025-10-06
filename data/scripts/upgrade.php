@@ -527,3 +527,25 @@ if (version_compare($oldVersion, '3.4.24', '<')) {
     );
     $messenger->addWarning($message);
 }
+
+if (version_compare($oldVersion, '3.4.26', '<')) {
+    $sql = <<<'SQL'
+        ALTER TABLE `contact_message`
+            CHANGE `ip` `ip` VARCHAR(45) NOT NULL COLLATE `latin1_bin` AFTER `request_url`;
+        SQL;
+    $connection->executeStatement($sql);
+
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $value = $siteSettings->get('contactus_label_selection');
+        $siteSettings->get('contactus_selection_label', $value);
+        $value = $siteSettings->get('contactus_label_guest_link');
+        $siteSettings->get('contactus_selection_label_guest_link', $value);
+    }
+
+    $message = new PsrMessage(
+        'A new site option allows to hide the guest page for selection.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
