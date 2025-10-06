@@ -244,7 +244,7 @@ class MessageAdapter extends AbstractEntityAdapter
                         break;
                     }
                 }
-                $qb->andWhere($expr->{$dateSearch[0]}(
+                $qb->andWhere($expr->{$dateSearch[0]} (
                     sprintf('omeka_root.%s', $dateSearch[1]),
                     // If the date is invalid, pass null to ensure no results.
                     $this->createNamedParameter($qb, $date ?: null)
@@ -259,6 +259,7 @@ class MessageAdapter extends AbstractEntityAdapter
         ErrorStore $errorStore
     ): void {
         /** @var \ContactUs\Entity\Message $entity */
+
         $data = $request->getContent();
 
         // Nothing can be updated, except flags.
