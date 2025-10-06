@@ -182,7 +182,10 @@ class Message extends AbstractEntity
      *
      * @Column(
      *     type="string",
-     *     length=45
+     *     length=45,
+     *     options={
+     *        "collation": "latin1_bin"
+     *     }
      * )
      */
     protected $ip;
