@@ -21,8 +21,10 @@ $headLink = $plugins->get('headLink');
 $headScript = $plugins->get('headScript');
 
 $headLink
+    ->appendStylesheet($assetUrl('css/common-dialog.css', 'Common'))
     ->appendStylesheet($assetUrl('css/contact-us.css', 'ContactUs'));
 $headScript
+    ->appendFile($assetUrl('js/common-dialog.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
     ->appendFile($assetUrl('js/contact-us.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 
 // Prepare hierarchical names for "fields" when plugin form() is not used.
