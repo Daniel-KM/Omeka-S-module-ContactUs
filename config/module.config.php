@@ -315,8 +315,8 @@ return [
             'contactus_append_items_browse_individual' => false,
             'contactus_selection_guest_disable' => false,
             'contactus_selection_max' => 25,
-            'contactus_label_selection' => 'Selection for contact', // @translate
-            'contactus_label_guest_link' => 'My selection for contact', // @translate
+            'contactus_selection_label' => 'Selection for contact', // @translate
+            'contactus_selection_label_guest_link' => 'My selection for contact', // @translate
             'contactus_selection_include_resources' => false,
             'contactus_selections_include_ids' => false,
         ],

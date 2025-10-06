@@ -136,8 +136,8 @@ class Module extends AbstractModule
                 'contactus_confirmation_message',
                 'contactus_confirmation_message_newsletter',
                 'contactus_consent_label',
-                'contactus_label_selection',
-                'contactus_label_guest_link',
+                'contactus_selection_label',
+                'contactus_selection_label_guest_link',
                 // 'contactus_questions',
             ],
             'block_settings' => [
@@ -291,7 +291,7 @@ class Module extends AbstractModule
         $translate = $plugins->get('translate');
 
         $widget = [];
-        $widget['label'] = $siteSettings->get('contactus_label', $translate('Contact us')); // @translate
+        $widget['label'] = $siteSettings->get('contactus_selection_label_guest_link', $translate('Contact us')); // @translate
         $widget['content'] = $partial('guest/site/guest/widget/contact-us');
         $widgets['contact-us'] = $widget;
 

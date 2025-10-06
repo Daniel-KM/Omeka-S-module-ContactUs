@@ -338,25 +338,25 @@ class SiteSettingsFieldset extends Fieldset
             ])
 
             ->add([
-                'name' => 'contactus_label_selection',
+                'name' => 'contactus_selection_label',
                 'type' => Element\Text::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Label for the page Selection for contact', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'contactus_label_selection',
+                    'id' => 'contactus_selection_label',
                 ],
             ])
             ->add([
-                'name' => 'contactus_label_guest_link',
+                'name' => 'contactus_selection_label_guest_link',
                 'type' => Element\Text::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Label for the link in guest account', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'contactus_label_guest_link',
+                    'id' => 'contactus_selection_label_guest_link',
                 ],
             ])
 

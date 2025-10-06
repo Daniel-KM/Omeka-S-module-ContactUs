@@ -13,7 +13,7 @@ $siteSetting = $plugins->get('siteSetting');
 <ul>
     <li>
         <?= $hyperlink(
-            $siteSetting('contactus_label_guest_link') ?: $translate('My selection for contact'), // @translate
+            $siteSetting('contactus_selection_label_guest_link') ?: $translate('My selection for contact'), // @translate
             $url('site/guest/contact-us', [], true)
         ) ?>
     </li>
