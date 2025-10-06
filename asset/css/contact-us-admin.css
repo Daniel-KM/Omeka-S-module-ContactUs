@@ -1,8 +1,7 @@
 @media all {
-    header nav .contact-message:before {
-        content:""; /* far fa-envelope */
-    }
-    .contact-message .no-resources:before {
+    header nav .contact-message::before,
+    .contact-message .subhead::before,
+    .contact-message .no-resources::before {
         content:""; /* far fa-envelope */
     }
     #contact-messages .property {
@@ -19,7 +18,7 @@
         display:block;
         padding:0 24px;
     }
-    #resource-contact-messages.empty+.no-resources:before {
+    #resource-contact-messages.empty+.no-resources::before {
         content:""; /* far fa-envelope */
     }
     #resource-contact-messages tr.delete {
