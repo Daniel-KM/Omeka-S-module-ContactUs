@@ -270,12 +270,16 @@ class Module extends AbstractModule
 
     public function handleGuestWidgets(Event $event): void
     {
-        $widgets = $event->getParam('widgets');
         $services = $this->getServiceLocator();
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        if ($siteSettings->get('contactus_selection_guest_disable')) {
+            return;
+        }
+
+        $widgets = $event->getParam('widgets');
         $plugins = $services->get('ViewHelperManager');
         $partial = $plugins->get('partial');
         $translate = $plugins->get('translate');
-        $siteSettings = $services->get('Omeka\Settings\Site');
 
         $widget = [];
         $widget['label'] = $siteSettings->get('contactus_label', $translate('Contact us')); // @translate

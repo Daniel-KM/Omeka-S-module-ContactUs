@@ -315,6 +315,29 @@ class SiteSettingsFieldset extends Fieldset
             ])
 
             ->add([
+                'name' => 'contactus_selection_guest_disable',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Disable the selection in guest view', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_selection_guest_disable',
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_selection_max',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Maximum number of items to store in selection', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_selection_max',
+                ],
+            ])
+
+            ->add([
                 'name' => 'contactus_label_selection',
                 'type' => Element\Text::class,
                 'options' => [
@@ -334,18 +357,6 @@ class SiteSettingsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'contactus_label_guest_link',
-                ],
-            ])
-
-            ->add([
-                'name' => 'contactus_selection_max',
-                'type' => CommonElement\OptionalNumber::class,
-                'options' => [
-                    'element_group' => 'contact',
-                    'label' => 'Maximum number of items to store in selection', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_selection_max',
                 ],
             ])
 
