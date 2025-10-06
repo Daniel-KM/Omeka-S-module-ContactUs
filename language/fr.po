@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-07 00:00+0000\n"
+"POT-Creation-Date: 2025-10-06 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -15,22 +15,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.6\n"
 
-#: data/scripts/upgrade.php:38 Module.php:97
+#: data/scripts/upgrade.php:38 Module.php:106
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:171
+#: Module.php:180
 msgid "WARNING:"
 msgstr "ATTENTION :"
 
-#: Module.php:183
+#: Module.php:192
 msgid "Remove Contact Us files"
 msgstr "Supprimer les fichiers du module"
 
-#: Module.php:281
+#: Module.php:294
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
@@ -74,25 +74,34 @@ msgstr ""
 "Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une "
 "infolettre."
 
-#: src/View/Helper/ContactUs.php:409 src/View/Helper/ContactUs.php:413
+#: src/View/Helper/ContactUs.php:417 src/View/Helper/ContactUs.php:421
 msgid "Unsubscribe newsletter"
 msgstr "Se désabonner de l’infolettre"
 
-#: src/View/Helper/ContactUs.php:464 src/View/Helper/ContactUs.php:542
+#: src/View/Helper/ContactUs.php:472 src/View/Helper/ContactUs.php:550
+#: src/View/Helper/ContactUs.php:993
 #, php-format
 msgid "[Contact] %s"
 msgstr "[Contact] %s"
 
-#: src/View/Helper/ContactUs.php:471
+#: src/View/Helper/ContactUs.php:479
 #, php-format
 msgid "newsletter: %s"
 msgstr "infolettre : %s"
+
+#: src/View/Helper/ContactUs.php:890
+msgid "[No title]"
+msgstr "[Sans titre]"
+
+#: src/View/Helper/ContactUs.php:945
+msgid "[Unknown resource]"
+msgstr "[Ressource inconnue]"
 
 #: src/View/Helper/ContactUsSelector.php:46
 msgid "Add to the selection for contact"
 msgstr "Ajouter à la sélection pour le contact"
 
-#: view/common/contact-us-button.phtml:31
+#: view/common/contact-us-button.phtml:33
 msgid "Send a message"
 msgstr "Envoyer le message"
 
@@ -101,25 +110,25 @@ msgstr "Envoyer le message"
 msgid "No media"
 msgstr "Pas de média"
 
-#: view/common/contact-us-selection-list.phtml:74
-#: view/contact-us/site/index/browse.phtml:109
+#: view/common/contact-us-selection-list.phtml:76
+#: view/contact-us/site/index/browse.phtml:111
 #, php-format
 msgid "%d resource"
 msgstr "%d ressource"
 
-#: view/common/contact-us-selection-list.phtml:74
-#: view/contact-us/site/index/browse.phtml:109
+#: view/common/contact-us-selection-list.phtml:76
+#: view/contact-us/site/index/browse.phtml:111
 #, php-format
 msgid "%d resources"
 msgstr "%d ressources"
 
-#: view/common/contact-us-selection-list.phtml:89
-#: view/contact-us/site/index/browse.phtml:125
+#: view/common/contact-us-selection-list.phtml:91
+#: view/contact-us/site/index/browse.phtml:127
 msgid "No resource is selected."
 msgstr "Pas de ressource sélectionnée."
 
-#: view/common/contact-us-selection-list.phtml:95
-#: view/contact-us/site/index/browse.phtml:131
+#: view/common/contact-us-selection-list.phtml:97
+#: view/contact-us/site/index/browse.phtml:133
 msgid "No resource selected."
 msgstr "Aucune ressource sélectionnée."
 
@@ -131,81 +140,81 @@ msgstr "Supprimer les messages de contact"
 msgid "Are you sure you would like to delete the selected messages?"
 msgstr "Êtes-vous sûr de vouloir supprimer les messages sélectionnés ?"
 
-#: view/contact-us/admin/contact-message/browse.phtml:29
+#: view/contact-us/admin/contact-message/browse.phtml:31
 msgid "Sender name"
 msgstr "Nom de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:33
+#: view/contact-us/admin/contact-message/browse.phtml:35
 msgid "Sender email"
 msgstr "Mail de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:37
-#: view/contact-us/admin/contact-message/browse.phtml:120
+#: view/contact-us/admin/contact-message/browse.phtml:39
+#: view/contact-us/admin/contact-message/browse.phtml:122
 msgid "Date sent"
 msgstr "Date d’envoi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:48
+#: view/contact-us/admin/contact-message/browse.phtml:50
 msgid "Contact messages"
 msgstr "Messages de contact"
 
-#: view/contact-us/admin/contact-message/browse.phtml:66
-#: view/contact-us/admin/contact-message/browse.phtml:69
+#: view/contact-us/admin/contact-message/browse.phtml:68
+#: view/contact-us/admin/contact-message/browse.phtml:71
 msgid "Read"
 msgstr "Lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:69
+#: view/contact-us/admin/contact-message/browse.phtml:71
 msgid "Set read"
 msgstr "Marquer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:73
-#: view/contact-us/admin/contact-message/browse.phtml:76
+#: view/contact-us/admin/contact-message/browse.phtml:75
+#: view/contact-us/admin/contact-message/browse.phtml:78
 msgid "not-read"
 msgstr "non lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:76
+#: view/contact-us/admin/contact-message/browse.phtml:78
 msgid "Set not read"
 msgstr "Marquer non lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:80
-#: view/contact-us/admin/contact-message/browse.phtml:83
+#: view/contact-us/admin/contact-message/browse.phtml:82
+#: view/contact-us/admin/contact-message/browse.phtml:85
 msgid "Set spam"
 msgstr "Marquer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:87
-#: view/contact-us/admin/contact-message/browse.phtml:90
+#: view/contact-us/admin/contact-message/browse.phtml:89
+#: view/contact-us/admin/contact-message/browse.phtml:92
 msgid "Set not spam"
 msgstr "Marquer non-spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:105
+#: view/contact-us/admin/contact-message/browse.phtml:107
 msgid "There are no messages."
 msgstr "Il n’y a pas de message."
 
-#: view/contact-us/admin/contact-message/browse.phtml:117
+#: view/contact-us/admin/contact-message/browse.phtml:119
 msgid "Message"
 msgstr "Message"
 
-#: view/contact-us/admin/contact-message/browse.phtml:119
+#: view/contact-us/admin/contact-message/browse.phtml:121
 #: view/contact-us/admin/contact-message/show-details.phtml:24
 msgid "Sender"
 msgstr "Expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:136
+#: view/contact-us/admin/contact-message/browse.phtml:138
 #: view/contact-us/admin/contact-message/show-details.phtml:91
 msgid "Message to author"
 msgstr "Message à l’auteur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:146
-#: view/contact-us/admin/contact-message/browse.phtml:147
+#: view/contact-us/admin/contact-message/browse.phtml:148
+#: view/contact-us/admin/contact-message/browse.phtml:149
 msgid "Toggle read"
 msgstr "Basculer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:153
-#: view/contact-us/admin/contact-message/browse.phtml:154
+#: view/contact-us/admin/contact-message/browse.phtml:155
+#: view/contact-us/admin/contact-message/browse.phtml:156
 msgid "Toggle spam"
 msgstr "Basculer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:162
-#: view/contact-us/admin/contact-message/browse.phtml:163
+#: view/contact-us/admin/contact-message/browse.phtml:164
+#: view/contact-us/admin/contact-message/browse.phtml:165
 msgid "Toggle zip"
 msgstr "Basculer zip"
 
@@ -296,20 +305,20 @@ msgstr "Attention : contenu de l’utilisateur invité"
 msgid "Newsletter"
 msgstr "Infolettre"
 
-#: view/contact-us/site/index/browse.phtml:69
+#: view/contact-us/site/index/browse.phtml:71
 msgid "Selection for contact"
 msgstr "Sélection pour contact"
 
-#: view/contact-us/site/index/browse.phtml:73
+#: view/contact-us/site/index/browse.phtml:75
 #, php-format
 msgid "There is a limit of %d resources by request"
 msgstr "Il y a une limite de %d ressources par demande."
 
-#: view/contact-us/site/index/browse.phtml:142
+#: view/contact-us/site/index/browse.phtml:144
 msgid "Fill the form"
 msgstr "Remplir le formulaire"
 
-#: view/contact-us/site/index/browse.phtml:148
+#: view/contact-us/site/index/browse.phtml:150
 msgid "Complete the request"
 msgstr "Compléter la demande"
 
@@ -494,46 +503,50 @@ msgstr ""
 "Notez qu’envoyer un message avec le mail de l’utilisateur n’est pas "
 "recommandé, sauf si vous avez un serveur de mail bien configuré."
 
-#: Module.php:108
+#: data/scripts/upgrade.php:548
+msgid "A new site option allows to hide the guest page for selection."
+msgstr "Un nouveau bouton permet de cacher la page invité pour la sélection."
+
+#: Module.php:117
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
 
-#: Module.php:177
+#: Module.php:186
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 "Tous les messages de contact et tous les fichiers seront supprimés (dossier "
 "\"{folder}\")."
 
-#: src/View/Helper/ContactUs.php:361
+#: src/View/Helper/ContactUs.php:369
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Le désabonnement pour le mail {email} a été confirmé."
 
-#: src/View/Helper/ContactUs.php:366
+#: src/View/Helper/ContactUs.php:374
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Merci pour votre abonnement à l’infolettre, {name}."
 
-#: src/View/Helper/ContactUs.php:373
+#: src/View/Helper/ContactUs.php:381
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
 "Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
 
-#: src/View/Helper/ContactUs.php:378
+#: src/View/Helper/ContactUs.php:386
 msgid ""
 "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 "Merci pour votre message, {name}. Nous vous répondrons dès que possible."
 
-#: src/View/Helper/ContactUs.php:410
+#: src/View/Helper/ContactUs.php:418
 msgid "Subscribe newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: src/View/Helper/ContactUs.php:447 src/View/Helper/ContactUs.php:619
+#: src/View/Helper/ContactUs.php:455 src/View/Helper/ContactUs.php:629
 msgid "There is an error: {errors}"
 msgstr "Il y a une erreur : {errors}"
 
-#: src/View/Helper/ContactUs.php:501
+#: src/View/Helper/ContactUs.php:509
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
@@ -541,11 +554,11 @@ msgstr ""
 "Merci pour votre message {name}. Vérifiez le message de confirmation. "
 "L’auteur le recevra bientôt."
 
-#: src/View/Helper/ContactUs.php:534
+#: src/View/Helper/ContactUs.php:542
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
 
-#: src/View/Helper/ContactUs.php:559
+#: src/View/Helper/ContactUs.php:567
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
@@ -554,25 +567,25 @@ msgstr ""
 "le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
 "recevez pas de réponse."
 
-#: src/View/Helper/ContactUs.php:600
+#: src/View/Helper/ContactUs.php:609
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/View/Helper/ContactUs.php:623
+#: src/View/Helper/ContactUs.php:633
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
-#: src/View/Helper/ContactUs.php:673
+#: src/View/Helper/ContactUs.php:683
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/View/Helper/ContactUs.php:754
+#: src/View/Helper/ContactUs.php:764
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/View/Helper/ContactUs.php:769 src/View/Helper/ContactUs.php:795
+#: src/View/Helper/ContactUs.php:779 src/View/Helper/ContactUs.php:805
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -580,13 +593,9 @@ msgstr ""
 "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
 "d’informations."
 
-#: src/View/Helper/ContactUs.php:790
+#: src/View/Helper/ContactUs.php:800
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
-
-#: src/View/Helper/ContactUs.php:932
-msgid "[Unknown resource]"
-msgstr "[Ressource inconnue]"
 
 #: src/Job/ZipResources.php:44
 msgid "No resource id set."
@@ -846,22 +855,26 @@ msgstr ""
 "actuellement."
 
 #: src/Form/SiteSettingsFieldset.php:322
-msgid "Label for the page Selection for contact"
-msgstr "Libellé pour la page Sélection pour le contact"
+msgid "Disable the selection in guest view"
+msgstr "Désactiver la sélection dans la vue invité"
 
 #: src/Form/SiteSettingsFieldset.php:333
-msgid "Label for the link in guest account"
-msgstr "Libellé pour le lien dans le compte Invité"
-
-#: src/Form/SiteSettingsFieldset.php:345
 msgid "Maximum number of items to store in selection"
 msgstr "Nombre maximum de contenus pour la sélection"
 
-#: src/Form/SiteSettingsFieldset.php:357
+#: src/Form/SiteSettingsFieldset.php:345
+msgid "Label for the page Selection for contact"
+msgstr "Libellé pour la page Sélection pour le contact"
+
+#: src/Form/SiteSettingsFieldset.php:356
+msgid "Label for the link in guest account"
+msgstr "Libellé pour le lien dans le compte Invité"
+
+#: src/Form/SiteSettingsFieldset.php:368
 msgid "Include resources in response"
 msgstr "Inclure les ressources dans la réponse"
 
-#: src/Form/SiteSettingsFieldset.php:358
+#: src/Form/SiteSettingsFieldset.php:369
 msgid ""
 "Some themes may require resources to be included in response when selecting "
 "a resource. This option avoids an api request via js on public side, but "
@@ -871,7 +884,7 @@ msgstr ""
 "ressource est mis dans le panier. Cette option évite une requête api via js "
 "dans le thème, mais ralentit la réponse."
 
-#: src/Form/SiteSettingsFieldset.php:369
+#: src/Form/SiteSettingsFieldset.php:380
 msgid "Include matching resource ids from module Selection in response"
 msgstr "Inclure les ids des ressources du module Sélection dans la réponse"
 
@@ -995,15 +1008,15 @@ msgstr ""
 "Voir le bloc « Contactez-nous » pour une simple liste. Séparer les questions "
 "et les réponses avec un signe « = ». Les questions peuvent être traduites."
 
-#: src/Api/Adapter/MessageAdapter.php:420
+#: src/Api/Adapter/MessageAdapter.php:421
 msgid "Error loading or saving base64 file."
 msgstr "Erreur lors du chargement ou de la sauvegarde d’un fichier en base64."
 
-#: src/Api/Adapter/MessageAdapter.php:449
+#: src/Api/Adapter/MessageAdapter.php:450
 msgid "The body cannot be empty."
 msgstr "Le corps ne peut pas être vide."
 
-#: src/Api/Adapter/MessageAdapter.php:459
+#: src/Api/Adapter/MessageAdapter.php:460
 msgid "The ip cannot be empty."
 msgstr "L’ip ne peut pas être vide."
 
@@ -1269,8 +1282,8 @@ msgstr ""
 "Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
 "confirmation envoyé à {email}."
 
-#: config/module.config.php:288 config/module.config.php:332
-#: config/module.config.php:345
+#: config/module.config.php:288 config/module.config.php:333
+#: config/module.config.php:346
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -1322,11 +1335,11 @@ msgstr "Combien font trois et 2 (en chiffres) ?"
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:334
+#: config/module.config.php:335
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: config/module.config.php:347
+#: config/module.config.php:348
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
@@ -1404,9 +1417,6 @@ msgstr "Se désabonner"
 #, php-format
 #~ msgid "The status \"%s\" is not supported by jSend."
 #~ msgstr "Le statut « %s » n’est pas pris en charge par jSend."
-
-#~ msgid "Block title"
-#~ msgstr "Titre du bloc"
 
 #~ msgid "Other fields"
 #~ msgstr "Autres champs"
