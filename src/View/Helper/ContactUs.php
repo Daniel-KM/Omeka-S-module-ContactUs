@@ -550,8 +550,8 @@ class ContactUs extends AbstractHelper
                             ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                         $body = $siteSetting('contactus_notify_body')
                             ?: $translate($this->defaultOptions['notify_body']);
-                        $subject= $this->fillMessage($translate($subject), $submitted);
-                        $body = $this->fillMessage($translate($body), $submitted);
+                        $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                        $body = $this->fillMessage($translate(strtr($body), ['%7B' => '{', '%7D' => '}']), $submitted);
 
                         // The message to the admin is always from admin to
                         // avoid issue, but with a reply-to.
@@ -576,6 +576,7 @@ class ContactUs extends AbstractHelper
                                 $message = $siteSetting('contactus_confirmation_message')
                                     ?: $translate($this->defaultOptions['confirmation_message']);
                             }
+                            $message = strtr($message, ['%7B' => '{', '%7D' => '}']);
                             $placeholders = [];
                             if (mb_strpos($message, '{email}') !== false) {
                                 $placeholders['email'] = $submitted['from'];
@@ -594,8 +595,8 @@ class ContactUs extends AbstractHelper
                                 $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
                                 $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
                             }
-                            $subject = $this->fillMessage($translate($subject), $submitted);
-                            $body = $this->fillMessage($translate($body), $submitted);
+                            $subject = $this->fillMessage($translate(str($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                            $body = $this->fillMessage($translate(str($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
 
                             // The message to the visitor is always from admin.
                             $from = $sender;
@@ -832,6 +833,9 @@ class ContactUs extends AbstractHelper
         if (empty($message)) {
             return (string) $message;
         }
+
+        // TODO Remove this fix (and in other places) earlier.
+        $message = strtr($message, ['%7B' => '{', '%7D' => '}']);
 
         $plugins = $this->view->getHelperPluginManager();
         $url = $plugins->get('url');
