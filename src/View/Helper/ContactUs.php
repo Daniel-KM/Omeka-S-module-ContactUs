@@ -551,7 +551,7 @@ class ContactUs extends AbstractHelper
                         $body = $siteSetting('contactus_notify_body')
                             ?: $translate($this->defaultOptions['notify_body']);
                         $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-                        $body = $this->fillMessage($translate(strtr($body), ['%7B' => '{', '%7D' => '}']), $submitted);
+                        $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
 
                         // The message to the admin is always from admin to
                         // avoid issue, but with a reply-to.
@@ -595,8 +595,8 @@ class ContactUs extends AbstractHelper
                                 $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
                                 $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
                             }
-                            $subject = $this->fillMessage($translate(str($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-                            $body = $this->fillMessage($translate(str($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                            $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
 
                             // The message to the visitor is always from admin.
                             $from = $sender;
