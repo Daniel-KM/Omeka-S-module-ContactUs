@@ -268,6 +268,8 @@
                 return;
             }
 
+            // TODO Use CommonDialog.jSend().
+
             // For user.
             const url = checkbox.data('url');
             $.ajax({
@@ -303,6 +305,8 @@
 
         /**
          * Submit the contact us form via ajax when inside a dialog, via button.
+         *
+         * @todo Use CommonDialog.jSend().
          */
         $(document).on('submit', 'dialog #contact-us', function(ev) {
             ev.preventDefault();
