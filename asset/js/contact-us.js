@@ -242,7 +242,10 @@
                         hasDialog = true;
                         checkbox.prop('checked', false);
                         let message = checkbox.data('message-fail');
-                        CommonDialog.dialogAlert(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
+                        CommonDialog.dialogAlert({
+                            heading: Omeka.jsTranslate('Contact'),
+                            message: message && message.length ? message : (data.message ? data.message : 'An error occurred.'),
+                        });
                     } else {
                         selectedResourceIds.push(resourceId);
                         localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
@@ -255,7 +258,10 @@
                     localStorage.setItem('contactus_selectedIds', JSON.stringify(selectedResourceIds));
                     if (!hasDialog) {
                         let message = checkbox.data('message-fail');
-                        CommonDialog.dialogAlert(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
+                        CommonDialog.dialogAlert({
+                            heading: Omeka.jsTranslate('Contact'),
+                            message: message && message.length ? message : (data.message ? data.message : 'An error occurred.'),
+                        });
                     }
                 } else {
                     $(document).trigger('o:contact-us-selection-updated', {
@@ -282,7 +288,10 @@
                     // Uncheck the box.
                     checkbox.prop('checked', false);
                     let message = checkbox.data('message-fail');
-                    CommonDialog.dialogAlert(message && message.length ? message : (data.message ? data.message : 'An error occurred.'));
+                    CommonDialog.dialogAlert({
+                        heading: Omeka.jsTranslate('Contact'),
+                        message: message && message.length ? message : (data.message ? data.message : 'An error occurred.'),
+                    });
                 }
                 localStorage.setItem('contactus_selectedIds', JSON.stringify(data.data.selected_resources));
                 $(document).trigger('o:contact-us-selection-updated', data);
@@ -292,7 +301,11 @@
                 if (data && data.status === 'fail') {
                     // Fail is always an email/password error here.
                     let msg = CommonDialog.jSendMessage(data);
-                    CommonDialog.dialogAlert(msg ? msg : 'Check input', true);
+                    CommonDialog.dialogAlert({
+                        heading: Omeka.jsTranslate('Contact'),
+                        message: msg ? msg : 'Check input',
+                        nl2br: true,
+                    });
                     form[0].reset();
                 } else {
                     CustomDialog.jSendFail(xhr, textStatus, errorThrown);
@@ -326,7 +339,11 @@
                     // form[0].reset();
                     $(form).closest('dialog')[0].close();
                     let msg = CommonDialog.jSendMessage(data);
-                    CommonDialog.dialogAlert(msg ? msg : 'Email successfully sent.', true);
+                    CommonDialog.dialogAlert({
+                        heading: Omeka.jsTranslate('Contact'),
+                        message: msg ? msg : 'Email successfully sent.',
+                        nl2br: true,
+                    });
                     $(document).trigger('o:contact-us-email-sent', data);
                 })
                 .fail(CustomDialog.jSendFail)
