@@ -181,6 +181,7 @@ return [
                 'route' => 'admin/contact-message',
                 'resource' => 'ContactUs\Controller\Admin\ContactMessage',
                 'privilege' => 'browse',
+                'admin_section' => 'users',
             ],
         ],
     ],
