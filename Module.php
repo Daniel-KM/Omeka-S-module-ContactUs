@@ -3,7 +3,9 @@
 namespace ContactUs;
 
 if (!class_exists('Common\TraitModule', false)) {
-    require_once dirname(__DIR__) . '/Common/TraitModule.php';
+    require_once file_exists(dirname(__DIR__) . '/Common/src/TraitModule.php')
+        ? dirname(__DIR__) . '/Common/src/TraitModule.php'
+        : dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
 use Common\Stdlib\PsrMessage;
@@ -16,7 +18,7 @@ use Omeka\Module\AbstractModule;
 /**
  * Contact Us
  *
- * @copyright Daniel Berthereau, 2018-2025
+ * @copyright Daniel Berthereau, 2018-2026
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  */
 class Module extends AbstractModule
