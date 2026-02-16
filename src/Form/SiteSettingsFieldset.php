@@ -27,7 +27,7 @@ class SiteSettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Specific fields to append to form', // @translate
-                    'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. The elements may be adapted via the theme. If empty, the main settings will be used.', // @translate
+                    'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. Prefix the label with "* " to make the field required (e.g. "phone = * Phone"). The elements may be adapted via the theme. If empty, the main settings will be used.', // @translate
                     'as_key_value' => true,
                 ],
                 'attributes' => [

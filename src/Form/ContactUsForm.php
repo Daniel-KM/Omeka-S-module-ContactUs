@@ -377,9 +377,18 @@ class ContactUsForm extends Form
         foreach ($this->fields as $name => $data) {
             // Update original field to prepare field and required input field.
             if (!is_array($data)) {
+                // Support "* Label" syntax: a leading "* " marks the field as
+                // required, e.g. "phone = * Phone" in settings.
+                $label = (string) $data;
+                $fieldRequired = false;
+                if (str_starts_with($label, '* ')) {
+                    $label = substr($label, 2);
+                    $fieldRequired = true;
+                }
                 $data = [
-                    'label' => $data,
+                    'label' => $label,
                     'type' => Element\Text::class,
+                    'required' => $fieldRequired,
                     'options' => [],
                     'attributes' => [],
                 ];
@@ -426,14 +435,18 @@ class ContactUsForm extends Form
                         ]);
                 } else {
                     $onlyHidden = false;
+                    $multiFieldOptions = [
+                        'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                        'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                    ] + $data['options'];
+                    if ($isRequired) {
+                        $multiFieldOptions['label_attributes'] = ['class' => 'required'];
+                    }
                     $fieldsFieldset
                         ->add([
                             'name' => $nameNotArray,
                             'type' => $fieldType,
-                            'options' => [
-                                'label' => $data['label'] ?? $data['options']['label'] ?? null,
-                                'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
-                            ] + $data['options'],
+                            'options' => $multiFieldOptions,
                             'attributes' => [
                                 'id' => 'fields-' . $nameNotArray,
                                 // Kept for compatibility. Use attributes instead.
@@ -451,14 +464,18 @@ class ContactUsForm extends Form
                 $fieldType = $data['type'] ?? Element\Text::class;
                 $isHidden = strtolower($fieldType) === 'hidden' || $fieldType === Element\Hidden::class;
                 $onlyHidden = $onlyHidden && $isHidden;
+                $fieldOptions = [
+                    'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                    'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
+                ] + $data['options'];
+                if ($isRequired) {
+                    $fieldOptions['label_attributes'] = ['class' => 'required'];
+                }
                 $fieldsFieldset
                     ->add([
                         'name' => $nameNotArray,
                         'type' => $fieldType,
-                        'options' => [
-                            'label' => $data['label'] ?? $data['options']['label'] ?? null,
-                            'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
-                        ] + $data['options'],
+                        'options' => $fieldOptions,
                         'attributes' => [
                             'id' => 'fields-' . $name,
                             'class' => $class,
