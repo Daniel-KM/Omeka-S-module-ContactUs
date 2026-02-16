@@ -122,7 +122,7 @@ class IndexController extends AbstractActionController
             // Get and flat selected records.
             // TODO For now, only resources are managed, so no issues with "id".
             $selectionRecords = $this->selectionContainer()->records ?? [];
-            $selectionRecords = array_column(array_merge(...$selectionRecords), 'id');
+            $selectionRecords = array_column(array_merge(...array_values($selectionRecords)), 'id');
             $output['selections'] = array_values(array_intersect($newSelecteds, $selectionRecords));
         }
 
