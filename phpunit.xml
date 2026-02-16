@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
     backupGlobals="false"
-    bootstrap="./bootstrap.php"
+    bootstrap="./tests/bootstrap.php"
     colors="true"
     verbose="false"
 >
     <testsuites>
         <testsuite name="ContactUs">
-            <directory>./ContactUsTest</directory>
+            <directory suffix="Test.php">./tests/ContactUsTest</directory>
         </testsuite>
     </testsuites>
     <php>
