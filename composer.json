@@ -1,7 +1,41 @@
 {
+    "name": "daniel-km/omeka-s-module-contact-us",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Add a site page block with a ”Contact us” form, a link to report an issue on a resource and manage messages from admin.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "block",
+        "contact",
+        "report"
+    ],
+    "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2412)": {
+        "omeka/omeka-s": "^4.1",
+        "daniel-km/omeka-s-module-common": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ContactUs\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
-            "ContactUsTest\\": "test/ContactUsTest/"
+            "ContactUsTest\\": "tests/ContactUsTest/"
         }
+    },
+    "extra": {
+        "installer-name": "ContactUs"
     }
 }
