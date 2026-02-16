@@ -144,6 +144,7 @@ class ContactUsForm extends Form
                 'attributes' => [
                     'id' => 'subject',
                     'required' => false,
+                    'maxlength' => 190,
                 ],
             ])
             ->add([
@@ -282,6 +283,21 @@ class ContactUsForm extends Form
                 'required' => true,
                 'filters' => [
                     ['name' => Filter\StringTrim::class],
+                ],
+            ])
+            ->add([
+                'name' => 'subject',
+                'required' => false,
+                'filters' => [
+                    ['name' => Filter\StringTrim::class],
+                ],
+                'validators' => [
+                    [
+                        'name' => Validator\StringLength::class,
+                        'options' => [
+                            'max' => 190,
+                        ],
+                    ],
                 ],
             ])
         ;
