@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 00:00+0000\n"
+"POT-Creation-Date: 2026-03-30 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/scripts/upgrade.php:38 Module.php:106
+#: data/scripts/upgrade.php:38 Module.php:107
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:180
+#: data/scripts/upgrade.php:42
+msgid "Missing requirement. Unable to upgrade."
+msgstr ""
+
+#: Module.php:187
 msgid "WARNING:"
 msgstr ""
 
-#: Module.php:192
+#: Module.php:199
 msgid "Remove Contact Us files"
 msgstr ""
 
-#: Module.php:294
+#: Module.php:315
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
@@ -318,66 +322,66 @@ msgstr ""
 msgid "My selection for contact"
 msgstr ""
 
-#: data/scripts/upgrade.php:116
+#: data/scripts/upgrade.php:117
 msgid ""
 "A checkbox for consent has been added to the user form. You may update the "
 "default label in site settings"
 msgstr ""
 
-#: data/scripts/upgrade.php:190
+#: data/scripts/upgrade.php:191
 msgid "It’s now possible to set a specific message when contacting author."
 msgstr ""
 
-#: data/scripts/upgrade.php:194
+#: data/scripts/upgrade.php:195
 msgid ""
 "It’s now possible to contact authors of a resource via the view helper "
 "contactUs()."
 msgstr ""
 
-#: data/scripts/upgrade.php:220
+#: data/scripts/upgrade.php:221
 msgid "It’s now possible to append specific fields to the form."
 msgstr ""
 
-#: data/scripts/upgrade.php:225
+#: data/scripts/upgrade.php:226
 msgid ""
 "It’s now possible to add a contact form in item/show for themes supporting "
 "resource blocks."
 msgstr ""
 
-#: data/scripts/upgrade.php:232
+#: data/scripts/upgrade.php:233
 msgid ""
 "It’s now possible to add a contact form in item/browse and to send a list of "
 "resource ids (need a line in theme)."
 msgstr ""
 
-#: data/scripts/upgrade.php:260
+#: data/scripts/upgrade.php:261
 msgid ""
 "It’s now possible to prepare a zip file of asked files to send to a visitor "
 "via a link. See {link}settings{link_end}."
 msgstr ""
 
-#: data/scripts/upgrade.php:273
+#: data/scripts/upgrade.php:274
 msgid "A new button allows to create a zip for any contact."
 msgstr ""
 
-#: data/scripts/upgrade.php:286
+#: data/scripts/upgrade.php:287
 msgid ""
 "Two new options allow to append the contact form to resource pages. They are "
 "disabled by default, so check them if you need them."
 msgstr ""
 
-#: data/scripts/upgrade.php:291
+#: data/scripts/upgrade.php:292
 msgid ""
 "A new option allows to use the user email to send message. It is not "
 "recommended because many emails providers reject them as spam. Use it only "
 "if you manage your own domain."
 msgstr ""
 
-#: data/scripts/upgrade.php:305
+#: data/scripts/upgrade.php:306
 msgid "A new block allows to display a form to subscribe to a newsletter."
 msgstr ""
 
-#: data/scripts/upgrade.php:348
+#: data/scripts/upgrade.php:349
 msgid ""
 "The option \"heading\" was removed from blocks Contact Us and Newsletter and "
 "replaced by a block Heading (if module Block Plus is present) or Html. "
@@ -385,13 +389,13 @@ msgid ""
 "{json}"
 msgstr ""
 
-#: data/scripts/upgrade.php:426
+#: data/scripts/upgrade.php:427
 msgid ""
 "The setting \"template\" was moved to the new block layout settings "
 "available since Omeka S v4.1. You may check pages for styles: {json}"
 msgstr ""
 
-#: data/scripts/upgrade.php:436
+#: data/scripts/upgrade.php:437
 msgid ""
 "The option \"heading\" was removed from blocks Contact Us and Newsletter. "
 "New block \"Heading\" (if module Block Plus is present) or \"Html\" was "
@@ -399,63 +403,63 @@ msgid ""
 "styles: {json}"
 msgstr ""
 
-#: data/scripts/upgrade.php:458
+#: data/scripts/upgrade.php:459
 msgid "New options were added to set message after posting mail."
 msgstr ""
 
-#: data/scripts/upgrade.php:463
+#: data/scripts/upgrade.php:464
 msgid "It is now possible to unsubscribe to a newsletter."
 msgstr ""
 
-#: data/scripts/upgrade.php:468
+#: data/scripts/upgrade.php:469
 msgid ""
 "A new page allows the user or the visitor to see all the selected resources."
 msgstr ""
 
-#: data/scripts/upgrade.php:473
+#: data/scripts/upgrade.php:474
 msgid ""
 "The number of selected items can be set in site settings. It is limited to "
 "25 by default."
 msgstr ""
 
-#: data/scripts/upgrade.php:486
+#: data/scripts/upgrade.php:487
 msgid ""
 "It is now possible to define specific fields for the contact us form via the "
 "main or site settings."
 msgstr ""
 
-#: data/scripts/upgrade.php:493
+#: data/scripts/upgrade.php:494
 msgid "New fields were added for messages."
 msgstr ""
 
-#: data/scripts/upgrade.php:498
+#: data/scripts/upgrade.php:499
 msgid ""
 "Existing fields for messages were clarified. You may need to check your "
 "config."
 msgstr ""
 
-#: data/scripts/upgrade.php:521
+#: data/scripts/upgrade.php:522
 msgid ""
 "A new field allows to set the sender email. The first email of the list of "
 "emails for notification is no more used as sender. Check it if needed."
 msgstr ""
 
-#: data/scripts/upgrade.php:526
+#: data/scripts/upgrade.php:527
 msgid ""
 "Warning: there might be an issue with the option \"Send with user email\". "
 "So check it and try to send a message. Note that to send with user email is "
 "not recommended, unless you have a good smtp server."
 msgstr ""
 
-#: data/scripts/upgrade.php:548
+#: data/scripts/upgrade.php:549
 msgid "A new site option allows to hide the guest page for selection."
 msgstr ""
 
-#: Module.php:117
+#: Module.php:120
 msgid "The directory \"{directory}\" is not writeable."
 msgstr ""
 
-#: Module.php:186
+#: Module.php:193
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 
@@ -589,59 +593,64 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:29 src/Form/SettingsFieldset.php:29
+#: src/Form/SiteSettingsFieldset.php:16
+msgid "Old themes"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:30 src/Form/SettingsFieldset.php:29
 msgid "Specific fields to append to form"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:30
+#: src/Form/SiteSettingsFieldset.php:31
 msgid ""
 "Set the name (ascii only and no space) and the label separated by a \"=\", "
-"one by line. The elements may be adapted via the theme. If empty, the main "
-"settings will be used."
+"one by line. Prefix the label with \"* \" to make the field required (e.g. "
+"\"phone = * Phone\"). The elements may be adapted via the theme. If empty, "
+"the main settings will be used."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:35 src/Form/SettingsFieldset.php:35
+#: src/Form/SiteSettingsFieldset.php:36 src/Form/SettingsFieldset.php:35
 #: src/Form/ContactUsFieldset.php:101
 msgid "phone = Phone"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:44 src/Form/SettingsFieldset.php:44
+#: src/Form/SiteSettingsFieldset.php:45 src/Form/SettingsFieldset.php:44
 msgid "Email of the sender (else no-reply user or administrator)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:45 src/Form/SettingsFieldset.php:45
+#: src/Form/SiteSettingsFieldset.php:46 src/Form/SettingsFieldset.php:45
 msgid ""
 "The no-reply email can be set via module EasyAdmin. The administrator email "
 "can set above."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:57 src/Form/SettingsFieldset.php:57
+#: src/Form/SiteSettingsFieldset.php:58 src/Form/SettingsFieldset.php:57
 msgid "Name of the sender when email above is set"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:70 src/Form/SettingsFieldset.php:70
+#: src/Form/SiteSettingsFieldset.php:71 src/Form/SettingsFieldset.php:70
 msgid "Emails to notify"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:71 src/Form/SettingsFieldset.php:71
+#: src/Form/SiteSettingsFieldset.php:72 src/Form/SettingsFieldset.php:71
 msgid "The list of recipients to notify, one by row."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:77 src/Form/SettingsFieldset.php:77
+#: src/Form/SiteSettingsFieldset.php:78 src/Form/SettingsFieldset.php:77
 msgid ""
 "contact@example.org\n"
 "info@example2.org"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:90
+#: src/Form/SiteSettingsFieldset.php:91
 msgid "Notification email subject for admin"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:102
+#: src/Form/SiteSettingsFieldset.php:103
 msgid "Notification message for admin"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:103 src/Form/SiteSettingsFieldset.php:139
+#: src/Form/SiteSettingsFieldset.php:104 src/Form/SiteSettingsFieldset.php:140
 #: src/Form/ContactUsFieldset.php:44
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
@@ -652,146 +661,146 @@ msgid ""
 "{resources_url_admin}, {resources_links}, {resources::property term}."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:116 src/Form/ContactUsFieldset.php:23
+#: src/Form/SiteSettingsFieldset.php:117 src/Form/ContactUsFieldset.php:23
 #: src/Form/NewsletterFieldset.php:33
 msgid "Send a confirmation email"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:127 src/Form/ContactUsFieldset.php:33
+#: src/Form/SiteSettingsFieldset.php:128 src/Form/ContactUsFieldset.php:33
 #: src/Form/NewsletterFieldset.php:43
 msgid "Subject of the confirmation email"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:138 src/Form/ContactUsFieldset.php:43
+#: src/Form/SiteSettingsFieldset.php:139 src/Form/ContactUsFieldset.php:43
 #: src/Form/NewsletterFieldset.php:53
 msgid "Confirmation message"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:152
+#: src/Form/SiteSettingsFieldset.php:153
 msgid "Subject of the confirmation for subscription to newsletter"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:163
+#: src/Form/SiteSettingsFieldset.php:164
 msgid "Confirmation message for subscription to newsletter"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:164
+#: src/Form/SiteSettingsFieldset.php:165
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {object}, {subject}, {ip}."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:177
+#: src/Form/SiteSettingsFieldset.php:178
 msgid "Subject of the email to author"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:188 config/module.config.php:267
+#: src/Form/SiteSettingsFieldset.php:189 config/module.config.php:268
 msgid "Message to the author"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:189 src/Form/NewsletterFieldset.php:54
+#: src/Form/SiteSettingsFieldset.php:190 src/Form/NewsletterFieldset.php:54
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:202
+#: src/Form/SiteSettingsFieldset.php:203
 msgid "Message displayed on site after post"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:203 src/Form/SiteSettingsFieldset.php:216
+#: src/Form/SiteSettingsFieldset.php:204 src/Form/SiteSettingsFieldset.php:217
 msgid "Possible placeholders: {name}, {email}."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:215
+#: src/Form/SiteSettingsFieldset.php:216
 msgid "Message displayed on site after post for newsletter"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:229 src/Form/ContactUsFieldset.php:65
+#: src/Form/SiteSettingsFieldset.php:230 src/Form/ContactUsFieldset.php:65
 #: src/Form/NewsletterFieldset.php:75
 msgid "Label for the consent checkbox"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:241 src/Form/SiteSettingsFieldset.php:252
+#: src/Form/SiteSettingsFieldset.php:242 src/Form/SiteSettingsFieldset.php:253
 #: src/Form/ContactUsFieldset.php:108 src/Form/NewsletterFieldset.php:85
 msgid "Enable simple antispam for visitors"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:263 src/Form/ContactUsFieldset.php:118
+#: src/Form/SiteSettingsFieldset.php:264 src/Form/ContactUsFieldset.php:118
 #: src/Form/NewsletterFieldset.php:95
 msgid "List of antispam questions/answers"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:264 src/Form/ContactUsFieldset.php:119
+#: src/Form/SiteSettingsFieldset.php:265 src/Form/ContactUsFieldset.php:119
 msgid ""
 "See the block \"Contact us\" for a simple list. Separate questions and "
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:269 src/Form/ContactUsFieldset.php:124
+#: src/Form/SiteSettingsFieldset.php:270 src/Form/ContactUsFieldset.php:124
 #: src/Form/NewsletterFieldset.php:101
 msgid ""
 "How many are zero plus 1 (in number)? = 1\n"
 "How many are one plus 1 (in number)? = 2"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:282
-msgid "Append to resource page (deprecated, for themes without resource block)"
+#: src/Form/SiteSettingsFieldset.php:283
+msgid "Contact Us (old themes)"
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:285
-msgid "Medias"
+msgid "Item show"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:298
-msgid "Append to items browse page"
+#: src/Form/SiteSettingsFieldset.php:286
+msgid "Media show"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:309
-msgid ""
-"Add a checkbox to select resources individually in lists (browse and search)"
+#: src/Form/SiteSettingsFieldset.php:287
+msgid "Item set show"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:310
-msgid "This option is used only with the module Advanced Search for now."
+#: src/Form/SiteSettingsFieldset.php:288
+msgid "Item browse"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:322
+#: src/Form/SiteSettingsFieldset.php:302
 msgid "Disable the selection in guest view"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:333
+#: src/Form/SiteSettingsFieldset.php:313
 msgid "Maximum number of items to store in selection"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:345
+#: src/Form/SiteSettingsFieldset.php:325
 msgid "Label for the page Selection for contact"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:356
+#: src/Form/SiteSettingsFieldset.php:336
 msgid "Label for the link in guest account"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:368
+#: src/Form/SiteSettingsFieldset.php:348
 msgid "Include resources in response"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:369
+#: src/Form/SiteSettingsFieldset.php:349
 msgid ""
 "Some themes may require resources to be included in response when selecting "
 "a resource. This option avoids an api request via js on public side, but "
 "slow response."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:380
+#: src/Form/SiteSettingsFieldset.php:360
 msgid "Include matching resource ids from module Selection in response"
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:30
 msgid ""
 "Set the name (ascii only and no space) and the label separated by a \"=\", "
-"one by line. The elements may be adapted via the theme. This setting may be "
-"overridden by site or block settings."
+"one by line. Prefix the label with \"* \" to make the field required (e.g. "
+"\"phone = * Phone\"). The elements may be adapted via the theme. This "
+"setting may be overridden by site or block settings."
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:90
@@ -846,11 +855,11 @@ msgstr ""
 msgid "Remove zip files after some days"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:175
+#: src/Form/ContactUsForm.php:176
 msgid "Attach a file"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:267 src/Form/NewsletterForm.php:154
+#: src/Form/ContactUsForm.php:268 src/Form/NewsletterForm.php:154
 msgid "Send message"
 msgstr ""
 
@@ -873,8 +882,9 @@ msgstr ""
 #: src/Form/ContactUsFieldset.php:96
 msgid ""
 "Set the name (ascii only and no space) and the label separated by a \"=\", "
-"one by line. The elements may be adapted via the theme. If empty, the site "
-"settings or the main settings will be used."
+"one by line. Prefix the label with \"* \" to make the field required (e.g. "
+"\"phone = * Phone\"). The elements may be adapted via the theme. If empty, "
+"the site settings or the main settings will be used."
 msgstr ""
 
 #: src/Form/ContactUsFieldset.php:135 src/Form/NewsletterFieldset.php:112
@@ -1008,11 +1018,11 @@ msgid ""
 "\"=\"."
 msgstr ""
 
-#: config/module.config.php:198
+#: config/module.config.php:199
 msgid "The contact message doesn’t exist."
 msgstr ""
 
-#: config/module.config.php:220
+#: config/module.config.php:221
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1029,11 +1039,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:236
+#: config/module.config.php:237
 msgid "Confirmation contact"
 msgstr ""
 
-#: config/module.config.php:237
+#: config/module.config.php:238
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1057,11 +1067,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:259
+#: config/module.config.php:260
 msgid "Subscription to newsletter of {main_title}"
 msgstr ""
 
-#: config/module.config.php:260
+#: config/module.config.php:261
 msgid ""
 "Hi,\n"
 "\n"
@@ -1070,7 +1080,7 @@ msgid ""
 "Sincerely,"
 msgstr ""
 
-#: config/module.config.php:268
+#: config/module.config.php:269
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -1091,73 +1101,73 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:286
+#: config/module.config.php:287
 msgid ""
 "Thank you for your message. Check your confirmation email sent to {email}. "
 "We will answer you soon."
 msgstr ""
 
-#: config/module.config.php:287
+#: config/module.config.php:288
 msgid ""
 "Thank you for subscribing to our newsletter. Check the confirmation email "
 "sent to {email}."
 msgstr ""
 
-#: config/module.config.php:288 config/module.config.php:333
-#: config/module.config.php:346
+#: config/module.config.php:289 config/module.config.php:335
+#: config/module.config.php:348
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
 msgstr ""
 
-#: config/module.config.php:289
+#: config/module.config.php:290
 msgid "It is not possible to select more than {total} resources."
 msgstr ""
 
-#: config/module.config.php:292
+#: config/module.config.php:293
 msgid "How many are zero plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:294
+#: config/module.config.php:295
 msgid "How many are one plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:296
+#: config/module.config.php:297
 msgid "How many are one plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:298
+#: config/module.config.php:299
 msgid "How many are one plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:300
+#: config/module.config.php:301
 msgid "How many are two plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:302
+#: config/module.config.php:303
 msgid "How many are two plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:304
+#: config/module.config.php:305
 msgid "How many are two plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:306
+#: config/module.config.php:307
 msgid "How many are three plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:308
+#: config/module.config.php:309
 msgid "How many are three plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:310
+#: config/module.config.php:311
 msgid "How many are three plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:335
+#: config/module.config.php:337
 msgid "Subscribe to the newsletter"
 msgstr ""
 
-#: config/module.config.php:348
+#: config/module.config.php:350
 msgid "Unsubscribe"
 msgstr ""
