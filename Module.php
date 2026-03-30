@@ -251,10 +251,17 @@ class Module extends AbstractModule
 
     public function handleViewShowAfterResource(Event $event): void
     {
+        $services = $this->getServiceLocator();
+        $currentTheme = $services->get('Omeka\Site\ThemeManager')->getCurrentTheme();
+        if (method_exists($currentTheme, 'isConfigurableResourcePageBlocks') && $currentTheme->isConfigurableResourcePageBlocks()) {
+            return;
+        }
         $view = $event->getTarget();
         $resourceName = $view->resource->resourceName();
-        $append = $this->getServiceLocator()->get('Omeka\Settings\Site')->get('contactus_append_resource_show', []);
-        if (!in_array($resourceName, $append)) {
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        $placements = $siteSettings->get('contactus_placement', []);
+        $append = $siteSettings->get('contactus_append_resource_show', []);
+        if (!in_array('after/' . $resourceName, $placements) && !in_array($resourceName, $append)) {
             return;
         }
         /** @see \ContactUs\View\Helper\ContactUs */
@@ -267,8 +274,15 @@ class Module extends AbstractModule
 
     public function handleViewBrowse(Event $event): void
     {
-        $append = $this->getServiceLocator()->get('Omeka\Settings\Site')->get('contactus_append_items_browse');
-        if (!$append) {
+        $services = $this->getServiceLocator();
+        $currentTheme = $services->get('Omeka\Site\ThemeManager')->getCurrentTheme();
+        if (method_exists($currentTheme, 'isConfigurableResourcePageBlocks') && $currentTheme->isConfigurableResourcePageBlocks()) {
+            return;
+        }
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        $placements = $siteSettings->get('contactus_placement', []);
+        $append = $siteSettings->get('contactus_append_items_browse');
+        if (!in_array('browse/items', $placements) && !$append) {
             return;
         }
         $view = $event->getTarget();

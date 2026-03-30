@@ -311,6 +311,7 @@ return [
                 'How many are three plus 3 (in number)?' // @translate
                     => '6',
             ],
+            'contactus_placement' => [],
             'contactus_append_resource_show' => [],
             'contactus_append_items_browse' => false,
             'contactus_append_items_browse_individual' => false,

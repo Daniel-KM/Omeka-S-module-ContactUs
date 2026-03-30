@@ -13,6 +13,7 @@ class SiteSettingsFieldset extends Fieldset
 
     protected $elementGroups = [
         'contact' => 'Contact Us', // @translate
+        'themes_old' => 'Old themes', // @translate
     ];
 
     public function init(): void
@@ -275,42 +276,21 @@ class SiteSettingsFieldset extends Fieldset
             ])
 
             ->add([
-                'name' => 'contactus_append_resource_show',
+                'name' => 'contactus_placement',
                 'type' => CommonElement\OptionalMultiCheckbox::class,
                 'options' => [
-                    'element_group' => 'contact',
-                    'label' => 'Append to resource page (deprecated, for themes without resource block)', // @translate
+                    'element_group' => 'themes_old',
+                    'label' => 'Contact Us (old themes)', // @translate
                     'value_options' => [
-                        'items' => 'Items', // @translate
-                        'medias' => 'Medias', // @translate
-                        'item_sets' => 'Item sets', // @translate
+                        'after/items' => 'Item show', // @translate
+                        'after/media' => 'Media show', // @translate
+                        'after/item_sets' => 'Item set show', // @translate
+                        'browse/items' => 'Item browse', // @translate
                     ],
                 ],
                 'attributes' => [
-                    'id' => 'contactus_append_resource_show',
-                ],
-            ])
-            ->add([
-                'name' => 'contactus_append_items_browse',
-                'type' => Element\Checkbox::class,
-                'options' => [
-                    'element_group' => 'contact',
-                    'label' => 'Append to items browse page', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_append_items_browse',
-                ],
-            ])
-            ->add([
-                'name' => 'contactus_append_items_browse_individual',
-                'type' => Element\Checkbox::class,
-                'options' => [
-                    'element_group' => 'contact',
-                    'label' => 'Add a checkbox to select resources individually in lists (browse and search)', // @translate
-                    'info' => 'This option is used only with the module Advanced Search for now.', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_append_items_browse_individual',
+                    'id' => 'contactus_placement',
+                    'required' => false,
                 ],
             ])
 
