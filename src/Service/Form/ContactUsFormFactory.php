@@ -3,7 +3,7 @@
 namespace ContactUs\Service\Form;
 
 use ContactUs\Form\ContactUsForm;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ContactUsFormFactory implements FactoryInterface

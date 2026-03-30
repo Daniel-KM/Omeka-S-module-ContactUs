@@ -3,7 +3,7 @@
 namespace ContactUs\Service\Controller;
 
 use ContactUs\Controller\Site\IndexController;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class IndexControllerFactory implements FactoryInterface

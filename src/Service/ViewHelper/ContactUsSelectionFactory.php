@@ -3,7 +3,7 @@
 namespace ContactUs\Service\ViewHelper;
 
 use ContactUs\View\Helper\ContactUsSelection;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
