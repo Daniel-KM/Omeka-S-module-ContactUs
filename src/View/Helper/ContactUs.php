@@ -397,7 +397,7 @@ class ContactUs extends AbstractHelper
                     try {
                         $options['resource'] = $this->api->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
                         unset($postedFields['id']);
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         // Nothing to do.
                     }
                 }
@@ -941,7 +941,7 @@ class ContactUs extends AbstractHelper
                 } elseif (!empty($first['value_resource_id'])) {
                     try {
                         $replace['{' . $term . '}'] = $this->api->read('resources', ['id' => $first['value_resource_id']], [], ['initialize' => false, 'finalize' => false])->getContent()->getTitle();
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         $replace['{' . $term . '}'] = $translate('[Unknown resource]'); // @translate
                     }
                 } elseif (isset($first['@value']) && strlen((string) $first['@value'])) {

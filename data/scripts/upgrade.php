@@ -87,7 +87,7 @@ if (version_compare($oldVersion, '3.3.8.1', '<')) {
         foreach (explode(";\n", $sqls) as $sql) {
             $connection->executeStatement($sql);
         }
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
         // Already installed.
     }
 }

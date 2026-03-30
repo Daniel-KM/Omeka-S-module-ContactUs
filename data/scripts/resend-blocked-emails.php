@@ -153,7 +153,7 @@ foreach ($rows as $i => $row) {
         $mailer->send($message);
         echo "   => Sent.\n\n";
         ++$sent;
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
         echo "   => Error: " . $e->getMessage() . "\n\n";
         ++$errors;
     }

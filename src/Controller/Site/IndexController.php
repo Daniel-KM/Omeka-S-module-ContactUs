@@ -268,7 +268,7 @@ class IndexController extends AbstractActionController
         foreach ($resourceIds as $id) {
             try {
                 $result[$id] = $api->read('resources', ['id' => $id])->getContent()->jsonSerialize();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Skip. Normally, the list is already checked.
             }
         }
