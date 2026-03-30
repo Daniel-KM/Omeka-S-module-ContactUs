@@ -467,7 +467,7 @@ class ContactUs extends AbstractHelper
                     $submitted['from'] = $contactMessage->email();
                     $submitted['name'] = $contactMessage->name();
                     $submitted['site_title'] = $contactMessage->site()->title();
-                    $submitted['site_url'] = $contactMessage->site()->siteUrl();
+                    $submitted['site_url'] = $contactMessage->site()->siteUrl(null, true);
                     $submitted['subject'] = $contactMessage->subject()
                         ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
                     $submitted['message'] = $contactMessage->body();
