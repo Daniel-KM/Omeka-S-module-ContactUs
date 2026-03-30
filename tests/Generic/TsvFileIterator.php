@@ -24,7 +24,7 @@ class TsvFileIterator implements \Iterator
     public function rewind(): void
     {
         rewind($this->filepath);
-        $this->current = fgetcsv($this->filepath, 100000, "\t", chr(0), chr(0));
+        $this->current = fgetcsv($this->filepath, 100000, "\t", "\0", "\0");
         $this->key = 0;
     }
 
@@ -47,7 +47,7 @@ class TsvFileIterator implements \Iterator
 
     public function next(): void
     {
-        $this->current = fgetcsv($this->filepath, 100000, "\t", chr(0), chr(0));
+        $this->current = fgetcsv($this->filepath, 100000, "\t", "\0", "\0");
         ++$this->key;
     }
 }
