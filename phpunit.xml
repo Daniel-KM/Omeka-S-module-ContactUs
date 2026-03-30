@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE phpunit>
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.5/phpunit.xsd"
+    colors="true"
     backupGlobals="false"
     bootstrap="./tests/bootstrap.php"
-    colors="true"
-    verbose="false"
->
+    >
     <testsuites>
         <testsuite name="ContactUs">
             <directory suffix="Test.php">./tests/ContactUsTest</directory>
         </testsuite>
     </testsuites>
     <php>
-        <server name="HTTP_HOST" value="phpunit"/>
-        <server name="HTTP_USER_AGENT" value="phpunit"/>
-        <server name="REMOTE_ADDR" value="127.0.0.1"/>
-        <server name="REQUEST_URI" value="/index"/>
-        <server name="SERVER_NAME" value="phpunit"/>
+        <env name="APPLICATION_ENV" value="testing"/>
+        <includePath>./tests</includePath>
     </php>
 </phpunit>
