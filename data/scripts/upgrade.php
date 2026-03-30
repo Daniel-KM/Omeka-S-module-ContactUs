@@ -550,3 +550,28 @@ if (version_compare($oldVersion, '3.4.26', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.29', '<')) {
+    // Migrate contactus_append_resource_show and
+    // contactus_append_items_browse to contactus_placement.
+    $resourceToPlacement = [
+        'items' => 'after/items',
+        'medias' => 'after/media',
+        'item_sets' => 'after/item_sets',
+    ];
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $append = $siteSettings->get('contactus_append_resource_show', []);
+        $placements = [];
+        foreach ($append as $resource) {
+            if (isset($resourceToPlacement[$resource])) {
+                $placements[] = $resourceToPlacement[$resource];
+            }
+        }
+        if ($siteSettings->get('contactus_append_items_browse', false)) {
+            $placements[] = 'browse/items';
+        }
+        $siteSettings->set('contactus_placement', $placements);
+    }
+}

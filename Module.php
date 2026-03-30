@@ -100,16 +100,17 @@ class Module extends AbstractModule
     {
         $services = $this->getServiceLocator();
         $plugins = $services->get('ControllerPluginManager');
-        $translate = $plugins->get('translate');
         $translator = $services->get('MvcTranslator');
 
         if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.82')) {
             $message = new \Omeka\Stdlib\Message(
-                $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+                $translator->translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
                 'Common', '3.4.82'
             );
             throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
+
+        $errors = [];
 
         $config = $services->get('Config');
         $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
@@ -119,7 +120,11 @@ class Module extends AbstractModule
                 'The directory "{directory}" is not writeable.', // @translate
                 ['directory' => $basePath . '/' . self::STORE_PREFIX]
             );
-            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message->setTranslator($translator));
+            $errors[] = (string) $message->setTranslator($translator);
+        }
+
+        if ($errors) {
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException(implode("\n", $errors));
         }
     }
 
