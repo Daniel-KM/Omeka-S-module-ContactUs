@@ -161,9 +161,8 @@ Development
 Install Omeka with dev dependencies first.
 
 ```sh
-# From module directory.
-composer install
-../../vendor/bin/phpunit --testdox --configuration /var/www/html/modules/ContactUs/test/phpunit.xml
+composer install --no-dev
+vendor/bin/phpunit -c modules/ContactUs/phpunit.xml --testdox
 ```
 
 ### Api
