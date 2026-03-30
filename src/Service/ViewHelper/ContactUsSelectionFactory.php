@@ -16,7 +16,7 @@ class ContactUsSelectionFactory implements FactoryInterface
      *
      * @return ContactUsSelection
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         return new ContactUsSelection(
             $services->get('Omeka\Connection'),

@@ -47,7 +47,7 @@ class ModuleTester
     /**
      * Init a module with all its dependencies, if any, recursively.
      */
-    public function initModule(string $moduleName = null): void
+    public function initModule(?string $moduleName = null): void
     {
         if (empty($moduleName)) {
             $moduleName = $this->namespace;

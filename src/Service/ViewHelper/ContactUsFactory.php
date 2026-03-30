@@ -16,7 +16,7 @@ class ContactUsFactory implements FactoryInterface
      *
      * @return ContactUs
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $plugins = $services->get('ControllerPluginManager');
         $siteSettings = $services->get('Omeka\Settings\Site');
