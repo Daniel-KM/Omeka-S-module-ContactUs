@@ -313,6 +313,7 @@ return [
             'contactus_consent_label' => 'I allow the site owner to store my name and my email to answer to this message.', // @translate
             'contactus_warn_limit' => 'It is not possible to select more than {total} resources.', // @translate
             'contactus_antispam' => true,
+            // TODO Widen the default question set while keeping operands ≤ 3 (subtraction, small multiplication, ordinal words).
             'contactus_questions' => [
                 'How many are zero plus 1 (in number)?' // @translate
                     => '1',

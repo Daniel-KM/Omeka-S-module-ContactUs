@@ -96,9 +96,9 @@ places.
 
 ### Resource pages
 
-#### Resource blocks 
+#### Resource blocks
 
-The module has three resource blocks that can be used in new themes: 
+The module has three resource blocks that can be used in new themes:
 - A form that includes the id of the current resource;
 - A button that displays the same form on click;
 - A template that indicates that the resource is selected or not with a
@@ -202,6 +202,8 @@ TODO
 
 - [ ] Remove code related to cookie/container, as it is managed by session now.
 - [x] Fix consent label.
+- [ ] Antispam: url count, language coherence message / user agent, field coherence (fake email or site), tor block?
+- [ ] Add a `spam_reason` column to check automatic flags (honeypot, pow, submit time, rate limit, keyword, DNSBL). Log is enough for now.
 
 
 Warning
