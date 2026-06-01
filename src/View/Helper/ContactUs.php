@@ -293,6 +293,17 @@ class ContactUs extends AbstractHelper
             if (empty($user) && !empty($params['contact_website'])) {
                 $isSpam = true;
             }
+            // Submit-time check for anonymous posts. Bots typically submit in
+            // under a second; humans take longer to fill the form. The
+            // timestamp is set when the default form is rendered below.
+            if (!$isSpam && empty($user)) {
+                $session = new Container('ContactUs');
+                $loadedAt = (int) ($session->form_loaded_at ?? 0);
+                $delta = $loadedAt ? time() - $loadedAt : null;
+                if ($delta === null || $delta < 3 || $delta > 3600) {
+                    $isSpam = true;
+                }
+            }
             if (!$isSpam && $antispam) {
                 $isSpam = $this->checkSpam($options, $params);
                 if (!$isSpam) {
@@ -642,10 +653,13 @@ class ContactUs extends AbstractHelper
         }
 
         if ($defaultForm) {
+            $session = new Container('ContactUs');
+            // Stamp the form generation time so the submit handler can reject
+            // too-fast (bot) and too-old (expired) submissions.
+            $session->form_loaded_at = time();
             if ($antispam) {
                 $question = array_rand($options['questions']);
                 $answer = $options['questions'][$question];
-                $session = new Container('ContactUs');
                 $session->question = $question;
             } else {
                 $question = '';
