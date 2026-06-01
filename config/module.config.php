@@ -215,6 +215,7 @@ return [
         ],
         // Site settings.
         'site_settings' => [
+            'contactus_block_urls' => false,
             'contactus_fields' => [],
             'contactus_sender_email' => '',
             'contactus_sender_name' => '',

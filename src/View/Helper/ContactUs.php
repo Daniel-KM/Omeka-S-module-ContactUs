@@ -380,6 +380,16 @@ class ContactUs extends AbstractHelper
                 }
             }
 
+            // Strict rejection of any URL in subject or message when enabled by
+            // the site setting. Matches http(s)://, protocol-relative //, and
+            // bare www. hosts. Logged-in users are exempt.
+            if (empty($user) && $siteSetting('contactus_block_urls')) {
+                $candidate = (string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? '');
+                if ($candidate !== '' && preg_match('~(?:https?:)?//[a-z0-9]|\bwww\.[a-z0-9]~i', $candidate)) {
+                    $spamReasons[] = 'url';
+                }
+            }
+
             if ($antispam) {
                 $question = (new Container('ContactUs'))->question;
                 if ($this->checkSpam($options, $params)) {
@@ -423,6 +433,10 @@ class ContactUs extends AbstractHelper
             }
 
             $isSpam = !empty($spamReasons);
+            // Hard reject when an URL was found and the strict block is on. The
+            // message is not stored and the visitor sees an explicit error.
+            $blockSubmission = in_array('url', $spamReasons, true)
+                && $siteSetting('contactus_block_urls');
             if ($isSpam && $this->services) {
                 $this->services->get('Omeka\Logger')->notice(sprintf(
                     '[ContactUs] Spam detected: reasons=%s; ip=%s; email=%s', // @translate
@@ -482,7 +496,15 @@ class ContactUs extends AbstractHelper
             error_reporting($errorReporting & ~E_WARNING);
 
             $form->setData($params);
-            if ($hasEmail && $form->isValid()) {
+            if ($blockSubmission) {
+                error_reporting($errorReporting);
+                $status = 'error';
+                $message = new PsrMessage(
+                    'Links (URLs) are not allowed in messages. Please remove any link and resubmit.' // @translate
+                );
+                $this->messenger->addError($message->translate());
+                $defaultForm = false;
+            } elseif ($hasEmail && $form->isValid()) {
                 $submitted = $form->getData();
                 error_reporting($errorReporting);
                 if ($user) {

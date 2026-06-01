@@ -257,6 +257,18 @@ class SiteSettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'contactus_block_urls',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Reject messages containing URLs', // @translate
+                    'info' => 'When enabled, any message containing http://, https:// or www. is rejected with an explicit error and not stored.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_block_urls',
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_questions',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
