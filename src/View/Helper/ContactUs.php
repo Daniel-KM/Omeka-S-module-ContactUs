@@ -346,6 +346,25 @@ class ContactUs extends AbstractHelper
                 }
             }
 
+            // Proof-of-work verification. The browser must have solved the
+            // sha256 hashcash challenge issued when the form was rendered.
+            if (empty($user) && !$setting('contactus_pow_skip')) {
+                $session = new Container('ContactUs');
+                $expectedSalt = (string) ($session->pow_salt ?? '');
+                $issuedAt = (int) ($session->pow_issued_at ?? 0);
+                $nonce = (string) ($params['pow_nonce'] ?? '');
+                unset($session->pow_salt);
+                unset($session->pow_issued_at);
+                if ($expectedSalt === ''
+                    || $nonce === ''
+                    || !ctype_digit($nonce)
+                    || (time() - $issuedAt) > 3600
+                    || strncmp(hash('sha256', $expectedSalt . ':' . $nonce), '0000', 4) !== 0
+                ) {
+                    $spamReasons[] = 'powChallenge';
+                }
+            }
+
             if ($antispam) {
                 $question = (new Container('ContactUs'))->question;
                 if ($this->checkSpam($options, $params)) {
@@ -742,6 +761,15 @@ class ContactUs extends AbstractHelper
             // Stamp the form generation time so the submit handler can reject
             // too-fast (bot) and too-old (expired) submissions.
             $session->form_loaded_at = time();
+            // Generate a proof-of-work salt. The client browser must find a
+            // nonce such that sha256(salt:nonce) starts with 4 hex zeros
+            // (~65k hashes, about one second in a modern browser).
+            $powSalt = '';
+            if (!$setting('contactus_pow_skip') && empty($user)) {
+                $powSalt = bin2hex(random_bytes(16));
+                $session->pow_salt = $powSalt;
+                $session->pow_issued_at = time();
+            }
             if ($antispam) {
                 $question = array_rand($options['questions']);
                 $answer = $options['questions'][$question];
@@ -766,6 +794,7 @@ class ContactUs extends AbstractHelper
                 'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
                 'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
                 'recaptcha' => !empty($options['recaptcha']),
+                'pow_salt' => $powSalt,
             ];
             $form = $newsletterOnly
                 ? $this->getFormNewsletter($formOptions)

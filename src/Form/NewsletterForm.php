@@ -28,6 +28,7 @@ class NewsletterForm extends Form
     protected $checkAnswer = '';
     protected $user = null;
     protected $recaptcha = false;
+    protected $powSalt = '';
 
     public function __construct($name = null, $options = [])
     {
@@ -41,6 +42,7 @@ class NewsletterForm extends Form
         $this->checkAnswer = $options['check_answer'] ?? '';
         $this->user = $options['user'] ?? null;
         $this->recaptcha = $options['recaptcha'] ?? false;
+        $this->powSalt = (string) ($options['pow_salt'] ?? '');
     }
 
     public function init(): void
@@ -162,6 +164,20 @@ class NewsletterForm extends Form
             $this->add([
                 'type' => \Omeka\Form\Element\Recaptcha::class,
             ]);
+        }
+
+        if ($this->powSalt !== '') {
+            $this
+                ->setAttribute('data-pow-salt', $this->powSalt)
+                ->setAttribute('data-pow-difficulty', '4')
+                ->add([
+                    'name' => 'pow_nonce',
+                    'type' => Element\Hidden::class,
+                    'attributes' => [
+                        'id' => 'pow_nonce',
+                        'value' => '',
+                    ],
+                ]);
         }
 
         $this

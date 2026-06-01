@@ -367,3 +367,69 @@
 
     });
 })();
+
+/**
+ * Self-hosted proof-of-work for contact forms.
+ *
+ * The server embeds a random salt and a difficulty on every form tagged with
+ * data-pow-salt. The browser must find a decimal nonce such that sha256(salt +
+ * ':' + nonce) starts with N leading hex zeros. The nonce is written to the
+ * hidden pow_nonce input and validated server-side.
+ *
+ * Runs via crypto.subtle (requires HTTPS or localhost).
+ */
+(function () {
+    async function sha256Hex(message) {
+        const buf = new TextEncoder().encode(message);
+        const hash = await crypto.subtle.digest('SHA-256', buf);
+        const bytes = new Uint8Array(hash);
+        let hex = '';
+        for (let i = 0; i < bytes.length; i++) {
+            hex += bytes[i].toString(16).padStart(2, '0');
+        }
+        return hex;
+    }
+
+    async function solve(salt, difficulty) {
+        const prefix = '0'.repeat(difficulty);
+        for (let n = 0; n < 1e7; n++) {
+            const h = await sha256Hex(salt + ':' + n);
+            if (h.startsWith(prefix)) return n;
+            // Yield to the UI every 256 iterations so the tab stays responsive
+            // on low-end hardware.
+            if ((n & 0xff) === 0) {
+                await new Promise(function (r) { setTimeout(r, 0); });
+            }
+        }
+        return null;
+    }
+
+    function setupForm(form) {
+        const salt = form.getAttribute('data-pow-salt');
+        const diff = parseInt(form.getAttribute('data-pow-difficulty') || '4', 10);
+        const input = form.querySelector('input[name="pow_nonce"]');
+        if (!salt || !input) return;
+        const submits = form.querySelectorAll('[type="submit"]');
+        for (const b of submits) { b.disabled = true; }
+        solve(salt, diff).then(function (nonce) {
+            if (nonce !== null) {
+                input.value = String(nonce);
+            }
+            for (const b of submits) { b.disabled = false; }
+        }).catch(function () {
+            for (const b of submits) { b.disabled = false; }
+        });
+    }
+
+    function init() {
+        if (!window.crypto || !window.crypto.subtle) return;
+        const forms = document.querySelectorAll('form[data-pow-salt]');
+        forms.forEach(setupForm);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

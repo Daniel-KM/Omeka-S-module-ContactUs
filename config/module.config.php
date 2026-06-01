@@ -211,6 +211,7 @@ return [
             'contactus_create_zip' => 'original',
             'contactus_delete_zip' => 30,
             'contactus_check_dns_mx' => false,
+            'contactus_pow_skip' => false,
         ],
         // Site settings.
         'site_settings' => [

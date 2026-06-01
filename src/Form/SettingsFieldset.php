@@ -160,6 +160,19 @@ class SettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'contactus_pow_skip',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Skip the client-side proof-of-work', // @translate
+                    'info' => 'By default, the browser must compute a small SHA-256 hashcash challenge before the form can be submitted. This blocks bots that do not run JavaScript. Invisible for real users (about one second). Check to disable.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_pow_skip',
+                    'required' => false,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_check_dns_mx',
                 'type' => Element\Checkbox::class,
                 'options' => [
