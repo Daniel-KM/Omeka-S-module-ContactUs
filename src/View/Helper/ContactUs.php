@@ -1028,22 +1028,48 @@ class ContactUs extends AbstractHelper
 
         if (!empty($placeholders['id'])) {
             $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
-            $idTitles = $this->api->search('items', ['id' => $placeholders['id']], ['initialize' => false, 'returnScalar' => 'title'])->getContent();
-            $baseUrlItem = rtrim($url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => 'item', 'id' => '00'], ['force_canonical' => true]), '/0');
+            $idTitles = $this->api->search('resources', ['id' => $placeholders['id']], ['initialize' => false, 'returnScalar' => 'title'])->getContent();
+            $connection = $this->services->get('Omeka\Connection');
+            $idTypes = $connection->executeQuery(
+                'SELECT id, resource_type FROM resource WHERE id IN (?)',
+                [array_keys($idTitles)],
+                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
+            )->fetchAllKeyValue();
+            $entityToController = [
+                \Omeka\Entity\Item::class => 'item',
+                \Omeka\Entity\ItemSet::class => 'item-set',
+                \Omeka\Entity\Media::class => 'media',
+            ];
+            if (class_exists(\DigitalObject\Entity\DigitalObject::class)) {
+                $entityToController[\DigitalObject\Entity\DigitalObject::class] = 'digital-object';
+            }
+            $byController = [];
+            $urls = [];
+            foreach ($idTitles as $rid => $title) {
+                $controller = $entityToController[$idTypes[$rid] ?? ''] ?? 'item';
+                $byController[$controller][] = $rid;
+                $urls[$rid] = $url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => $controller, 'id' => $rid], ['force_canonical' => true]);
+            }
             // {resources}: list of urls.
-            $placeholders['resources'] = implode(', ', array_map(fn($v) => "$baseUrlItem/$v", array_keys($idTitles)));
+            $placeholders['resources'] = implode(', ', $urls);
             // {resources_ids}: list of ids.
-            $placeholders['resources_ids'] = implode(', ', array_keys($idTitles));
-            // {resources_urls}: list of urls. Alias of {resource}.
-            $placeholders['resources_urls'] = implode(', ', array_map(fn($v) => "$baseUrlItem/$v", array_keys($idTitles)));
-            // {resources_url}: single url to all selected resources.
-            $placeholders['resources_url'] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
-            // {resources_url_admin}: single url to all selected resources.
-            $placeholders['resources_url_admin'] = $url('admin/default', ['controller' => 'item'], ['query' => ['id' => implode(',', $placeholders['id'])], 'force_canonical' => true]);
+            $placeholders['resources_ids'] = implode(', ', array_keys($urls));
+            // {resources_urls}: list of urls. Alias of {resources}.
+            $placeholders['resources_urls'] = implode(', ', $urls);
+            // {resources_url} and {resources_url_admin}: one browse url per
+            // resource type, joined.
+            $publicBrowse = [];
+            $adminBrowse = [];
+            foreach ($byController as $controller => $ids) {
+                $publicBrowse[] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => $controller], ['query' => ['id' => implode(',', $ids)], 'force_canonical' => true]);
+                $adminBrowse[] = $url('admin/default', ['controller' => $controller], ['query' => ['id' => implode(',', $ids)], 'force_canonical' => true]);
+            }
+            $placeholders['resources_url'] = implode(' ', $publicBrowse);
+            $placeholders['resources_url_admin'] = implode(' ', $adminBrowse);
             // {resources::property term}: list of titles or identifiers, etc.
             // This process is slower, so fill it only when needed.
             if ($resourceTerms) {
-                $resources = $this->api->search('items', ['id' => $placeholders['id']])->getContent();
+                $resources = $this->api->search('resources', ['id' => $placeholders['id']])->getContent();
                 $vals = array_fill_keys($resourceTerms, []);
                 foreach ($resources as $resource) {
                     foreach ($resourceTerms as $term) {
@@ -1060,8 +1086,11 @@ class ContactUs extends AbstractHelper
             // Html.
             // TODO Manage html mail.
             // {resources_links}: list of links.
-            $baseLink = '<a href="' . $baseUrlItem . '/%1$d">%2$s</a>';
-            $placeholders['resources_links'] = implode(', ', array_map(fn($k, $v) => sprintf($baseLink, $k, $v ?: $translate('[No title]')), array_keys($idTitles), $idTitles));
+            $noTitle = $translate('[No title]');
+            $placeholders['resources_links'] = implode(', ', array_map(
+                fn($rid) => sprintf('<a href="%s">%s</a>', $urls[$rid], $idTitles[$rid] !== null && $idTitles[$rid] !== '' ? $idTitles[$rid] : $noTitle),
+                array_keys($urls)
+            ));
         }
 
         $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));

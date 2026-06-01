@@ -69,7 +69,7 @@
                     matches.forEach((match, groupIndex) => {
                         switch (match) {
                             case '{resource_url}':
-                                val = urlBaseItem + '/' + resource['o:id'];
+                                val = urlSiteBase + '/' + resourceController(resource) + '/' + resource['o:id'];
                                 output = output.replace(match, val);
                                 break;
                             case '{thumbnail_url}':
@@ -180,7 +180,20 @@
             noResource.remove();
 
             const urlApi = resourceList.data('url-api');
-            const urlBaseItem = resourceList.data('url-base-item');
+            const urlSiteBase = resourceList.data('url-site-base') || resourceList.data('url-base-item');
+            const typeToController = {
+                'o:Item': 'item',
+                'o:ItemSet': 'item-set',
+                'o:Media': 'media',
+                'o:DigitalObject': 'digital-object',
+            };
+            const resourceController = function(resource) {
+                const types = Array.isArray(resource['@type']) ? resource['@type'] : [resource['@type']];
+                for (const t of types) {
+                    if (typeToController[t]) return typeToController[t];
+                }
+                return 'item';
+            };
             const defaultUntitled = resourceList.data('default-untitled');
             const defaultThumbnailUrl = resourceList.data('default-thumbnail-url');
             const defaultThumbnailLabel = resourceList.data('default-thumbnail-label');

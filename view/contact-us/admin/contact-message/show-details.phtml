@@ -6,6 +6,7 @@
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
+$api = $plugins->get('api');
 $i18n = $plugins->get('i18n');
 $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
@@ -46,16 +47,26 @@ $site = $resource->site();
         <div class="value">
             <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped file when created') ?></a>
         </div>
-        <?php elseif ($attachedResourceIds): ?>
+        <?php elseif ($attachedResourceIds):
+            $attachedResources = $api->search('resources', ['id' => $attachedResourceIds])->getContent();
+            $groups = [];
+            foreach ($attachedResources as $r) {
+                $groups[$r->getControllerName()][] = $r->id();
+            }
+            ?>
         <h4><?= $escape($translate('Multiple resources')) ?></h4>
+        <?php foreach ($groups as $controller => $ids):
+            $label = ucfirst(str_replace('-', ' ', $controller));
+            ?>
         <div class="value">
-            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => 'item', 'action' => 'browse'], ['query' => ['id' => $attachedResourceIds]])) ?>"><?= sprintf($translate('%d items (admin)'), count($attachedResourceIds)) ?></a>
+            <a class="resource-name" href="<?= $escapeAttr($url('admin/default', ['controller' => $controller, 'action' => 'browse'], ['query' => ['id' => $ids]])) ?>"><?= sprintf($translate('%1$d %2$s (admin)'), count($ids), $label) ?></a>
             <?php if ($site): ?>
             <div>
-                <a class="resource-name" href="<?= $escapeAttr($url('site/resource', ['controller' => 'item', 'action' => 'browse', 'site-slug' => $site->slug()], ['query' => ['id' => $attachedResourceIds]])) ?>"><?= sprintf($translate('%d items (public)'), count($attachedResourceIds)) ?></a>
+                <a class="resource-name" href="<?= $escapeAttr($url('site/resource', ['controller' => $controller, 'action' => 'browse', 'site-slug' => $site->slug()], ['query' => ['id' => $ids]])) ?>"><?= sprintf($translate('%1$d %2$s (public)'), count($ids), $label) ?></a>
             </div>
             <?php endif; ?>
         </div>
+        <?php endforeach; ?>
         <div class="value">
             <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped files when created') ?></a>
         </div>
