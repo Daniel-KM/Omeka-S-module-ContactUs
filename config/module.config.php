@@ -35,15 +35,13 @@ return [
         ],
     ],
     'form_elements' => [
-        'invokables' => [
-            Form\ContactUsFieldset::class => Form\ContactUsFieldset::class,
-            Form\NewsletterFieldset::class => Form\NewsletterFieldset::class,
-            Form\SettingsFieldset::class => Form\SettingsFieldset::class ,
-            Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
-        ],
         'factories' => [
+            Form\ContactUsFieldset::class => Service\Form\BlockFieldsetFactory::class,
+            Form\NewsletterFieldset::class => Service\Form\BlockFieldsetFactory::class,
             Form\ContactUsForm::class => Service\Form\ContactUsFormFactory::class,
             Form\NewsletterForm::class => Service\Form\NewsletterFormFactory::class,
+            Form\SettingsFieldset::class => Service\Form\SettingsFieldsetFactory::class,
+            Form\SiteSettingsFieldset::class => Service\Form\SiteSettingsFieldsetFactory::class,
         ],
     ],
     'block_layouts' => [

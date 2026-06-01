@@ -20,8 +20,24 @@ class SiteSettingsFieldset extends Fieldset
     {
         $this
             ->setAttribute('id', 'contact-us')
-            ->setOption('element_groups', $this->elementGroups)
+            ->setOption('element_groups', $this->elementGroups);
 
+        $moduleManager = $this->getOption('module_manager');
+        $botGuard = $moduleManager ? $moduleManager->getModule('BotGuard') : null;
+        $hasBotGuard = $botGuard && $botGuard->getState() === \Omeka\Module\Manager::STATE_ACTIVE;
+        if (!$hasBotGuard) {
+            $this->add([
+                'name' => 'contactus_botguard_note',
+                'type' => CommonElement\Note::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Advanced anti-spam protection', // @translate
+                    'text' => 'For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the BotGuard module.', // @translate
+                ],
+            ]);
+        }
+
+        $this
             ->add([
                 'name' => 'contactus_fields',
                 'type' => OmekaElement\ArrayTextarea::class,

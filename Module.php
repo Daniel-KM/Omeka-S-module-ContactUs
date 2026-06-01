@@ -13,6 +13,7 @@ use Common\TraitModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Omeka\Module\AbstractModule;
 
 /**
@@ -125,6 +126,25 @@ class Module extends AbstractModule
 
         if ($errors) {
             throw new \Omeka\Module\Exception\ModuleCannotInstallException(implode("\n", $errors));
+        }
+
+        $this->checkBotGuardPresence($services);
+    }
+
+    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services): void
+    {
+        parent::upgrade($oldVersion, $newVersion, $services);
+        $this->checkBotGuardPresence($services);
+    }
+
+    protected function checkBotGuardPresence(ServiceLocatorInterface $services): void
+    {
+        $moduleManager = $services->get('Omeka\ModuleManager');
+        $bg = $moduleManager->getModule('BotGuard');
+        if (!$bg || $bg->getState() !== \Omeka\Module\Manager::STATE_ACTIVE) {
+            $services->get('Omeka\Logger')->notice(
+                'Module ContactUs : BotGuard is missing, so only simple anti-spam countermeasures are available.' // @translate
+            );
         }
     }
 
