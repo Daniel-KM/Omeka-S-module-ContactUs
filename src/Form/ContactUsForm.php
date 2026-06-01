@@ -49,6 +49,25 @@ class ContactUsForm extends Form
             ->setAttribute('class', 'contact-form')
             ->setName('contact-us');
 
+        // Honeypot. Hidden by CSS, aria and tabindex; bots fill it, users
+        // don't. The check is performed server-side in the ContactUs view
+        // helper.
+        $this
+            ->add([
+                'name' => 'contact_website',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Website', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contact_website',
+                    'tabindex' => '-1',
+                    'autocomplete' => 'off',
+                    'aria-hidden' => 'true',
+                    'style' => 'position:absolute;left:-10000px;width:1px;height:1px;opacity:0;',
+                ],
+            ]);
+
         // "From" is used instead of "email" to avoid some basic spammers.
         if ($this->user) {
             if (!empty($this->formOptions['form_display_user_email_hidden'])) {

@@ -288,7 +288,12 @@ class ContactUs extends AbstractHelper
         }
 
         if ($isPost) {
-            if ($antispam) {
+            // Honeypot runs regardless of the antispam option: a hidden field
+            // in the form is filled only by bots.
+            if (empty($user) && !empty($params['contact_website'])) {
+                $isSpam = true;
+            }
+            if (!$isSpam && $antispam) {
                 $isSpam = $this->checkSpam($options, $params);
                 if (!$isSpam) {
                     $question = (new Container('ContactUs'))->question;
