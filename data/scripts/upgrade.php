@@ -158,7 +158,9 @@ if (version_compare($oldVersion, '3.3.8.7', '<')) {
         ALTER TABLE `contact_message`
             ADD CONSTRAINT FK_2C9211FE7E3C61F9 FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE SET NULL;
         SQL;
-    $connection->executeStatement($sql);
+    foreach (array_filter(array_map('trim', explode(";\n", $sql))) as $sql) {
+        $connection->executeStatement($sql);
+    }
 }
 
 if (version_compare($oldVersion, '3.3.8.8', '<')) {
