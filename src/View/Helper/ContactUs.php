@@ -1094,7 +1094,7 @@ class ContactUs extends AbstractHelper
             // {resources_links}: list of links.
             $noTitle = $translate('[No title]');
             $placeholders['resources_links'] = implode(', ', array_map(
-                fn($rid) => sprintf('<a href="%s">%s</a>', $urls[$rid], $idTitles[$rid] !== null && $idTitles[$rid] !== '' ? $idTitles[$rid] : $noTitle),
+                fn($rid) => sprintf('<a href="%s">%s</a>', htmlspecialchars($urls[$rid]), htmlspecialchars($idTitles[$rid] !== null && $idTitles[$rid] !== '' ? $idTitles[$rid] : $noTitle)),
                 array_keys($urls)
             ));
         }

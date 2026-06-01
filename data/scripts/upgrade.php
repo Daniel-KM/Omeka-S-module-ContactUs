@@ -262,7 +262,7 @@ if (version_compare($oldVersion, '3.4.11', '<')) {
     $message = new PsrMessage(
         'It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See {link}settings{link_end}.', // @translate
         [
-            'link' => sprintf('<a href="%s">', $url('admin/default', ['controller' => 'setting'], ['fragment' => 'contact'])),
+            'link' => sprintf('<a href="%s">', htmlspecialchars($url('admin/default', ['controller' => 'setting'], ['fragment' => 'contact']))),
             'link_end' => '</a>',
         ]
     );

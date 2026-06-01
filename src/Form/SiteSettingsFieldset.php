@@ -308,7 +308,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalMultiCheckbox::class,
                 'options' => [
                     'element_group' => 'themes_old',
-                    'label' => 'Contact Us (old themes)', // @translate
+                    'label' => 'Contact Us', // @translate
                     'value_options' => [
                         'after/items' => 'Item show', // @translate
                         'after/media' => 'Media show', // @translate

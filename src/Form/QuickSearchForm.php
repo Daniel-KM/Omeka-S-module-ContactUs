@@ -58,7 +58,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'Spam', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
@@ -77,7 +77,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'Read', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
@@ -96,7 +96,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'Has file', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
@@ -115,7 +115,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'Has resource', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
@@ -134,7 +134,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'Newsletter', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
@@ -153,7 +153,7 @@ class QuickSearchForm extends Form
                 'options' => [
                     'label' => 'To author', // @translate
                     'label_attributes' => [
-                        'style' => 'display: inline; margin-right: .5em;',
+                        'style' => 'display: inline; margin-right: 1em;',
                     ],
                     'value_options' => [
                         '' => 'All', // @translate
