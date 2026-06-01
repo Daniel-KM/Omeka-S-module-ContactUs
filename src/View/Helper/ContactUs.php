@@ -819,10 +819,14 @@ class ContactUs extends AbstractHelper
     {
         $session = new Container('ContactUs');
         $question = isset($session->question) ? $session->question : null;
-        return empty($question)
+        if (empty($question)
             || !isset($options['questions'][$question])
             || empty($params['check'])
-            || substr(md5($question), 0, 16) !== $params['check'];
+            || !is_string($params['check'])
+        ) {
+            return true;
+        }
+        return !hash_equals(substr(md5($question), 0, 16), $params['check']);
     }
 
     /**
