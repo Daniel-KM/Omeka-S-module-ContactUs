@@ -204,7 +204,7 @@ if (version_compare($oldVersion, '3.3.8.11', '<')) {
         UPDATE `contact_message`
         SET `resource_id` = SUBSTRING_INDEX(`request_url`, '/', -1)
         WHERE `resource_id` IS NULL
-            AND `request_url` IS NOT NULL 
+            AND `request_url` IS NOT NULL
             AND SUBSTRING_INDEX(`request_url`, '/', -1) REGEXP '^[0-9]+$'
         ;
         SQL;
@@ -575,5 +575,66 @@ if (version_compare($oldVersion, '3.4.29', '<')) {
             $placements[] = 'browse/items';
         }
         $siteSettings->set('contactus_placement', $placements);
+    }
+}
+
+if (version_compare($oldVersion, '3.4.30', '<')) {
+    // TODO Check if theme is custom for the file view/common/contact-us.phtml.
+    $message = new PsrMessage(
+        'Some new anti-spam checks were added in main settings. Check them if needed.' // @translate
+    );
+    $messenger->addSuccess($message);
+
+    // Zip tokens are now HMAC-signed, so the filename changes for each existing
+    // message. Rename existing zip files to the new filename so the admin zip
+    // links keep working. Previously sent emails still carry the old token in
+    // their URL and cannot be salvaged; the list of affected message ids is
+    // reported so the admin can notify users.
+    $config = $services->get('Config');
+    $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+    $zipDir = $basePath . '/contactus';
+    $renamedIds = [];
+    $orphanIds = [];
+    if (is_dir($zipDir)) {
+        $files = glob($zipDir . '/*.zip') ?: [];
+        foreach ($files as $filepath) {
+            $name = basename($filepath);
+            if (!preg_match('~^(\d+)\.[A-Za-z0-9]+\.zip$~', $name, $m)) {
+                continue;
+            }
+            $id = (int) $m[1];
+            try {
+                $contactMessage = $api->read('contact_messages', $id)->getContent();
+            } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                @unlink($filepath);
+                $orphanIds[] = $id;
+                continue;
+            }
+            $newName = $contactMessage->zipFilename();
+            if ($name === $newName) {
+                continue;
+            }
+            $newPath = $zipDir . '/' . $newName;
+            if (@rename($filepath, $newPath)) {
+                $renamedIds[] = $id;
+            }
+        }
+    }
+
+    if ($renamedIds) {
+        sort($renamedIds);
+        $message = new PsrMessage(
+            'The zip filenames were re-signed. Previously sent emails pointing to these zip files are now broken. Contact messages concerned: {ids}.', // @translate
+            ['ids' => '#' . implode(', #', $renamedIds)]
+        );
+        $messenger->addWarning($message);
+    }
+    if ($orphanIds) {
+        sort($orphanIds);
+        $message = new PsrMessage(
+            'Removed {count} orphan zip files (message deleted): {ids}.', // @translate
+            ['count' => count($orphanIds), 'ids' => '#' . implode(', #', $orphanIds)]
+        );
+        $messenger->addNotice($message);
     }
 }
