@@ -101,31 +101,31 @@
         content: ""; /* media */
     }
     .contact-message .o-icon-read::before {
-        color: #00FF00;
-        content:""; /* far fa-envelope-open */
+        color: #2A7D2A;
+        content: "\f01c"; /* fas fa-inbox (taken in charge, like Contribute) */
     }
     .contact-message .o-icon-not-read::before {
-        color: #FF0000;
-        content:""; /* far fa-envelope */
+        color: #A91919;
+        content: "\f059"; /* fas fa-question-circle (like Contribute) */
     }
     .contact-message .o-icon-spam::before {
-        color: #FF0000;
+        color: #A91919;
         content: ""; /* far fa-thumbs-down */
     }
     .contact-message .o-icon-not-spam::before {
-        color: #00FF00;
+        color: #2A7D2A;
         content: ""; /* far fa-thumbs-up */
     }
     .contact-message .o-icon-zip::before {
-        color: #00FF00;
+        color: #2A7D2A;
         content:""; /* far fa-file-archive */
     }
     .contact-message .o-icon-no-zip::before {
-        color: #FF0000;
+        color: #A91919;
         content:""; /* far fa-file-archive */
     }
     .contact-message .o-icon-undefined::before {
-        color: #FF0000;
+        color: #A91919;
         content: ""; /* fas fa-exclamation-circle */
     }
     .contact-message .o-icon-none::before {

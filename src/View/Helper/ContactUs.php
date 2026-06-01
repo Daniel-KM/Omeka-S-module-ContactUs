@@ -759,7 +759,13 @@ class ContactUs extends AbstractHelper
                             $from = $sender;
                             $to = [$submitted['from'] => (string) $submitted['name']];
 
-                            $result = $this->sendEmail->__invoke($body, $subject, $to, $from);
+                            // Reply-to is the configured support address, else
+                            // the administrator, so the visitor can answer a
+                            // monitored mailbox (never a no-reply).
+                            $replyToEmail = $setting('contactus_reply_to_email') ?: $setting('administrator_email');
+                            $replyTo = $replyToEmail ? [$replyToEmail => ''] : null;
+
+                            $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, null, $replyTo);
                             if (!$result) {
                                 $status = 'error';
                                 $message = new PsrMessage(

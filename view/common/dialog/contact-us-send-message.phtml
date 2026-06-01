@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \ContactUs\Form\SendMessageForm $form
+ */
+
+$translate = $this->plugin('translate');
+
+$form->prepare();
+?>
+
+<dialog class="popup popup-dialog dialog-send-message dialog-contactus" aria-labelledby="dialog-contactus-send-heading">
+    <div class="dialog-background">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <button type="button" class="dialog-header-close-button">
+                    <span class="dialog-close" aria-hidden="true">🗙</span>
+                    <span class="dialog-close-label"><?= $translate('Close') ?></span>
+                </button>
+            </div>
+            <div class="dialog-contents">
+                <h2 id="dialog-contactus-send-heading" class="dialog-heading"><?= $translate('Reply to the contact') ?></h2>
+                <div class="dialog-body">
+                    <?= $this->form($form) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</dialog>

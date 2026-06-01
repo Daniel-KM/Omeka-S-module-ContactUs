@@ -23,9 +23,11 @@ $userIsAllowed = $plugins->get('userIsAllowed');
 $this->headLink()
     ->appendStylesheet($assetUrl('css/common-page-action-menu.css', 'Common'))
     ->appendStylesheet($assetUrl('css/common-quick-search.css', 'Common'))
+    ->appendStylesheet($assetUrl('css/common-dialog.css', 'Common'))
     ->appendStylesheet($assetUrl('css/contact-us-admin.css', 'ContactUs'));
 $this->headScript()
     ->appendFile($assetUrl('js/common-quick-search.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
+    ->appendFile($assetUrl('js/common-dialog.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
     ->appendFile($assetUrl('js/contact-us-admin.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 
 $this->htmlElement('body')->appendAttribute('class', 'contact-message contact-messages browse');
@@ -159,6 +161,14 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                         data-status="<?= $message->isSpam() ? 'spam' : 'not-spam' ?>"
                         aria-label="<?= $escapeAttr($translate('Toggle spam')) ?>"
                         title="<?= $escapeAttr($translate('Toggle spam')) ?>"></a></li>
+                    <?php if ($message->email()): ?>
+                    <li><a href="#"
+                        class="button-dialog-common reply-message fas fa-envelope"
+                        data-dialog-selector="dialog.dialog-send-message.dialog-contactus"
+                        data-url="<?= $escapeAttr($message->url('send-message')) ?>"
+                        aria-label="<?= $v = $escapeAttr($translate('Reply to the contact')) ?>"
+                        title="<?= $v ?>"></a></li>
+                    <?php endif; ?>
                     <?php endif; ?>
                     <?php if ($editRightContactUs): ?>
                     <li><a href="#"
@@ -232,4 +242,8 @@ $('.sidebar').on('submit', '#batch-delete-confirm', function(e) {
 <?= $this->partial('common/quick-search-sidebar', [
     'formSearch' => $formSearch,
     'title' => $translate('Filter contact messages'),
+]) ?>
+
+<?= $this->partial('common/dialog/contact-us-send-message', [
+    'form' => $formSendMessage,
 ]) ?>

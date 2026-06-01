@@ -37,6 +37,7 @@ return [
     'form_elements' => [
         'invokables' => [
             Form\QuickSearchForm::class => Form\QuickSearchForm::class,
+            Form\SendMessageForm::class => Form\SendMessageForm::class,
         ],
         'factories' => [
             Form\ContactUsFieldset::class => Service\Form\BlockFieldsetFactory::class,
@@ -206,6 +207,25 @@ return [
             'contactus_sender_email' => '',
             'contactus_sender_name' => '',
             'contactus_notify_recipients' => [],
+            'contactus_reply_to_email' => '',
+            'contactus_reply_subject' => 'Re: {subject}', // @translate
+            'contactus_reply_body' => <<<'MAIL'
+                Hi {name},
+
+
+
+                Sincerely,
+
+                {main_title}
+                {main_url}
+
+                --
+
+                Your message:
+                Subject: {subject}
+
+                {message}
+                MAIL, // @translate
             'contactus_author' => 'disabled',
             'contactus_author_only' => false,
             'contactus_send_with_user_email' => false,

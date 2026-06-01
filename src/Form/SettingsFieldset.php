@@ -99,6 +99,47 @@ class SettingsFieldset extends Fieldset
             ])
 
             ->add([
+                'name' => 'contactus_reply_to_email',
+                'type' => CommonElement\OptionalEmail::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Reply-to address when answering a contact', // @translate
+                    'info' => 'Address set as reply-to when an admin answers a message. If empty, the reply-to is the email of the connected admin. The sender (from) remains the unique installation address.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_reply_to_email',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_reply_subject',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Default subject when answering a contact', // @translate
+                    'info' => 'Placeholders: {name}, {email}, {subject}, {message}, {main_title}, {main_url}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_reply_subject',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_reply_body',
+                'type' => Element\Textarea::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Default message when answering a contact', // @translate
+                    'info' => 'Placeholders: {name}, {email}, {subject}, {message}, {main_title}, {main_url}.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_reply_body',
+                    'required' => false,
+                    'rows' => 5,
+                ],
+            ])
+
+            ->add([
                 'name' => 'contactus_author',
                 'type' => OmekaElement\PropertySelect::class,
                 'options' => [
