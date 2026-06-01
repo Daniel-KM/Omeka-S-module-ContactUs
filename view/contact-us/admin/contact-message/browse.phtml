@@ -20,6 +20,7 @@ $escapeAttr = $plugins->get('escapeHtmlAttr');
 $userIsAllowed = $plugins->get('userIsAllowed');
 
 $this->headLink()
+    ->appendStylesheet($assetUrl('css/common-page-action-menu.css', 'Common'))
     ->appendStylesheet($assetUrl('css/contact-us-admin.css', 'ContactUs'));
 $this->headScript()
     ->appendFile($assetUrl('js/contact-us-admin.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
@@ -62,34 +63,35 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
 <?php if ($messages): ?>
 <div id="page-actions">
     <?php if ($userIsAllowed(MessageAdapter::class, 'batch-update')): ?>
-    <a href="#"
-        class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-read'], true)) ?>"
-        aria-label="<?= $escapeAttr($translate('Read')) ?>"
-        data-property="is_read"
-        data-status="read"
-        title="<?= $escapeAttr($translate('Read')) ?>"><?= $escape($translate('Set read')) ?></a>
-    <a href="#"
-        class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-read'], true)) ?>"
-        aria-label="<?= $escapeAttr($translate('not-read')) ?>"
-        data-property="is_read"
-        data-status="not-read"
-        title="<?= $escapeAttr($translate('not-read')) ?>"><?= $escape($translate('Set not read')) ?></a>
-    <a href="#"
-        class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-spam'], true)) ?>"
-        aria-label="<?= $escapeAttr($translate('Set spam')) ?>"
-        data-property="is_spam"
-        data-status="spam"
-        title="<?= $escapeAttr($translate('Set spam')) ?>"><?= $escape($translate('Set spam')) ?></a>
-    <a href="#"
-        class="button batch-actions batch-property"
-        data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
-        aria-label="<?= $escapeAttr($translate('Set not spam')) ?>"
-        data-property="is_spam"
-        data-status="not-spam"
-        title="<?= $escapeAttr($translate('Set not spam')) ?>"><?= $escape($translate('Set not spam')) ?></a>
+    <div class="page-action-menu">
+        <div class="with-sub-menu">
+            <a href="#" class="button expand"
+                aria-label="<?= $escapeAttr($translate('Expand')) ?>"
+                title="<?= $escapeAttr($translate('Expand')) ?>"><?= $escape($translate('Actions')) ?></a>
+            <ul class="collapsible">
+                <li><a href="#"
+                    class="batch-actions batch-property"
+                    data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-read'], true)) ?>"
+                    data-property="is_read"
+                    data-status="read"><?= $escape($translate('Set read')) ?></a></li>
+                <li><a href="#"
+                    class="batch-actions batch-property"
+                    data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-read'], true)) ?>"
+                    data-property="is_read"
+                    data-status="not-read"><?= $escape($translate('Set not read')) ?></a></li>
+                <li><a href="#"
+                    class="batch-actions batch-property"
+                    data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-spam'], true)) ?>"
+                    data-property="is_spam"
+                    data-status="spam"><?= $escape($translate('Set spam')) ?></a></li>
+                <li><a href="#"
+                    class="batch-actions batch-property"
+                    data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
+                    data-property="is_spam"
+                    data-status="not-spam"><?= $escape($translate('Set not spam')) ?></a></li>
+            </ul>
+        </div>
+    </div>
     <?php endif; ?>
     <?php if ($userIsAllowed(MessageAdapter::class, 'batch-delete')): ?>
     <a href="#"
