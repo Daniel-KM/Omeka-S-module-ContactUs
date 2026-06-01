@@ -8,6 +8,7 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
+use ContactUs\Form\QuickSearchForm;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\ErrorStore;
 
@@ -34,8 +35,26 @@ class ContactMessageController extends AbstractActionController
         $this->deleteZips();
 
         $this->setBrowseDefaults('created');
-        $response = $this->api()->search('contact_messages', $this->params()->fromQuery());
+
+        $query = $this->params()->fromQuery();
+
+        // Hide spam by default. The sidebar quick-search form can override with
+        // "1" (only spam) or "any" (show both).
+        if (!isset($query['is_spam'])) {
+            $query['is_spam'] = '0';
+        }
+        $apiQuery = $query;
+        if ((string) $apiQuery['is_spam'] === 'any') {
+            unset($apiQuery['is_spam']);
+        }
+
+        $response = $this->api()->search('contact_messages', $apiQuery);
         $this->paginator($response->getTotalResults());
+
+        $formSearch = $this->getForm(QuickSearchForm::class);
+        $formSearch->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'browse'], true));
+        $formSearch->setAttribute('id', 'contact-message-search');
+        $formSearch->setData($query);
 
         $formDeleteSelected = $this->getForm(ConfirmForm::class);
         $formDeleteSelected->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-delete'], true));
@@ -53,6 +72,7 @@ class ContactMessageController extends AbstractActionController
         return new ViewModel([
             'messages' => $contactMessages,
             'resources' => $contactMessages,
+            'formSearch' => $formSearch,
             'formDeleteSelected' => $formDeleteSelected,
             'formDeleteAll' => $formDeleteAll,
         ]);

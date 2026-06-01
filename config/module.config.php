@@ -35,6 +35,9 @@ return [
         ],
     ],
     'form_elements' => [
+        'invokables' => [
+            Form\QuickSearchForm::class => Form\QuickSearchForm::class,
+        ],
         'factories' => [
             Form\ContactUsFieldset::class => Service\Form\BlockFieldsetFactory::class,
             Form\NewsletterFieldset::class => Service\Form\BlockFieldsetFactory::class,

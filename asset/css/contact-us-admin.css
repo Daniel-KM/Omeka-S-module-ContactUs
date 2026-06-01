@@ -148,4 +148,61 @@
         display:block;
         margin-top:48px;
     }
+
+    /* Quick-filter sidebar layers above details/delete sidebars. */
+    .contact-messages .sidebar.search {
+        z-index: 4;
+    }
+    .contact-messages .sidebar.search .field-meta {
+        width: auto;
+        max-width: 100%;
+    }
+    .contact-messages .sidebar.search label,
+    .contact-messages .sidebar.search .label,
+    .contact-messages .sidebar.search .inputs {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 0 6px;
+        padding: 0;
+        position: inherit;
+    }
+    .contact-messages .sidebar.search label::after,
+    .contact-messages .sidebar.search .label::after {
+        position: inherit;
+    }
+}
+
+@media all {
+    #sidebar-search {
+        overflow: hidden;
+    }
+    #sidebar-search form {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+    }
+    #sidebar-search .sidebar-search-fields {
+        flex: 1 1 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        min-height: 0;
+        padding-right: 4px;
+        padding-bottom: 72px;
+    }
+}
+
+.browse .browse-controls .quick-search::before {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f002" / "";
+    padding: .25em;
 }
