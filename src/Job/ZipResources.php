@@ -76,9 +76,9 @@ class ZipResources extends AbstractJob
             return;
         }
 
-        $items = $api->search('items', ['id' => $ids])->getContent();
-        $media = $api->search('media', ['id' => $ids])->getContent();
-        $resources = array_merge($items, $media);
+        // Use the polymorphic resources adapter to avoid id collisions between
+        // items and media, and to include item sets when relevant.
+        $resources = $api->search('resources', ['id' => $ids])->getContent();
         if (!$resources) {
             $this->job->setStatus(\Omeka\Entity\Job::STATUS_ERROR);
             $this->logger->err('No valid resource.'); // @translate

@@ -236,23 +236,19 @@ class IndexController extends AbstractActionController
         $id = $params->fromQuery('id');
 
         $isMultiple = is_array($id);
-        $ids = $isMultiple ? $id : array_filter([$id]);
-
-        $api = $this->api();
-
-        // Check resources.
-        // Search resources is currently not possible in Omeka S v
-        $resourceIds = [];
-        foreach ($ids as $id) {
-            try {
-                $api->read('resources', ['id' => $id])->getContent();
-                $resourceIds[] = $id;
-            } catch (\Omeka\Api\Exception\NotFoundException $e) {
-                continue;
-            }
+        $ids = array_filter(array_map('intval', $isMultiple ? $id : [$id]));
+        if (!$ids) {
+            return [];
         }
 
-        return $resourceIds;
+        // Batch via the polymorphic resources adapter to keep a single query,
+        // then preserve the original order.
+        $existingIds = $this->api()
+            ->search('resources', ['id' => $ids], ['returnScalar' => 'id'])
+            ->getContent();
+        $existingIds = array_map('intval', array_values($existingIds));
+
+        return array_values(array_intersect($ids, $existingIds));
     }
 
     /**
@@ -263,14 +259,10 @@ class IndexController extends AbstractActionController
         if (!$resourceIds) {
             return [];
         }
-        $api = $this->api();
         $result = array_fill_keys($resourceIds, null);
-        foreach ($resourceIds as $id) {
-            try {
-                $result[$id] = $api->read('resources', ['id' => $id])->getContent()->jsonSerialize();
-            } catch (\Throwable $e) {
-                // Skip. Normally, the list is already checked.
-            }
+        $resources = $this->api()->search('resources', ['id' => $resourceIds])->getContent();
+        foreach ($resources as $resource) {
+            $result[$resource->id()] = $resource->jsonSerialize();
         }
         return $result;
     }
