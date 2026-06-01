@@ -342,7 +342,7 @@ class ContactUs extends AbstractHelper
             // does not publish an MX record, the message is treated as spam.
             if (empty($user) && $setting('contactus_check_dns_mx')) {
                 $email = (string) ($params['from'] ?? '');
-                if ($email !== '' && str_contains($email, '@')) {
+                if ($email !== '' && strpos($email, '@') !== false) {
                     [, $domain] = explode('@', $email, 2);
                     $domain = trim($domain);
                     if ($domain !== '' && !checkdnsrr($domain, 'MX')) {

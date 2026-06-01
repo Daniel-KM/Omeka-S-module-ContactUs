@@ -416,7 +416,7 @@ class ContactUsForm extends Form
                 // required, e.g. "phone = * Phone" in settings.
                 $label = (string) $data;
                 $fieldRequired = false;
-                if (str_starts_with($label, '* ')) {
+                if (strpos($label, '* ') === 0) {
                     $label = substr($label, 2);
                     $fieldRequired = true;
                 }
