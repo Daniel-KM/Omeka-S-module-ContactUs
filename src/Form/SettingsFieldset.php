@@ -141,7 +141,7 @@ class SettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'contactus_author',
-                'type' => OmekaElement\PropertySelect::class,
+                'type' => CommonElement\OptionalPropertySelect::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Property where email of the author is stored', // @translate
@@ -163,7 +163,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_author_only',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Send email to author only, not admins (hidden)', // @translate
@@ -174,7 +174,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_send_with_user_email',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Use the user email to send message to author (warning: many email providers reject them as spam)', // @translate
@@ -206,7 +206,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_delete_zip',
-                'type' => Element\Number::class,
+                'type' => CommonElement\OptionalNumber::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Remove zip files after some days', // @translate
@@ -218,7 +218,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_pow_skip',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Skip the client-side proof-of-work', // @translate
@@ -231,7 +231,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_check_dns_mx',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Check mx records of the email domain', // @translate

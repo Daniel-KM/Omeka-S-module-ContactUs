@@ -127,7 +127,7 @@ class SiteSettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'contactus_confirmation_enabled',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Send a confirmation email', // @translate
@@ -252,7 +252,7 @@ class SiteSettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'contactus_antispam',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Enable simple antispam for visitors', // @translate
@@ -263,7 +263,7 @@ class SiteSettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_antispam',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Enable simple antispam for visitors', // @translate
@@ -274,7 +274,7 @@ class SiteSettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_block_urls',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Reject messages containing URLs', // @translate
@@ -324,7 +324,7 @@ class SiteSettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'contactus_selection_guest_disable',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Disable the selection in guest view', // @translate
@@ -370,7 +370,7 @@ class SiteSettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'contactus_selection_include_resources',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Include resources in response', // @translate
@@ -382,7 +382,7 @@ class SiteSettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_selections_include_ids',
-                'type' => Element\Checkbox::class,
+                'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Include matching resource ids from module Selection in response', // @translate
