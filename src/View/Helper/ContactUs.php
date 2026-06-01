@@ -15,6 +15,7 @@ use Omeka\Api\Manager as ApiManager;
 use Omeka\Mvc\Controller\Plugin\Api;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Mailer;
+use Psr\Container\ContainerInterface;
 
 /**
  * @see \Access\Site\BlockLayout\AccessRequest
@@ -82,6 +83,11 @@ class ContactUs extends AbstractHelper
      */
     protected $errorMessage;
 
+    /**
+     * @var ContainerInterface|null
+     */
+    protected $services;
+
     public function __construct(
         Api $api,
         ApiManager $apiManager,
@@ -90,7 +96,8 @@ class ContactUs extends AbstractHelper
         Mailer $mailer,
         Messenger $messenger,
         SendEmail $sendEmail,
-        array $defaultOptions
+        array $defaultOptions,
+        ?ContainerInterface $services = null
     ) {
         $this->api = $apiManager;
         $this->apiPlugin = $api;
@@ -99,6 +106,7 @@ class ContactUs extends AbstractHelper
         $this->mailer = $mailer;
         $this->messenger = $messenger;
         $this->sendEmail = $sendEmail;
+        $this->services = $services;
         $this->defaultOptions = $defaultOptions + [
             'template' => null,
             'resource' => null,
@@ -270,6 +278,7 @@ class ContactUs extends AbstractHelper
             && !empty($options['antispam'])
             && !empty($options['questions']);
         $isSpam = false;
+        $spamReasons = [];
         $message = null;
         $status = null;
         $defaultForm = true;
@@ -291,41 +300,102 @@ class ContactUs extends AbstractHelper
             // Honeypot runs regardless of the antispam option: a hidden field
             // in the form is filled only by bots.
             if (empty($user) && !empty($params['contact_website'])) {
-                $isSpam = true;
+                $spamReasons[] = 'honeypot';
             }
+
             // Submit-time check for anonymous posts. Bots typically submit in
             // under a second; humans take longer to fill the form. The
             // timestamp is set when the default form is rendered below.
-            if (!$isSpam && empty($user)) {
+            if (empty($user)) {
                 $session = new Container('ContactUs');
                 $loadedAt = (int) ($session->form_loaded_at ?? 0);
                 $delta = $loadedAt ? time() - $loadedAt : null;
-                if ($delta === null || $delta < 3 || $delta > 3600) {
-                    $isSpam = true;
+                if ($delta === null || $delta < 3) {
+                    $spamReasons[] = 'tooFast';
+                } elseif ($delta > 3600) {
+                    $spamReasons[] = 'tooSlow';
                 }
             }
+
             // Rate limit per session (bound to the current client IP). A
             // minimum delay between two successful or failed posts cuts both
             // brute antispam and flooding from a single source.
-            if (!$isSpam && empty($user)) {
+            if (empty($user)) {
                 $session = new Container('ContactUs');
-                $currentIp = (new RemoteAddress())->getIpAddress();
+                $currentIp = $this->clientIp();
                 $lastIp = (string) ($session->last_submit_ip ?? '');
                 $lastAt = (int) ($session->last_submit_at ?? 0);
                 if ($lastAt && $lastIp === $currentIp && (time() - $lastAt) < 10) {
-                    $isSpam = true;
+                    $spamReasons[] = 'rateLimit';
                 } else {
                     $session->last_submit_ip = $currentIp;
                     $session->last_submit_at = time();
                 }
             }
-            if (!$isSpam && $antispam) {
-                $isSpam = $this->checkSpam($options, $params);
-                if (!$isSpam) {
-                    $question = (new Container('ContactUs'))->question;
-                    $answer = $params['answer'] ?? false;
-                    $checkAnswer = $options['questions'][$question];
+
+            // DNS MX check for the email domain of the sender. If the domain
+            // does not publish an MX record, the message is treated as spam.
+            if (empty($user) && $setting('contactus_check_dns_mx')) {
+                $email = (string) ($params['from'] ?? '');
+                if ($email !== '' && str_contains($email, '@')) {
+                    [, $domain] = explode('@', $email, 2);
+                    $domain = trim($domain);
+                    if ($domain !== '' && !checkdnsrr($domain, 'MX')) {
+                        $spamReasons[] = 'dnsMx';
+                    }
                 }
+            }
+
+            if ($antispam) {
+                $question = (new Container('ContactUs'))->question;
+                if ($this->checkSpam($options, $params)) {
+                    $spamReasons[] = 'captcha';
+                } else {
+                    $answer = $params['answer'] ?? false;
+                    $checkAnswer = $options['questions'][$question] ?? '';
+                }
+            }
+
+            // Delegate to BotGuard if installed and active.
+            if ($this->services) {
+                $moduleManager = $this->services->get('Omeka\ModuleManager');
+                $bg = $moduleManager->getModule('BotGuard');
+                if ($bg && $bg->getState() === \Omeka\Module\Manager::STATE_ACTIVE
+                    && $this->services->has('BotGuard\SpamChecker')
+                ) {
+                    $session = new Container('ContactUs');
+                    $checker = $this->services->get('BotGuard\SpamChecker');
+                    $ctx = new \BotGuard\SpamContext(
+                        $this->clientIp() ?: null,
+                        (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
+                        $params['from'] ?? null,
+                        $params['subject'] ?? null,
+                        $params['message'] ?? null,
+                        isset($session->form_loaded_at) ? (int) $session->form_loaded_at : null,
+                        $params['contact_website'] ?? null,
+                        $user ? $user->getId() : null,
+                        [
+                            'powSalt' => $session->pow_salt ?? null,
+                            'powNonce' => $params['pow_nonce'] ?? null,
+                            'lastSubmitAt' => $session->last_submit_at ?? null,
+                            'lastSubmitIp' => $session->last_submit_ip ?? null,
+                        ]
+                    );
+                    $result = $checker->check($ctx);
+                    if ($result->isSpam()) {
+                        $spamReasons = array_values(array_unique(array_merge($spamReasons, $result->reasons)));
+                    }
+                }
+            }
+
+            $isSpam = !empty($spamReasons);
+            if ($isSpam && $this->services) {
+                $this->services->get('Omeka\Logger')->notice(sprintf(
+                    '[ContactUs] Spam detected: reasons=%s; ip=%s; email=%s', // @translate
+                    implode(',', $spamReasons),
+                    $this->clientIp(),
+                    (string) ($params['from'] ?? '')
+                ));
             }
 
             $params += ['from' => null, 'name' => null];
@@ -1067,5 +1137,29 @@ class ContactUs extends AbstractHelper
     protected function fixEndOfLine($string): string
     {
         return strtr((string) $string, ["\r\n" => "\n", "\n\r" => "\n", "\r" => "\n"]);
+    }
+
+    /**
+     * Resolve the real client IP when the site sits behind a reverse proxy.
+     *
+     * Laminas RemoteAddress only reads REMOTE_ADDR, which is the proxy IP.
+     * Mirror the logic of MessageAdapter::getClientIp and prefer the first hop
+     * of X-Forwarded-For, then X-Real-IP, then REMOTE_ADDR. The proxy setup is
+     * assumed to strip spoofed upstream headers.
+     */
+    protected function clientIp(): string
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $first = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+            if (filter_var($first, FILTER_VALIDATE_IP)) {
+                return $first;
+            }
+        }
+        if (!empty($_SERVER['HTTP_X_REAL_IP'])
+            && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)
+        ) {
+            return $_SERVER['HTTP_X_REAL_IP'];
+        }
+        return $_SERVER['REMOTE_ADDR'] ?? '';
     }
 }

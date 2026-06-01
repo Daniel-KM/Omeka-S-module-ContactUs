@@ -159,6 +159,18 @@ class SettingsFieldset extends Fieldset
                     'required' => false,
                 ],
             ])
+            ->add([
+                'name' => 'contactus_check_dns_mx',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Check mx records of the email domain', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_check_dns_mx',
+                    'required' => false,
+                ],
+            ])
         ;
     }
 }

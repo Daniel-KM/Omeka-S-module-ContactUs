@@ -34,7 +34,8 @@ class ContactUsFactory implements FactoryInterface
             $services->get('Omeka\Mailer'),
             $plugins->get('messenger'),
             $plugins->get('sendEmail'),
-            $defaultOptions
+            $defaultOptions,
+            $services
         );
     }
 }
