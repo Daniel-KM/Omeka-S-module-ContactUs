@@ -194,7 +194,7 @@ class IndexController extends AbstractActionController
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $contactMessage = $this->messageAdapter->getRepresentation($contactMessageEntity);
 
-        if ($token !== $contactMessage->token()) {
+        if (!hash_equals((string) $contactMessage->token(), (string) $token)) {
             throw new \Omeka\Mvc\Exception\NotFoundException('Resource does not exist.'); // @translate
         }
 

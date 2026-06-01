@@ -329,40 +329,17 @@ class ContactMessageController extends AbstractActionController
             return;
         }
 
-        // Get all messages older than x days.
+        // Iterate via the API so the filename (and therefore the HMAC token) is
+        // computed by the representation. A raw SQL replica of the token is not
+        // possible because the HMAC secret lives in application code.
         $older = new DateTime('-' . $deleteZip . ' day');
-        /*
-        $contactMessageIds = $this->api()->search('contact_messages', [
+        $contactMessages = $this->api()->search('contact_messages', [
             'modified_before' => $older->format('Y-m-d\TH:i:s'),
-        ], ['returnScalar' => 'id'])->getContent();
-        if (!count($contactMessageIds)) {
-            return;
-        }
-        */
+        ])->getContent();
 
-        // For performance purpose, use a direct sql query.
-        $sql = <<<'SQL'
-SELECT
-    `id`,
-    SUBSTRING(REPLACE(REPLACE(REPLACE(TO_BASE64(SHA2(CONCAT(id, '/', email, '/', ip, '/', user_agent, '/', created), 256)), '+', ''), '/', ''), '=', ''), 1, 12) AS "token"
-FROM contact_message
-WHERE modified < :older
-;
-SQL;
-        $bind = [
-            'older' => $older->format('Y-m-d H:i:s'),
-        ];
-        $types = [
-            'older' => \Doctrine\DBAL\ParameterType::STRING,
-        ];
-        $tokens = $this->connection->executeQuery($sql, $bind, $types)->fetchAllKeyValue();
-
-        /** @see \ContactUs\Api\Representation\MessageRepresentation::zipFilepath() */
-        foreach ($tokens as $id => $token) {
-            $filename = $id . '.' . $token . '.zip';
-            $filepath = $this->basePath . '/contactus/' . $filename;
-            $fileExists = file_exists($filepath) && is_writeable($filepath);
-            if ($fileExists) {
+        foreach ($contactMessages as $contactMessage) {
+            $filepath = $contactMessage->zipFilepath();
+            if (file_exists($filepath) && is_writeable($filepath)) {
                 @unlink($filepath);
             }
         }

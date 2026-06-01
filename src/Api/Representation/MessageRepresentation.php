@@ -261,7 +261,13 @@ class MessageRepresentation extends AbstractEntityRepresentation
 
     public function token(): ?string
     {
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        $secret = (string) $settings->get('contactus_token_secret');
+        if ($secret === '') {
+            $secret = bin2hex(random_bytes(32));
+            $settings->set('contactus_token_secret', $secret);
+        }
         $string = $this->id() . '/' . $this->email() . '/' . $this->ip() . '/' . $this->userAgent() . '/' . $this->created()->format('Y-m-d H:i:s');
-        return substr(strtr(base64_encode(hash('sha256', $string)), ['+' => '', '/' => '', '=' => '']), 0, 12);
+        return substr(strtr(base64_encode(hash_hmac('sha256', $string, $secret, true)), ['+' => '', '/' => '', '=' => '']), 0, 12);
     }
 }
