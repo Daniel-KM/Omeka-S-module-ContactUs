@@ -88,6 +88,11 @@ class ContactUs extends AbstractHelper
      */
     protected $services;
 
+    /**
+     * @var array|null
+     */
+    protected static $spamKeywords;
+
     public function __construct(
         Api $api,
         ApiManager $apiManager,
@@ -362,6 +367,16 @@ class ContactUs extends AbstractHelper
                     || strncmp(hash('sha256', $expectedSalt . ':' . $nonce), '0000', 4) !== 0
                 ) {
                     $spamReasons[] = 'powChallenge';
+                }
+            }
+
+            // Spam keyword match on the posted subject+body. Mirrors the check
+            // Common\SendEmail performs before sending, so the stored message
+            // gets spam reason instead of silently slipping through.
+            if (empty($user)) {
+                $candidate = trim((string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? ''));
+                if ($candidate !== '' && $this->matchSpamKeyword($candidate) !== null) {
+                    $spamReasons[] = 'keyword';
                 }
             }
 
@@ -1190,5 +1205,30 @@ class ContactUs extends AbstractHelper
             return $_SERVER['HTTP_X_REAL_IP'];
         }
         return $_SERVER['REMOTE_ADDR'] ?? '';
+    }
+
+    /**
+     * Return the first spam keyword matched in the body, or null.
+     *
+     * Replicates Common\SendEmail::matchSpamKeyword (which is protected) so the
+     * stored message gets a spam reason before sending. Reads the shared
+     * read-only keyword list from the Common module, located via reflection so
+     * the path holds wherever Common is installed.
+     */
+    protected function matchSpamKeyword(string $body): ?string
+    {
+        if (self::$spamKeywords === null) {
+            $file = dirname((new \ReflectionClass(SendEmail::class))->getFileName(), 4)
+                . '/data/mailer/spam_keywords.php';
+            self::$spamKeywords = is_file($file) ? include $file : [];
+        }
+        foreach (self::$spamKeywords as $spamKeyword) {
+            // Word boundaries avoid false positives on substrings, for example
+            // "cialis" in "specialiste".
+            if (preg_match('/\b' . preg_quote($spamKeyword, '/') . '\b/ui', $body)) {
+                return $spamKeyword;
+            }
+        }
+        return null;
     }
 }
