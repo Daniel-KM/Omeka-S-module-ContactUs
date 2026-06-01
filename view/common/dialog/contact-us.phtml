@@ -20,23 +20,26 @@ $translate = $plugins->get('translate');
 
 // Prepare hierarchical names for "fields" when plugin form() is not used.
 $form->prepare();
+$dialogId = 'dialog-contact-us-' . ($resource ? $resource->id() : 'g');
+$headingId = $dialogId . '-heading';
 ?>
 
-<dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?>>
+<dialog class="popup popup-dialog popup-contact-us contact-us-form"<?php if ($resource): ?> data-id="<?= $resource->id() ?>"<?php endif; ?><?php if (!empty($heading)): ?> aria-labelledby="<?= $headingId ?>"<?php endif; ?>>
     <div class="dialog-background">
         <div class="dialog-panel">
             <div class="dialog-header">
-                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
-                    <span class="dialog-close">🗙</span>
+                <button type="button" class="dialog-header-close-button">
+                    <span class="dialog-close" aria-hidden="true">🗙</span>
+                    <span class="dialog-close-label"><?= $this->translate('Close') ?></span>
                 </button>
             </div>
             <div class="dialog-contents">
                 <?php if (!empty($heading)): ?>
-                <h4><?= $escape($heading) ?></h4>
+                <h2 id="<?= $headingId ?>" class="dialog-heading"><?= $escape($heading) ?></h2>
                 <?php endif; ?>
                 <?= $html ?? '' ?>
                 <?php if ($message): ?>
-                <p class="explanation <?= $status ?>"><?= $message ?></p>
+                <p class="explanation <?= $status ?>" role="<?= $status === 'error' ? 'alert' : 'status' ?>" aria-live="polite"><?= $message ?></p>
                 <?php endif; ?>
                 <?php if ($status !== 'success' && $form): ?>
                 <?= $this->form($form) ?>

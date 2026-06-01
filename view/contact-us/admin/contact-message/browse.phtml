@@ -121,7 +121,7 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
         <tr>
             <th class="column-tag">
                 <?php if ($batchEditRight): ?>
-                <input type="checkbox" class="select-all">
+                <input type="checkbox" class="select-all" aria-label="<?= $translate('Select all') ?>">
                 <?php endif; ?>
                 <?= $translate('Message') ?>
             </th>
@@ -137,7 +137,7 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
         <tr class="contact-message">
             <td>
                 <?php if ($batchEditRight): ?>
-                    <input type="checkbox" name="resource_ids[]" value="<?= $message->id() ?>">
+                    <input type="checkbox" name="resource_ids[]" value="<?= $message->id() ?>" aria-label="<?= $translate('Select message') ?>">
                 <?php endif; ?>
                 <?php $subject = $message->subject() ?: $message->body() ?>
                 <?= $escape(mb_substr($subject, 0, 200)) . (mb_strlen($subject) > 200 ? '…' : '') ?>
@@ -162,12 +162,12 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                         aria-label="<?= $escapeAttr($translate('Toggle spam')) ?>"
                         title="<?= $escapeAttr($translate('Toggle spam')) ?>"></a></li>
                     <?php if ($message->email()): ?>
-                    <li><a href="#"
+                    <li><button type="button"
                         class="button-dialog-common reply-message fas fa-envelope"
-                        data-dialog-selector="dialog.dialog-send-message.dialog-contactus"
+                        aria-haspopup="dialog" aria-controls="dialog-contactus-send" data-dialog-selector="dialog.dialog-send-message.dialog-contactus"
                         data-url="<?= $escapeAttr($message->url('send-message')) ?>"
                         aria-label="<?= $v = $escapeAttr($translate('Reply to the contact')) ?>"
-                        title="<?= $v ?>"></a></li>
+                        title="<?= $v ?>"></button></li>
                     <?php endif; ?>
                     <?php endif; ?>
                     <?php if ($editRightContactUs): ?>
