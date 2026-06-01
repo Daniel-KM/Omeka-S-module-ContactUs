@@ -304,6 +304,21 @@ class ContactUs extends AbstractHelper
                     $isSpam = true;
                 }
             }
+            // Rate limit per session (bound to the current client IP). A
+            // minimum delay between two successful or failed posts cuts both
+            // brute antispam and flooding from a single source.
+            if (!$isSpam && empty($user)) {
+                $session = new Container('ContactUs');
+                $currentIp = (new RemoteAddress())->getIpAddress();
+                $lastIp = (string) ($session->last_submit_ip ?? '');
+                $lastAt = (int) ($session->last_submit_at ?? 0);
+                if ($lastAt && $lastIp === $currentIp && (time() - $lastAt) < 10) {
+                    $isSpam = true;
+                } else {
+                    $session->last_submit_ip = $currentIp;
+                    $session->last_submit_at = time();
+                }
+            }
             if (!$isSpam && $antispam) {
                 $isSpam = $this->checkSpam($options, $params);
                 if (!$isSpam) {
