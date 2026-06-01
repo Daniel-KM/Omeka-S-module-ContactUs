@@ -22,8 +22,10 @@ $userIsAllowed = $plugins->get('userIsAllowed');
 
 $this->headLink()
     ->appendStylesheet($assetUrl('css/common-page-action-menu.css', 'Common'))
+    ->appendStylesheet($assetUrl('css/common-quick-search.css', 'Common'))
     ->appendStylesheet($assetUrl('css/contact-us-admin.css', 'ContactUs'));
 $this->headScript()
+    ->appendFile($assetUrl('js/common-quick-search.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
     ->appendFile($assetUrl('js/contact-us-admin.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 
 $this->htmlElement('body')->appendAttribute('class', 'contact-message contact-messages browse');
@@ -227,27 +229,7 @@ $('.sidebar').on('submit', '#batch-delete-confirm', function(e) {
 </script>
 <?php endif; ?>
 
-<div id="sidebar-search" class="sidebar search">
-    <a href="#"
-        class="sidebar-close o-icon-close"
-        aria-label="<?= $escapeAttr($translate('Close')) ?>"
-        title="<?= $escapeAttr($translate('Close')) ?>"></a>
-    <div class="sidebar-content">
-        <h3><?= $escape($translate('Filter contact messages')) ?></h3>
-        <?php
-        $formSearch->prepare();
-        $submit = $formSearch->get('submit');
-        $formSearch->remove('submit');
-        echo $this->form()->openTag($formSearch);
-        ?>
-        <div class="sidebar-search-fields disable-unsaved-warning">
-            <?php foreach ($formSearch as $elt) {
-                echo $this->formRow($elt);
-            } ?>
-        </div>
-        <div class="confirm-panel">
-            <?= $this->formButton($submit) ?>
-        </div>
-        <?= $this->form()->closeTag() ?>
-    </div>
-</div>
+<?= $this->partial('common/quick-search-sidebar', [
+    'formSearch' => $formSearch,
+    'title' => $translate('Filter contact messages'),
+]) ?>

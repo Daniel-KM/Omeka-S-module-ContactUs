@@ -14,12 +14,13 @@ class QuickSearchForm extends Form
 
     public function init(): void
     {
-        $this->setAttribute('method', 'get');
-
         // GET form: no csrf token in the query string.
         $this->remove('csrf');
 
         $this
+            ->setAttribute('id', 'quick-search-form')
+            ->setAttribute('method', 'get')
+
             ->add([
                 'name' => 'name',
                 'type' => Element\Text::class,

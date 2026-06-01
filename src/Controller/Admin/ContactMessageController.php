@@ -53,7 +53,6 @@ class ContactMessageController extends AbstractActionController
 
         $formSearch = $this->getForm(QuickSearchForm::class);
         $formSearch->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'browse'], true));
-        $formSearch->setAttribute('id', 'contact-message-search');
         $formSearch->setData($query);
 
         $formDeleteSelected = $this->getForm(ConfirmForm::class);

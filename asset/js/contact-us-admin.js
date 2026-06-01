@@ -1,28 +1,5 @@
 $(document).ready(function() {
 
-    /**
-     * Search sidebar. Toggle on click. Close any other open sidebar first so
-     * row-detail or delete-confirm panels do not shadow the filter.
-     */
-    $('#content').on('click', '.quick-search', function(e) {
-        e.preventDefault();
-        var sidebar = $('#sidebar-search');
-        if (sidebar.hasClass('active')) {
-            Omeka.closeSidebar(sidebar);
-            return;
-        }
-        $('.sidebar.active').not(sidebar).each(function () {
-            Omeka.closeSidebar($(this));
-        });
-        Omeka.openSidebar(sidebar);
-        // Auto-close the filter if another sidebar opens afterwards.
-        $('body').one('o:sidebar-opened', '.sidebar', function () {
-            if (!sidebar.is(this)) {
-                Omeka.closeSidebar(sidebar);
-            }
-        });
-    });
-
     /* Update contact messages. */
 
     // Toggle the status of a message.
