@@ -17,6 +17,7 @@ class ContactUsButton implements ResourcePageBlockLayoutInterface
     {
         return [
             'items',
+            'digital_objects',
             // 'media',
         ];
     }

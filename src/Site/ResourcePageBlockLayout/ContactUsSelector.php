@@ -17,6 +17,7 @@ class ContactUsSelector implements ResourcePageBlockLayoutInterface
     {
         return [
             'items',
+            'digital_objects',
             // 'media',
         ];
     }

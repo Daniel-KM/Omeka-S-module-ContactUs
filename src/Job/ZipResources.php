@@ -89,6 +89,10 @@ class ZipResources extends AbstractJob
         foreach ($resources as $resource) {
             if ($resource instanceof MediaRepresentation) {
                 $medias = [$resource];
+            } elseif (class_exists(\DigitalObject\Api\Representation\DigitalObjectRepresentation::class)
+                && $resource instanceof \DigitalObject\Api\Representation\DigitalObjectRepresentation
+            ) {
+                $medias = [$resource];
             } else {
                 $medias = $resource->media();
             }

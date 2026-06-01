@@ -34,6 +34,7 @@ class MessageAdapter extends AbstractEntityAdapter
         'item_set_id' => 'resource',
         'item_id' => 'resource',
         'media_id' => 'resource',
+        'digital_object_id' => 'resource',
         'site_id' => 'site',
         'request_url' => 'requestUrl',
 
@@ -108,6 +109,7 @@ class MessageAdapter extends AbstractEntityAdapter
             'item_set_id' => 'resource',
             'item_id' => 'resource',
             'media_id' => 'resource',
+            'digital_object_id' => 'resource',
             'owner_id' => 'owner',
             'site_id' => 'site',
         ] as $queryKey => $column) {
@@ -158,9 +160,12 @@ class MessageAdapter extends AbstractEntityAdapter
                 'resource' => Resource::class,
                 'item_set' => ItemSet::class,
                 'item' => Item::class,
-                // 'users' => User::class,
-                // 'sites' => Site::class,
+                // 'users' => User::class, 'sites' => Site::class,
             ];
+            if (class_exists(\DigitalObject\Entity\DigitalObject::class)) {
+                $mapResourceTypes['digital_objects'] = \DigitalObject\Entity\DigitalObject::class;
+                $mapResourceTypes['digital_object'] = \DigitalObject\Entity\DigitalObject::class;
+            }
             if ($query['resource_type'] === 'resources') {
                 $qb
                     ->andWhere($expr->isNotNull('omeka_root.resource'));
