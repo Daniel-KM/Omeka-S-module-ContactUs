@@ -287,82 +287,50 @@
                 return;
             }
 
-            // TODO Use CommonDialog.jSend().
-
-            // For user.
+            // For user: ajax with response routed through CommonDialog.jSend*.
             const url = checkbox.data('url');
-            $.ajax({
-                url: url,
-                data: resourceId ? { id: resourceId } : null,
-                // beforeSend: CommonDialog.spinnerEnable(checkbox),
+            const target = checkbox[0];
+            fetch(url + (resourceId ? '?id=' + resourceId : ''), {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                credentials: 'same-origin',
             })
-            .done(function(data) {
-                if (data.status !== 'success') {
-                    // Uncheck the box.
+            .then(response => response.json().catch(() => ({ status: 'error', message: Omeka.jsTranslate('An error occurred.') })))
+            .then(data => {
+                if (!data || data.status !== 'success') {
                     checkbox.prop('checked', false);
-                    let message = checkbox.data('message-fail');
-                    CommonDialog.dialogAlert({
-                        heading: Omeka.jsTranslate('Contact'),
-                        message: message && message.length ? message : (data.message ? data.message : 'An error occurred.'),
-                    });
+                    CommonDialog.jSendFail(data || {}, { target: target });
+                    return;
                 }
                 localStorage.setItem('contactus_selectedIds', JSON.stringify(data.data.selected_resources));
                 $(document).trigger('o:contact-us-selection-updated', data);
             })
-            .fail(function (xhr, textStatus, errorThrown) {
-                const data = xhr.responseJSON;
-                if (data && data.status === 'fail') {
-                    // Fail is always an email/password error here.
-                    let msg = CommonDialog.jSendMessage(data);
-                    CommonDialog.dialogAlert({
-                        heading: Omeka.jsTranslate('Contact'),
-                        message: msg ? msg : 'Check input',
-                        nl2br: true,
-                    });
-                    form[0].reset();
-                } else {
-                    CustomDialog.jSendFail(xhr, textStatus, errorThrown);
-                }
-            })
-            .always(function () {
-                // CommonDialog.spinnerDisable(checkbox)
+            .catch(error => {
+                checkbox.prop('checked', false);
+                CommonDialog.jSendFail(error, { target: target });
             });
         });
 
         /**
          * Submit the contact us form via ajax when inside a dialog, via button.
-         *
-         * @todo Use CommonDialog.jSend().
          */
         $(document).on('submit', 'dialog #contact-us', function(ev) {
-            ev.preventDefault();
-            const form = $(this);
-            const urlForm = form.attr('action') ? form.attr('action') : window.location.href;
-            const submitButton = form.find('[type=submit]');
-            $
-                .ajax({
-                    type: 'POST',
-                    url: urlForm,
-                    data: form.serialize(),
-                    beforeSend: CommonDialog.spinnerEnable(submitButton),
-                })
-                .done(function(data) {
-                    // Success to send message.
-                    // So close the form and display the message.
-                    // form[0].reset();
-                    $(form).closest('dialog')[0].close();
-                    let msg = CommonDialog.jSendMessage(data);
-                    CommonDialog.dialogAlert({
-                        heading: Omeka.jsTranslate('Contact'),
-                        message: msg ? msg : 'Email successfully sent.',
-                        nl2br: true,
-                    });
+            const form = this;
+            const promise = CommonDialog.jSend(ev);
+            if (!promise) {
+                return;
+            }
+            promise.then(data => {
+                if (data && data.status === 'success') {
+                    const dialog = form.closest('dialog');
+                    if (dialog) {
+                        dialog.close();
+                    }
                     $(document).trigger('o:contact-us-email-sent', data);
-                })
-                .fail(CustomDialog.jSendFail)
-                .always(function () {
-                    CommonDialog.spinnerDisable(submitButton)
-                });
+                }
+            });
         });
 
         /**
