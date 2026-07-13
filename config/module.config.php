@@ -3,6 +3,11 @@
 namespace ContactUs;
 
 return [
+    'service_manager' => [
+        'factories' => [
+            'ContactUs\SpamChecker' => Service\SpamCheckerFactory::class,
+        ],
+    ],
     'api_adapters' => [
         'invokables' => [
             'contact_messages' => Api\Adapter\MessageAdapter::class,

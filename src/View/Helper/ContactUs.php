@@ -88,11 +88,6 @@ class ContactUs extends AbstractHelper
      */
     protected $services;
 
-    /**
-     * @var array|null
-     */
-    protected static $spamKeywords;
-
     public function __construct(
         Api $api,
         ApiManager $apiManager,
@@ -314,95 +309,32 @@ class ContactUs extends AbstractHelper
             $prevSubmitAt = (int) ($session->last_submit_at ?? 0);
             $prevSubmitIp = (string) ($session->last_submit_ip ?? '');
 
-            // An active SpamGuard module becomes the spam engine: the
-            // equivalent local checks are skipped to avoid a double and
-            // conflicting run. SpamGuard also adds dnsbl, bannedIp and logging.
-            $spamChecker = null;
-            if ($this->services) {
-                $moduleManager = $this->services->get('Omeka\ModuleManager');
-                $sg = $moduleManager->getModule('SpamGuard');
-                if ($sg && $sg->getState() === \Omeka\Module\Manager::STATE_ACTIVE
-                    && $this->services->has('SpamGuard\SpamChecker')
-                ) {
-                    $spamChecker = $this->services->get('SpamGuard\SpamChecker');
-                }
-            }
-
-            if ($spamChecker) {
-                // Delegate the shared strategies (honeypot, tooFast, rateLimit,
-                // dnsMx, powChallenge, keyword, urlCount, dnsbl, bannedIp).
-                if (empty($user)) {
-                    $ctx = new \SpamGuard\SpamContext(
-                        $currentIp ?: null,
-                        (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
-                        $params['from'] ?? null,
-                        $params['subject'] ?? null,
-                        $params['message'] ?? null,
-                        $loadedAt ?: null,
-                        $params['contact_website'] ?? null,
-                        null,
-                        [
-                            'powSalt' => $powSalt ?: null,
-                            'powNonce' => $params['pow_nonce'] ?? null,
-                            'lastSubmitAt' => $prevSubmitAt ?: null,
-                            'lastSubmitIp' => $prevSubmitIp ?: null,
-                        ]
-                    );
-                    $result = $spamChecker->check($ctx);
-                    if ($result->isSpam()) {
-                        $spamReasons = array_values(array_unique(array_merge($spamReasons, $result->reasons)));
-                    }
-                }
-            } elseif (empty($user)) {
-                // Local fallback, mirroring the SpamGuard strategies so the
-                // controls still work without the module.
-
-                // Honeypot: a hidden field only bots fill.
-                if (!empty($params['contact_website'])) {
-                    $spamReasons[] = 'honeypot';
-                }
-
-                // Too fast: bots usually submit in under a second.
-                $delta = $loadedAt ? time() - $loadedAt : null;
-                if ($delta === null || $delta < 3) {
-                    $spamReasons[] = 'tooFast';
-                }
-
-                // Rate limit per session, bound to the current client IP.
-                if ($prevSubmitAt && $prevSubmitIp === $currentIp && (time() - $prevSubmitAt) < 10) {
-                    $spamReasons[] = 'rateLimit';
-                }
-
-                // DNS MX check for the sender email domain.
-                if ($setting('contactus_check_dns_mx')) {
-                    $email = (string) ($params['from'] ?? '');
-                    if ($email !== '' && strpos($email, '@') !== false) {
-                        [, $domain] = explode('@', $email, 2);
-                        $domain = trim($domain);
-                        if ($domain !== '' && !checkdnsrr($domain, 'MX')) {
-                            $spamReasons[] = 'dnsMx';
-                        }
-                    }
-                }
-
-                // Proof-of-work: the browser must have solved the sha256
-                // hashcash challenge issued when the form was rendered.
-                if (!$setting('contactus_pow_skip')) {
-                    $nonce = (string) ($params['pow_nonce'] ?? '');
-                    if ($powSalt === ''
-                        || $nonce === ''
-                        || !ctype_digit($nonce)
-                        || (time() - $powIssuedAt) > 3600
-                        || strncmp(hash('sha256', $powSalt . ':' . $nonce), '0000', 4) !== 0
-                    ) {
-                        $spamReasons[] = 'powChallenge';
-                    }
-                }
-
-                // Spam keyword match on the posted subject and body.
-                $candidate = trim((string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? ''));
-                if ($candidate !== '' && $this->matchSpamKeyword($candidate) !== null) {
-                    $spamReasons[] = 'keyword';
+            // Resolve the spam checker (SpamGuard adapter when the module is
+            // active, else the local fallback) and collect the matched reasons.
+            // A single interface avoids the earlier double, conflicting run.
+            if (empty($user)) {
+                $spamContext = [
+                    'ip' => $currentIp,
+                    'userAgent' => (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
+                    'email' => $params['from'] ?? '',
+                    'subject' => $params['subject'] ?? '',
+                    'body' => $params['message'] ?? '',
+                    'formLoadedAt' => $loadedAt,
+                    'honeypot' => $params['contact_website'] ?? '',
+                    'powSalt' => $powSalt,
+                    'powNonce' => $params['pow_nonce'] ?? '',
+                    'powIssuedAt' => $powIssuedAt,
+                    'prevSubmitAt' => $prevSubmitAt,
+                    'prevSubmitIp' => $prevSubmitIp,
+                    'checkDnsMx' => (bool) $setting('contactus_check_dns_mx'),
+                    'powSkip' => (bool) $setting('contactus_pow_skip'),
+                ];
+                $spamChecker = $this->services
+                    ? $this->services->get('ContactUs\SpamChecker')
+                    : new \ContactUs\Spam\LocalSpamChecker();
+                $reasons = $spamChecker->check($spamContext);
+                if ($reasons) {
+                    $spamReasons = array_values(array_unique(array_merge($spamReasons, $reasons)));
                 }
             }
 
@@ -1274,30 +1206,5 @@ class ContactUs extends AbstractHelper
             return $_SERVER['HTTP_X_REAL_IP'];
         }
         return $_SERVER['REMOTE_ADDR'] ?? '';
-    }
-
-    /**
-     * Return the first spam keyword matched in the body, or null.
-     *
-     * Replicates Common\SendEmail::matchSpamKeyword (which is protected) so the
-     * stored message gets a spam reason before sending. Reads the shared
-     * read-only keyword list from the Common module, located via reflection so
-     * the path holds wherever Common is installed.
-     */
-    protected function matchSpamKeyword(string $body): ?string
-    {
-        if (self::$spamKeywords === null) {
-            $file = dirname((new \ReflectionClass(SendEmail::class))->getFileName(), 4)
-                . '/data/mailer/spam_keywords.php';
-            self::$spamKeywords = is_file($file) ? include $file : [];
-        }
-        foreach (self::$spamKeywords as $spamKeyword) {
-            // Word boundaries avoid false positives on substrings, for example
-            // "cialis" in "specialiste".
-            if (preg_match('/\b' . preg_quote($spamKeyword, '/') . '\b/ui', $body)) {
-                return $spamKeyword;
-            }
-        }
-        return null;
     }
 }
