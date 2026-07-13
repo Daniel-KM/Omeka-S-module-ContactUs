@@ -302,87 +302,121 @@ class ContactUs extends AbstractHelper
         }
 
         if ($isPost) {
-            // Honeypot runs regardless of the antispam option: a hidden field
-            // in the form is filled only by bots.
-            if (empty($user) && !empty($params['contact_website'])) {
-                $spamReasons[] = 'honeypot';
+            $session = new Container('ContactUs');
+            $currentIp = $this->clientIp();
+
+            // Snapshot the session state issued when the form was rendered,
+            // before any mutation below, so both the local checks and the
+            // delegated SpamGuard check see the values sent with the form.
+            $loadedAt = (int) ($session->form_loaded_at ?? 0);
+            $powSalt = (string) ($session->pow_salt ?? '');
+            $powIssuedAt = (int) ($session->pow_issued_at ?? 0);
+            $prevSubmitAt = (int) ($session->last_submit_at ?? 0);
+            $prevSubmitIp = (string) ($session->last_submit_ip ?? '');
+
+            // An active SpamGuard module becomes the spam engine: the
+            // equivalent local checks are skipped to avoid a double and
+            // conflicting run. SpamGuard also adds dnsbl, bannedIp and logging.
+            $spamChecker = null;
+            if ($this->services) {
+                $moduleManager = $this->services->get('Omeka\ModuleManager');
+                $sg = $moduleManager->getModule('SpamGuard');
+                if ($sg && $sg->getState() === \Omeka\Module\Manager::STATE_ACTIVE
+                    && $this->services->has('SpamGuard\SpamChecker')
+                ) {
+                    $spamChecker = $this->services->get('SpamGuard\SpamChecker');
+                }
             }
 
-            // Submit-time check for anonymous posts. Bots typically submit in
-            // under a second; humans take longer to fill the form. The
-            // timestamp is set when the default form is rendered below.
-            if (empty($user)) {
-                $session = new Container('ContactUs');
-                $loadedAt = (int) ($session->form_loaded_at ?? 0);
+            if ($spamChecker) {
+                // Delegate the shared strategies (honeypot, tooFast, rateLimit,
+                // dnsMx, powChallenge, keyword, urlCount, dnsbl, bannedIp).
+                if (empty($user)) {
+                    $ctx = new \SpamGuard\SpamContext(
+                        $currentIp ?: null,
+                        (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
+                        $params['from'] ?? null,
+                        $params['subject'] ?? null,
+                        $params['message'] ?? null,
+                        $loadedAt ?: null,
+                        $params['contact_website'] ?? null,
+                        null,
+                        [
+                            'powSalt' => $powSalt ?: null,
+                            'powNonce' => $params['pow_nonce'] ?? null,
+                            'lastSubmitAt' => $prevSubmitAt ?: null,
+                            'lastSubmitIp' => $prevSubmitIp ?: null,
+                        ]
+                    );
+                    $result = $spamChecker->check($ctx);
+                    if ($result->isSpam()) {
+                        $spamReasons = array_values(array_unique(array_merge($spamReasons, $result->reasons)));
+                    }
+                }
+            } elseif (empty($user)) {
+                // Local fallback, mirroring the SpamGuard strategies so the
+                // controls still work without the module.
+
+                // Honeypot: a hidden field only bots fill.
+                if (!empty($params['contact_website'])) {
+                    $spamReasons[] = 'honeypot';
+                }
+
+                // Too fast: bots usually submit in under a second.
                 $delta = $loadedAt ? time() - $loadedAt : null;
                 if ($delta === null || $delta < 3) {
                     $spamReasons[] = 'tooFast';
-                } elseif ($delta > 3600) {
-                    $spamReasons[] = 'tooSlow';
                 }
-            }
 
-            // Rate limit per session (bound to the current client IP). A
-            // minimum delay between two successful or failed posts cuts both
-            // brute antispam and flooding from a single source.
-            if (empty($user)) {
-                $session = new Container('ContactUs');
-                $currentIp = $this->clientIp();
-                $lastIp = (string) ($session->last_submit_ip ?? '');
-                $lastAt = (int) ($session->last_submit_at ?? 0);
-                if ($lastAt && $lastIp === $currentIp && (time() - $lastAt) < 10) {
+                // Rate limit per session, bound to the current client IP.
+                if ($prevSubmitAt && $prevSubmitIp === $currentIp && (time() - $prevSubmitAt) < 10) {
                     $spamReasons[] = 'rateLimit';
-                } else {
-                    $session->last_submit_ip = $currentIp;
-                    $session->last_submit_at = time();
                 }
-            }
 
-            // DNS MX check for the email domain of the sender. If the domain
-            // does not publish an MX record, the message is treated as spam.
-            if (empty($user) && $setting('contactus_check_dns_mx')) {
-                $email = (string) ($params['from'] ?? '');
-                if ($email !== '' && strpos($email, '@') !== false) {
-                    [, $domain] = explode('@', $email, 2);
-                    $domain = trim($domain);
-                    if ($domain !== '' && !checkdnsrr($domain, 'MX')) {
-                        $spamReasons[] = 'dnsMx';
+                // DNS MX check for the sender email domain.
+                if ($setting('contactus_check_dns_mx')) {
+                    $email = (string) ($params['from'] ?? '');
+                    if ($email !== '' && strpos($email, '@') !== false) {
+                        [, $domain] = explode('@', $email, 2);
+                        $domain = trim($domain);
+                        if ($domain !== '' && !checkdnsrr($domain, 'MX')) {
+                            $spamReasons[] = 'dnsMx';
+                        }
                     }
                 }
-            }
 
-            // Proof-of-work verification. The browser must have solved the
-            // sha256 hashcash challenge issued when the form was rendered.
-            if (empty($user) && !$setting('contactus_pow_skip')) {
-                $session = new Container('ContactUs');
-                $expectedSalt = (string) ($session->pow_salt ?? '');
-                $issuedAt = (int) ($session->pow_issued_at ?? 0);
-                $nonce = (string) ($params['pow_nonce'] ?? '');
-                unset($session->pow_salt);
-                unset($session->pow_issued_at);
-                if ($expectedSalt === ''
-                    || $nonce === ''
-                    || !ctype_digit($nonce)
-                    || (time() - $issuedAt) > 3600
-                    || strncmp(hash('sha256', $expectedSalt . ':' . $nonce), '0000', 4) !== 0
-                ) {
-                    $spamReasons[] = 'powChallenge';
+                // Proof-of-work: the browser must have solved the sha256
+                // hashcash challenge issued when the form was rendered.
+                if (!$setting('contactus_pow_skip')) {
+                    $nonce = (string) ($params['pow_nonce'] ?? '');
+                    if ($powSalt === ''
+                        || $nonce === ''
+                        || !ctype_digit($nonce)
+                        || (time() - $powIssuedAt) > 3600
+                        || strncmp(hash('sha256', $powSalt . ':' . $nonce), '0000', 4) !== 0
+                    ) {
+                        $spamReasons[] = 'powChallenge';
+                    }
                 }
-            }
 
-            // Spam keyword match on the posted subject+body. Mirrors the check
-            // Common\SendEmail performs before sending, so the stored message
-            // gets spam reason instead of silently slipping through.
-            if (empty($user)) {
+                // Spam keyword match on the posted subject and body.
                 $candidate = trim((string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? ''));
                 if ($candidate !== '' && $this->matchSpamKeyword($candidate) !== null) {
                     $spamReasons[] = 'keyword';
                 }
             }
 
-            // Strict rejection of any URL in subject or message when enabled by
-            // the site setting. Matches http(s)://, protocol-relative //, and
-            // bare www. hosts. Logged-in users are exempt.
+            // ContactUs-specific checks, always applied (not covered by
+            // SpamGuard).
+
+            // Too slow: the rendered form has expired.
+            if (empty($user) && $loadedAt && (time() - $loadedAt) > 3600) {
+                $spamReasons[] = 'tooSlow';
+            }
+
+            // Strict rejection of any URL in subject or message when the site
+            // setting is enabled. Matches http(s)://, protocol-relative // and
+            // bare www. hosts.
             if (empty($user) && $siteSetting('contactus_block_urls')) {
                 $candidate = (string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? '');
                 if ($candidate !== '' && preg_match('~(?:https?:)?//[a-z0-9]|\bwww\.[a-z0-9]~i', $candidate)) {
@@ -390,6 +424,7 @@ class ContactUs extends AbstractHelper
                 }
             }
 
+            // Question/answer captcha.
             if ($antispam) {
                 $question = (new Container('ContactUs'))->question;
                 if ($this->checkSpam($options, $params)) {
@@ -400,36 +435,13 @@ class ContactUs extends AbstractHelper
                 }
             }
 
-            // Delegate to SpamGuard if installed and active.
-            if ($this->services) {
-                $moduleManager = $this->services->get('Omeka\ModuleManager');
-                $bg = $moduleManager->getModule('SpamGuard');
-                if ($bg && $bg->getState() === \Omeka\Module\Manager::STATE_ACTIVE
-                    && $this->services->has('SpamGuard\SpamChecker')
-                ) {
-                    $session = new Container('ContactUs');
-                    $checker = $this->services->get('SpamGuard\SpamChecker');
-                    $ctx = new \SpamGuard\SpamContext(
-                        $this->clientIp() ?: null,
-                        (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
-                        $params['from'] ?? null,
-                        $params['subject'] ?? null,
-                        $params['message'] ?? null,
-                        isset($session->form_loaded_at) ? (int) $session->form_loaded_at : null,
-                        $params['contact_website'] ?? null,
-                        $user ? $user->getId() : null,
-                        [
-                            'powSalt' => $session->pow_salt ?? null,
-                            'powNonce' => $params['pow_nonce'] ?? null,
-                            'lastSubmitAt' => $session->last_submit_at ?? null,
-                            'lastSubmitIp' => $session->last_submit_ip ?? null,
-                        ]
-                    );
-                    $result = $checker->check($ctx);
-                    if ($result->isSpam()) {
-                        $spamReasons = array_values(array_unique(array_merge($spamReasons, $result->reasons)));
-                    }
-                }
+            // Consume the single-use proof-of-work salt and stamp the new
+            // rate-limit marker for the next submission, unless this one was
+            // rate-limited (keep the earlier marker to keep the window closed).
+            unset($session->pow_salt, $session->pow_issued_at);
+            if (empty($user) && !in_array('rateLimit', $spamReasons, true)) {
+                $session->last_submit_ip = $currentIp;
+                $session->last_submit_at = time();
             }
 
             $isSpam = !empty($spamReasons);
