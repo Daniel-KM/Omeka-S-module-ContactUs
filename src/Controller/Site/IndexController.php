@@ -301,6 +301,12 @@ class IndexController extends AbstractActionController
             ob_end_clean();
         }
 
+        // A large archive may stream for a long time over a slow connection.
+        // So avoid kill by php execution time limit.
+        if (function_exists('set_time_limit')) {
+            @set_time_limit(0);
+        }
+
         $zip = new ZipStream(
             outputName: $downloadName,
             sendHttpHeaders: false,
