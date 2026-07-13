@@ -12,6 +12,7 @@ use Common\Stdlib\PsrMessage;
 use Common\TraitModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Omeka\Module\AbstractModule;
@@ -29,6 +30,11 @@ class Module extends AbstractModule
     const NAMESPACE = __NAMESPACE__;
 
     const STORE_PREFIX = 'contactus';
+
+    public function init(ModuleManager $moduleManager): void
+    {
+        require_once __DIR__ . '/vendor/autoload.php';
+    }
 
     public function onBootstrap(MvcEvent $event): void
     {

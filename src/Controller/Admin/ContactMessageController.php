@@ -2,7 +2,6 @@
 
 namespace ContactUs\Controller\Admin;
 
-use DateTime;
 use Doctrine\DBAL\Connection;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -21,21 +20,13 @@ class ContactMessageController extends AbstractActionController
      */
     protected $connection;
 
-    /**
-     * @param string
-     */
-    protected $basePath;
-
-    public function __construct(Connection $connection, string $basePath)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->basePath = $basePath;
     }
 
     public function browseAction()
     {
-        $this->deleteZips();
-
         $this->setBrowseDefaults('created');
 
         $query = $this->params()->fromQuery();
@@ -395,85 +386,6 @@ class ContactMessageController extends AbstractActionController
                 ],
             ],
         ]);
-    }
-
-    public function toggleZipAction()
-    {
-        // ZIp is not managed by adapter, but by file system.
-
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            throw new \Omeka\Mvc\Exception\NotFoundException;
-        }
-
-        $id = $this->params('id');
-
-        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
-        $contactMessage = $this->api()->read('contact_messages', $id)->getContent();
-
-        $hasZip = $contactMessage->hasZip();
-        $message = null;
-        if ($hasZip) {
-            @unlink($contactMessage->zipFilepath());
-            $status = 'success';
-            $hasZip = false;
-        } elseif ($contactMessage->resourceIds()) {
-            $type = $this->settings()->get('contactus_create_zip', 'original');
-            $this->jobDispatcher()->dispatch(\ContactUs\Job\ZipResources::class, [
-                'id' => $contactMessage->resourceIds(),
-                'filename' => $contactMessage->zipFilename(),
-                'baseDir' => 'contactus',
-                'baseUri' => 'contactus',
-                'type' => $type,
-            ]);
-            $status = 'success';
-            $hasZip = true;
-            // Useless message: it is quick.
-            // $message = $this->translate('A zip with the files is created in background.'); // @translate
-        } else {
-            $status = 'fail';
-            $hasZip = false;
-            $message = $this->translate('There is no resources or files.'); // @translate
-        }
-
-        $output = [
-            'status' => $status,
-            'data' => [
-                'action' => [
-                    'property' => 'o-module-contact:has_zip',
-                    'value' => $hasZip,
-                    'status' => $hasZip ? 'zip' : 'no-zip',
-                ],
-            ],
-        ];
-
-        if ($message) {
-            $output['message'] = $message;
-        }
-
-        return new JsonModel($output);
-    }
-
-    protected function deleteZips(): void
-    {
-        $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
-        if (!$deleteZip) {
-            return;
-        }
-
-        // Iterate via the API so the filename (and therefore the HMAC token) is
-        // computed by the representation. A raw SQL replica of the token is not
-        // possible because the HMAC secret lives in application code.
-        $older = new DateTime('-' . $deleteZip . ' day');
-        $contactMessages = $this->api()->search('contact_messages', [
-            'modified_before' => $older->format('Y-m-d\TH:i:s'),
-        ])->getContent();
-
-        foreach ($contactMessages as $contactMessage) {
-            $filepath = $contactMessage->zipFilepath();
-            if (file_exists($filepath) && is_writeable($filepath)) {
-                @unlink($filepath);
-            }
-        }
     }
 
     /**

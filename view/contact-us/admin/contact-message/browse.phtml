@@ -170,14 +170,12 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                         title="<?= $v ?>"></button></li>
                     <?php endif; ?>
                     <?php endif; ?>
-                    <?php if ($editRightContactUs): ?>
-                    <li><a href="#"
-                        class="toggle-property has_zip o-icon-<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
-                        data-toggle-url="<?= $escapeAttr($message->url('toggle-zip')) ?>"
-                        data-property="has_zip"
-                        data-status="<?= $message->hasZip() ? 'zip' : 'no-zip' ?>"
-                        aria-label="<?= $escapeAttr($translate('Toggle zip')) ?>"
-                        title="<?= $escapeAttr($translate('Toggle zip')) ?>"></a></li>
+                    <?php if ($editRightContactUs && $message->hasZip()): ?>
+                    <li><a href="<?= $escapeAttr($message->zipUrl()) ?>"
+                        class="o-icon-zip download-zip"
+                        download="download" target="_self"
+                        aria-label="<?= $v = $escapeAttr($translate('Download files as zip')) ?>"
+                        title="<?= $v ?>"></a></li>
                     <?php endif; ?>
                     <?php if ($message->userIsAllowed('delete')): ?>
                     <li><a href="#"

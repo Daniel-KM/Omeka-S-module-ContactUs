@@ -193,23 +193,18 @@ class MessageRepresentation extends AbstractEntityRepresentation
         return $this->resource->isToAuthor();
     }
 
+    /**
+     * The zip is streamed on demand, so it is available whenever the message
+     * references at least one resource.
+     */
     public function hasZip(): bool
     {
-        $filepath = $this->zipFilepath();
-        return file_exists($filepath) && is_readable($filepath) && !is_dir($filepath);
+        return (bool) $this->resourceIds();
     }
 
     public function zipFilename(): string
     {
         return $this->resource->getId() . '.' . $this->token() . '.zip';
-    }
-
-    public function zipFilepath(): string
-    {
-        // TODO Use Omeka storage.
-        $config = $this->getServiceLocator()->get('Config');
-        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
-        return $basePath . '/contactus/' . $this->zipFilename();
     }
 
     public function zipUrl(): string

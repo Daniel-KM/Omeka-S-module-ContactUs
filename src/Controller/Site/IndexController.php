@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use ZipStream\CompressionMethod;
+use ZipStream\ZipStream;
 
 class IndexController extends AbstractActionController
 {
@@ -202,29 +204,150 @@ class IndexController extends AbstractActionController
             throw new \Omeka\Mvc\Exception\RuntimeException('Resource has no file.'); // @translate
         }
 
-        $filepath = $contactMessage->zipFilepath();
+        // The zip is built and streamed on the fly: nothing is stored on disk,
+        // so there is no job to run nor old file to clean up.
+        $type = (string) $this->settings()->get('contactus_create_zip', 'original') ?: 'original';
+        $files = $this->collectMediaFiles($contactMessage->resourceIds(), $type);
+        if (!$files) {
+            throw new \Omeka\Mvc\Exception\NotFoundException('No file to zip.'); // @translate
+        }
 
-        $deleteZip = (int) $this->settings()->get('contactus_delete_zip');
-        if ($deleteZip
-            && $contactMessage->modified() < new \DateTime('-' . $deleteZip . ' day')
-        ) {
-            if (file_exists($filepath) && is_writeable($filepath)) {
-                @unlink($filepath);
+        return $this->streamZip($files, $id . '.zip');
+    }
+
+    /**
+     * Collect the readable files of the given resources for the wanted type.
+     *
+     * @param int[] $resourceIds
+     * @return array<int, array{filepath: string, source: string, mediatype:
+     *   string, maintype: string}>
+     */
+    protected function collectMediaFiles(array $resourceIds, string $type): array
+    {
+        if (!$resourceIds) {
+            return [];
+        }
+
+        $config = $this->getEvent()->getApplication()->getServiceManager()->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+
+        $isOriginal = $type === 'original';
+
+        $resources = $this->api()->search('resources', ['id' => $resourceIds])->getContent();
+
+        $files = [];
+        foreach ($resources as $resource) {
+            if ($resource instanceof \Omeka\Api\Representation\MediaRepresentation) {
+                $medias = [$resource];
+            } elseif (class_exists(\DigitalObject\Module::class, false)
+                && $resource instanceof \DigitalObject\Api\Representation\DigitalObjectRepresentation
+            ) {
+                $medias = [$resource];
+            } else {
+                $medias = $resource->media();
             }
-            throw new \Omeka\Mvc\Exception\NotFoundException('No zip found: too much old.'); // @translate
+            /** @var \Omeka\Api\Representation\MediaRepresentation $media */
+            foreach ($medias as $media) {
+                if (($isOriginal && !$media->hasOriginal())
+                    || (!$isOriginal && !$media->hasThumbnails())
+                ) {
+                    continue;
+                }
+                // Thumbnails are always stored as jpg under their own folder.
+                $filename = $isOriginal ? $media->filename() : ($media->storageId() . '.jpg');
+                $filepath = $basePath . '/' . $type . '/' . $filename;
+                if (!is_file($filepath) || !is_readable($filepath)) {
+                    continue;
+                }
+                $mediaType = (string) $media->mediaType();
+                $files[$media->id()] = [
+                    'filepath' => $filepath,
+                    'source' => $media->source() ?: $media->filename(),
+                    'mediatype' => $mediaType,
+                    'maintype' => (string) strtok($mediaType, '/'),
+                ];
+            }
         }
 
-        // Check if the zip exists: it is prepared early.
-        if (!file_exists($filepath) || !is_readable($filepath)) {
-            throw new \Omeka\Mvc\Exception\NotFoundException('No zip found.'); // @translate
+        return $files;
+    }
+
+    /**
+     * Stream a zip of the given files to the client without writing it to disk.
+     *
+     * @param array<int, array{filepath: string, source: string, mediatype:
+     *   string, maintype: string}> $files
+     */
+    protected function streamZip(array $files, string $downloadName): Response
+    {
+        /** @var \Laminas\Http\PhpEnvironment\Response $response */
+        $response = $this->getResponse();
+        $response->getHeaders()
+            ->addHeaderLine('Content-Type: application/zip')
+            ->addHeaderLine(sprintf('Content-Disposition: attachment; filename="%s"', $downloadName))
+            ->addHeaderLine('Content-Transfer-Encoding: binary')
+            ->addHeaderLine('Cache-Control: no-cache, no-store, must-revalidate')
+            ->addHeaderLine('Pragma: no-cache')
+            ->addHeaderLine('Expires: 0');
+
+        // Avoid a deprecation notice leaking into the binary stream.
+        $errorReporting = error_reporting();
+        error_reporting($errorReporting & ~E_DEPRECATED);
+        $response->sendHeaders();
+        error_reporting($errorReporting);
+
+        $response->setContent('');
+        while (ob_get_level()) {
+            ob_end_clean();
         }
 
-        return $this->sendFile($filepath, [
-            'content_type' => 'application/zip',
-            'filename' => $id . '.zip',
-            'disposition_mode' => 'attachment',
-            'cache' => true,
-        ]);
+        $zip = new ZipStream(
+            outputName: $downloadName,
+            sendHttpHeaders: false,
+            defaultCompressionMethod: CompressionMethod::STORE,
+        );
+
+        // Media files (image, video, pdf…) are already compressed, so store
+        // them; only lightly deflate text-like files.
+        $usedNames = [];
+        foreach ($files as $file) {
+            $name = $this->uniqueFilename($file['source'], $usedNames);
+            $usedNames[] = $name;
+            $isText = $file['maintype'] === 'text'
+                || $file['mediatype'] === 'application/json'
+                || substr($file['mediatype'], -5) === '+json'
+                || $file['mediatype'] === 'application/xml'
+                || substr($file['mediatype'], -4) === '+xml';
+            $zip->addFileFromPath(
+                fileName: $name,
+                path: $file['filepath'],
+                compressionMethod: $isText ? CompressionMethod::DEFLATE : CompressionMethod::STORE,
+            );
+        }
+
+        $zip->finish();
+
+        // Prevent the MVC from appending anything to the streamed output.
+        ini_set('display_errors', '0');
+
+        return $response;
+    }
+
+    /**
+     * Build a filename unique in the archive, keeping the source extension.
+     *
+     * @param string[] $used
+     */
+    protected function uniqueFilename(string $source, array $used): string
+    {
+        $base = pathinfo($source, PATHINFO_FILENAME);
+        $extension = pathinfo($source, PATHINFO_EXTENSION);
+        $i = 0;
+        do {
+            $name = $base . ($i ? '.' . $i : '') . (strlen($extension) ? '.' . $extension : '');
+            ++$i;
+        } while (in_array($name, $used, true));
+        return $name;
     }
 
     /**

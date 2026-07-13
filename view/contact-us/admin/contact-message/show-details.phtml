@@ -45,7 +45,7 @@ $site = $resource->site();
             <?php endif; ?>
         </div>
         <div class="value">
-            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped file when created') ?></a>
+            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Download the file as zip') ?></a>
         </div>
         <?php elseif ($attachedResourceIds):
             $attachedResources = $api->search('resources', ['id' => $attachedResourceIds])->getContent();
@@ -68,7 +68,7 @@ $site = $resource->site();
         </div>
         <?php endforeach; ?>
         <div class="value">
-            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Link to the zipped files when created') ?></a>
+            <a href="<?= $message->zipUrl() ?>" download="download" target="_self"><?= $translate('Download the files as zip') ?></a>
         </div>
         <?php else: ?>
         <h4><?= $escape($translate('Attached resources')) ?></h4>
@@ -102,7 +102,7 @@ $site = $resource->site();
             <div class="to-author"><?= $message->isToAuthor() ? $translate('Message to author') : $translate('Message to us') ?></div>
             <div class="is-read"><?= sprintf($translate('Is read: %s'), $message->isRead() ? $translate('yes') : $translate('no')) ?></div>
             <div class="is-spam"><?= sprintf($translate('Is spam: %s'), $message->isSpam() ? $translate('yes') : $translate('no')) ?></div>
-            <div class="has-zip"><?= sprintf($translate('Has zip: %s'), $message->hasZip() ? $translate('yes') : $translate('no')) ?></div>
+            <div class="has-zip"><?= sprintf($translate('Zip available: %s'), $message->hasZip() ? $translate('yes') : $translate('no')) ?></div>
         </div>
     </div>
     <div class="meta-group">

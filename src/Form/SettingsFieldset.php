@@ -205,18 +205,6 @@ class SettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
-                'name' => 'contactus_delete_zip',
-                'type' => CommonElement\OptionalNumber::class,
-                'options' => [
-                    'element_group' => 'contact',
-                    'label' => 'Remove zip files after some days', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'contactus_delete_zip',
-                    'required' => false,
-                ],
-            ])
-            ->add([
                 'name' => 'contactus_pow_skip',
                 'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [
