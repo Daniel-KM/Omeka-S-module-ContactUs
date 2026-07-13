@@ -400,16 +400,16 @@ class ContactUs extends AbstractHelper
                 }
             }
 
-            // Delegate to BotGuard if installed and active.
+            // Delegate to SpamGuard if installed and active.
             if ($this->services) {
                 $moduleManager = $this->services->get('Omeka\ModuleManager');
-                $bg = $moduleManager->getModule('BotGuard');
+                $bg = $moduleManager->getModule('SpamGuard');
                 if ($bg && $bg->getState() === \Omeka\Module\Manager::STATE_ACTIVE
-                    && $this->services->has('BotGuard\SpamChecker')
+                    && $this->services->has('SpamGuard\SpamChecker')
                 ) {
                     $session = new Container('ContactUs');
-                    $checker = $this->services->get('BotGuard\SpamChecker');
-                    $ctx = new \BotGuard\SpamContext(
+                    $checker = $this->services->get('SpamGuard\SpamChecker');
+                    $ctx = new \SpamGuard\SpamContext(
                         $this->clientIp() ?: null,
                         (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
                         $params['from'] ?? null,

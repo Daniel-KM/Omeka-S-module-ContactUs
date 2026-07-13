@@ -128,22 +128,22 @@ class Module extends AbstractModule
             throw new \Omeka\Module\Exception\ModuleCannotInstallException(implode("\n", $errors));
         }
 
-        $this->checkBotGuardPresence($services);
+        $this->checkSpamGuardPresence($services);
     }
 
     public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services): void
     {
         parent::upgrade($oldVersion, $newVersion, $services);
-        $this->checkBotGuardPresence($services);
+        $this->checkSpamGuardPresence($services);
     }
 
-    protected function checkBotGuardPresence(ServiceLocatorInterface $services): void
+    protected function checkSpamGuardPresence(ServiceLocatorInterface $services): void
     {
         $moduleManager = $services->get('Omeka\ModuleManager');
-        $bg = $moduleManager->getModule('BotGuard');
+        $bg = $moduleManager->getModule('SpamGuard');
         if (!$bg || $bg->getState() !== \Omeka\Module\Manager::STATE_ACTIVE) {
             $services->get('Omeka\Logger')->notice(
-                'Module ContactUs : BotGuard is missing, so only simple anti-spam countermeasures are available.' // @translate
+                'Module ContactUs : SpamGuard is missing, so only simple anti-spam countermeasures are available.' // @translate
             );
         }
     }

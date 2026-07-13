@@ -17,15 +17,15 @@ class ContactUsFieldset extends Fieldset
     public function init(): void
     {
         $moduleManager = $this->getOption('module_manager');
-        $botGuard = $moduleManager ? $moduleManager->getModule('BotGuard') : null;
-        $hasBotGuard = $botGuard && $botGuard->getState() === \Omeka\Module\Manager::STATE_ACTIVE;
-        if (!$hasBotGuard) {
+        $spamGuard = $moduleManager ? $moduleManager->getModule('SpamGuard') : null;
+        $hasSpamGuard = $spamGuard && $spamGuard->getState() === \Omeka\Module\Manager::STATE_ACTIVE;
+        if (!$hasSpamGuard) {
             $this->add([
-                'name' => 'o:block[__blockIndex__][o:data][contactus_botguard_note]',
+                'name' => 'o:block[__blockIndex__][o:data][contactus_spamguard_note]',
                 'type' => CommonElement\Note::class,
                 'options' => [
                     'label' => 'Advanced anti-spam protection', // @translate
-                    'text' => 'For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the BotGuard module.', // @translate
+                    'text' => 'For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the SpamGuard module.', // @translate
                 ],
             ]);
         }
