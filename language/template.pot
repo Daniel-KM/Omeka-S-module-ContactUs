@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
+"POT-Creation-Date: 2026-07-06 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,26 +94,26 @@ msgstr ""
 msgid "Append a form to allow visitors to subscribe to a newsletter."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:569 src/View/Helper/ContactUs.php:573
+#: src/View/Helper/ContactUs.php:574 src/View/Helper/ContactUs.php:578
 msgid "Unsubscribe newsletter"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:624 src/View/Helper/ContactUs.php:702
-#: src/View/Helper/ContactUs.php:1197
+#: src/View/Helper/ContactUs.php:629 src/View/Helper/ContactUs.php:707
+#: src/View/Helper/ContactUs.php:1202
 #, php-format
 msgid "[Contact] %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:631
+#: src/View/Helper/ContactUs.php:636
 #, php-format
 msgid "newsletter: %s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:1090
+#: src/View/Helper/ContactUs.php:1095
 msgid "[No title]"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:1149
+#: src/View/Helper/ContactUs.php:1154
 msgid "[Unknown resource]"
 msgstr ""
 
@@ -517,84 +517,84 @@ msgstr ""
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:437
+#: src/View/Helper/ContactUs.php:442
 #, php-format
 msgid "[ContactUs] Spam detected: reasons=%s; ip=%s; email=%s"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:498
+#: src/View/Helper/ContactUs.php:503
 msgid ""
 "Links (URLs) are not allowed in messages. Please remove any link and "
 "resubmit."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:521
+#: src/View/Helper/ContactUs.php:526
 msgid "The unsubscription for {email} is confirmed."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:526
+#: src/View/Helper/ContactUs.php:531
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:533
+#: src/View/Helper/ContactUs.php:538
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:538
+#: src/View/Helper/ContactUs.php:543
 msgid ""
 "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:570
+#: src/View/Helper/ContactUs.php:575
 msgid "Subscribe newsletter"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:607 src/View/Helper/ContactUs.php:787
+#: src/View/Helper/ContactUs.php:612 src/View/Helper/ContactUs.php:792
 msgid "There is an error: {errors}"
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:661
+#: src/View/Helper/ContactUs.php:666
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:694
+#: src/View/Helper/ContactUs.php:699
 msgid "Sorry, we are not able to send the email to the author."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:719
+#: src/View/Helper/ContactUs.php:724
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:767
+#: src/View/Helper/ContactUs.php:772
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:791
+#: src/View/Helper/ContactUs.php:796
 msgid "There is an error."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:854
+#: src/View/Helper/ContactUs.php:859
 #, php-format
 msgid "About resource %s (%s)."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:935
+#: src/View/Helper/ContactUs.php:940
 msgid "You must select a resource to contact the author."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:950 src/View/Helper/ContactUs.php:976
+#: src/View/Helper/ContactUs.php:955 src/View/Helper/ContactUs.php:981
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
 msgstr ""
 
-#: src/View/Helper/ContactUs.php:971
+#: src/View/Helper/ContactUs.php:976
 msgid "Contact administor for more information."
 msgstr ""
 

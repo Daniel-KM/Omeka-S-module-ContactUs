@@ -6,27 +6,29 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2026-07-06 00:00+0000\n"
+"PO-Revision-Date: 2026-07-06 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
-"Language: br\n"
 "Language-Team: br <LL@li.org>\n"
-"Plural-Forms: nplurals=6; plural=(n==1 ? 0 : n%10==1 && n%100!=11 && "
-"n%100!=71 && n%100!=91 ? 1 : n%10==2 && n%100!=12 && n%100!=72 && n%100!=92 ?"
-" 2 : (n%10==3 || n%10==4 || n%10==9) && n%100!=13 && n%100!=14 && n%100!=19 "
-"&& n%100!=73 && n%100!=74 && n%100!=79 && n%100!=93 && n%100!=94 && n%100!=99"
-" ? 3 : n%1000000==0 ? 4 : 5);\n"
+"Language: br\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==1 ? 0 : n%10==1 && n%100!=11 && n%100!"
+"=71 && n%100!=91 ? 1 : n%10==2 && n%100!=12 && n%100!=72 && n%100!=92 ? 2 : "
+"(n%10==3 || n%10==4 || n%10==9) && n%100!=13 && n%100!=14 && n%100!=19 && "
+"n%100!=73 && n%100!=74 && n%100!=79 && n%100!=93 && n%100!=94 && n%100!=99 ? "
+"3 : n%1000000==0 ? 4 : 5);\n"
 "Generated-By: Babel 2.18.0\n"
+"X-Generator: Poedit 3.6\n"
 
-#: Module.php:108 data/scripts/upgrade.php:38
+#: data/scripts/upgrade.php:38 Module.php:108
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
-msgstr "Ar modul %1$s a zlefe bezañ hizivaet d'ar stumm %2$s pe unan nevesoc'h."
+msgstr ""
+"Ar modul %1$s a zlefe bezañ hizivaet d'ar stumm %2$s pe unan nevesoc'h."
 
 #: data/scripts/upgrade.php:42
 msgid "Missing requirement. Unable to upgrade."
@@ -40,7 +42,8 @@ msgstr "DIWALL:"
 msgid "Remove Contact Us files"
 msgstr "Dilemel ar restroù Darempred ganeomp"
 
-#: Module.php:335 view/common/resource-page-block-layout/contact-us-button.phtml:13
+#: Module.php:335
+#: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
 msgstr "Darempredit ac'hanomp"
@@ -58,7 +61,6 @@ msgid "Too long message."
 msgstr "Kelaouenn re hir."
 
 #: src/Controller/Admin/ContactMessageController.php:122
-#, python-brace-format
 msgid "Re: {subject}"
 msgstr "A-zivout: {subject}"
 
@@ -68,7 +70,8 @@ msgstr "Danvez re hir."
 
 #: src/Controller/Admin/ContactMessageController.php:152
 msgid "Sorry, the message cannot be sent. Contact the administrator."
-msgstr "Digarezit, n'haller ket kas ar gemennadenn. Kit e darempred gant ar merour."
+msgstr ""
+"Digarezit, n'haller ket kas ar gemennadenn. Kit e darempred gant ar merour."
 
 #: src/Controller/Admin/ContactMessageController.php:454
 msgid "There is no resources or files."
@@ -109,26 +112,26 @@ msgstr ""
 "Ouzhpennañ ur furmskrid evit ma c'hallfe ar weladennerien en em enskrivañ "
 "d'ul lizher-kelaouiñ."
 
-#: src/View/Helper/ContactUs.php:569 src/View/Helper/ContactUs.php:573
+#: src/View/Helper/ContactUs.php:574 src/View/Helper/ContactUs.php:578
 msgid "Unsubscribe newsletter"
 msgstr "Dizenskrivañ diouzh al lizher-kelaouiñ"
 
-#: src/View/Helper/ContactUs.php:624 src/View/Helper/ContactUs.php:702
-#: src/View/Helper/ContactUs.php:1197
-#, php-format, python-format
+#: src/View/Helper/ContactUs.php:629 src/View/Helper/ContactUs.php:707
+#: src/View/Helper/ContactUs.php:1202
+#, php-format
 msgid "[Contact] %s"
 msgstr "[Darempred] %s"
 
-#: src/View/Helper/ContactUs.php:631
-#, php-format, python-format
+#: src/View/Helper/ContactUs.php:636
+#, php-format
 msgid "newsletter: %s"
 msgstr "kelaouenn: %s"
 
-#: src/View/Helper/ContactUs.php:1090
+#: src/View/Helper/ContactUs.php:1095
 msgid "[No title]"
 msgstr "[Titl ebet]"
 
-#: src/View/Helper/ContactUs.php:1149
+#: src/View/Helper/ContactUs.php:1154
 msgid "[Unknown resource]"
 msgstr "[Mammenn dianav]"
 
@@ -147,13 +150,13 @@ msgstr "Media ebet"
 
 #: view/common/contact-us-selection-list.phtml:77
 #: view/contact-us/site/index/browse.phtml:112
-#, php-format, python-format
+#, php-format
 msgid "%d resource"
 msgstr "%d danvez"
 
 #: view/common/contact-us-selection-list.phtml:77
 #: view/contact-us/site/index/browse.phtml:112
-#, php-format, python-format
+#, php-format
 msgid "%d resources"
 msgstr "%d danvez"
 
@@ -263,7 +266,7 @@ msgid "Filter contact messages"
 msgstr "Silañ kemennadoù an darempredoù"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:22
-#, php-format, python-format
+#, php-format
 msgid "message #%d"
 msgstr "kemennadenn #%d"
 
@@ -310,17 +313,17 @@ msgid "Message to us"
 msgstr "Kelaouenn deomp"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:103
-#, php-format, python-format
+#, php-format
 msgid "Is read: %s"
 msgstr "Lennet eo: %s"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:104
-#, php-format, python-format
+#, php-format
 msgid "Is spam: %s"
 msgstr "Spam eo : %s"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:105
-#, php-format, python-format
+#, php-format
 msgid "Has zip: %s"
 msgstr "Ennañ : %s"
 
@@ -333,7 +336,7 @@ msgid "Attached file"
 msgstr "Restr staget"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:129
-#, php-format, python-format
+#, php-format
 msgid "Media type: %s"
 msgstr "Seurt media: %s"
 
@@ -354,7 +357,7 @@ msgid "Selection for contact"
 msgstr "Dibab evit ar c'hontak"
 
 #: view/contact-us/site/index/browse.phtml:76
-#, php-format, python-format
+#, php-format
 msgid "There is a limit of %d resources by request"
 msgstr "Bevennet eo da %d an niver a ziazezoù dre c'houlenn"
 
@@ -375,12 +378,13 @@ msgid ""
 "A checkbox for consent has been added to the user form. You may update the "
 "default label in site settings"
 msgstr ""
-"Ur voest da asantiñ zo bet ouzhpennet da furmskrid an implijer. Gallout a rit"
-" kemmañ an etikedenn dre ziouer e parañoù al lec'hienn"
+"Ur voest da asantiñ zo bet ouzhpennet da furmskrid an implijer. Gallout a "
+"rit kemmañ an etikedenn dre ziouer e parañoù al lec'hienn"
 
 #: data/scripts/upgrade.php:193
 msgid "It’s now possible to set a specific message when contacting author."
-msgstr "Bremañ e c'haller lakaat ur gemennadenn resis pa vez darempredet an aozer."
+msgstr ""
+"Bremañ e c'haller lakaat ur gemennadenn resis pa vez darempredet an aozer."
 
 #: data/scripts/upgrade.php:197
 msgid ""
@@ -411,13 +415,12 @@ msgstr ""
 "ur roll IDoù an danvezioù (ret eo kaout ul linenn en tem)."
 
 #: data/scripts/upgrade.php:263
-#, python-brace-format
 msgid ""
 "It’s now possible to prepare a zip file of asked files to send to a visitor "
 "via a link. See {link}settings{link_end}."
 msgstr ""
-"Bremañ e c'haller prientiñ ur restr zip gant ar restroù goulennet da gas d'ur"
-" gweladenner dre ul liamm. Gwelet {link}arventennoù{link_end}."
+"Bremañ e c'haller prientiñ ur restr zip gant ar restroù goulennet da gas "
+"d'ur gweladenner dre ul liamm. Gwelet {link}arventennoù{link_end}."
 
 #: data/scripts/upgrade.php:276
 msgid "A new button allows to create a zip for any contact."
@@ -430,15 +433,15 @@ msgid ""
 "Two new options allow to append the contact form to resource pages. They are "
 "disabled by default, so check them if you need them."
 msgstr ""
-"Div zibab nevez a ro an tu da ouzhpennañ ar furmskrid daremprediñ da bajennoù"
-" ar mammennoù. Dizgweredet int dre ziouer, neuze merkit anezho ma'z eus "
-"ezhomm ganeoc'h."
+"Div zibab nevez a ro an tu da ouzhpennañ ar furmskrid daremprediñ da "
+"bajennoù ar mammennoù. Dizgweredet int dre ziouer, neuze merkit anezho ma'z "
+"eus ezhomm ganeoc'h."
 
 #: data/scripts/upgrade.php:294
 msgid ""
 "A new option allows to use the user email to send message. It is not "
-"recommended because many emails providers reject them as spam. Use it only if"
-" you manage your own domain."
+"recommended because many emails providers reject them as spam. Use it only "
+"if you manage your own domain."
 msgstr ""
 "Un dibab nevez a ro an tu da implijout postel an implijer evit kas ur "
 "gemennadenn. N'eo ket erbedet, rak kalz a bourvezerien postel a zistroy "
@@ -451,11 +454,11 @@ msgstr ""
 "d'ul lizher-kelaouiñ."
 
 #: data/scripts/upgrade.php:351
-#, python-brace-format
 msgid ""
 "The option \"heading\" was removed from blocks Contact Us and Newsletter and "
-"replaced by a block Heading (if module Block Plus is present) or Html. Remove"
-" it in the following files before upgrade and automatic conversion: {json}"
+"replaced by a block Heading (if module Block Plus is present) or Html. "
+"Remove it in the following files before upgrade and automatic conversion: "
+"{json}"
 msgstr ""
 "Tennet eo bet an dibab \"heading\" eus ar bloc'hoù \"Contact Us\" ha "
 "\"Newsletter\" hag erlec'hiet gant ur bloc'h \"Heading\" (ma'z eus ar modul "
@@ -463,20 +466,18 @@ msgstr ""
 "hizivadur hag an treuzfurmadur emgefre : {json}"
 
 #: data/scripts/upgrade.php:429
-#, python-brace-format
 msgid ""
-"The setting \"template\" was moved to the new block layout settings available"
-" since Omeka S v4.1. You may check pages for styles: {json}"
+"The setting \"template\" was moved to the new block layout settings "
+"available since Omeka S v4.1. You may check pages for styles: {json}"
 msgstr ""
 "An arventenn \"stumm-doue\" a zo bet dilec'hiet d'an arventennoù nevez evit "
 "aozadur ar bloc'hoù, a c'haller implijout abaoe Omeka S v4.1. Gallout a rit "
 "gwiriañ ar pajennoù evit ar stiloù : {json}"
 
 #: data/scripts/upgrade.php:439
-#, python-brace-format
 msgid ""
-"The option \"heading\" was removed from blocks Contact Us and Newsletter. New"
-" block \"Heading\" (if module Block Plus is present) or \"Html\" was "
+"The option \"heading\" was removed from blocks Contact Us and Newsletter. "
+"New block \"Heading\" (if module Block Plus is present) or \"Html\" was "
 "prepended to all blocks that had a filled heading. You may check pages for "
 "styles: {json}"
 msgstr ""
@@ -488,23 +489,24 @@ msgstr ""
 #: data/scripts/upgrade.php:461
 msgid "New options were added to set message after posting mail."
 msgstr ""
-"Ouzhpennet ez eus bet dibaboù nevez evit kefluniañ ar gemennadenn goude bezañ"
-" kaset ur postel."
+"Ouzhpennet ez eus bet dibaboù nevez evit kefluniañ ar gemennadenn goude "
+"bezañ kaset ur postel."
 
 #: data/scripts/upgrade.php:466
 msgid "It is now possible to unsubscribe to a newsletter."
 msgstr "Gallout a reer bremañ en em ziziskrivañ diouzh ul lizher-kelaouiñ."
 
 #: data/scripts/upgrade.php:471
-msgid "A new page allows the user or the visitor to see all the selected resources."
+msgid ""
+"A new page allows the user or the visitor to see all the selected resources."
 msgstr ""
-"Ur bajenn nevez a ro an tu d'an implijer pe d'ar gweladenner da welet an holl"
-" danvezioù dibabet."
+"Ur bajenn nevez a ro an tu d'an implijer pe d'ar gweladenner da welet an "
+"holl danvezioù dibabet."
 
 #: data/scripts/upgrade.php:476
 msgid ""
-"The number of selected items can be set in site settings. It is limited to 25"
-" by default."
+"The number of selected items can be set in site settings. It is limited to "
+"25 by default."
 msgstr ""
 "Gallout a reer termeniñ an niver a elfennoù dibabet e parañoù al lec'hienn. "
 "Bevennet eo da 25 dre ziouer."
@@ -540,9 +542,9 @@ msgstr ""
 
 #: data/scripts/upgrade.php:529
 msgid ""
-"Warning: there might be an issue with the option \"Send with user email\". So"
-" check it and try to send a message. Note that to send with user email is not"
-" recommended, unless you have a good smtp server."
+"Warning: there might be an issue with the option \"Send with user email\". "
+"So check it and try to send a message. Note that to send with user email is "
+"not recommended, unless you have a good smtp server."
 msgstr ""
 "Diwallit : ur gudenn a c'hall bezañ gant an dibab \"Kas gant postel an "
 "implijer\". Gwiriekait anezhañ eta ha klaskit kas ur gemennadenn. Notit n'eo "
@@ -553,13 +555,13 @@ msgid "A new site option allows to hide the guest page for selection."
 msgstr "Un dibab lec'hienn nevez a ro an tu da guzh-añ pajenn an arvalien."
 
 #: data/scripts/upgrade.php:584
-msgid "Some new anti-spam checks were added in main settings. Check them if needed."
+msgid ""
+"Some new anti-spam checks were added in main settings. Check them if needed."
 msgstr ""
 "Ouzhpennet ez eus bet gwiriadennoù enep-spam nevez er pennaennoù. Gwiriekait "
 "anezho mar bez ezhomm."
 
 #: data/scripts/upgrade.php:627
-#, python-brace-format
 msgid ""
 "The zip filenames were re-signed. Previously sent emails pointing to these "
 "zip files are now broken. Contact messages concerned: {ids}."
@@ -569,12 +571,10 @@ msgstr ""
 "{ids}."
 
 #: data/scripts/upgrade.php:635
-#, python-brace-format
 msgid "Removed {count} orphan zip files (message deleted): {ids}."
 msgstr "Lamet {count} restroù zip emzivaded (kemmet ar gemennadenn): {ids}."
 
 #: Module.php:121
-#, python-brace-format
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "N'haller ket skrivañ er c'holev \"{directory}\"."
 
@@ -587,60 +587,56 @@ msgstr ""
 "spam eeun a c'haller implijout."
 
 #: Module.php:213
-#, python-brace-format
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
 msgstr ""
 "An holl gemennadoù daremprediñ hag an holl restroù a vo diverket (teul "
 "\"{folder}\")."
 
-#: src/View/Helper/ContactUs.php:437
-#, php-format, python-format
+#: src/View/Helper/ContactUs.php:442
+#, php-format
 msgid "[ContactUs] Spam detected: reasons=%s; ip=%s; email=%s"
 msgstr "[Darempred] Spamm detektet : abegoù=%s; ip=%s; postel=%s"
 
-#: src/View/Helper/ContactUs.php:498
-msgid "Links (URLs) are not allowed in messages. Please remove any link and resubmit."
+#: src/View/Helper/ContactUs.php:503
+msgid ""
+"Links (URLs) are not allowed in messages. Please remove any link and "
+"resubmit."
 msgstr ""
 "N'eo ket aotreet al liammoù (URLoù) er c'hemennadoù. Mar plij, tenit kuit "
 "kement liamm a zo ha kasit anezhañ en-dro."
 
-#: src/View/Helper/ContactUs.php:521
-#, python-brace-format
+#: src/View/Helper/ContactUs.php:526
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Kadarnaet eo an diziskrivadur evit {email}."
 
-#: src/View/Helper/ContactUs.php:526
-#, python-brace-format
+#: src/View/Helper/ContactUs.php:531
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Trugarez deoc'h da vezañ koumanantet d'hor lizher-kelaouiñ, {name}."
 
-#: src/View/Helper/ContactUs.php:533
-#, python-brace-format
+#: src/View/Helper/ContactUs.php:538
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
-"Trugarez deoc'h evit ho kemennadenn, {name}. Kaset e vo d'an aozer an abretañ"
-" ar gwellañ."
+"Trugarez deoc'h evit ho kemennadenn, {name}. Kaset e vo d'an aozer an "
+"abretañ ar gwellañ."
 
-#: src/View/Helper/ContactUs.php:538
-#, python-brace-format
-msgid "Thank you for your message, {name}. We will answer you as soon as possible."
+#: src/View/Helper/ContactUs.php:543
+msgid ""
+"Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 "Trugarez deoc'h evit ho kemennadenn, {name}. Respont a raimp deoc'h an "
 "abretañ ar gwellañ."
 
-#: src/View/Helper/ContactUs.php:570
+#: src/View/Helper/ContactUs.php:575
 msgid "Subscribe newsletter"
 msgstr "Koumanantiñ d'al lizher-kelaouiñ"
 
-#: src/View/Helper/ContactUs.php:607 src/View/Helper/ContactUs.php:787
-#, python-brace-format
+#: src/View/Helper/ContactUs.php:612 src/View/Helper/ContactUs.php:792
 msgid "There is an error: {errors}"
 msgstr "Ur fazi zo : {errors}"
 
-#: src/View/Helper/ContactUs.php:661
-#, python-brace-format
+#: src/View/Helper/ContactUs.php:666
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
@@ -648,11 +644,11 @@ msgstr ""
 "Trugarez evit ho kemennadenn {name}. Gwiriit ho postel kadarnaat. An aozer a "
 "resevo anezhañ a-benn nebeut."
 
-#: src/View/Helper/ContactUs.php:694
+#: src/View/Helper/ContactUs.php:699
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Digarezit, n'hallomp ket kas ar postel d'an aozer."
 
-#: src/View/Helper/ContactUs.php:719
+#: src/View/Helper/ContactUs.php:724
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
@@ -660,24 +656,24 @@ msgstr ""
 "Digarezit, enrollet eo ar gemennadenn, met n'hallomp ket kelaouiñ an admin "
 "diouzhtu. Gallout a rit dont en-dro diwezhatoc'h ma ne resevit ket respont."
 
-#: src/View/Helper/ContactUs.php:767
+#: src/View/Helper/ContactUs.php:772
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr "Digarezit, n'omp ket gouest da gas ar postel kadarnaat."
 
-#: src/View/Helper/ContactUs.php:791
+#: src/View/Helper/ContactUs.php:796
 msgid "There is an error."
 msgstr "Ur fazi zo."
 
-#: src/View/Helper/ContactUs.php:854
-#, php-format, python-format
+#: src/View/Helper/ContactUs.php:859
+#, php-format
 msgid "About resource %s (%s)."
 msgstr "Diwar-benn ar vammenn %s (%s)."
 
-#: src/View/Helper/ContactUs.php:935
+#: src/View/Helper/ContactUs.php:940
 msgid "You must select a resource to contact the author."
 msgstr "Ret eo deoc'h dibab ur vammenn evit mont e darempred gant an aozer."
 
-#: src/View/Helper/ContactUs.php:950 src/View/Helper/ContactUs.php:976
+#: src/View/Helper/ContactUs.php:955 src/View/Helper/ContactUs.php:981
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
@@ -685,7 +681,7 @@ msgstr ""
 "N'eus aozer ebet da heuliañ evit an danvez-mañ. Kit e darempred gant ar "
 "merour evit kaout muioc'h a ditouroù."
 
-#: src/View/Helper/ContactUs.php:971
+#: src/View/Helper/ContactUs.php:976
 msgid "Contact administor for more information."
 msgstr "Darempredit ar merour evit muioc'h a ditouroù."
 
@@ -722,12 +718,10 @@ msgid "No file attached to selected items."
 msgstr "Testenn ebet stag ouzh an elfennoù dibabet."
 
 #: src/Job/ZipResources.php:132
-#, python-brace-format
 msgid "No derivative file of type {type} attached to selected items."
 msgstr "Testenn {type} ebet stag ouzh an elfennoù dibabet."
 
 #: src/Job/ZipResources.php:153
-#, python-brace-format
 msgid "Zip created successfully and available directly at {url}."
 msgstr "Krouet eo bet ar zip gant berzh ha hegerz eo war-eeun war {url}."
 
@@ -740,17 +734,16 @@ msgid "Unable to create the zip file."
 msgstr "N'haller ket krouiñ ar restr zip."
 
 #: src/Job/ZipResources.php:228
-#, python-brace-format
 msgid "An issue occurred during the creation of the zip file: {error}."
 msgstr "Ur gudenn zo c'hoarvezet e-pad krouidigezh ar restr zip : {error}."
 
 #: src/Job/ZipResources.php:236
-#, python-brace-format
 msgid "An issue occurred and the zip file was not created: {error}."
-msgstr "Ur gudenn zo c'hoarvezet ha n'eo ket bet krouet ar restr zip : {error}."
+msgstr ""
+"Ur gudenn zo c'hoarvezet ha n'eo ket bet krouet ar restr zip : {error}."
 
-#: src/Form/SettingsFieldset.php:15 src/Form/SiteSettingsFieldset.php:15
-#: src/Form/SiteSettingsFieldset.php:311
+#: src/Form/SiteSettingsFieldset.php:15 src/Form/SiteSettingsFieldset.php:311
+#: src/Form/SettingsFieldset.php:15
 msgid "Contact Us"
 msgstr "Darempredit ac'hanomp"
 
@@ -758,13 +751,13 @@ msgstr "Darempredit ac'hanomp"
 msgid "Old themes"
 msgstr "Temoù kozh"
 
+#: src/Form/SiteSettingsFieldset.php:34 src/Form/SettingsFieldset.php:33
 #: src/Form/ContactUsFieldset.php:27 src/Form/NewsletterFieldset.php:27
-#: src/Form/SettingsFieldset.php:33 src/Form/SiteSettingsFieldset.php:34
 msgid "Advanced anti-spam protection"
 msgstr "Gwarez enep-spam araokaet"
 
+#: src/Form/SiteSettingsFieldset.php:35 src/Form/SettingsFieldset.php:34
 #: src/Form/ContactUsFieldset.php:28 src/Form/NewsletterFieldset.php:28
-#: src/Form/SettingsFieldset.php:34 src/Form/SiteSettingsFieldset.php:35
 msgid ""
 "For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned "
 "IP lists, structured logging), install the BotGuard module."
@@ -772,7 +765,7 @@ msgstr ""
 "Evit ur gwarez enep-spam galloudusoc'h (Proof-of-Work, bevenniñ an tizh, "
 "DNSBL, rolloù IP berzet, marilhañ frammet), stailhit ar modul BotGuard."
 
-#: src/Form/SettingsFieldset.php:45 src/Form/SiteSettingsFieldset.php:46
+#: src/Form/SiteSettingsFieldset.php:46 src/Form/SettingsFieldset.php:45
 msgid "Specific fields to append to form"
 msgstr "Maeziennoù resis da ouzhpennañ d'ar furmskrid"
 
@@ -784,20 +777,21 @@ msgid ""
 "the main settings will be used."
 msgstr ""
 "Termenit an anv (ascii hepken ha hep esaouenn) hag al label, dispartiet gant "
-"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat ar"
-" vaezienn da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer azasaat "
-"an elfennoù dre an tem. Ma vezont goullo e vo implijet an arventennoù pennañ."
+"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat "
+"ar vaezienn da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer "
+"azasaat an elfennoù dre an tem. Ma vezont goullo e vo implijet an "
+"arventennoù pennañ."
 
-#: src/Form/ContactUsFieldset.php:116 src/Form/SettingsFieldset.php:51
-#: src/Form/SiteSettingsFieldset.php:52
+#: src/Form/SiteSettingsFieldset.php:52 src/Form/SettingsFieldset.php:51
+#: src/Form/ContactUsFieldset.php:116
 msgid "phone = Phone"
 msgstr "pellgomz = Pellgomz"
 
-#: src/Form/SettingsFieldset.php:60 src/Form/SiteSettingsFieldset.php:61
+#: src/Form/SiteSettingsFieldset.php:61 src/Form/SettingsFieldset.php:60
 msgid "Email of the sender (else no-reply user or administrator)"
 msgstr "Postel an kaser (a-hend-all un implijer pe ur merour hep respont)"
 
-#: src/Form/SettingsFieldset.php:61 src/Form/SiteSettingsFieldset.php:62
+#: src/Form/SiteSettingsFieldset.php:62 src/Form/SettingsFieldset.php:61
 msgid ""
 "The no-reply email can be set via module EasyAdmin. The administrator email "
 "can set above."
@@ -805,19 +799,19 @@ msgstr ""
 "Gallout a reer kefluniañ ar postel hep respont dre ar modul EasyAdmin. "
 "Gallout a ra postel ar merour bezañ kefluniet a-us."
 
-#: src/Form/SettingsFieldset.php:73 src/Form/SiteSettingsFieldset.php:74
+#: src/Form/SiteSettingsFieldset.php:74 src/Form/SettingsFieldset.php:73
 msgid "Name of the sender when email above is set"
 msgstr "Anv an kaser pa vez lakaet ar postel a-us"
 
-#: src/Form/SettingsFieldset.php:86 src/Form/SiteSettingsFieldset.php:87
+#: src/Form/SiteSettingsFieldset.php:87 src/Form/SettingsFieldset.php:86
 msgid "Emails to notify"
 msgstr "Posteloù da gemenn"
 
-#: src/Form/SettingsFieldset.php:87 src/Form/SiteSettingsFieldset.php:88
+#: src/Form/SiteSettingsFieldset.php:88 src/Form/SettingsFieldset.php:87
 msgid "The list of recipients to notify, one by row."
 msgstr "Roll ar resevourien da gemenn, a renk."
 
-#: src/Form/SettingsFieldset.php:93 src/Form/SiteSettingsFieldset.php:94
+#: src/Form/SiteSettingsFieldset.php:94 src/Form/SettingsFieldset.php:93
 msgid ""
 "contact@example.org\n"
 "info@example2.org"
@@ -833,36 +827,35 @@ msgstr "Danvez postel kemenn evit ar merour"
 msgid "Notification message for admin"
 msgstr "Kemenadenn evit an admin"
 
-#: src/Form/ContactUsFieldset.php:59 src/Form/SiteSettingsFieldset.php:120
-#: src/Form/SiteSettingsFieldset.php:156
-#, python-brace-format
+#: src/Form/SiteSettingsFieldset.php:120 src/Form/SiteSettingsFieldset.php:156
+#: src/Form/ContactUsFieldset.php:59
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{fields}, {each specific field}, {resource}, {resource_id}, {resource_title},"
-" {resource_url}, {resource_url_admin}, {resource_link}, {property term}, "
-"{resources}, {resources_ids}, {resources_url}, {resources_url_admin}, "
-"{resources_links}, {resources::property term}."
+"{fields}, {each specific field}, {resource}, {resource_id}, "
+"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
+"{property term}, {resources}, {resources_ids}, {resources_url}, "
+"{resources_url_admin}, {resources_links}, {resources::property term}."
 msgstr ""
 "Plasdermenioù posupl : {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{fields}, {each specific field}, {resource}, {resource_id}, {resource_title},"
-" {resource_url}, {resource_url_admin}, {resource_link}, {property term}, "
-"{resources}, {resources_ids}, {resources_url}, {resources_url_admin}, "
-"{resources_links}, {resources::property term}."
+"{fields}, {each specific field}, {resource}, {resource_id}, "
+"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
+"{property term}, {resources}, {resources_ids}, {resources_url}, "
+"{resources_url_admin}, {resources_links}, {resources::property term}."
 
-#: src/Form/ContactUsFieldset.php:38 src/Form/NewsletterFieldset.php:48
-#: src/Form/SiteSettingsFieldset.php:133
+#: src/Form/SiteSettingsFieldset.php:133 src/Form/ContactUsFieldset.php:38
+#: src/Form/NewsletterFieldset.php:48
 msgid "Send a confirmation email"
 msgstr "Kas ur postel kadarnaat"
 
-#: src/Form/ContactUsFieldset.php:48 src/Form/NewsletterFieldset.php:58
-#: src/Form/SiteSettingsFieldset.php:144
+#: src/Form/SiteSettingsFieldset.php:144 src/Form/ContactUsFieldset.php:48
+#: src/Form/NewsletterFieldset.php:58
 msgid "Subject of the confirmation email"
 msgstr "Danvez ar postel kadarnaat"
 
-#: src/Form/ContactUsFieldset.php:58 src/Form/NewsletterFieldset.php:68
-#: src/Form/SiteSettingsFieldset.php:155
+#: src/Form/SiteSettingsFieldset.php:155 src/Form/ContactUsFieldset.php:58
+#: src/Form/NewsletterFieldset.php:68
 msgid "Confirmation message"
 msgstr "Kemenadenn gadarnaat"
 
@@ -875,7 +868,6 @@ msgid "Confirmation message for subscription to newsletter"
 msgstr "Kemennadenn gadarnaat evit ar c'houmanant d'al lizher-kelaouiñ"
 
 #: src/Form/SiteSettingsFieldset.php:181
-#, python-brace-format
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {object}, {subject}, {ip}."
@@ -887,12 +879,11 @@ msgstr ""
 msgid "Subject of the email to author"
 msgstr "Danvez ar postel d'an aozer"
 
-#: config/module.config.php:292 src/Form/SiteSettingsFieldset.php:205
+#: src/Form/SiteSettingsFieldset.php:205 config/module.config.php:292
 msgid "Message to the author"
 msgstr "Kemenadenn d'an aozer"
 
-#: src/Form/NewsletterFieldset.php:69 src/Form/SiteSettingsFieldset.php:206
-#, python-brace-format
+#: src/Form/SiteSettingsFieldset.php:206 src/Form/NewsletterFieldset.php:69
 msgid ""
 "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
 "{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
@@ -905,21 +896,21 @@ msgid "Message displayed on site after post"
 msgstr "Kemenadenn da ziskouez war al lec'hienn goude ur post"
 
 #: src/Form/SiteSettingsFieldset.php:220 src/Form/SiteSettingsFieldset.php:233
-#, python-brace-format
 msgid "Possible placeholders: {name}, {email}."
 msgstr "Plasdermennoù posupl : {name}, {email}."
 
 #: src/Form/SiteSettingsFieldset.php:232
 msgid "Message displayed on site after post for newsletter"
-msgstr "Kemenadenn da ziskouez war al lec'hienn goude bezañ kaset ar c'helaouenn"
+msgstr ""
+"Kemenadenn da ziskouez war al lec'hienn goude bezañ kaset ar c'helaouenn"
 
-#: src/Form/ContactUsFieldset.php:80 src/Form/NewsletterFieldset.php:90
-#: src/Form/SiteSettingsFieldset.php:246
+#: src/Form/SiteSettingsFieldset.php:246 src/Form/ContactUsFieldset.php:80
+#: src/Form/NewsletterFieldset.php:90
 msgid "Label for the consent checkbox"
 msgstr "Etiked evit ar voest-gwiriañ an asant"
 
-#: src/Form/ContactUsFieldset.php:123 src/Form/NewsletterFieldset.php:100
 #: src/Form/SiteSettingsFieldset.php:258 src/Form/SiteSettingsFieldset.php:269
+#: src/Form/ContactUsFieldset.php:123 src/Form/NewsletterFieldset.php:100
 msgid "Enable simple antispam for visitors"
 msgstr "Gweredekaat un enep-spam eeun evit ar weladennerien"
 
@@ -935,21 +926,21 @@ msgstr ""
 "Pa vez gweredekaet, e vez distaolet kement kemennadenn a zo enni 'http://', "
 "'https://' pe 'www.', gant ur fazi splann ha ne vez ket enrollet."
 
-#: src/Form/ContactUsFieldset.php:133 src/Form/NewsletterFieldset.php:110
-#: src/Form/SiteSettingsFieldset.php:292
+#: src/Form/SiteSettingsFieldset.php:292 src/Form/ContactUsFieldset.php:133
+#: src/Form/NewsletterFieldset.php:110
 msgid "List of antispam questions/answers"
 msgstr "Roll ar goulennoù/respontoù enep-spam"
 
-#: src/Form/ContactUsFieldset.php:134 src/Form/SiteSettingsFieldset.php:293
+#: src/Form/SiteSettingsFieldset.php:293 src/Form/ContactUsFieldset.php:134
 msgid ""
-"See the block \"Contact us\" for a simple list. Separate questions and answer"
-" with a \"=\". Questions may be translated."
+"See the block \"Contact us\" for a simple list. Separate questions and "
+"answer with a \"=\". Questions may be translated."
 msgstr ""
 "Gwelet ar bloc'had \"Darempred\" evit ur roll eeun. Dispartiañ ar goulennoù "
 "hag ar respontoù gant un \"=\". Gallout a ra ar goulennoù bezañ troet."
 
-#: src/Form/ContactUsFieldset.php:139 src/Form/NewsletterFieldset.php:116
-#: src/Form/SiteSettingsFieldset.php:298
+#: src/Form/SiteSettingsFieldset.php:298 src/Form/ContactUsFieldset.php:139
+#: src/Form/NewsletterFieldset.php:116
 msgid ""
 "How many are zero plus 1 (in number)? = 1\n"
 "How many are one plus 1 (in number)? = 2"
@@ -995,9 +986,9 @@ msgstr "Ouzhpennañ danvezioù er respont"
 
 #: src/Form/SiteSettingsFieldset.php:377
 msgid ""
-"Some themes may require resources to be included in response when selecting a"
-" resource. This option avoids an api request via js on public side, but slow "
-"response."
+"Some themes may require resources to be included in response when selecting "
+"a resource. This option avoids an api request via js on public side, but "
+"slow response."
 msgstr ""
 "Evit temoù zo e c'hall bezañ ret lakaat mammennoù da vezañ lakaet er respont "
 "pa vez dibabet ur vammenn. An dibab-mañ a vir ouzh ur goulenn API dre JS war "
@@ -1011,12 +1002,12 @@ msgstr "Ouzhpennañ an IDoù danvez kenglotus eus an dibab modul er respont"
 msgid ""
 "Set the name (ascii only and no space) and the label separated by a \"=\", "
 "one by line. Prefix the label with \"* \" to make the field required (e.g. "
-"\"phone = * Phone\"). The elements may be adapted via the theme. This setting"
-" may be overridden by site or block settings."
+"\"phone = * Phone\"). The elements may be adapted via the theme. This "
+"setting may be overridden by site or block settings."
 msgstr ""
 "Termenit an anv (ascii hepken ha hep esaouenn) hag al label, dispartiet gant "
-"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat ar"
-" maez da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer azasaat an "
+"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat "
+"ar maez da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer azasaat an "
 "elfennoù dre an tem. Gallout a ra an arventenn-mañ bezañ nullataet gant "
 "arventennoù al lec'hienn pe ar bloc'had."
 
@@ -1031,18 +1022,20 @@ msgid ""
 "installation address."
 msgstr ""
 "Chomlec'h lakaet evel chomlec'h-respont pa respont ur merour d'ur "
-"gemennadenn. Ma'z eo goullo, eo postel ar merour kevreet ar "
-"chomlec'h-respont. Ar c'haser (chomlec'h 'eus') a chom chomlec'h unel ar "
-"staliadur."
+"gemennadenn. Ma'z eo goullo, eo postel ar merour kevreet ar chomlec'h-"
+"respont. Ar c'haser (chomlec'h 'eus') a chom chomlec'h unel ar staliadur."
 
 #: src/Form/SettingsFieldset.php:119
 msgid "Default subject when answering a contact"
 msgstr "Danvez dre ziouer pa respontit d'ur c'hemenn"
 
 #: src/Form/SettingsFieldset.php:120 src/Form/SettingsFieldset.php:133
-#, python-brace-format
-msgid "Placeholders: {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
-msgstr "Plasdermenoù: {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
+msgid ""
+"Placeholders: {name}, {email}, {subject}, {message}, {main_title}, "
+"{main_url}."
+msgstr ""
+"Plasdermenoù: {name}, {email}, {subject}, {message}, {main_title}, "
+"{main_url}."
 
 #: src/Form/SettingsFieldset.php:132
 msgid "Default message when answering a contact"
@@ -1054,7 +1047,8 @@ msgstr "Perc'henniezh ma'z eo stoket postel an aozer"
 
 #: src/Form/SettingsFieldset.php:148
 msgid "Allows visitors to contact authors via an email."
-msgstr "Aotren a ra ar weladennerien da vont e darempred gant an aozerien dre bostel."
+msgstr ""
+"Aotren a ra ar weladennerien da vont e darempred gant an aozerien dre bostel."
 
 #: src/Form/SettingsFieldset.php:151
 msgid "Disable feature"
@@ -1151,8 +1145,8 @@ msgstr "Da aozer"
 msgid "Attach a file"
 msgstr "Pegañ ur restr"
 
-#: src/Form/ContactUsForm.php:303 src/Form/NewsletterForm.php:189
-#: src/Form/SendMessageForm.php:62
+#: src/Form/ContactUsForm.php:303 src/Form/SendMessageForm.php:62
+#: src/Form/NewsletterForm.php:189
 msgid "Send message"
 msgstr "Kas ur gemennadenn"
 
@@ -1180,8 +1174,8 @@ msgid ""
 "the site settings or the main settings will be used."
 msgstr ""
 "Termenit an anv (ascii hepken ha hep esaouenn) hag al label, dispartiet gant "
-"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat ar"
-" maez da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer azasaat an "
+"un \"=\", pep hini war un linenn. Lakait \"* \" dirak al label evit lakaat "
+"ar maez da vezañ ret (da sk. \"phone = * Phone\"). Gallout a reer azasaat an "
 "elfennoù dre an tem. Ma'z int goullo e vo implijet arventennoù al lec'hienn "
 "pe ar re bennañ."
 
@@ -1215,8 +1209,8 @@ msgstr "Etiked evit ar voest da ziziskrivañ"
 
 #: src/Form/NewsletterFieldset.php:111
 msgid ""
-"See the block \"Newsletter\" for a simple list. Separate questions and answer"
-" with a \"=\". Questions may be translated."
+"See the block \"Newsletter\" for a simple list. Separate questions and "
+"answer with a \"=\". Questions may be translated."
 msgstr ""
 "Gwelet ar bloc'had \"Kelaouenn\" evit ur roll eeun. Dispartiañ ar goulennoù "
 "hag ar respontoù gant un \"=\". Gallout a ra ar goulennoù bezañ troet."
@@ -1234,7 +1228,6 @@ msgid "The ip cannot be empty."
 msgstr "Ne c'hall ket an IP bezañ goullo."
 
 #: src/Controller/Admin/ContactMessageController.php:162
-#, python-brace-format
 msgid "Message successfully sent to {email}."
 msgstr "Kelaouenn kaset gant berzh da {email}."
 
@@ -1245,8 +1238,8 @@ msgstr "Kemeret eo bet ar gemennadenn daremprediñ kuit gant berzh."
 #: src/Controller/Admin/ContactMessageController.php:282
 msgid "You must select at least one contact message to batch delete."
 msgstr ""
-"Ret eo deoc'h dibab ur gemennadenn daremprediñ da nebeutañ evit o diverkañ "
-"a-stroll."
+"Ret eo deoc'h dibab ur gemennadenn daremprediñ da nebeutañ evit o diverkañ a-"
+"stroll."
 
 #: src/Controller/Admin/ContactMessageController.php:291
 msgid "Contact messages successfully deleted."
@@ -1274,7 +1267,6 @@ msgid "success"
 msgstr "berzh"
 
 #: src/Controller/Site/IndexController.php:131
-#, python-brace-format
 msgid "Warning: It is not possible to select more than {total} resources."
 msgstr "Diwallit : N'haller ket dibab muioc'h eget {total} a ziazezoù."
 
@@ -1351,7 +1343,6 @@ msgid "The contact message doesn’t exist."
 msgstr "Ne vez ket eus ar gemennadenn darempred."
 
 #: config/module.config.php:212
-#, python-brace-format
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1386,7 +1377,6 @@ msgstr ""
 "{message}"
 
 #: config/module.config.php:245
-#, python-brace-format
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1421,7 +1411,6 @@ msgid "Confirmation contact"
 msgstr "Darempred evit ar gadarnadenn"
 
 #: config/module.config.php:262
-#, python-brace-format
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1466,7 +1455,6 @@ msgstr ""
 "{fields}"
 
 #: config/module.config.php:284
-#, python-brace-format
 msgid "Subscription to newsletter of {main_title}"
 msgstr "Koumanant da lizher-kelaouiñ {main_title}"
 
@@ -1485,7 +1473,6 @@ msgstr ""
 "A-youl-vat,"
 
 #: config/module.config.php:293
-#, python-brace-format
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -1510,8 +1497,8 @@ msgstr ""
 "Gant ar gweladenner {name} ({email}) eo bet graet ar goulenn da-heul diwar-"
 "benn un danvez war {main_title}:\n"
 "\n"
-"Trugarez da respont war-eeun d'ar postel a-us ha na implijit ket \"respont\"."
-"\n"
+"Trugarez da respont war-eeun d'ar postel a-us ha na implijit ket "
+"\"respont\".\n"
 "\n"
 "A-zevri,\n"
 "\n"
@@ -1525,22 +1512,20 @@ msgstr ""
 "{fields}"
 
 #: config/module.config.php:311
-#, python-brace-format
 msgid ""
-"Thank you for your message. Check your confirmation email sent to {email}. We"
-" will answer you soon."
+"Thank you for your message. Check your confirmation email sent to {email}. "
+"We will answer you soon."
 msgstr ""
 "Trugarez deoc'h evit ho kemennadenn. Gwiriit ho postel kadarnaat kaset da "
 "{email}. Respont a raimp deoc'h a-benn nebeut."
 
 #: config/module.config.php:312
-#, python-brace-format
 msgid ""
 "Thank you for subscribing to our newsletter. Check the confirmation email "
 "sent to {email}."
 msgstr ""
-"Trugarez deoc'h da vezañ koumanantet d'hor lizher-kelaouiñ. Gwiriit ar postel"
-" kadarnaat kaset da {email}."
+"Trugarez deoc'h da vezañ koumanantet d'hor lizher-kelaouiñ. Gwiriit ar "
+"postel kadarnaat kaset da {email}."
 
 #: config/module.config.php:313 config/module.config.php:360
 #: config/module.config.php:373
@@ -1548,11 +1533,10 @@ msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
 msgstr ""
-"Aotren a ran perc'henn al lec'hienn da enrollañ ma anv ha ma chomlec'h postel"
-" evit respont d'ar gemennadenn-mañ."
+"Aotren a ran perc'henn al lec'hienn da enrollañ ma anv ha ma chomlec'h "
+"postel evit respont d'ar gemennadenn-mañ."
 
 #: config/module.config.php:314
-#, python-brace-format
 msgid "It is not possible to select more than {total} resources."
 msgstr "N'haller ket dibab muioc'h eget {total} a ziazezoù."
 
@@ -1603,4 +1587,3 @@ msgstr "Koumanantiñ d'al lizher-kelaouiñ"
 #: config/module.config.php:375
 msgid "Unsubscribe"
 msgstr "Diziskrivañ"
-
