@@ -482,6 +482,11 @@ class MessageAdapter extends AbstractEntityAdapter
      */
     protected function getRequestUrl(): string
     {
+        // No request url outside an http context (CLI jobs, tests): the
+        // ServerUrl helper would read an undefined $_SERVER['REQUEST_URI'].
+        if (empty($_SERVER['REQUEST_URI'])) {
+            return '';
+        }
         $serverUrl = $this->getServiceLocator()->get('ViewHelperManager')->get('ServerUrl');
         $requestUrl = $serverUrl(true);
         // Don't store credential when the api is used.
