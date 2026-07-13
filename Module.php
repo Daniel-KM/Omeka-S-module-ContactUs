@@ -117,6 +117,8 @@ class Module extends AbstractModule
             throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
 
+        $this->checkPhpVersion();
+
         $errors = [];
 
         $config = $services->get('Config');
@@ -139,8 +141,27 @@ class Module extends AbstractModule
 
     public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services): void
     {
+        $this->checkPhpVersion();
         parent::upgrade($oldVersion, $newVersion, $services);
         $this->checkSpamGuardPresence($services);
+    }
+
+    /**
+     * PHP 8.1 is required to stream the zip of files (enums and the ZipStream
+     * library). Omeka >= 4.2 already enforces it, but the module still supports
+     * Omeka 4.1, which may run on an older PHP.
+     */
+    protected function checkPhpVersion(): void
+    {
+        if (version_compare(PHP_VERSION, '8.1', '<')) {
+            $translator = $this->getServiceLocator()->get('MvcTranslator');
+            $message = new \Omeka\Stdlib\Message(
+                $translator->translate('The module %1$s requires PHP %2$s or higher.'), // @translate
+                'ContactUs',
+                '8.1'
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+        }
     }
 
     protected function checkSpamGuardPresence(ServiceLocatorInterface $services): void
