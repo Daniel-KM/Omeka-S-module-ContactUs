@@ -109,11 +109,9 @@ class ContactMessageController extends AbstractActionController
         $params = $this->params();
 
         $body = trim((string) $params->fromPost('body'));
-        if (!strlen($body)) {
-            return $this->jSend()->fail(null, $this->translate('Empty message.')); // @translate
-        }
-        if (mb_strlen($body) > 10000) {
-            return $this->jSend()->fail(null, $this->translate('Too long message.')); // @translate
+        $bodyCheck = $this->prepareMessage()->validateBody($body);
+        if (!$bodyCheck['valid']) {
+            return $this->jSend()->fail(null, $this->translate($bodyCheck['error']));
         }
 
         $subject = trim((string) $params->fromPost('subject'));
@@ -122,11 +120,18 @@ class ContactMessageController extends AbstractActionController
                 ?: $this->translate('Re: {subject}'); // @translate
         }
 
-        $subject = $this->fillMessage($subject, $contactMessage);
-        $body = $this->fillMessage($body, $contactMessage);
+        $placeholders = [
+            'name' => (string) $contactMessage->name(),
+            'email' => (string) $contactMessage->email(),
+            'subject' => (string) $contactMessage->subject(),
+            'message' => (string) $contactMessage->body(),
+        ];
+        $subject = $this->prepareMessage()->fillMessage($subject, $placeholders);
+        $body = $this->prepareMessage()->fillMessage($body, $placeholders);
 
-        if (mb_strlen($subject) > 190) {
-            return $this->jSend()->fail(null, $this->translate('Too long subject.')); // @translate
+        $subjectCheck = $this->prepareMessage()->validateSubject($subject, 190);
+        if (!$subjectCheck['valid']) {
+            return $this->jSend()->fail(null, $this->translate($subjectCheck['error']));
         }
 
         $to = [$toEmail => (string) $contactMessage->name()];
@@ -182,30 +187,6 @@ class ContactMessageController extends AbstractActionController
             return [$user->getEmail() => (string) $user->getName()];
         }
         return null;
-    }
-
-    /**
-     * Fill a message with placeholders (moustache style).
-     */
-    protected function fillMessage(string $message, $contactMessage = null): string
-    {
-        if (!strlen($message) || mb_strpos($message, '{') === false) {
-            return $message;
-        }
-        $settings = $this->settings();
-        $placeholders = [
-            '{main_title}' => $settings->get('installation_title', 'Omeka S'),
-            '{main_url}' => $this->url()->fromRoute('top', [], ['force_canonical' => true]),
-        ];
-        if ($contactMessage) {
-            $placeholders += [
-                '{name}' => (string) $contactMessage->name(),
-                '{email}' => (string) $contactMessage->email(),
-                '{subject}' => (string) $contactMessage->subject(),
-                '{message}' => (string) $contactMessage->body(),
-            ];
-        }
-        return strtr($message, $placeholders);
     }
 
     public function showDetailsAction()

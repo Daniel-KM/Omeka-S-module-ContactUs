@@ -7,8 +7,8 @@ use Common\Stdlib\EasyMeta;
 use Common\Stdlib\PsrMessage;
 use ContactUs\Form\ContactUsForm;
 use ContactUs\Form\NewsletterForm;
+use ContactUs\Stdlib\ContactMessageMailer;
 use Laminas\Form\FormElementManager;
-use Laminas\Http\PhpEnvironment\RemoteAddress;
 use Laminas\Session\Container;
 use Laminas\View\Helper\AbstractHelper;
 use Omeka\Api\Manager as ApiManager;
@@ -382,12 +382,14 @@ class ContactUs extends AbstractHelper
             $blockSubmission = in_array('url', $spamReasons, true)
                 && $siteSetting('contactus_block_urls');
             if ($isSpam && $this->services) {
-                $this->services->get('Omeka\Logger')->notice(sprintf(
-                    '[ContactUs] Spam detected: reasons=%s; ip=%s; email=%s', // @translate
-                    implode(',', $spamReasons),
-                    $this->clientIp(),
-                    (string) ($params['from'] ?? '')
-                ));
+                $this->services->get('Omeka\Logger')->notice(
+                    '[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}', // @translate
+                    [
+                        'reasons' => implode(',', $spamReasons),
+                        'ip' => $this->clientIp(),
+                        'email' => (string) ($params['from'] ?? ''),
+                    ]
+                );
             }
 
             $params += ['from' => null, 'name' => null];
@@ -570,18 +572,21 @@ class ContactUs extends AbstractHelper
                     $submitted['site_title'] = $contactMessage->site()->title();
                     $submitted['site_url'] = $contactMessage->site()->siteUrl(null, true);
                     $submitted['subject'] = $contactMessage->subject()
-                        ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                        ?: (new PsrMessage(
+                            '[Contact] {main_title}', // @translate
+                            ['main_title' => $this->mailer->getInstallationTitle()]
+                        ))->translate();
                     $submitted['message'] = $contactMessage->body();
                     $submitted['ip'] = $contactMessage->ip();
                     $submitted['zip_url'] = $contactMessage->zipUrl();
 
                     if ($newsletterLabel) {
-                        $submitted['newsletter'] = sprintf(
-                            $translate('newsletter: %s'), // @translate
-                            $contactMessage->newsletter()
+                        $submitted['newsletter'] = (new PsrMessage(
+                            'newsletter: {answer}', // @translate
+                            ['answer' => $contactMessage->newsletter()
                                 ? $translate('yes') // @translate
-                                : $translate('no') // @translate
-                        ) . "\n";
+                                : $translate('no')] // @translate
+                        ))->translate() . "\n";
                     } else {
                         $submitted['newsletter'] = '';
                     }
@@ -604,6 +609,8 @@ class ContactUs extends AbstractHelper
                         ?: $setting('contactus_notify_recipients')
                         ?: [];
 
+                    $mailer = new ContactMessageMailer($this->sendEmail);
+
                     // Message to author (with copy to administrators if set).
                     if ($isContactAuthor) {
                         $message = new PsrMessage(
@@ -625,18 +632,12 @@ class ContactUs extends AbstractHelper
                         $subject = $this->fillMessage($translate($subject), $submitted);
                         $body = $this->fillMessage($translate($body), $submitted);
 
-                        $from = $sendWithUserEmail
-                            ? [$submitted['from'] => (string) $submitted['name']]
-                            : $sender;
-                        $replyTo = $sendWithUserEmail
-                            ? null
-                            : [$submitted['from'] => (string) $submitted['name']];
                         $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
                         $bcc = $setting('contactus_author_only')
                             ? null
                             : ($notifyRecipients ?: ($to ? null : $setting('administrator_email')) ?: null);
 
-                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, $bcc, $replyTo);
+                        $result = $mailer->toAuthor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender, $bcc, $sendWithUserEmail);
                         if (!$result) {
                             $status = 'error';
                             $message = new PsrMessage(
@@ -648,19 +649,18 @@ class ContactUs extends AbstractHelper
                     // Notification message to administrators.
                     else {
                         $subject = $this->getMailSubject($options)
-                            ?: sprintf($translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+                            ?: (new PsrMessage(
+                                '[Contact] {main_title}', // @translate
+                                ['main_title' => $this->mailer->getInstallationTitle()]
+                            ))->translate();
                         $body = $siteSetting('contactus_notify_body')
                             ?: $translate($this->defaultOptions['notify_body']);
                         $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
                         $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
 
-                        // The message to the admin is always from admin to
-                        // avoid issue, but with a reply-to.
-                        $from = $sender;
                         $to = $notifyRecipients ?: null;
-                        $replyTo = [$submitted['from'] => (string) $submitted['name']];
 
-                        $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, null, $replyTo);
+                        $result = $mailer->notifyAdmins($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender);
                         // When there is an issue, don't try to send other mail.
                         if (!$result) {
                             $status = 'error';
@@ -699,17 +699,13 @@ class ContactUs extends AbstractHelper
                             $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
                             $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
 
-                            // The message to the visitor is always from admin.
-                            $from = $sender;
-                            $to = [$submitted['from'] => (string) $submitted['name']];
-
                             // Reply-to is the configured support address, else
                             // the administrator, so the visitor can answer a
                             // monitored mailbox (never a no-reply).
                             $replyToEmail = $setting('contactus_reply_to_email') ?: $setting('administrator_email');
                             $replyTo = $replyToEmail ? [$replyToEmail => ''] : null;
 
-                            $result = $this->sendEmail->__invoke($body, $subject, $to, $from, null, null, $replyTo);
+                            $result = $mailer->confirmToVisitor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $sender, $replyTo);
                             if (!$result) {
                                 $status = 'error';
                                 $message = new PsrMessage(
@@ -958,152 +954,14 @@ class ContactUs extends AbstractHelper
             return (string) $message;
         }
 
-        // TODO Remove this fix (and in other places) earlier.
-        $message = strtr($message, ['%7B' => '{', '%7D' => '}']);
-
-        $plugins = $this->view->getHelperPluginManager();
-        $url = $plugins->get('url');
-        $site = $this->currentSite();
-        $translate = $plugins->get('translate');
-
-        $matches = [];
-        preg_match_all('~\{resources::(?<term>[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+)\}~m', $message, $matches);
-        $resourceTerms = array_unique($matches['term'] ?? []);
-
-        // Any field can be a placeholder, except array (except ids).
-        // Flatify array to simplify process.
+        // Compute the ContactUs-specific placeholders, then delegate the common
+        // work (common placeholders, single and multiple resources,
+        // interpolation) to the shared "prepareMessage" view helper.
         $fields = $placeholders['fields'] ?? [];
-        $placeholders['email'] ??= $placeholders['from'];
-        $placeholders += $fields;
+        $placeholders['email'] ??= $placeholders['from'] ?? null;
+        $placeholders['zip_url'] ??= '';
 
-        if (!empty($placeholders['id'])) {
-            $placeholders['id'] = is_array($placeholders['id']) ? $placeholders['id'] : [$placeholders['id']];
-            $idTitles = $this->api->search('resources', ['id' => $placeholders['id']], ['initialize' => false, 'returnScalar' => 'title'])->getContent();
-            $connection = $this->services->get('Omeka\Connection');
-            $idTypes = $connection->executeQuery(
-                'SELECT id, resource_type FROM resource WHERE id IN (?)',
-                [array_keys($idTitles)],
-                [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
-            )->fetchAllKeyValue();
-            $entityToController = [
-                \Omeka\Entity\Item::class => 'item',
-                \Omeka\Entity\ItemSet::class => 'item-set',
-                \Omeka\Entity\Media::class => 'media',
-            ];
-            if (class_exists(\DigitalObject\Entity\DigitalObject::class)) {
-                $entityToController[\DigitalObject\Entity\DigitalObject::class] = 'digital-object';
-            }
-            $byController = [];
-            $urls = [];
-            foreach ($idTitles as $rid => $title) {
-                $controller = $entityToController[$idTypes[$rid] ?? ''] ?? 'item';
-                $byController[$controller][] = $rid;
-                $urls[$rid] = $url('site/resource-id', ['site-slug' => $site->slug(), 'controller' => $controller, 'id' => $rid], ['force_canonical' => true]);
-            }
-            // {resources}: list of urls.
-            $placeholders['resources'] = implode(', ', $urls);
-            // {resources_ids}: list of ids.
-            $placeholders['resources_ids'] = implode(', ', array_keys($urls));
-            // {resources_urls}: list of urls. Alias of {resources}.
-            $placeholders['resources_urls'] = implode(', ', $urls);
-            // {resources_url} and {resources_url_admin}: one browse url per
-            // resource type, joined.
-            $publicBrowse = [];
-            $adminBrowse = [];
-            foreach ($byController as $controller => $ids) {
-                $publicBrowse[] = $url('site/resource', ['site-slug' => $site->slug(), 'controller' => $controller], ['query' => ['id' => implode(',', $ids)], 'force_canonical' => true]);
-                $adminBrowse[] = $url('admin/default', ['controller' => $controller], ['query' => ['id' => implode(',', $ids)], 'force_canonical' => true]);
-            }
-            $placeholders['resources_url'] = implode(' ', $publicBrowse);
-            $placeholders['resources_url_admin'] = implode(' ', $adminBrowse);
-            // {resources::property term}: list of titles or identifiers, etc.
-            // This process is slower, so fill it only when needed.
-            if ($resourceTerms) {
-                $resources = $this->api->search('resources', ['id' => $placeholders['id']])->getContent();
-                $vals = array_fill_keys($resourceTerms, []);
-                foreach ($resources as $resource) {
-                    foreach ($resourceTerms as $term) {
-                        $value = $resource->value($term);
-                        if ($value) {
-                            $vals[$term][] = (string) $value;
-                        }
-                    }
-                }
-                foreach ($vals as $term => $termVals) {
-                    $placeholders['resources::' . $term] = implode(', ', $termVals);
-                }
-            }
-            // Html.
-            // TODO Manage html mail.
-            // {resources_links}: list of links.
-            $noTitle = $translate('[No title]');
-            $placeholders['resources_links'] = implode(', ', array_map(
-                fn($rid) => sprintf('<a href="%s">%s</a>', htmlspecialchars($urls[$rid]), htmlspecialchars($idTitles[$rid] !== null && $idTitles[$rid] !== '' ? $idTitles[$rid] : $noTitle)),
-                array_keys($urls)
-            ));
-        }
-
-        $placeholders = array_filter($placeholders, fn ($v) => !is_array($v));
-
-        $replace = [];
-        foreach ($placeholders as $placeholder => $value) {
-            $replace['{' . $placeholder . '}'] = $value;
-        }
-
-        // Placehoders are the submitted values: from, email, name, site_title,
-        // site_url, subject, message, ip, resources.
-
-        $defaultPlaceholders = [
-            '{fields}' => '',
-            '{zip_url}' => '',
-            '{ip}' => (new RemoteAddress())->getIpAddress(),
-            '{main_title}' => $this->mailer->getInstallationTitle(),
-            '{main_url}' => $url('top', [], ['force_canonical' => true]),
-            '{site_title}' => $site->title(),
-            '{site_url}' => $site->siteUrl(null, true),
-            '{resources}' => '',
-            '{resources_ids}' => '',
-            '{resources_urls}' => '',
-            '{resources_url}' => '',
-            '{resources_url_admin}' => '',
-            // Html.
-            '{resources_links}' => '',
-        ];
-        foreach ($matches['term'] ?? [] as $term) {
-            $defaultPlaceholders['{resource::' . $term . '}'] = '';
-        }
-        $replace += $defaultPlaceholders;
-
-        // Fill the single resource.
-        if (!empty($this->currentOptions['resource'])) {
-            $replace['{resource}'] = $this->currentOptions['resource']->siteUrl(null, true);
-            $replace['{resource_id}'] = $this->currentOptions['resource']->id();
-            $replace['{resource_title}'] = $this->currentOptions['resource']->displayTitle();
-            $replace['{resource_url}'] = $replace['{resource}'];
-            $replace['{resource_url_admin}'] = $this->currentOptions['resource']->adminUrl(null, true);
-            $replace['{resource_link}'] = sprintf('<a href="%1$s">%2$s</a>', $replace['{resource_url}'], $replace['{resource_title}']);
-            // TODO Don't use json_decode(json_encode()).
-            $resourceJson = json_decode(json_encode($this->currentOptions['resource']), true);
-            foreach ($resourceJson as $term => $value) {
-                if (!is_array($value) || empty($value) || !isset(reset($value)['type'])) {
-                    continue;
-                }
-                $first = reset($value);
-                if (!empty($first['@id'])) {
-                    $replace['{' . $term . '}'] = $first['@id'];
-                } elseif (!empty($first['value_resource_id'])) {
-                    try {
-                        $replace['{' . $term . '}'] = $this->api->read('resources', ['id' => $first['value_resource_id']], [], ['initialize' => false, 'finalize' => false])->getContent()->getTitle();
-                    } catch (\Throwable $e) {
-                        $replace['{' . $term . '}'] = $translate('[Unknown resource]'); // @translate
-                    }
-                } elseif (isset($first['@value']) && strlen((string) $first['@value'])) {
-                    $replace['{' . $term . '}'] = $first['@value'];
-                }
-            }
-            // TODO Clean unused terms.
-        }
-
+        // {fields}: formatted list of the submitted custom fields.
         if ($fields && strpos($message, '{fields}') !== false) {
             $fieldsArray = [];
             foreach ($fields as $field => $value) {
@@ -1121,10 +979,23 @@ class ContactUs extends AbstractHelper
                     $fieldsArray[] = "* $field :\n$value";
                 }
             }
-            $replace['{fields}'] = implode("\n\n", $fieldsArray);
+            $placeholders['fields'] = implode("\n\n", $fieldsArray);
+        } else {
+            $placeholders['fields'] = '';
         }
 
-        return strtr($message, $replace);
+        // Each scalar field is also a placeholder on its own.
+        $placeholders += array_filter($fields, fn ($v) => !is_array($v));
+
+        // The resource ids for the multiple-resources placeholders come from
+        // the "id" key of the submitted fields, not from a top-level "id".
+        $context = [
+            'site' => $this->currentSite(),
+            'resource' => $this->currentOptions['resource'] ?? null,
+            'resource_ids' => $fields['id'] ?? null,
+        ];
+
+        return $this->getView()->plugin('prepareMessage')->fillMessage($message, $placeholders, $context);
     }
 
     protected function currentSite(): ?\Omeka\Api\Representation\SiteRepresentation
@@ -1143,7 +1014,10 @@ class ContactUs extends AbstractHelper
         }
 
         $view = $this->getView();
-        $default = sprintf($view->translate('[Contact] %s'), $this->mailer->getInstallationTitle());
+        $default = (new PsrMessage(
+            '[Contact] {main_title}', // @translate
+            ['main_title' => $this->mailer->getInstallationTitle()]
+        ))->translate();
 
         return (string) $view->siteSetting('contactus_notify_subject', $default);
     }
