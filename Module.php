@@ -143,13 +143,6 @@ class Module extends AbstractModule
         $this->checkSpamGuardPresence($services);
     }
 
-    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services): void
-    {
-        $this->checkPhpVersion();
-        parent::upgrade($oldVersion, $newVersion, $services);
-        $this->checkSpamGuardPresence($services);
-    }
-
     /**
      * PHP 8.1 is required to stream the zip of files (enums and the ZipStream
      * library). Omeka >= 4.2 already enforces it, but the module still supports

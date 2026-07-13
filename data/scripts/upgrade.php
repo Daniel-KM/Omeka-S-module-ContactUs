@@ -42,6 +42,8 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
     throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $translate('Missing requirement. Unable to upgrade.')); // @translate
 }
 
+$this->checkPhpVersion();
+
 if (version_compare($oldVersion, '3.3.8', '<')) {
     $settings->delete('contactus_html');
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
@@ -638,3 +640,37 @@ if (version_compare($oldVersion, '3.4.30', '<')) {
         $messenger->addNotice($message);
     }
 }
+
+if (version_compare($oldVersion, '3.4.31', '<')) {
+    // Zips are now streamed on demand and no longer stored on disk, so the
+    // "remove after some days" setting and every previously generated zip file
+    // become obsolete. Remove the leftover zip files (the "{id}.{token}.zip"
+    // pattern never matches message attachments, which keep their storage hash
+    // name, so the folder and the attachments are preserved). The zip links in
+    // already sent emails keep working: the token is unchanged and the archive
+    // is rebuilt on the fly.
+    $settings->delete('contactus_delete_zip');
+
+    $config = $services->get('Config');
+    $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+    $zipDir = $basePath . '/contactus';
+    $removed = 0;
+    if (is_dir($zipDir)) {
+        foreach (glob($zipDir . '/*.zip') ?: [] as $filepath) {
+            if (preg_match('~^\d+\.[A-Za-z0-9]+\.zip$~', basename($filepath))
+                && @unlink($filepath)
+            ) {
+                ++$removed;
+            }
+        }
+    }
+    if ($removed) {
+        $message = new PsrMessage(
+            'Removed {count} stored zip files: zips are now streamed on demand, so no file is kept and existing links still work.', // @translate
+            ['count' => $removed]
+        );
+        $messenger->addNotice($message);
+    }
+}
+
+$this->checkSpamGuardPresence($services);
