@@ -162,7 +162,7 @@ class MessageAdapter extends AbstractEntityAdapter
                 'item' => Item::class,
                 // 'users' => User::class, 'sites' => Site::class,
             ];
-            if (class_exists(\DigitalObject\Entity\DigitalObject::class)) {
+            if (class_exists('DigitalObject\Module', false)) {
                 $mapResourceTypes['digital_objects'] = \DigitalObject\Entity\DigitalObject::class;
                 $mapResourceTypes['digital_object'] = \DigitalObject\Entity\DigitalObject::class;
             }

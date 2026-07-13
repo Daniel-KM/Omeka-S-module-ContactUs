@@ -97,7 +97,7 @@ class Module extends AbstractModule
                 ['read', 'search']
             )
             // Anybody can browse, select, send email.
-            // TODO Not zip.
+            // TODO Remove acl for controller zip: tested manually inside controller for now.
             ->allow(
                 null,
                 ['ContactUs\Controller\Site\Index']
