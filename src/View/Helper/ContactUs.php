@@ -297,100 +297,12 @@ class ContactUs extends AbstractHelper
         }
 
         if ($isPost) {
-            $session = new Container('ContactUs');
-            $currentIp = $this->clientIp();
-
-            // Snapshot the session state issued when the form was rendered,
-            // before any mutation below, so both the local checks and the
-            // delegated SpamGuard check see the values sent with the form.
-            $loadedAt = (int) ($session->form_loaded_at ?? 0);
-            $powSalt = (string) ($session->pow_salt ?? '');
-            $powIssuedAt = (int) ($session->pow_issued_at ?? 0);
-            $prevSubmitAt = (int) ($session->last_submit_at ?? 0);
-            $prevSubmitIp = (string) ($session->last_submit_ip ?? '');
-
-            // Resolve the spam checker (SpamGuard adapter when the module is
-            // active, else the local fallback) and collect the matched reasons.
-            // A single interface avoids the earlier double, conflicting run.
-            if (empty($user)) {
-                $spamContext = [
-                    'ip' => $currentIp,
-                    'userAgent' => (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
-                    'email' => $params['from'] ?? '',
-                    'subject' => $params['subject'] ?? '',
-                    'body' => $params['message'] ?? '',
-                    'formLoadedAt' => $loadedAt,
-                    'honeypot' => $params['contact_website'] ?? '',
-                    'powSalt' => $powSalt,
-                    'powNonce' => $params['pow_nonce'] ?? '',
-                    'powIssuedAt' => $powIssuedAt,
-                    'prevSubmitAt' => $prevSubmitAt,
-                    'prevSubmitIp' => $prevSubmitIp,
-                    'checkDnsMx' => (bool) $setting('contactus_check_dns_mx'),
-                    'powSkip' => (bool) $setting('contactus_pow_skip'),
-                ];
-                $spamChecker = $this->services
-                    ? $this->services->get('ContactUs\SpamChecker')
-                    : new \ContactUs\Spam\LocalSpamChecker();
-                $reasons = $spamChecker->check($spamContext);
-                if ($reasons) {
-                    $spamReasons = array_values(array_unique(array_merge($spamReasons, $reasons)));
-                }
-            }
-
-            // ContactUs-specific checks, always applied (not covered by
-            // SpamGuard).
-
-            // Too slow: the rendered form has expired.
-            if (empty($user) && $loadedAt && (time() - $loadedAt) > 3600) {
-                $spamReasons[] = 'tooSlow';
-            }
-
-            // Strict rejection of any URL in subject or message when the site
-            // setting is enabled. Matches http(s)://, protocol-relative // and
-            // bare www. hosts.
-            if (empty($user) && $siteSetting('contactus_block_urls')) {
-                $candidate = (string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? '');
-                if ($candidate !== '' && preg_match('~(?:https?:)?//[a-z0-9]|\bwww\.[a-z0-9]~i', $candidate)) {
-                    $spamReasons[] = 'url';
-                }
-            }
-
-            // Question/answer captcha.
-            if ($antispam) {
-                $question = (new Container('ContactUs'))->question;
-                if ($this->checkSpam($options, $params)) {
-                    $spamReasons[] = 'captcha';
-                } else {
-                    $answer = $params['answer'] ?? false;
-                    $checkAnswer = $options['questions'][$question] ?? '';
-                }
-            }
-
-            // Consume the single-use proof-of-work salt and stamp the new
-            // rate-limit marker for the next submission, unless this one was
-            // rate-limited (keep the earlier marker to keep the window closed).
-            unset($session->pow_salt, $session->pow_issued_at);
-            if (empty($user) && !in_array('rateLimit', $spamReasons, true)) {
-                $session->last_submit_ip = $currentIp;
-                $session->last_submit_at = time();
-            }
-
-            $isSpam = !empty($spamReasons);
-            // Hard reject when an URL was found and the strict block is on. The
-            // message is not stored and the visitor sees an explicit error.
-            $blockSubmission = in_array('url', $spamReasons, true)
-                && $siteSetting('contactus_block_urls');
-            if ($isSpam && $this->services) {
-                $this->services->get('Omeka\Logger')->notice(
-                    '[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}', // @translate
-                    [
-                        'reasons' => implode(',', $spamReasons),
-                        'ip' => $this->clientIp(),
-                        'email' => (string) ($params['from'] ?? ''),
-                    ]
-                );
-            }
+            $spam = $this->evaluateSpam($params, $options, $user, $antispam);
+            $isSpam = $spam['isSpam'];
+            $blockSubmission = $spam['blockSubmission'];
+            $question = $spam['question'];
+            $answer = $spam['answer'];
+            $checkAnswer = $spam['checkAnswer'];
 
             $params += ['from' => null, 'name' => null];
             $hasEmail = $params['from'] || $user;
@@ -694,6 +606,130 @@ class ContactUs extends AbstractHelper
         }
 
         return $view->partial($template, $args);
+    }
+
+    /**
+     * Run the spam checks on a submission and return the outcome.
+     *
+     * Also consumes the single-use proof-of-work salt and stamps the rate-limit
+     * marker in the session, and logs a detected spam.
+     *
+     * @return array{isSpam: bool, blockSubmission: bool, question: string,
+     *   answer: mixed, checkAnswer: string}
+     */
+    protected function evaluateSpam(array $params, array $options, $user, bool $antispam): array
+    {
+        $view = $this->getView();
+        $setting = $view->plugin('setting');
+        $siteSetting = $view->plugin('siteSetting');
+
+        $spamReasons = [];
+        $question = '';
+        $answer = '';
+        $checkAnswer = '';
+
+        $session = new Container('ContactUs');
+        $currentIp = $this->clientIp();
+
+        // Snapshot the session state issued when the form was rendered,
+        // before any mutation below, so both the local checks and the
+        // delegated SpamGuard check see the values sent with the form.
+        $loadedAt = (int) ($session->form_loaded_at ?? 0);
+        $powSalt = (string) ($session->pow_salt ?? '');
+        $powIssuedAt = (int) ($session->pow_issued_at ?? 0);
+        $prevSubmitAt = (int) ($session->last_submit_at ?? 0);
+        $prevSubmitIp = (string) ($session->last_submit_ip ?? '');
+
+        // Resolve the spam checker (SpamGuard adapter when the module is
+        // active, else the local fallback) and collect the matched reasons.
+        // A single interface avoids the earlier double, conflicting run.
+        if (empty($user)) {
+            $spamContext = [
+                'ip' => $currentIp,
+                'userAgent' => (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
+                'email' => $params['from'] ?? '',
+                'subject' => $params['subject'] ?? '',
+                'body' => $params['message'] ?? '',
+                'formLoadedAt' => $loadedAt,
+                'honeypot' => $params['contact_website'] ?? '',
+                'powSalt' => $powSalt,
+                'powNonce' => $params['pow_nonce'] ?? '',
+                'powIssuedAt' => $powIssuedAt,
+                'prevSubmitAt' => $prevSubmitAt,
+                'prevSubmitIp' => $prevSubmitIp,
+                'checkDnsMx' => (bool) $setting('contactus_check_dns_mx'),
+                'powSkip' => (bool) $setting('contactus_pow_skip'),
+            ];
+            $spamChecker = $this->services
+                ? $this->services->get('ContactUs\SpamChecker')
+                : new \ContactUs\Spam\LocalSpamChecker();
+            $reasons = $spamChecker->check($spamContext);
+            if ($reasons) {
+                $spamReasons = array_values(array_unique(array_merge($spamReasons, $reasons)));
+            }
+        }
+
+        // ContactUs-specific checks, always applied (not covered by
+        // SpamGuard).
+
+        // Too slow: the rendered form has expired.
+        if (empty($user) && $loadedAt && (time() - $loadedAt) > 3600) {
+            $spamReasons[] = 'tooSlow';
+        }
+
+        // Strict rejection of any URL in subject or message when the site
+        // setting is enabled. Matches http(s)://, protocol-relative // and
+        // bare www. hosts.
+        if (empty($user) && $siteSetting('contactus_block_urls')) {
+            $candidate = (string) ($params['subject'] ?? '') . "\n" . (string) ($params['message'] ?? '');
+            if ($candidate !== '' && preg_match('~(?:https?:)?//[a-z0-9]|\bwww\.[a-z0-9]~i', $candidate)) {
+                $spamReasons[] = 'url';
+            }
+        }
+
+        // Question/answer captcha.
+        if ($antispam) {
+            $question = (new Container('ContactUs'))->question;
+            if ($this->checkSpam($options, $params)) {
+                $spamReasons[] = 'captcha';
+            } else {
+                $answer = $params['answer'] ?? false;
+                $checkAnswer = $options['questions'][$question] ?? '';
+            }
+        }
+
+        // Consume the single-use proof-of-work salt and stamp the new
+        // rate-limit marker for the next submission, unless this one was
+        // rate-limited (keep the earlier marker to keep the window closed).
+        unset($session->pow_salt, $session->pow_issued_at);
+        if (empty($user) && !in_array('rateLimit', $spamReasons, true)) {
+            $session->last_submit_ip = $currentIp;
+            $session->last_submit_at = time();
+        }
+
+        $isSpam = !empty($spamReasons);
+        // Hard reject when an URL was found and the strict block is on. The
+        // message is not stored and the visitor sees an explicit error.
+        $blockSubmission = in_array('url', $spamReasons, true)
+            && $siteSetting('contactus_block_urls');
+        if ($isSpam && $this->services) {
+            $this->services->get('Omeka\Logger')->notice(
+                '[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}', // @translate
+                [
+                    'reasons' => implode(',', $spamReasons),
+                    'ip' => $this->clientIp(),
+                    'email' => (string) ($params['from'] ?? ''),
+                ]
+            );
+        }
+
+        return [
+            'isSpam' => $isSpam,
+            'blockSubmission' => $blockSubmission,
+            'question' => $question,
+            'answer' => $answer,
+            'checkAnswer' => $checkAnswer,
+        ];
     }
 
     /**
