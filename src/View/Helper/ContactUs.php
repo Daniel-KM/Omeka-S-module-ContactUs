@@ -456,20 +456,8 @@ class ContactUs extends AbstractHelper
                 if (!$isFirst) {
                     $message = $messageSent;
                 } elseif (!$response) {
-                    $formMessages = $form->getMessages();
-                    $errorMessages = [];
-                    foreach ($formMessages as $formKeyMessages) {
-                        foreach ($formKeyMessages as $formKeyMessage) {
-                            $errorMessages[] = is_array($formKeyMessage) ? reset($formKeyMessage) : $formKeyMessage;
-                        }
-                    }
-                    // TODO Map errors key with form (keep original keys of the form).
-                    $this->messenger->addFormErrors($form);
                     $status = 'error';
-                    $message = new PsrMessage(
-                        'There is an error: {errors}', // @translate
-                        ['errors' => implode(", \n", $errorMessages)]
-                    );
+                    $message = $this->formErrorMessage($form);
                     $defaultForm = false;
                 }
 
@@ -489,24 +477,8 @@ class ContactUs extends AbstractHelper
                 }
             } else {
                 error_reporting($errorReporting);
-                $formMessages = $form->getMessages();
-                $errorMessages = [];
-                foreach ($formMessages as $formKeyMessages) {
-                    foreach ($formKeyMessages as $formKeyMessage) {
-                        $errorMessages[] = is_array($formKeyMessage) ? reset($formKeyMessage) : $formKeyMessage;
-                    }
-                }
-                // TODO Map errors key with form (keep original keys of the form).
-                $this->messenger->addFormErrors($form);
                 $status = 'error';
-                $message = count($errorMessages)
-                    ? new PsrMessage(
-                        'There is an error: {errors}', // @translate
-                        ['errors' => implode(", \n", $errorMessages)]
-                    )
-                    : new PsrMessage(
-                        'There is an error.' // @translate
-                    );
+                $message = $this->formErrorMessage($form);
                 $defaultForm = false;
             }
         }
@@ -1021,6 +993,29 @@ class ContactUs extends AbstractHelper
     /**
      * Fill a message with placeholders (moustache style).
      */
+    /**
+     * Register the form errors in the messenger and return a summary message.
+     */
+    protected function formErrorMessage($form): PsrMessage
+    {
+        $errorMessages = [];
+        foreach ($form->getMessages() as $formKeyMessages) {
+            foreach ($formKeyMessages as $formKeyMessage) {
+                $errorMessages[] = is_array($formKeyMessage) ? reset($formKeyMessage) : $formKeyMessage;
+            }
+        }
+        // TODO Map errors key with form (keep original keys of the form).
+        $this->messenger->addFormErrors($form);
+        return count($errorMessages)
+            ? new PsrMessage(
+                'There is an error: {errors}', // @translate
+                ['errors' => implode(", \n", $errorMessages)]
+            )
+            : new PsrMessage(
+                'There is an error.' // @translate
+            );
+    }
+
     protected function fillMessage(?string $message, array $placeholders): string
     {
         if (empty($message)) {
