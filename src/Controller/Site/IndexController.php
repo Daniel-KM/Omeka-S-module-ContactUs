@@ -205,9 +205,10 @@ class IndexController extends AbstractActionController
         }
 
         // The zip is built and streamed on the fly: nothing is stored on disk,
-        // so there is no job to run nor old file to clean up.
-        $type = (string) $this->settings()->get('contactus_create_zip', 'original') ?: 'original';
-        $files = $this->collectMediaFiles($contactMessage->resourceIds(), $type);
+        // so there is no job to run nor old file to clean up. The files are
+        // collected with full rights (token-authorized download) by the
+        // representation, honouring the "include private" option.
+        $files = $contactMessage->downloadableFiles();
         if (!$files) {
             throw new \Omeka\Mvc\Exception\NotFoundException('No file to zip.'); // @translate
         }
@@ -215,62 +216,6 @@ class IndexController extends AbstractActionController
         return $this->streamZip($files, $id . '.zip');
     }
 
-    /**
-     * Collect the readable files of the given resources for the wanted type.
-     *
-     * @param int[] $resourceIds
-     * @return array<int, array{filepath: string, source: string, mediatype:
-     *   string, maintype: string}>
-     */
-    protected function collectMediaFiles(array $resourceIds, string $type): array
-    {
-        if (!$resourceIds) {
-            return [];
-        }
-
-        $config = $this->getEvent()->getApplication()->getServiceManager()->get('Config');
-        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
-
-        $isOriginal = $type === 'original';
-
-        $resources = $this->api()->search('resources', ['id' => $resourceIds])->getContent();
-
-        $files = [];
-        foreach ($resources as $resource) {
-            if ($resource instanceof \Omeka\Api\Representation\MediaRepresentation) {
-                $medias = [$resource];
-            } elseif (class_exists(\DigitalObject\Module::class, false)
-                && $resource instanceof \DigitalObject\Api\Representation\DigitalObjectRepresentation
-            ) {
-                $medias = [$resource];
-            } else {
-                $medias = $resource->media();
-            }
-            /** @var \Omeka\Api\Representation\MediaRepresentation $media */
-            foreach ($medias as $media) {
-                if (($isOriginal && !$media->hasOriginal())
-                    || (!$isOriginal && !$media->hasThumbnails())
-                ) {
-                    continue;
-                }
-                // Thumbnails are always stored as jpg under their own folder.
-                $filename = $isOriginal ? $media->filename() : ($media->storageId() . '.jpg');
-                $filepath = $basePath . '/' . $type . '/' . $filename;
-                if (!is_file($filepath) || !is_readable($filepath)) {
-                    continue;
-                }
-                $mediaType = (string) $media->mediaType();
-                $files[$media->id()] = [
-                    'filepath' => $filepath,
-                    'source' => $media->source() ?: $media->filename(),
-                    'mediatype' => $mediaType,
-                    'maintype' => (string) strtok($mediaType, '/'),
-                ];
-            }
-        }
-
-        return $files;
-    }
 
     /**
      * Stream a zip of the given files to the client without writing it to disk.

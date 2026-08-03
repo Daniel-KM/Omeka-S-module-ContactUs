@@ -205,6 +205,19 @@ class SettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => 'contactus_zip_include_private',
+                'type' => CommonElement\OptionalCheckbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Include private resources and files in the zip', // @translate
+                    'info' => 'The download link is authorized by a single-use token, so it is opened without checking the visitor rights. By default only publicly visible resources and media are included. Check to also include the private ones (private resources and private media of public resources).', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_zip_include_private',
+                    'required' => false,
+                ],
+            ])
+            ->add([
                 'name' => 'contactus_pow_skip',
                 'type' => CommonElement\OptionalCheckbox::class,
                 'options' => [

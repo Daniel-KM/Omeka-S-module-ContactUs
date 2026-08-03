@@ -194,12 +194,95 @@ class MessageRepresentation extends AbstractEntityRepresentation
     }
 
     /**
-     * The zip is streamed on demand, so it is available whenever the message
-     * references at least one resource.
+     * The zip is streamed on demand, so it is available whenever at least one
+     * referenced resource actually has a downloadable file (avoids a dead
+     * download link when the resources have no file of the configured type).
      */
     public function hasZip(): bool
     {
-        return (bool) $this->resourceIds();
+        return (bool) $this->downloadableFiles();
+    }
+
+    /**
+     * Collect the readable files of the message resources for the configured
+     * type ("contactus_create_zip").
+     *
+     * Read with full rights via the entity manager: the download link lives in
+     * the (admin) notification email and is opened by an anonymous request, so
+     * the single-use token authorizes it. Private resources are included only
+     * when "contactus_zip_include_private" is set.
+     *
+     * @return array<int, array{filepath: string, source: string, mediatype:
+     *   string, maintype: string}>
+     */
+    public function downloadableFiles(): array
+    {
+        $ids = $this->resourceIds();
+        if (!$ids) {
+            return [];
+        }
+
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $type = (string) $settings->get('contactus_create_zip', 'original') ?: 'original';
+        $includePrivate = (bool) $settings->get('contactus_zip_include_private');
+        $isOriginal = $type === 'original';
+
+        $config = $services->get('Config');
+        $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
+
+        $entityManager = $services->get('Omeka\EntityManager');
+        $adapterManager = $services->get('Omeka\ApiAdapterManager');
+
+        $entities = $entityManager
+            ->getRepository(\Omeka\Entity\Resource::class)
+            ->findBy(['id' => $ids]);
+
+        $files = [];
+        foreach ($entities as $entity) {
+            if (!$includePrivate && !$entity->isPublic()) {
+                continue;
+            }
+            $resource = $adapterManager->get($entity->getResourceName())->getRepresentation($entity);
+            if ($resource instanceof \Omeka\Api\Representation\MediaRepresentation) {
+                $medias = [$resource];
+            } elseif (class_exists(\DigitalObject\Module::class, false)
+                && $resource instanceof \DigitalObject\Api\Representation\DigitalObjectRepresentation
+            ) {
+                $medias = [$resource];
+            } else {
+                $medias = $resource->media();
+            }
+            /** @var \Omeka\Api\Representation\MediaRepresentation $media */
+            foreach ($medias as $media) {
+                // A public resource may still hold private media, and media()
+                // returns them all, so the "include private" option is honoured
+                // at the file level too.
+                if (!$includePrivate && !$media->isPublic()) {
+                    continue;
+                }
+                if (($isOriginal && !$media->hasOriginal())
+                    || (!$isOriginal && !$media->hasThumbnails())
+                ) {
+                    continue;
+                }
+                // Thumbnails are always stored as jpg under their own folder.
+                $filename = $isOriginal ? $media->filename() : ($media->storageId() . '.jpg');
+                $filepath = $basePath . '/' . $type . '/' . $filename;
+                if (!is_file($filepath) || !is_readable($filepath)) {
+                    continue;
+                }
+                $mediaType = (string) $media->mediaType();
+                $files[$media->id()] = [
+                    'filepath' => $filepath,
+                    'source' => $media->source() ?: $media->filename(),
+                    'mediatype' => $mediaType,
+                    'maintype' => (string) strtok($mediaType, '/'),
+                ];
+            }
+        }
+
+        return $files;
     }
 
     public function zipFilename(): string
