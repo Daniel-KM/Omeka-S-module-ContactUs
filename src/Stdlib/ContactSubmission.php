@@ -1210,8 +1210,25 @@ class ContactSubmission
             $placeholders['fields'] = '';
         }
 
-        // Each scalar field is also a placeholder on its own.
-        $placeholders += array_filter($fields, fn ($v) => !is_array($v));
+        // Each field is also a placeholder on its own: a scalar as is, a list
+        // of scalars joined, anything else skipped (kept as an empty default
+        // below).
+        foreach ($fields as $field => $value) {
+            if (!is_array($value)) {
+                $placeholders[$field] ??= $value;
+            } elseif ($value && !array_filter($value, 'is_array')) {
+                $placeholders[$field] ??= implode(', ', $value);
+            }
+        }
+
+        // A field that is declared but not submitted (empty, unchecked, or
+        // removed from the form by the theme) defaults to an empty string, so
+        // its placeholder does not remain as braces in the message.
+        foreach (array_keys($this->options['fields'] ?? []) as $field) {
+            if ($field !== 'id') {
+                $placeholders[$field] ??= '';
+            }
+        }
 
         // The resource ids for the multiple-resources placeholders come from
         // the "id" key of the submitted fields, not from a top-level "id".
