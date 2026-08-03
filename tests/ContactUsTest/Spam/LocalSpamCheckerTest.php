@@ -56,8 +56,11 @@ class LocalSpamCheckerTest extends TestCase
         $this->assertContains('tooFast', $reasons);
     }
 
-    public function testMissingFormLoadedAtIsTooFast(): void
+    public function testMissingFormLoadedAtIsNotTooFast(): void
     {
+        // Aligned with the SpamGuard strategy: a missing load time is not
+        // flagged as too fast here (a session-less submission is caught by the
+        // proof-of-work instead).
         $reasons = $this->checker()->check([
             'formLoadedAt' => 0,
             'honeypot' => '',
@@ -66,7 +69,22 @@ class LocalSpamCheckerTest extends TestCase
             'body' => 'Message.',
             'prevSubmitAt' => 0,
         ]);
-        $this->assertContains('tooFast', $reasons);
+        $this->assertNotContains('tooFast', $reasons);
+    }
+
+    public function testTooFastRespectsConfiguredMinDelay(): void
+    {
+        $base = [
+            'formLoadedAt' => time() - 2,
+            'honeypot' => '',
+            'powSkip' => true,
+            'subject' => 'Hi',
+            'body' => 'Message.',
+            'prevSubmitAt' => 0,
+        ];
+        // Elapsed 2s: flagged when the required delay is larger, not otherwise.
+        $this->assertContains('tooFast', $this->checker()->check(['minDelay' => 5] + $base));
+        $this->assertNotContains('tooFast', $this->checker()->check(['minDelay' => 1] + $base));
     }
 
     public function testRateLimitedWhenSameIpTooSoon(): void
