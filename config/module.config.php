@@ -41,7 +41,7 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
-            Form\Element\Fields::class => Form\Element\Fields::class,
+            Form\Element\FieldsTextarea::class => Form\Element\FieldsTextarea::class,
             Form\QuickSearchForm::class => Form\QuickSearchForm::class,
             Form\SendMessageForm::class => Form\SendMessageForm::class,
         ],
@@ -209,7 +209,24 @@ return [
     'contactus' => [
         // Main settings.
         'settings' => [
-            'contactus_fields' => [],
+            // The four default fields, listed so they appear in the config
+            // editor and can be reordered or relabeled (model B).
+            'contactus_fields' => [
+                'name' => 'Name', // @translate
+                'from' => [
+                    'name' => 'from',
+                    'type' => \Laminas\Form\Element\Email::class,
+                    'options' => ['label' => 'Email'], // @translate
+                    'attributes' => ['required' => true],
+                ],
+                'subject' => 'Subject', // @translate
+                'message' => [
+                    'name' => 'message',
+                    'type' => \Laminas\Form\Element\Textarea::class,
+                    'options' => ['label' => 'Message'], // @translate
+                    'attributes' => ['required' => true],
+                ],
+            ],
             'contactus_sender_email' => '',
             'contactus_sender_name' => '',
             'contactus_notify_recipients' => [],

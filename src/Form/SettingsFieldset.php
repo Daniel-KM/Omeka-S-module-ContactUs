@@ -5,7 +5,7 @@ namespace ContactUs\Form;
 use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
-use ContactUs\Form\Element\Fields;
+use ContactUs\Form\Element\FieldsTextarea;
 use Omeka\Form\Element as OmekaElement;
 
 class SettingsFieldset extends Fieldset
@@ -32,7 +32,7 @@ class SettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Advanced anti-spam protection', // @translate
-                    'text' => 'For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the SpamGuard module.', // @translate
+                    'text' => 'For richer anti-spam protection, install the module SpamGuard.', // @translate
                 ],
             ]);
         }
@@ -40,15 +40,18 @@ class SettingsFieldset extends Fieldset
         $this
             ->add([
                 'name' => 'contactus_fields',
-                'type' => Fields::class,
+                'type' => FieldsTextarea::class,
                 'options' => [
                     'element_group' => 'contact',
-                    'label' => 'Specific fields to append to form', // @translate
-                    'info' => 'One field by line: "name = label" (name is ascii only and no space). Prefix the label with "* " to make it required. Add a type after " | " (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox) and, for lists, the options after ": " separated by commas, e.g. "topic = * Subject | select: Question, Bug". List a default field name (name, email, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
+                    'label' => 'Contact form fields', // @translate
+                    'enable_preview' => true,
+                    'info' => 'A YAML mapping, one field by name: a scalar value is the label (e.g. "phone: Phone"), a null value keeps a default field in place (e.g. "name:"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_fields',
-                    'placeholder' => 'phone = Phone', // @translate
+                    'class' => 'contactus-fields-dsl',
+                    'rows' => 6,
+                    'placeholder' => 'phone: Phone', // @translate
                 ],
             ])
 

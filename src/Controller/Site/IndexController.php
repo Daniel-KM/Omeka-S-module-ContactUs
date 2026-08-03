@@ -55,7 +55,11 @@ class IndexController extends AbstractActionController
         $view = new ViewModel([
             'site' => $this->currentSite(),
             'user' => $user,
-            'fields' => $this->fallbackSettings()->get('contactus_fields', ['site', 'global']) ?: [],
+            // An empty site setting must not shadow the global fields, so fall
+            // back explicitly ("[]" is not skipped by fallbackSettings).
+            'fields' => $this->siteSettings()->get('contactus_fields')
+                ?: $this->settings()->get('contactus_fields')
+                ?: [],
             'resourceIds' => $resourceIds,
             'isGuestActive' => $this->isGuestActive,
             'isSession' => !$user,

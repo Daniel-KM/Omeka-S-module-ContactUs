@@ -54,13 +54,13 @@ class ContactUs extends AbstractBlockLayout implements TemplateableBlockLayoutIn
         if (empty($data['fields'])) {
             $data['fields'] = [];
         } elseif (!is_array($data['fields'])) {
-            $element = new \ContactUs\Form\Element\Fields();
+            $element = new \ContactUs\Form\Element\FieldsTextarea();
             $specs = $element->stringToArray($data['fields']);
             if (!$element->validateFields($specs)) {
-                $errorStore->addError('fields', 'To append fields, each row must contain a name (ascii only and no space) and a label separated by a "=", with a valid type and, for lists, options.'); // @translate
+                $errorStore->addError('fields', 'Invalid fields: check the YAML syntax, the field names (ascii, no space), the types and, for select/radio/multicheckbox, the list of values.'); // @translate
                 $hasError = true;
             }
-            $data['fields'] = $specs;
+            $data['fields'] = is_array($specs) ? $specs : [];
         }
 
         if ($hasError) {
@@ -121,9 +121,13 @@ class ContactUs extends AbstractBlockLayout implements TemplateableBlockLayoutIn
         $vars['block'] = $block;
         $vars['options'] = $options;
 
-        // If fields are empty, use the site settings or the main settings.
+        // If fields are empty, use the site settings or the main settings. An
+        // empty site setting must not shadow the global fields, so fall back
+        // explicitly ("[]" is not skipped by fallbackSetting).
         if (empty($vars['options']['fields'])) {
-            $vars['options']['fields'] = $view->fallbackSetting('contactus_fields', ['site', 'global']) ?: [];
+            $vars['options']['fields'] = $view->siteSetting('contactus_fields')
+                ?: $view->setting('contactus_fields')
+                ?: [];
         }
 
         return $view->partial($templateViewScript, $vars);
