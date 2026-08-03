@@ -563,157 +563,17 @@ class ContactUs extends AbstractHelper
 
                 // Send non-spam message to administrators and author.
                 elseif (!$isSpam) {
-                    // Use contact message and not form, because it is filtered.
-                    // Add some keys for placeholders too.
-                    /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
-                    $contactMessage = $response->getContent();
-                    $submitted['from'] = $contactMessage->email();
-                    $submitted['name'] = $contactMessage->name();
-                    $submitted['site_title'] = $contactMessage->site()->title();
-                    $submitted['site_url'] = $contactMessage->site()->siteUrl(null, true);
-                    $submitted['subject'] = $contactMessage->subject()
-                        ?: (new PsrMessage(
-                            '[Contact] {main_title}', // @translate
-                            ['main_title' => $this->mailer->getInstallationTitle()]
-                        ))->translate();
-                    $submitted['message'] = $contactMessage->body();
-                    $submitted['ip'] = $contactMessage->ip();
-                    $submitted['zip_url'] = $contactMessage->zipUrl();
-
-                    if ($newsletterLabel) {
-                        $submitted['newsletter'] = (new PsrMessage(
-                            'newsletter: {answer}', // @translate
-                            ['answer' => $contactMessage->newsletter()
-                                ? $translate('yes') // @translate
-                                : $translate('no')] // @translate
-                        ))->translate() . "\n";
-                    } else {
-                        $submitted['newsletter'] = '';
-                    }
-
-                    /** @see \Common\Mvc\Controller\Plugin\SendEmail */
-
-                    // To set the name of email as empty string and not null
-                    // avoid to parse email for name.
-
-                    $sender = $options['sender_email']
-                        ? [$options['sender_email'] => (string) $options['sender_name']]
-                        : ($siteSetting('contactus_sender_email')
-                            ? [$siteSetting('contactus_sender_email') => (string) $siteSetting('contactus_sender_name')]
-                            : ($setting('contactus_sender_email')
-                                ? [$setting('contactus_sender_email') => (string) $setting('contactus_sender_name')]
-                                : null));
-
-                    $notifyRecipients = $options['notify_recipients']
-                        ?: $siteSetting('contactus_notify_recipients')
-                        ?: $setting('contactus_notify_recipients')
-                        ?: [];
-
-                    $mailer = new ContactMessageMailer($this->sendEmail);
-
-                    // Message to author (with copy to administrators if set).
-                    if ($isContactAuthor) {
-                        $message = new PsrMessage(
-                            'Thank you for your message {name}. Check your confirmation mail. The author will receive it soon.', // @translate
-                            $submitted['name']
-                                ? ['name' => sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])]
-                                : ['name' => $submitted['from']]
-                        );
-
-                        $subject = $options['to_author_subject'] ?: $this->defaultOptions['to_author_subject'];
-                        $body = $options['to_author_body'] ?: $this->defaultOptions['to_author_body'];
-                        // Avoid issue with bad config.
-                        if (strpos($body, '{email}') === false) {
-                            $body .= "\n\nFrom {email}";
-                        }
-                        if (strpos($body, '{message}') === false) {
-                            $body .= "\n\n{message}";
-                        }
-                        $subject = $this->fillMessage($translate($subject), $submitted);
-                        $body = $this->fillMessage($translate($body), $submitted);
-
-                        $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
-                        $bcc = $setting('contactus_author_only')
-                            ? null
-                            : ($notifyRecipients ?: ($to ? null : $setting('administrator_email')) ?: null);
-
-                        $result = $mailer->toAuthor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender, $bcc, $sendWithUserEmail);
-                        if (!$result) {
-                            $status = 'error';
-                            $message = new PsrMessage(
-                                'Sorry, we are not able to send the email to the author.' // @translate
-                            );
-                        }
-                    }
-
-                    // Notification message to administrators.
-                    else {
-                        $subject = $this->getMailSubject($options)
-                            ?: (new PsrMessage(
-                                '[Contact] {main_title}', // @translate
-                                ['main_title' => $this->mailer->getInstallationTitle()]
-                            ))->translate();
-                        $body = $siteSetting('contactus_notify_body')
-                            ?: $translate($this->defaultOptions['notify_body']);
-                        $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-                        $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
-
-                        $to = $notifyRecipients ?: null;
-
-                        $result = $mailer->notifyAdmins($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender);
-                        // When there is an issue, don't try to send other mail.
-                        if (!$result) {
-                            $status = 'error';
-                            $message = new PsrMessage(
-                                'Sorry, the message is recorded, but we are not able to notify the admin at once. You may come back later if you don’t receive answer.' // @translate
-                            );
-                        }
-                        // Send the confirmation message to the visitor.
-                        elseif ($options['confirmation_enabled']) {
-                            if ($newsletterOnly) {
-                                $message = $siteSetting('contactus_confirmation_message_newsletter')
-                                    ?: $translate($this->defaultOptions['confirmation_message_newsletter']);
-                            } else {
-                                $message = $siteSetting('contactus_confirmation_message')
-                                    ?: $translate($this->defaultOptions['confirmation_message']);
-                            }
-                            $message = strtr($message, ['%7B' => '{', '%7D' => '}']);
-                            $placeholders = [];
-                            if (mb_strpos($message, '{email}') !== false) {
-                                $placeholders['email'] = $submitted['from'];
-                            }
-                            if (mb_strpos($message, '{name}') !== false) {
-                                $placeholders['name'] = $submitted['name']
-                                    ? $submitted['name']
-                                    : $submitted['from'];
-                            }
-                            $message = new PsrMessage($message, $placeholders);
-
-                            if ($newsletterOnly) {
-                                $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_newsletter_subject'];
-                                $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_newsletter_body'];
-                            } else {
-                                $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
-                                $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
-                            }
-                            $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-                            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
-
-                            // Reply-to is the configured support address, else
-                            // the administrator, so the visitor can answer a
-                            // monitored mailbox (never a no-reply).
-                            $replyToEmail = $setting('contactus_reply_to_email') ?: $setting('administrator_email');
-                            $replyTo = $replyToEmail ? [$replyToEmail => ''] : null;
-
-                            $result = $mailer->confirmToVisitor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $sender, $replyTo);
-                            if (!$result) {
-                                $status = 'error';
-                                $message = new PsrMessage(
-                                    'Sorry, we are not able to send the confirmation email.' // @translate
-                                );
-                            }
-                        }
-                    }
+                    $sent = $this->dispatchMessages(
+                        $response->getContent(),
+                        $submitted,
+                        $options,
+                        $isContactAuthor,
+                        $sendWithUserEmail,
+                        $newsletterLabel,
+                        $newsletterOnly
+                    );
+                    $status = $sent['status'];
+                    $message = $sent['message'];
                 }
             } else {
                 error_reporting($errorReporting);
@@ -834,6 +694,183 @@ class ContactUs extends AbstractHelper
         }
 
         return $view->partial($template, $args);
+    }
+
+    /**
+     * Send the notification, author and confirmation mails for a stored,
+     * non-spam contact message and return the resulting status and message.
+     *
+     * @return array{status: ?string, message: ?\Common\Stdlib\PsrMessage}
+     */
+    protected function dispatchMessages(
+        \ContactUs\Api\Representation\MessageRepresentation $contactMessage,
+        array $submitted,
+        array $options,
+        bool $isContactAuthor,
+        bool $sendWithUserEmail,
+        string $newsletterLabel,
+        bool $newsletterOnly
+    ): array {
+        $view = $this->getView();
+        $setting = $view->plugin('setting');
+        $siteSetting = $view->plugin('siteSetting');
+        $translate = $view->plugin('translate');
+
+        $status = null;
+        $message = null;
+
+        // Use contact message and not form, because it is filtered.
+        // Add some keys for placeholders too.
+        /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
+        $submitted['from'] = $contactMessage->email();
+        $submitted['name'] = $contactMessage->name();
+        $submitted['site_title'] = $contactMessage->site()->title();
+        $submitted['site_url'] = $contactMessage->site()->siteUrl(null, true);
+        $submitted['subject'] = $contactMessage->subject()
+            ?: (new PsrMessage(
+                '[Contact] {main_title}', // @translate
+                ['main_title' => $this->mailer->getInstallationTitle()]
+            ))->translate();
+        $submitted['message'] = $contactMessage->body();
+        $submitted['ip'] = $contactMessage->ip();
+        $submitted['zip_url'] = $contactMessage->zipUrl();
+
+        if ($newsletterLabel) {
+            $submitted['newsletter'] = (new PsrMessage(
+                'newsletter: {answer}', // @translate
+                ['answer' => $contactMessage->newsletter()
+                    ? $translate('yes') // @translate
+                    : $translate('no')] // @translate
+            ))->translate() . "\n";
+        } else {
+            $submitted['newsletter'] = '';
+        }
+
+        /** @see \Common\Mvc\Controller\Plugin\SendEmail */
+
+        // To set the name of email as empty string and not null
+        // avoid to parse email for name.
+
+        $sender = $options['sender_email']
+            ? [$options['sender_email'] => (string) $options['sender_name']]
+            : ($siteSetting('contactus_sender_email')
+                ? [$siteSetting('contactus_sender_email') => (string) $siteSetting('contactus_sender_name')]
+                : ($setting('contactus_sender_email')
+                    ? [$setting('contactus_sender_email') => (string) $setting('contactus_sender_name')]
+                    : null));
+
+        $notifyRecipients = $options['notify_recipients']
+            ?: $siteSetting('contactus_notify_recipients')
+            ?: $setting('contactus_notify_recipients')
+            ?: [];
+
+        $mailer = new ContactMessageMailer($this->sendEmail);
+
+        // Message to author (with copy to administrators if set).
+        if ($isContactAuthor) {
+            $message = new PsrMessage(
+                'Thank you for your message {name}. Check your confirmation mail. The author will receive it soon.', // @translate
+                $submitted['name']
+                    ? ['name' => sprintf('%1$s (%2$s)', $submitted['name'], $submitted['from'])]
+                    : ['name' => $submitted['from']]
+            );
+
+            $subject = $options['to_author_subject'] ?: $this->defaultOptions['to_author_subject'];
+            $body = $options['to_author_body'] ?: $this->defaultOptions['to_author_body'];
+            // Avoid issue with bad config.
+            if (strpos($body, '{email}') === false) {
+                $body .= "\n\nFrom {email}";
+            }
+            if (strpos($body, '{message}') === false) {
+                $body .= "\n\n{message}";
+            }
+            $subject = $this->fillMessage($translate($subject), $submitted);
+            $body = $this->fillMessage($translate($body), $submitted);
+
+            $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
+            $bcc = $setting('contactus_author_only')
+                ? null
+                : ($notifyRecipients ?: ($to ? null : $setting('administrator_email')) ?: null);
+
+            $result = $mailer->toAuthor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender, $bcc, $sendWithUserEmail);
+            if (!$result) {
+                $status = 'error';
+                $message = new PsrMessage(
+                    'Sorry, we are not able to send the email to the author.' // @translate
+                );
+            }
+        }
+
+        // Notification message to administrators.
+        else {
+            $subject = $this->getMailSubject($options)
+                ?: (new PsrMessage(
+                    '[Contact] {main_title}', // @translate
+                    ['main_title' => $this->mailer->getInstallationTitle()]
+                ))->translate();
+            $body = $siteSetting('contactus_notify_body')
+                ?: $translate($this->defaultOptions['notify_body']);
+            $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
+
+            $to = $notifyRecipients ?: null;
+
+            $result = $mailer->notifyAdmins($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender);
+            // When there is an issue, don't try to send other mail.
+            if (!$result) {
+                $status = 'error';
+                $message = new PsrMessage(
+                    'Sorry, the message is recorded, but we are not able to notify the admin at once. You may come back later if you don’t receive answer.' // @translate
+                );
+            }
+            // Send the confirmation message to the visitor.
+            elseif ($options['confirmation_enabled']) {
+                if ($newsletterOnly) {
+                    $message = $siteSetting('contactus_confirmation_message_newsletter')
+                        ?: $translate($this->defaultOptions['confirmation_message_newsletter']);
+                } else {
+                    $message = $siteSetting('contactus_confirmation_message')
+                        ?: $translate($this->defaultOptions['confirmation_message']);
+                }
+                $message = strtr($message, ['%7B' => '{', '%7D' => '}']);
+                $placeholders = [];
+                if (mb_strpos($message, '{email}') !== false) {
+                    $placeholders['email'] = $submitted['from'];
+                }
+                if (mb_strpos($message, '{name}') !== false) {
+                    $placeholders['name'] = $submitted['name']
+                        ? $submitted['name']
+                        : $submitted['from'];
+                }
+                $message = new PsrMessage($message, $placeholders);
+
+                if ($newsletterOnly) {
+                    $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_newsletter_subject'];
+                    $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_newsletter_body'];
+                } else {
+                    $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
+                    $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
+                }
+                $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
+
+                // Reply-to is the configured support address, else
+                // the administrator, so the visitor can answer a
+                // monitored mailbox (never a no-reply).
+                $replyToEmail = $setting('contactus_reply_to_email') ?: $setting('administrator_email');
+                $replyTo = $replyToEmail ? [$replyToEmail => ''] : null;
+
+                $result = $mailer->confirmToVisitor($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $sender, $replyTo);
+                if (!$result) {
+                    $status = 'error';
+                    $message = new PsrMessage(
+                        'Sorry, we are not able to send the confirmation email.' // @translate
+                    );
+                }
+            }
+        }
+
+        return ['status' => $status, 'message' => $message];
     }
 
     protected function getFormContactUs(array $formOptions): ContactUsForm
