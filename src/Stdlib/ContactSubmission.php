@@ -103,6 +103,59 @@ class ContactSubmission
      */
     protected $messageSent;
 
+    /**
+     * Per-submission state, set by normalizeOptions() and shared by the phases.
+     *
+     * @var array
+     */
+    protected $options = [];
+
+    protected $params = [];
+
+    protected $isPost = false;
+
+    protected $user;
+
+    protected $site;
+
+    protected $isContactAuthor = false;
+
+    protected $template;
+
+    protected $sendWithUserEmail = false;
+
+    protected $fieldsForForm = [];
+
+    protected $attachFile = false;
+
+    protected $consentLabel = '';
+
+    protected $unsubscribe = false;
+
+    protected $unsubscribeLabel = '';
+
+    protected $newsletterOnly = false;
+
+    protected $newsletterLabel = '';
+
+    protected $antispam = false;
+
+    protected $isSpam = false;
+
+    protected $status;
+
+    protected $message;
+
+    protected $defaultForm = true;
+
+    protected $question = '';
+
+    protected $answer = '';
+
+    protected $checkAnswer = '';
+
+    protected $form;
+
     public function __construct(
         Api $api,
         ApiManager $apiManager,
@@ -197,55 +250,73 @@ class ContactSubmission
      */
     public function __invoke(array $options = [])
     {
-        // When the contact form is set multiple times on a page, it may be
-        // stored multiple times, so these flags avoid to duplicate messages.
+        $early = $this->normalizeOptions($options);
+        if ($early !== null) {
+            return $early;
+        }
+        if ($this->isPost) {
+            $this->processPost();
+        }
+        $this->buildForm();
+        return $this->renderArgs();
+    }
 
-        $options += $this->defaultOptions;
+    /**
+     * Merge the options with the defaults, resolve the request and the context,
+     * normalize the fields and init the submission state. Returns the rendered
+     * output when there is nothing to process (author contact without an author
+     * email), else null.
+     *
+     * @return string|array|null
+     */
+    protected function normalizeOptions(array $options)
+    {
+        $this->options = $options + $this->defaultOptions;
 
         $view = $this->view;
 
-        $params = $view->params()->fromPost();
-        $isPost = !empty($params);
+        $this->params = $view->params()->fromPost();
+        $this->isPost = !empty($this->params);
 
-        $template = $options['template']
-            ?: ($options['as_button'] ? self::PARTIAL_NAME_BUTTON : self::PARTIAL_NAME);
+        $this->template = $this->options['template']
+            ?: ($this->options['as_button'] ? self::PARTIAL_NAME_BUTTON : self::PARTIAL_NAME);
 
-        $isContactAuthor = $options['contact'] === 'author';
-        if ($isContactAuthor) {
+        $this->isContactAuthor = $this->options['contact'] === 'author';
+        if ($this->isContactAuthor) {
             // Remove useless options.
-            $options['attach_file'] = false;
-            $options['consent_label'] = '';
-            $options['newsletter_label'] = '';
-            $options['author_email'] = $this->authorEmail($options);
+            $this->options['attach_file'] = false;
+            $this->options['consent_label'] = '';
+            $this->options['newsletter_label'] = '';
+            $this->options['author_email'] = $this->authorEmail($this->options);
             // Early return when there is no author email.
-            if (empty($options['author_email'])) {
+            if (empty($this->options['author_email'])) {
                 $args = [
-                    'heading' => $options['heading'],
-                    'html' => $options['html'],
-                    'asButton' => $options['as_button'],
+                    'heading' => $this->options['heading'],
+                    'html' => $this->options['html'],
+                    'asButton' => $this->options['as_button'],
                     'form' => null,
-                    'resource' => $options['resource'],
+                    'resource' => $this->options['resource'],
                     'contact' => 'author',
                     'status' => 'error',
                     'message' => $this->errorMessage,
                 ];
-                return $isPost
+                return $this->isPost
                     // Only status and message are really needed.
                     ? $args
-                    : $view->partial($template, $args);
+                    : $view->partial($this->template, $args);
             }
         }
 
-        $this->currentOptions = $options;
+        $this->currentOptions = $this->options;
 
-        $user = $view->identity();
+        $this->user = $view->identity();
         $setting = $view->plugin('setting');
         $siteSetting = $view->plugin('siteSetting');
         $translate = $view->plugin('translate');
 
-        $site = $this->currentSite();
+        $this->site = $this->currentSite();
 
-        $sendWithUserEmail = (bool) $setting('contactus_send_with_user_email');
+        $this->sendWithUserEmail = (bool) $setting('contactus_send_with_user_email');
 
         // Manage list of resource ids automatically, if any. "resource_ids" is
         // used for standard forms and fields for complex forms with multiple
@@ -265,357 +336,417 @@ class ContactSubmission
         //   feeding that same model, keeping the ArrayTextarea as a fallback;
         // - a field-type registry so a module can add its own field types;
         // - move the whole fields normalization into the buildForm() seam so
-        //   the future model plugs in there without touching the flow.
+        // the
+        //   future model plugs in there without touching the flow.
 
         // The field "id" should be an array.
         // When hidden, the value may or may not be converted.
-        if (empty($options['fields']['id']) || $options['fields']['id'] === '[]') {
-            $options['fields']['id'] = [];
-        } elseif (is_string($options['fields']['id'])
+        if (empty($this->options['fields']['id']) || $this->options['fields']['id'] === '[]') {
+            $this->options['fields']['id'] = [];
+        } elseif (is_string($this->options['fields']['id'])
             && (
-                (substr($options['fields']['id'], 0, 1) === '[' && substr($options['fields']['id'], -1) === ']')
-                || (substr($options['fields']['id'], 0, 1) === '{' && substr($options['fields']['id'], -1) === '}')
+                (substr($this->options['fields']['id'], 0, 1) === '[' && substr($this->options['fields']['id'], -1) === ']')
+                || (substr($this->options['fields']['id'], 0, 1) === '{' && substr($this->options['fields']['id'], -1) === '}')
             )
         ) {
-            $options['fields']['id'] = json_decode($options['fields']['id'], true);
-        } elseif (!is_array($options['fields']['id'])) {
-            $options['fields']['id'] = [$options['fields']['id']];
+            $this->options['fields']['id'] = json_decode($this->options['fields']['id'], true);
+        } elseif (!is_array($this->options['fields']['id'])) {
+            $this->options['fields']['id'] = [$this->options['fields']['id']];
         }
 
         // For fields, append the resource early.
-        if ($options['resource']) {
-            $options['fields']['id'][] = $options['resource']->id();
+        if ($this->options['resource']) {
+            $this->options['fields']['id'][] = $this->options['resource']->id();
         }
 
         // The fields id should be integer and unique.
-        $options['fields']['id'] = isset($options['fields']['id']['value'])
-            ? array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']['value']))))
-            : array_values(array_unique(array_filter(array_map('intval', $options['fields']['id']))));
+        $this->options['fields']['id'] = isset($this->options['fields']['id']['value'])
+            ? array_values(array_unique(array_filter(array_map('intval', $this->options['fields']['id']['value']))))
+            : array_values(array_unique(array_filter(array_map('intval', $this->options['fields']['id']))));
 
         // The option fields are all specific fields set via the theme.
         // They are added in the form. The list of ids is added automatically.
         // For form, the fields id should be hidden.
-        $fieldsForForm = $options['fields'];
-        $fieldsForForm['id'] = [
+        $this->fieldsForForm = $this->options['fields'];
+        $this->fieldsForForm['id'] = [
             'type' => 'hidden',
-            'value' => $fieldsForForm['id'],
+            'value' => $this->fieldsForForm['id'],
         ];
 
-        $attachFile = !empty($options['attach_file']);
-        $consentLabel = trim((string) $options['consent_label']);
-        $unsubscribe = !empty($options['unsubscribe']);
-        $unsubscribeLabel = trim((string) $options['unsubscribe_label']);
-        $newsletterOnly = !empty($options['newsletter_only']);
-        $newsletterLabel = trim((string) $options['newsletter_label']);
+        $this->attachFile = !empty($this->options['attach_file']);
+        $this->consentLabel = trim((string) $this->options['consent_label']);
+        $this->unsubscribe = !empty($this->options['unsubscribe']);
+        $this->unsubscribeLabel = trim((string) $this->options['unsubscribe_label']);
+        $this->newsletterOnly = !empty($this->options['newsletter_only']);
+        $this->newsletterLabel = trim((string) $this->options['newsletter_label']);
 
-        $antispam = empty($user)
-            && !empty($options['antispam'])
-            && !empty($options['questions']);
-        $isSpam = false;
-        $spamReasons = [];
-        $message = null;
-        $status = null;
-        $defaultForm = true;
+        $this->antispam = empty($this->user)
+            && !empty($this->options['antispam'])
+            && !empty($this->options['questions']);
+        $this->isSpam = false;
+        $this->message = null;
+        $this->status = null;
+        $this->defaultForm = true;
 
-        $question = '';
-        $answer = '';
-        $checkAnswer = '';
+        $this->question = '';
+        $this->answer = '';
+        $this->checkAnswer = '';
 
         // Sometime, questions/answers are not converted into array in form.
         // Fix https://gitlab.com/Daniel-KM/Omeka-S-module-CleanUrl/-/issues/10.
         // This is probably related to an old config that wasn't updated. So,
         // waiting the admin to check an issue in the page and to resave it.
         // TODO Remove this check and associated code during upgrade.
-        if ($antispam) {
-            $options['questions'] = $this->checkAntispamOptions($options['questions']);
+        if ($this->antispam) {
+            $this->options['questions'] = $this->checkAntispamOptions($this->options['questions']);
         }
 
-        if ($isPost) {
-            $spam = $this->evaluateSpam($params, $options, $user, $antispam);
-            $isSpam = $spam['isSpam'];
-            $blockSubmission = $spam['blockSubmission'];
-            $question = $spam['question'];
-            $answer = $spam['answer'];
-            $checkAnswer = $spam['checkAnswer'];
+        return null;
+    }
 
-            $params += ['from' => null, 'name' => null];
-            $hasEmail = $params['from'] || $user;
+    /**
+     * Handle a posted submission: spam evaluation, storage and mails.
+     */
+    protected function processPost(): void
+    {
+        $view = $this->view;
+        $setting = $view->plugin('setting');
+        $translate = $view->plugin('translate');
 
-            /** @var \ContactUs\Form\ContactUsForm $form */
-            $formOptions = [
-                'fields' => $fieldsForForm,
-                'attach_file' => $attachFile,
-                'consent_label' => $consentLabel,
-                'newsletter_label' => $newsletterLabel,
-                'unsubscribe' => $unsubscribe,
-                'unsubscribe_label' => $unsubscribeLabel,
-                'question' => $question,
-                'answer' => $answer,
-                'check_answer' => $checkAnswer,
-                'user' => $user,
-                'contact' => $isContactAuthor ? 'author' : 'us',
-                'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
-                'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
-                'recaptcha' => !empty($options['recaptcha']),
-            ];
-            $form = $newsletterOnly
-                ? $this->getFormNewsletter($formOptions)
-                : $this->getFormContactUs($formOptions);
+        $spam = $this->evaluateSpam($this->params, $this->options, $this->user, $this->antispam);
+        $this->isSpam = $spam['isSpam'];
+        $blockSubmission = $spam['blockSubmission'];
+        $this->question = $spam['question'];
+        $this->answer = $spam['answer'];
+        $this->checkAnswer = $spam['checkAnswer'];
 
-            // TODO Remove this normalization of posted data. For old themes.
-            // Add the options fields to the posted fields.
-            $postedFields = [];
-            if ($fieldsForForm) {
-                // Manage exception for list of ids and security, because hidden
-                // fields are not fully checked.
-                $fieldIds = ($params['fields']['id'] ?? []) ?: [];
-                if (!empty($fieldIds) && !is_array($fieldIds)) {
-                    $fieldIdsJson = json_decode($fieldIds, true);
-                    $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
-                }
-                $params['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
-                foreach (array_keys($fieldsForForm) as $name) {
-                    $params['fields'][$name] ??= null;
-                    $postedFields[$name] = $params['fields'][$name];
-                }
+        $this->params += ['from' => null, 'name' => null];
+        $hasEmail = $this->params['from'] || $this->user;
+
+        // Issue a fresh single-use proof-of-work salt and stamp the load time
+        // for the form built here: the spam check just consumed the previous
+        // salt, so a form redisplayed with validation errors must carry a new
+        // challenge, otherwise the corrected resubmission would fail PoW and be
+        // dropped as spam. On success the form is rebuilt (buildForm) with its
+        // own salt, so this one is simply superseded.
+        $powSalt = '';
+        $session = new Container('ContactUs');
+        $session->form_loaded_at = time();
+        if (empty($this->user) && !$setting('contactus_pow_skip')) {
+            $powSalt = bin2hex(random_bytes(16));
+            $session->pow_salt = $powSalt;
+            $session->pow_issued_at = time();
+        }
+
+        $formOptions = [
+            'fields' => $this->fieldsForForm,
+            'attach_file' => $this->attachFile,
+            'consent_label' => $this->consentLabel,
+            'newsletter_label' => $this->newsletterLabel,
+            'unsubscribe' => $this->unsubscribe,
+            'unsubscribe_label' => $this->unsubscribeLabel,
+            'question' => $this->question,
+            'answer' => $this->answer,
+            'check_answer' => $this->checkAnswer,
+            'user' => $this->user,
+            'contact' => $this->isContactAuthor ? 'author' : 'us',
+            'form_display_user_email_hidden' => !empty($this->options['form_display_user_email_hidden']),
+            'form_display_user_name_hidden' => !empty($this->options['form_display_user_name_hidden']),
+            'recaptcha' => !empty($this->options['recaptcha']),
+            'pow_salt' => $powSalt,
+        ];
+        $this->form = $this->newsletterOnly
+            ? $this->getFormNewsletter($formOptions)
+            : $this->getFormContactUs($formOptions);
+
+        // TODO Remove this normalization of posted data. For old themes.
+        // Add the options fields to the posted fields.
+        $postedFields = [];
+        if ($this->fieldsForForm) {
+            // Manage exception for list of ids and security, because hidden
+            // fields are not fully checked.
+            $fieldIds = ($this->params['fields']['id'] ?? []) ?: [];
+            if (!empty($fieldIds) && !is_array($fieldIds)) {
+                $fieldIdsJson = json_decode($fieldIds, true);
+                $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
+            }
+            $this->params['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
+            foreach (array_keys($this->fieldsForForm) as $name) {
+                $this->params['fields'][$name] ??= null;
+                $postedFields[$name] = $this->params['fields'][$name];
+            }
+        }
+
+        /**
+         * @fixme There is a warning on php 8 on date and time validator that is not fixed in version 2.25, the last version supporting 7.4.
+         * @see \Laminas\Validator\DateStep::convertString() ligne 207: output may be false.
+         */
+        $errorReporting = error_reporting();
+        error_reporting($errorReporting & ~E_WARNING);
+
+        $this->form->setData($this->params);
+        if ($blockSubmission) {
+            error_reporting($errorReporting);
+            $this->status = 'error';
+            $this->message = new PsrMessage(
+                'Links (URLs) are not allowed in messages. Please remove any link and resubmit.' // @translate
+            );
+            $this->messenger->addError($this->message->translate());
+            $this->defaultForm = false;
+        } elseif ($hasEmail && $this->form->isValid()) {
+            $submitted = $this->form->getData();
+            error_reporting($errorReporting);
+
+            // Stamp the rate-limit marker now that the form is valid (spam or
+            // not), so rapid resubmissions are throttled without punishing a
+            // legitimate visitor who is correcting a validation error.
+            if (empty($this->user)) {
+                $session = new Container('ContactUs');
+                $session->last_submit_ip = $this->clientIp();
+                $session->last_submit_at = time();
             }
 
-            /**
-             * @fixme There is a warning on php 8 on date and time validator that is not fixed in version 2.25, the last version supporting 7.4.
-             * @see \Laminas\Validator\DateStep::convertString() ligne 207: output may be false.
-             */
-            $errorReporting = error_reporting();
-            error_reporting($errorReporting & ~E_WARNING);
+            if ($this->user) {
+                $submitted['from'] = $this->user->getEmail();
+                // TODO What is the purpose of removing user name only for contact, not newsletter?
+                $submitted['name'] = $this->newsletterOnly ? $this->user->getName() : null;
+            }
 
-            $form->setData($params);
-            if ($blockSubmission) {
-                error_reporting($errorReporting);
-                $status = 'error';
-                $message = new PsrMessage(
-                    'Links (URLs) are not allowed in messages. Please remove any link and resubmit.' // @translate
-                );
-                $this->messenger->addError($message->translate());
-                $defaultForm = false;
-            } elseif ($hasEmail && $form->isValid()) {
-                $submitted = $form->getData();
-                error_reporting($errorReporting);
-                if ($user) {
-                    $submitted['from'] = $user->getEmail();
-                    // TODO What is the purpose of removing user name only for contact, not newsletter?
-                    $submitted['name'] = $newsletterOnly ? $user->getName() : null;
-                }
+            $fileData = $this->attachFile ? $view->params()->fromFiles() : [];
 
-                $fileData = $attachFile ? $view->params()->fromFiles() : [];
+            // If spam, store the message and return a success message, but
+            // don't send email.
 
-                // If spam, store the message and return a success message, but
-                // don't send email.
-
-                // Status is checked below.
-                $status = 'success';
-                if ($newsletterOnly) {
-                    if ($unsubscribe) {
-                        $message = new PsrMessage(
-                            'The unsubscription for {email} is confirmed.', // @translate
-                            ['email' => $submitted['from']]
-                        );
-                    } else {
-                        $message = new PsrMessage(
-                            'Thank you for subscribing to our newsletter, {name}.', // @translate
-                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
-                        );
-                    }
-                } else {
-                    if ($isContactAuthor) {
-                        $message = new PsrMessage(
-                            'Thank you for your message, {name}. It will be sent to the author as soon as possible.', // @translate
-                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
-                        );
-                    } else {
-                        $message = new PsrMessage(
-                            'Thank you for your message, {name}. We will answer you as soon as possible.', // @translate
-                            ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
-                        );
-                    }
-                }
-
-                // Manage the specific field for multiple ids and convert it
-                // into a resource when possible.
-                if (empty($postedFields['id'])) {
-                    unset($postedFields['id']);
-                } elseif (is_array($postedFields['id']) && count($postedFields['id']) === 1 && empty($options['resource'])) {
-                    try {
-                        $options['resource'] = $this->api->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
-                        unset($postedFields['id']);
-                    } catch (\Throwable $e) {
-                        // Nothing to do.
-                    }
-                }
-
-                // Store contact message in all cases. Security checks are done
-                // in adapter.
-                // Use the controller plugin: the view cannot create and the
-                // main manager cannot check form.
-                $data = [
-                    'o:owner' => $user,
-                    'o:email' => $submitted['from'],
-                    'o:name' => $newsletterOnly ? null : $submitted['name'],
-                    'o:resource' => !empty($options['resource']) ? ['o:id' => $options['resource']->id()] : null,
-                    'o:site' => ['o:id' => $site->id()],
-                    'o-module-contact:subject' => $newsletterOnly
-                        ? $translate($formOptions['unsubscribe']
-                            ? 'Unsubscribe newsletter' // @translate
-                            : 'Subscribe newsletter') // @translate
-                        : $submitted['subject'],
-                    'o-module-contact:body' => $newsletterOnly
-                        ? $translate($formOptions['unsubscribe'] ? 'Unsubscribe newsletter' : 'Subscribe newsletter')
-                        : $submitted['message'],
-                    'o-module-contact:fields' => $postedFields,
-                    'o-module-contact:newsletter' => $newsletterOnly
-                        ? empty($formOptions['unsubscribe'])
-                        : ($newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
-                    'o-module-contact:is_spam' => $isSpam,
-                    'o-module-contact:to_author' => $isContactAuthor,
-                ];
-                $response = null;
-                if ($this->postStored === null) {
-                    $response = $this->apiPlugin->__invoke($form)->create('contact_messages', $data, $fileData);
-                    $isFirst = true;
-                    $this->postStored = !empty($response);
-                } else {
-                    $isFirst = false;
-                    $response = $this->postStored;
-                }
-
-                // The message is already sent. Just keep the response.
-                if (!$isFirst) {
-                    $message = $this->messageSent;
-                } elseif (!$response) {
-                    $status = 'error';
-                    $message = $this->formErrorMessage($form);
-                    $defaultForm = false;
-                }
-
-                // Send non-spam message to administrators and author.
-                elseif (!$isSpam) {
-                    $sent = $this->dispatchMessages(
-                        $response->getContent(),
-                        $submitted,
-                        $options,
-                        $isContactAuthor,
-                        $sendWithUserEmail,
-                        $newsletterLabel,
-                        $newsletterOnly
+            // Status is checked below.
+            $this->status = 'success';
+            if ($this->newsletterOnly) {
+                if ($this->unsubscribe) {
+                    $this->message = new PsrMessage(
+                        'The unsubscription for {email} is confirmed.', // @translate
+                        ['email' => $submitted['from']]
                     );
-                    $status = $sent['status'];
-                    $message = $sent['message'];
+                } else {
+                    $this->message = new PsrMessage(
+                        'Thank you for subscribing to our newsletter, {name}.', // @translate
+                        ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                    );
                 }
             } else {
-                error_reporting($errorReporting);
-                $status = 'error';
-                $message = $this->formErrorMessage($form);
-                $defaultForm = false;
+                if ($this->isContactAuthor) {
+                    $this->message = new PsrMessage(
+                        'Thank you for your message, {name}. It will be sent to the author as soon as possible.', // @translate
+                        ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                    );
+                } else {
+                    $this->message = new PsrMessage(
+                        'Thank you for your message, {name}. We will answer you as soon as possible.', // @translate
+                        ['name' => $submitted['name'] ? sprintf('%s (%s)', $submitted['name'], $submitted['from']) : $submitted['from']]
+                    );
+                }
             }
-        }
 
-        if ($defaultForm) {
+            // Manage the specific field for multiple ids and convert it
+            // into a resource when possible.
+            if (empty($postedFields['id'])) {
+                unset($postedFields['id']);
+            } elseif (is_array($postedFields['id']) && count($postedFields['id']) === 1 && empty($this->options['resource'])) {
+                try {
+                    $this->options['resource'] = $this->api->read('resources', ['id' => (int) reset($postedFields['id'])])->getContent();
+                    unset($postedFields['id']);
+                } catch (\Throwable $e) {
+                    // Nothing to do.
+                }
+            }
+
+            // Store contact message in all cases. Security checks are done
+            // in adapter.
+            // Use the controller plugin: the view cannot create and the
+            // main manager cannot check form.
+            $data = [
+                'o:owner' => $this->user,
+                'o:email' => $submitted['from'],
+                'o:name' => $this->newsletterOnly ? null : $submitted['name'],
+                'o:resource' => !empty($this->options['resource']) ? ['o:id' => $this->options['resource']->id()] : null,
+                'o:site' => ['o:id' => $this->site->id()],
+                'o-module-contact:subject' => $this->newsletterOnly
+                    ? $translate($formOptions['unsubscribe']
+                        ? 'Unsubscribe newsletter' // @translate
+                        : 'Subscribe newsletter') // @translate
+                    : $submitted['subject'],
+                'o-module-contact:body' => $this->newsletterOnly
+                    ? $translate($formOptions['unsubscribe'] ? 'Unsubscribe newsletter' : 'Subscribe newsletter')
+                    : $submitted['message'],
+                'o-module-contact:fields' => $postedFields,
+                'o-module-contact:newsletter' => $this->newsletterOnly
+                    ? empty($formOptions['unsubscribe'])
+                    : ($this->newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
+                'o-module-contact:is_spam' => $this->isSpam,
+                'o-module-contact:to_author' => $this->isContactAuthor,
+            ];
+            $response = null;
+            if ($this->postStored === null) {
+                $response = $this->apiPlugin->__invoke($this->form)->create('contact_messages', $data, $fileData);
+                $isFirst = true;
+                $this->postStored = !empty($response);
+            } else {
+                $isFirst = false;
+                $response = $this->postStored;
+            }
+
+            // The message is already sent. Just keep the response.
+            if (!$isFirst) {
+                $this->message = $this->messageSent;
+            } elseif (!$response) {
+                $this->status = 'error';
+                $this->message = $this->formErrorMessage($this->form);
+                $this->defaultForm = false;
+            }
+
+            // Send non-spam message to administrators and author.
+            elseif (!$this->isSpam) {
+                $sent = $this->dispatchMessages(
+                    $response->getContent(),
+                    $submitted,
+                    $this->options,
+                    $this->isContactAuthor,
+                    $this->sendWithUserEmail,
+                    $this->newsletterLabel,
+                    $this->newsletterOnly
+                );
+                // Keep the earlier "success"/"Thank you" when the dispatch has
+                // nothing to override with (notification sent, no
+                // confirmation).
+                if ($sent['status'] !== null) {
+                    $this->status = $sent['status'];
+                }
+                if ($sent['message'] !== null) {
+                    $this->message = $sent['message'];
+                }
+            }
+        } else {
+            error_reporting($errorReporting);
+            $this->status = 'error';
+            $this->message = $this->formErrorMessage($this->form);
+            $this->defaultForm = false;
+        }
+    }
+
+    /**
+     * Build the form to display. This is the seam for the future fields model
+     * evolution (see the note in normalizeOptions()).
+     */
+    protected function buildForm(): void
+    {
+        $setting = $this->view->plugin('setting');
+
+        if ($this->defaultForm) {
             $session = new Container('ContactUs');
             // Stamp the form generation time so the submit handler can reject
             // too-fast (bot) and too-old (expired) submissions.
             $session->form_loaded_at = time();
-            // Generate a proof-of-work salt. The client browser must find a
-            // nonce such that sha256(salt:nonce) starts with 4 hex zeros
-            // (~65k hashes, about one second in a modern browser). Known
-            // limitation: the salt lives in a single session key, so with
-            // several contact blocks on one page only the last-rendered form is
-            // submissible. Not fixed: this only happens on a test page mixing
-            // configs, not in real setups.
+            // Generate a proof-of-work salt.
+            // Limitation: the salt lives in a single session key, so with
+            // several contact blocks on one page, only the last-rendered can be
+            // submitted.
+            // TODO Fix salt check on multi-contact forms on the same page (very rare).
             $powSalt = '';
-            if (!$setting('contactus_pow_skip') && empty($user)) {
+            if (!$setting('contactus_pow_skip') && empty($this->user)) {
                 $powSalt = bin2hex(random_bytes(16));
                 $session->pow_salt = $powSalt;
                 $session->pow_issued_at = time();
             }
-            if ($antispam) {
-                $question = array_rand($options['questions']);
-                $answer = $options['questions'][$question];
-                $session->question = $question;
+            if ($this->antispam) {
+                $this->question = array_rand($this->options['questions']);
+                $this->answer = $this->options['questions'][$this->question];
+                $session->question = $this->question;
             } else {
-                $question = '';
-                $answer = '';
-                $checkAnswer = '';
+                $this->question = '';
+                $this->answer = '';
+                $this->checkAnswer = '';
             }
             $formOptions = [
-                'fields' => $fieldsForForm,
-                'attach_file' => $attachFile,
-                'consent_label' => $consentLabel,
-                'newsletter_label' => $newsletterLabel,
-                'unsubscribe' => $unsubscribe,
-                'unsubscribe_label' => $unsubscribeLabel,
-                'question' => $question,
-                'answer' => $answer,
-                'check_answer' => $checkAnswer,
-                'user' => $user,
-                'contact' => $isContactAuthor ? 'author' : 'us',
-                'form_display_user_email_hidden' => !empty($options['form_display_user_email_hidden']),
-                'form_display_user_name_hidden' => !empty($options['form_display_user_name_hidden']),
-                'recaptcha' => !empty($options['recaptcha']),
+                'fields' => $this->fieldsForForm,
+                'attach_file' => $this->attachFile,
+                'consent_label' => $this->consentLabel,
+                'newsletter_label' => $this->newsletterLabel,
+                'unsubscribe' => $this->unsubscribe,
+                'unsubscribe_label' => $this->unsubscribeLabel,
+                'question' => $this->question,
+                'answer' => $this->answer,
+                'check_answer' => $this->checkAnswer,
+                'user' => $this->user,
+                'contact' => $this->isContactAuthor ? 'author' : 'us',
+                'form_display_user_email_hidden' => !empty($this->options['form_display_user_email_hidden']),
+                'form_display_user_name_hidden' => !empty($this->options['form_display_user_name_hidden']),
+                'recaptcha' => !empty($this->options['recaptcha']),
                 'pow_salt' => $powSalt,
             ];
-            $form = $newsletterOnly
+            $this->form = $this->newsletterOnly
                 ? $this->getFormNewsletter($formOptions)
                 : $this->getFormContactUs($formOptions);
         }
 
-        if ($user) {
-            $form->get('from')
-                ->setValue($user->getEmail())
+        if ($this->user) {
+            $this->form->get('from')
+                ->setValue($this->user->getEmail())
                 ->setAttribute('disabled', 'disabled');
-            if (!$newsletterOnly) {
-                $form->get('name')
-                    ->setValue($user->getName())
+            if (!$this->newsletterOnly) {
+                $this->form->get('name')
+                    ->setValue($this->user->getName())
                     ->setAttribute('disabled', 'disabled');
             }
         }
 
-        if ($options['resource']) {
-            $answer = 'About resource %s (%s).'; // @translate
-            $form->get('message')
-                ->setAttribute('value', sprintf($answer, $options['resource']->displayTitle(), $options['resource']->siteUrl(null, true)) . "\n\n");
+        if ($this->options['resource']) {
+            $this->answer = 'About resource %s (%s).'; // @translate
+            $this->form->get('message')
+                ->setAttribute('value', sprintf($this->answer, $this->options['resource']->displayTitle(), $this->options['resource']->siteUrl(null, true)) . "\n\n");
         }
 
-        $form->init();
-        $form->setName($newsletterOnly ? 'newsletter' : 'contact-us');
+        $this->form->init();
+        $this->form->setName($this->newsletterOnly ? 'newsletter' : 'contact-us');
+    }
 
-        $this->messageSent = $message;
+    /**
+     * Assemble the partial arguments and render, or return the data for an ajax
+     * (button) post.
+     *
+     * @return string|array
+     */
+    protected function renderArgs()
+    {
+        $view = $this->view;
+
+        $this->messageSent = $this->message;
 
         $args = [
-            'heading' => $options['heading'],
-            'html' => $options['html'],
-            'asButton' => $options['as_button'],
-            'form' => $form,
-            'fields' => $options['fields'],
-            'resource' => $options['resource'],
-            'contact' => $isContactAuthor ? 'author' : 'us',
-            'status' => $status,
-            'message' => $message ? $message->setTranslator($view->translator()) : null,
+            'heading' => $this->options['heading'],
+            'html' => $this->options['html'],
+            'asButton' => $this->options['as_button'],
+            'form' => $this->form,
+            'fields' => $this->options['fields'],
+            'resource' => $this->options['resource'],
+            'contact' => $this->isContactAuthor ? 'author' : 'us',
+            'status' => $this->status,
+            'message' => $this->message ? $this->message->setTranslator($view->translator()) : null,
         ];
 
-        if ($options['as_button']) {
+        if ($this->options['as_button']) {
             $plugins = $this->view->getHelperPluginManager();
             $url = $plugins->get('url');
-            $form->setAttribute('action', $site
+            $this->form->setAttribute('action', $this->site
                 ? $url('site/contact-us', ['action' => 'send-mail'], true)
                 : $url('contact-us', ['action' => 'send-mail'])
             );
             // With a button, the submit is managed by ajax, so return json.
             // Else, the button and dialog are displayed directly.
-            if ($isPost) {
+            if ($this->isPost) {
                 // Only status and message are really needed.
                 return $args;
             }
         }
 
-        return $view->partial($template, $args);
+        return $view->partial($this->template, $args);
     }
 
     /**
@@ -708,14 +839,11 @@ class ContactSubmission
             }
         }
 
-        // Consume the single-use proof-of-work salt and stamp the new
-        // rate-limit marker for the next submission, unless this one was
-        // rate-limited (keep the earlier marker to keep the window closed).
+        // Consume the single-use proof-of-work salt. The rate-limit marker is
+        // stamped later, only for a valid submission (see processPost), so a
+        // visitor who first tripped a validation error is not throttled on the
+        // corrected resubmission.
         unset($session->pow_salt, $session->pow_issued_at);
-        if (empty($user) && !in_array('rateLimit', $spamReasons, true)) {
-            $session->last_submit_ip = $currentIp;
-            $session->last_submit_at = time();
-        }
 
         $isSpam = !empty($spamReasons);
         // Hard reject when an URL was found and the strict block is on. The
