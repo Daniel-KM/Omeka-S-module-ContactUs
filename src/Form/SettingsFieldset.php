@@ -5,7 +5,7 @@ namespace ContactUs\Form;
 use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
-use ContactUs\Form\Element\FieldsTextarea;
+use Common\Form\Element\FieldsTextarea;
 use Omeka\Form\Element as OmekaElement;
 
 class SettingsFieldset extends Fieldset
@@ -45,11 +45,11 @@ class SettingsFieldset extends Fieldset
                     'element_group' => 'contact',
                     'label' => 'Contact form fields', // @translate
                     'enable_preview' => true,
+                    'system_fields' => ['id'],
                     'info' => 'A YAML mapping, one field by name: a scalar value is the label (e.g. "phone: Phone"), a null value keeps a default field in place (e.g. "name:"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_fields',
-                    'class' => 'contactus-fields-dsl',
                     'rows' => 6,
                     'placeholder' => 'phone: Phone', // @translate
                 ],

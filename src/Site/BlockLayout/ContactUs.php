@@ -54,7 +54,8 @@ class ContactUs extends AbstractBlockLayout implements TemplateableBlockLayoutIn
         if (empty($data['fields'])) {
             $data['fields'] = [];
         } elseif (!is_array($data['fields'])) {
-            $element = new \ContactUs\Form\Element\FieldsTextarea();
+            $element = (new \Common\Form\Element\FieldsTextarea())
+                ->setOptions(['system_fields' => ['id']]);
             $specs = $element->stringToArray($data['fields']);
             if (!$element->validateFields($specs)) {
                 $errorStore->addError('fields', 'Invalid fields: check the YAML syntax, the field names (ascii, no space), the types and, for select/radio/multicheckbox, the list of values.'); // @translate

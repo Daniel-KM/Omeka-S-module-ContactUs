@@ -463,27 +463,7 @@ class ContactSubmission
         // top-level params, with a fallback to the legacy "fields[...]"
         // structure for old themes. Core fields (from/name/subject/message) are
         // excluded: they are stored on their own message columns.
-        $postedFields = [];
-        if ($this->fieldsForForm) {
-            $partition = \ContactUs\Form\ContactUsForm::partitionFields($this->fieldsForForm);
-            // Manage exception for list of ids and security, because hidden
-            // fields are not fully checked.
-            $fieldIds = $this->params['id'] ?? $this->params['fields']['id'] ?? [];
-            if (!empty($fieldIds) && !is_array($fieldIds)) {
-                $fieldIdsJson = json_decode($fieldIds, true);
-                $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
-            }
-            $fieldIds = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
-            foreach (array_keys($partition['custom']) as $name) {
-                if ($name === 'id') {
-                    $postedFields['id'] = $fieldIds;
-                    continue;
-                }
-                $postedFields[$name] = $this->params[$name]
-                    ?? $this->params['fields'][$name]
-                    ?? null;
-            }
-        }
+        $postedFields = $this->collectPostedFields();
 
         /**
          * @fixme There is a warning on php 8 on date and time validator that is not fixed in version 2.25, the last version supporting 7.4.
@@ -1242,6 +1222,44 @@ class ContactSubmission
         ];
 
         return $this->view->plugin('prepareMessage')->fillMessage($message, $placeholders, $context);
+    }
+
+    /**
+     * Collect the values of the custom fields from the posted params.
+     *
+     * The form is flat since version 3.4.32, so the values are read at the top
+     * level, with a fallback to the legacy "fields[…]" structure used by the
+     * themes that were not upgraded.
+     */
+    protected function collectPostedFields(): array
+    {
+        if (!$this->fieldsForForm) {
+            return [];
+        }
+
+        $partition = \ContactUs\Form\ContactUsForm::partitionFields($this->fieldsForForm);
+
+        // Manage exception for list of ids and security, because hidden fields
+        // are not fully checked.
+        $fieldIds = $this->params['id'] ?? $this->params['fields']['id'] ?? [];
+        if (!empty($fieldIds) && !is_array($fieldIds)) {
+            $fieldIdsJson = json_decode($fieldIds, true);
+            $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
+        }
+        $fieldIds = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
+
+        $postedFields = [];
+        foreach (array_keys($partition['custom']) as $name) {
+            if ($name === 'id') {
+                $postedFields['id'] = $fieldIds;
+                continue;
+            }
+            $postedFields[$name] = $this->params[$name]
+                ?? $this->params['fields'][$name]
+                ?? null;
+        }
+
+        return $postedFields;
     }
 
     protected function currentSite(): ?\Omeka\Api\Representation\SiteRepresentation

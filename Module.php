@@ -246,60 +246,6 @@ class Module extends AbstractModule
         echo $html;
     }
 
-    /**
-     * Append the fields editor assets on the pages holding the fields
-     * definition textarea (id/class "contactus-fields-dsl"). The script is
-     * inert when the textarea is absent, so it is safe on every action of these
-     * controllers.
-     */
-    public function appendFieldsAssets(Event $event): void
-    {
-        /** @var \Laminas\View\Renderer\PhpRenderer $view */
-        $view = $event->getTarget();
-        $assetUrl = $view->plugin('assetUrl');
-        $translate = $view->plugin('translate');
-
-        $data = [
-            'types' => [
-                'text', 'textarea', 'email', 'tel', 'number', 'url', 'date',
-                'time', 'datetime', 'password', 'hidden', 'select', 'radio',
-                'checkbox', 'multicheckbox',
-            ],
-            'labels' => [
-                'editAsForm' => $translate('Edit as a form'), // @translate
-                'editAsText' => $translate('Edit as text'), // @translate
-                'preview' => $translate('Preview'), // @translate
-                'hidePreview' => $translate('Hide preview'), // @translate
-                'send' => $translate('Send message'), // @translate
-                'addField' => $translate('Add a field'), // @translate
-                'colName' => $translate('name'), // @translate
-                'colLabel' => $translate('label'), // @translate
-                'colRequired' => $translate('required'), // @translate
-                'valuesTitle' => $translate('Values'), // @translate
-                'optionsTitle' => $translate('Options'), // @translate
-                'attributesTitle' => $translate('Attributes'), // @translate
-                'addValue' => $translate('Add a value'), // @translate
-                'addOption' => $translate('Add an option'), // @translate
-                'addAttribute' => $translate('Add an attribute'), // @translate
-                'colKey' => $translate('key'), // @translate
-                'colValue' => $translate('value'), // @translate
-                'deleteField' => $translate('Delete this field'), // @translate
-                'remove' => $translate('Remove'), // @translate
-                'drag' => $translate('Move'), // @translate
-                'moveUp' => $translate('Move up'), // @translate
-                'moveDown' => $translate('Move down'), // @translate
-                'invalidYaml' => $translate('The YAML cannot be parsed. Fix it before switching to the form.'), // @translate
-            ],
-        ];
-
-        $view->headLink()
-            ->appendStylesheet($assetUrl('css/contact-us-fields.css', 'ContactUs'));
-        $view->headScript()
-            ->appendScript('window.ContactUsFields = ' . json_encode($data, 320) . ';')
-            ->appendFile($assetUrl('vendor/js-yaml/js-yaml.min.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer'])
-            ->appendFile($assetUrl('js/contact-us-fields.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
-    }
-
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         // Deprecated. Use resource block layout instead.
@@ -343,20 +289,6 @@ class Module extends AbstractModule
             'form.add_elements',
             [$this, 'handleSiteSettings']
         );
-
-        // Append the fields editor assets on the settings, site settings and
-        // page (block) admin pages.
-        foreach ([
-            'Omeka\Controller\Admin\Setting',
-            'Omeka\Controller\SiteAdmin\Index',
-            'Omeka\Controller\SiteAdmin\Page',
-        ] as $controller) {
-            $sharedEventManager->attach(
-                $controller,
-                'view.layout',
-                [$this, 'appendFieldsAssets']
-            );
-        }
 
         // Display a warn before uninstalling.
         $sharedEventManager->attach(
