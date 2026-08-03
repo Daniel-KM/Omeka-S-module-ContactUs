@@ -49,22 +49,18 @@ class ContactUs extends AbstractBlockLayout implements TemplateableBlockLayoutIn
             }
         }
 
-        // The element ArrayTextarea is not managed by block.
+        // The element Fields is not run through the block input filter, so
+        // parse and validate the textarea into Laminas element specifications.
         if (empty($data['fields'])) {
             $data['fields'] = [];
         } elseif (!is_array($data['fields'])) {
-            $fields = $this->stringToList($data['fields']);
-            $data['fields'] = [];
-            foreach ($fields as $nameLabel) {
-                [$name, $label] = is_array($nameLabel)
-                    ? [key($nameLabel), reset($nameLabel)]
-                    : (array_map('trim', explode('=', $nameLabel, 2)) + ['', '']);
-                if ($name === '' || $label === '') {
-                    $errorStore->addError('fields', 'To append fields, each row must contain a name and a label separated by a "=".'); // @translate
-                    $hasError = true;
-                }
-                $data['fields'][$name] = $label;
+            $element = new \ContactUs\Form\Element\Fields();
+            $specs = $element->stringToArray($data['fields']);
+            if (!$element->validateFields($specs)) {
+                $errorStore->addError('fields', 'To append fields, each row must contain a name (ascii only and no space) and a label separated by a "=", with a valid type and, for lists, options.'); // @translate
+                $hasError = true;
             }
+            $data['fields'] = $specs;
         }
 
         if ($hasError) {

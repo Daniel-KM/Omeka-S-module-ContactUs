@@ -5,6 +5,7 @@ namespace ContactUs\Form;
 use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use ContactUs\Form\Element\Fields;
 use Omeka\Form\Element as OmekaElement;
 
 class SettingsFieldset extends Fieldset
@@ -39,12 +40,11 @@ class SettingsFieldset extends Fieldset
         $this
             ->add([
                 'name' => 'contactus_fields',
-                'type' => OmekaElement\ArrayTextarea::class,
+                'type' => Fields::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Specific fields to append to form', // @translate
-                    'info' => 'Set the name (ascii only and no space) and the label separated by a "=", one by line. Prefix the label with "* " to make the field required (e.g. "phone = * Phone"). The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
-                    'as_key_value' => true,
+                    'info' => 'One field by line: "name = label" (name is ascii only and no space). Prefix the label with "* " to make it required. Add a type after " | " (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox) and, for lists, the options after ": " separated by commas, e.g. "topic = * Subject | select: Question, Bug". The elements may be adapted via the theme. This setting may be overridden by site or block settings.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_fields',
