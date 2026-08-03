@@ -509,7 +509,7 @@ if (version_compare($oldVersion, '3.4.24', '<')) {
     $list = $settings->get('contactus_notify_recipients');
     $first = $list ? reset($list) : null;
     if ($first) {
-        $settings->get('contactus_sender_email', $first);
+        $settings->set('contactus_sender_email', $first);
     }
 
     $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
@@ -518,7 +518,7 @@ if (version_compare($oldVersion, '3.4.24', '<')) {
         $list = $siteSettings->get('contactus_notify_recipients');
         $first = $list ? reset($list) : null;
         if ($first) {
-            $siteSettings->get('contactus_sender_email', $first);
+            $siteSettings->set('contactus_sender_email', $first);
         }
     }
 
@@ -544,9 +544,15 @@ if (version_compare($oldVersion, '3.4.26', '<')) {
     foreach ($siteIds as $siteId) {
         $siteSettings->setTargetId($siteId);
         $value = $siteSettings->get('contactus_label_selection');
-        $siteSettings->get('contactus_selection_label', $value);
+        if ($value !== null) {
+            $siteSettings->set('contactus_selection_label', $value);
+            $siteSettings->delete('contactus_label_selection');
+        }
         $value = $siteSettings->get('contactus_label_guest_link');
-        $siteSettings->get('contactus_selection_label_guest_link', $value);
+        if ($value !== null) {
+            $siteSettings->set('contactus_selection_label_guest_link', $value);
+            $siteSettings->delete('contactus_label_guest_link');
+        }
     }
 
     $message = new PsrMessage(
@@ -587,17 +593,34 @@ if (version_compare($oldVersion, '3.4.30', '<')) {
     );
     $messenger->addSuccess($message);
 
+    // The following step is useless with version 3.4.31 (streamed zip).
+    // Nevertheless, it is kept for a future usage.
+
     // Zip tokens are now HMAC-signed, so the filename changes for each existing
     // message. Rename existing zip files to the new filename so the admin zip
-    // links keep working. Previously sent emails still carry the old token in
-    // their URL and cannot be salvaged; the list of affected message ids is
-    // reported so the admin can notify users.
+    // links keep working.
+    // Previously sent emails still carry the old token in their URL and cannot
+    // be salvaged; the list of affected message ids is reported so the admin
+    // can notify users.
     $config = $services->get('Config');
     $basePath = $config['file_store']['local']['base_path'] ?: (OMEKA_PATH . '/files');
     $zipDir = $basePath . '/contactus';
     $renamedIds = [];
     $orphanIds = [];
     if (is_dir($zipDir)) {
+        // Because api is not available during upgrade, compute token manually.
+        // See previous version for a simpler code with api.
+        $secret = (string) $settings->get('contactus_token_secret');
+        if ($secret === '') {
+            $secret = bin2hex(random_bytes(32));
+            $settings->set('contactus_token_secret', $secret);
+        }
+        $token = function (array $contactMessage) use($secret): string {
+            $string = $contactMessage['id'] . '/' . $contactMessage['email'] . '/' . $contactMessage['ip'] . '/' . $contactMessage['user_agent'] . '/' . $contactMessage['created'];
+            return substr(strtr(base64_encode(hash_hmac('sha256', $string, $secret, true)), ['+' => '', '/' => '', '=' => '']), 0, 12);
+        };
+
+        $m = [];
         $files = glob($zipDir . '/*.zip') ?: [];
         foreach ($files as $filepath) {
             $name = basename($filepath);
@@ -605,14 +628,13 @@ if (version_compare($oldVersion, '3.4.30', '<')) {
                 continue;
             }
             $id = (int) $m[1];
-            try {
-                $contactMessage = $api->read('contact_messages', $id)->getContent();
-            } catch (\Omeka\Api\Exception\NotFoundException $e) {
+            $contactMessage = $connection->executeQuery('SELECT * FROM contact_message WHERE id = :id', ['id' => $id])->fetchAssociative();
+            if (!$contactMessage) {
                 @unlink($filepath);
                 $orphanIds[] = $id;
                 continue;
             }
-            $newName = $contactMessage->zipFilename();
+            $newName = $id . '.' . $token($contactMessage) . '.zip';
             if ($name === $newName) {
                 continue;
             }
@@ -644,11 +666,12 @@ if (version_compare($oldVersion, '3.4.30', '<')) {
 if (version_compare($oldVersion, '3.4.31', '<')) {
     // Zips are now streamed on demand and no longer stored on disk, so the
     // "remove after some days" setting and every previously generated zip file
-    // become obsolete. Remove the leftover zip files (the "{id}.{token}.zip"
-    // pattern never matches message attachments, which keep their storage hash
-    // name, so the folder and the attachments are preserved). The zip links in
-    // already sent emails keep working: the token is unchanged and the archive
-    // is rebuilt on the fly.
+    // become obsolete.
+    // Remove the leftover zip files (the "{id}.{token}.zip" pattern never
+    // matches message attachments, which keep their storage hash name, so the
+    // folder and the attachments are preserved). The zip links in already sent
+    // emails keep working: the token is unchanged and the archive is rebuilt on
+    // the fly.
     $settings->delete('contactus_delete_zip');
 
     $config = $services->get('Config');
@@ -670,6 +693,133 @@ if (version_compare($oldVersion, '3.4.31', '<')) {
             ['count' => $removed]
         );
         $messenger->addNotice($message);
+    }
+}
+
+if (version_compare($oldVersion, '3.4.32', '<')) {
+    // List the four default fields (name, email, subject, message) explicitly
+    // so they appear in the config editor and can be reordered or relabeled.
+    // Only when the setting was not customized yet.
+    if (!$settings->get('contactus_fields')) {
+        $settings->set('contactus_fields', [
+            'name' => 'Name', // @translate
+            'from' => [
+                'name' => 'from',
+                'type' => \Laminas\Form\Element\Email::class,
+                'options' => ['label' => 'Email'], // @translate
+                'attributes' => ['required' => true],
+            ],
+            'subject' => 'Subject', // @translate
+            'message' => [
+                'name' => 'message',
+                'type' => \Laminas\Form\Element\Textarea::class,
+                'options' => ['label' => 'Message'], // @translate
+                'attributes' => ['required' => true],
+            ],
+        ]);
+    }
+
+    // The system field "id" (attached resource ids) was wrongly persisted
+    // inside the block "fields" data. It is injected at runtime, so remove it
+    // from every contact form block, and drop the "fields" key when it becomes
+    // empty.
+    $rows = $connection
+        ->executeQuery('SELECT id, data FROM site_page_block WHERE data LIKE \'%"fields"%\'')
+        ->fetchAllAssociative();
+    $updated = 0;
+    foreach ($rows as $row) {
+        $data = json_decode((string) $row['data'], true);
+        if (!is_array($data)
+            || !isset($data['fields'])
+            || !is_array($data['fields'])
+            || !array_key_exists('id', $data['fields'])
+        ) {
+            continue;
+        }
+        unset($data['fields']['id']);
+        if (!$data['fields']) {
+            unset($data['fields']);
+        }
+        $connection->executeStatement(
+            'UPDATE site_page_block SET data = :data WHERE id = :id',
+            ['data' => json_encode($data), 'id' => (int) $row['id']]
+        );
+        ++$updated;
+    }
+    if ($updated) {
+        $messenger->addNotice(new PsrMessage(
+            'Removed the "id" system field from {count} contact form blocks.', // @translate
+            ['count' => $updated]
+        ));
+    }
+
+    // The migration of 3.4.26 called get() instead of set(), so the renamed
+    // selection labels were read and dropped instead of being copied: the
+    // custom labels of these sites silently fell back to the defaults. Redo it
+    // for the bases that already passed this version. Idempotent: the new
+    // setting is filled only when it is still empty and the old one remains.
+    $repaired = 0;
+    $renamedSiteSettings = [
+        'contactus_label_selection' => 'contactus_selection_label',
+        'contactus_label_guest_link' => 'contactus_selection_label_guest_link',
+    ];
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        foreach ($renamedSiteSettings as $old => $new) {
+            $value = $siteSettings->get($old);
+            if ($value === null) {
+                continue;
+            }
+            if (!$siteSettings->get($new)) {
+                $siteSettings->set($new, $value);
+                ++$repaired;
+            }
+            $siteSettings->delete($old);
+        }
+    }
+    if ($repaired) {
+        $messenger->addWarning(new PsrMessage(
+            'Restored {count} site labels for the selection, lost by an issue in the upgrade to version 3.4.26.', // @translate
+            ['count' => $repaired]
+        ));
+    }
+
+    // The same issue left the sender email empty since 3.4.24, where it should
+    // have been filled with the first email of the notification list. It is not
+    // set here: the site has been sending emails without it for many versions,
+    // and changing the sender silently may break the spf or dkim records.
+    if (!$settings->get('contactus_sender_email')) {
+        $messenger->addNotice(new PsrMessage(
+            'The option "Email of the sender" is empty: the no-reply or the administrator email is used. Set it in the settings if a specific sender is needed.' // @translate
+        ));
+    }
+
+    // The fields of the form are now flat: a theme posting "fields[name]" still
+    // works through a fallback, but the fallback is deprecated. Only warn: the
+    // forms keep working, so the upgrade must not be blocked.
+    $strings = [
+        'themes/*/view/common/contact-us*' => ['fields['],
+        'themes/*/view/common/block-layout/contact-us*' => ['fields['],
+        'themes/*/view/common/block-template/contact-us*' => ['fields['],
+        'themes/*/view/omeka/site/item/browse*' => ['fields[id]'],
+        'themes/*/view/search/resource-list*' => ['fields[id]'],
+    ];
+    $manageModuleAndResources = $this->getManageModuleAndResources();
+    $results = [];
+    foreach ($strings as $path => $stringsToCheck) {
+        $result = $manageModuleAndResources->checkStringsInFiles($stringsToCheck, $path);
+        if ($result) {
+            $results[] = $result;
+        }
+    }
+    if ($results) {
+        $message = new PsrMessage(
+            'The fields of the contact form are now flat: use the name of the field ("phone") instead of the nested name ("fields[phone]"), and "id[]" instead of "fields[id][]". The old names still work for now. Check the following files: {json}', // @translate
+            ['json' => json_encode($results, 448)]
+        );
+        $logger->warn($message->getMessage(), $message->getContext());
+        $messenger->addWarning($message);
     }
 }
 
