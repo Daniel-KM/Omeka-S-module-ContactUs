@@ -109,7 +109,7 @@ class ContactUsFieldset extends Fieldset
                 'type' => Fields::class,
                 'options' => [
                     'label' => 'Other fields to append to form', // @translate
-                    'info' => 'One field by line: "name = label" (name is ascii only and no space). Prefix the label with "* " to make it required. Add a type after " | " (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox) and, for lists, the options after ": " separated by commas, e.g. "topic = * Subject | select: Question, Bug". The elements may be adapted via the theme. If empty, the site settings or the main settings will be used.', // @translate
+                    'info' => 'One field by line: "name = label" (name is ascii only and no space). Prefix the label with "* " to make it required. Add a type after " | " (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox) and, for lists, the options after ": " separated by commas, e.g. "topic = * Subject | select: Question, Bug". List a default field name (name, email, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. If empty, the site settings or the main settings will be used.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'contactus_fields',

@@ -459,21 +459,29 @@ class ContactSubmission
             ? $this->getFormNewsletter($formOptions)
             : $this->getFormContactUs($formOptions);
 
-        // TODO Remove this normalization of posted data. For old themes.
-        // Add the options fields to the posted fields.
+        // Collect the custom fields values. The form is now flat, so read the
+        // top-level params, with a fallback to the legacy "fields[...]"
+        // structure for old themes. Core fields (from/name/subject/message) are
+        // excluded: they are stored on their own message columns.
         $postedFields = [];
         if ($this->fieldsForForm) {
+            $partition = \ContactUs\Form\ContactUsForm::partitionFields($this->fieldsForForm);
             // Manage exception for list of ids and security, because hidden
             // fields are not fully checked.
-            $fieldIds = ($this->params['fields']['id'] ?? []) ?: [];
+            $fieldIds = $this->params['id'] ?? $this->params['fields']['id'] ?? [];
             if (!empty($fieldIds) && !is_array($fieldIds)) {
                 $fieldIdsJson = json_decode($fieldIds, true);
                 $fieldIds = is_array($fieldIdsJson) ? $fieldIdsJson : [$fieldIds];
             }
-            $this->params['fields']['id'] = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
-            foreach (array_keys($this->fieldsForForm) as $name) {
-                $this->params['fields'][$name] ??= null;
-                $postedFields[$name] = $this->params['fields'][$name];
+            $fieldIds = array_values(array_unique(array_filter(array_map('intval', $fieldIds))));
+            foreach (array_keys($partition['custom']) as $name) {
+                if ($name === 'id') {
+                    $postedFields['id'] = $fieldIds;
+                    continue;
+                }
+                $postedFields[$name] = $this->params[$name]
+                    ?? $this->params['fields'][$name]
+                    ?? null;
             }
         }
 
