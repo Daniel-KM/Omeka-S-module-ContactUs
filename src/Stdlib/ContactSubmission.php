@@ -800,6 +800,10 @@ class ContactSubmission
                 'prevSubmitIp' => $prevSubmitIp,
                 'checkDnsMx' => (bool) $setting('contactus_check_dns_mx'),
                 'powSkip' => (bool) $setting('contactus_pow_skip'),
+                // Thresholds aligned with SpamGuard, so the local fallback
+                // behaves like the engine when it is not active.
+                'minDelay' => (int) ($setting('spamguard_min_delay') ?? 1),
+                'rateLimitSeconds' => (int) ($setting('spamguard_rate_limit_seconds') ?? 10),
             ];
             $spamChecker = $this->services
                 ? $this->services->get('ContactUs\SpamChecker')

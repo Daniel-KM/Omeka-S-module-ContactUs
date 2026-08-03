@@ -29,16 +29,21 @@ class LocalSpamChecker implements SpamCheckerInterface
             $reasons[] = 'honeypot';
         }
 
-        // Too fast: bots usually submit in under a second.
-        $delta = $loadedAt ? time() - $loadedAt : null;
-        if ($delta === null || $delta < 3) {
+        // Too fast: bots usually submit almost instantly. The delay is aligned
+        // with SpamGuard (setting spamguard_min_delay, passed in the context);
+        // a missing load time is not flagged here (the proof-of-work already
+        // catches a session-less submission), like the SpamGuard strategy.
+        $minDelay = (int) ($context['minDelay'] ?? 1);
+        if ($loadedAt && (time() - $loadedAt) < $minDelay) {
             $reasons[] = 'tooFast';
         }
 
-        // Rate limit per session, bound to the current client IP.
+        // Rate limit per session, bound to the current client IP. The interval
+        // is aligned with SpamGuard (setting spamguard_rate_limit_seconds).
+        $rateLimitSeconds = (int) ($context['rateLimitSeconds'] ?? 10);
         $prevSubmitAt = (int) ($context['prevSubmitAt'] ?? 0);
         $prevSubmitIp = (string) ($context['prevSubmitIp'] ?? '');
-        if ($prevSubmitAt && $prevSubmitIp === $ip && (time() - $prevSubmitAt) < 10) {
+        if ($prevSubmitAt && $prevSubmitIp === $ip && (time() - $prevSubmitAt) < $rateLimitSeconds) {
             $reasons[] = 'rateLimit';
         }
 
