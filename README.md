@@ -78,11 +78,66 @@ For multiple resources, you may use "{resources}", "{resources_ids}", "{resource
 The url to the zip of files can be added with "{zip_url}". For security, the zip
 itself will be created only via the admin interface.
 
+### Form fields
+
+The fields of the form are set in the main settings, and may be overridden by
+site or by block. The setting is a yaml mapping, one field by name, matching the
+laminas structure and the html input constructs:
+
+```yaml
+name:
+subject: Your request
+phone: Phone
+department:
+    label: Department
+    type: select
+    required: true
+    values:
+        - Archives
+        - Library
+```
+
+* A scalar value is the label: `phone: Phone`. Prefix it with `* ` to make the
+  field required: `phone: "* Phone"`.
+* A null value keeps a default field in place: `name:`.
+* An object accepts the keys `label`, `type` (text, textarea, email, tel,
+  number, url, date, select, radio, checkbox, multicheckbox), `required`,
+  `values` (the choices of a select, radio or multicheckbox), `options` (other
+  Laminas element options, like `empty_option` or `info`) and `attributes`
+  (`placeholder`, `class`…).
+
+The default fields are `name`, `from`, `subject` and `message`. List one of them
+to move or relabel it: the unlisted ones are appended at the end. The email and
+the message are always required, whatever the config.
+
+In the config form, the fields can be edited as a form or as yaml, and the
+result can be previewed. The elements may be adapted in the theme.
+
+### Anti-spam
+
+Multiple checks are applied to the submissions of anonymous visitors:
+
+* a hidden honeypot field;
+* the time taken to fill the form, a submission that is too fast being refused;
+* a rate limit by ip;
+* a client-side proof-of-work, a small sha-256 hashcash computed by the browser
+  (about one second, invisible for a real visitor), that blocks the bots that do
+  not run javascript;
+* an optional check of the mx records of the domain of the email;
+* a list of keywords.
+
+The proof-of-work and the check of the mx records can be disabled in the main
+settings. A simple list of questions and answers can be set in the block too.
+
+For a richer protection (dnsbl, banned ips, structured logging), install the
+module [SpamGuard]: it is used automatically as soon as it is active.
+
 ### Static pages
 
 Create a site page and add the block "Contact us".
 
 The simple antispam is a simple list of questions and answers for the visitor.
+See the section Anti-spam above for the other checks.
 
 The block is themable: copy the file `common/block-layout/contact-us.phtml` in
 your theme.
@@ -141,13 +196,16 @@ checkbox aside each result in the theme template, for example in "item/browse.ph
 or "search/resource-list.phtml":
 
 ```php
-<input form="contact-us" class="contact-us-resource" type="checkbox" name="fields[id][]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add this resource to the message to send') ?>"/>
+<input form="contact-us" class="contact-us-resource" type="checkbox" name="id[]" value="<?= $resource->id() ?>" title="<?= $this->translate('Add this resource to the message to send') ?>"/>
 ```
 
-To be automatically managed, the name of the input should be `fields[id][]` for
-now. If you use `resource_ids[]`, it is automatically managed via js. Don't
-forget to set the attribute `form="contact-us"`, or use some js to set it before
-submission.
+The name of the input should be `id[]`: the fields of the form are flat since
+version 3.4.32. The old nested name `fields[id][]` is still read, so the themes
+that were not updated keep working, but it is deprecated and the upgrade warns
+about the files that use it.
+
+Don't forget to set the attribute `form="contact-us"`, or use some js to set it
+before submission.
 
 The form can be completed with fields managed via the standard form events (`form.add_elements`)
 and `form.add_input_filters`, in the theme of via the module [User Profile].
@@ -161,7 +219,7 @@ Development
 Install Omeka with dev dependencies first.
 
 ```sh
-composer install --no-dev
+composer install
 vendor/bin/phpunit -c modules/ContactUs/phpunit.xml --testdox
 ```
 
@@ -255,11 +313,12 @@ the digital library of the city of [Saint-Quentin].
 
 [Contact Us]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Omeka S]: https://omeka.org/s
-[Generic]: https://gitlab.com/Daniel-KM/Omeka-S-module-Generic
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [Blocks Disposition]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlocksDisposition
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
-[ContactUs.zip]: https://github.com/Daniel-KM/Omeka-S-module-ContactUs/releases
+[ContactUs.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/releases
 [Selection]: https://gitlab.com/Daniel-KM/Omeka-S-module-Selection
+[SpamGuard]: https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [User Profile]: https://gitlab.com/Daniel-KM/Omeka-S-module-UserProfile
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
