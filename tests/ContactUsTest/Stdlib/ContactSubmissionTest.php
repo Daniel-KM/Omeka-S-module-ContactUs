@@ -45,6 +45,38 @@ class ContactSubmissionTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider possibleFalsePositiveProvider
+     */
+    public function testIsPossibleFalsePositive(array $reasons, bool $expected): void
+    {
+        $this->assertSame($expected, $this->submission()->proxyIsPossibleFalsePositive($reasons));
+    }
+
+    public function possibleFalsePositiveProvider(): array
+    {
+        return [
+            'not a spam' => [[], false],
+            'reliable reason' => [['keyword'], false],
+            'reliable among fragile' => [['tooFast', 'linkTld'], false],
+            'honeypot' => [['honeypot'], false],
+            'fragile reason' => [['tooFast'], true],
+            'fragile reasons' => [['powChallenge', 'ipReputation'], true],
+        ];
+    }
+
+    public function testSpamMessageNeverGivesTheReason(): void
+    {
+        $this->assertSame(
+            'Your message could not be transmitted automatically. You may retry in a few minutes or write directly to contact@example.org.',
+            (string) $this->submission()->proxySpamMessage('contact@example.org')
+        );
+        $this->assertSame(
+            'Your message could not be transmitted automatically. You may retry in a few minutes.',
+            (string) $this->submission()->proxySpamMessage('')
+        );
+    }
+
     public function testFixEndOfLineNormalizesEveryStyle(): void
     {
         $out = $this->submission()->proxyFixEndOfLine("a\r\nb\n\rc\rd\ne");
@@ -290,6 +322,16 @@ class ContactSubmissionTest extends TestCase
  */
 class ContactSubmissionProxy extends ContactSubmission
 {
+    public function proxyIsPossibleFalsePositive(array $reasons): bool
+    {
+        return $this->isPossibleFalsePositive($reasons);
+    }
+
+    public function proxySpamMessage(string $email): \Common\Stdlib\PsrMessage
+    {
+        return $this->spamMessage($email);
+    }
+
     public function proxyFixEndOfLine($string): string
     {
         return $this->fixEndOfLine($string);
