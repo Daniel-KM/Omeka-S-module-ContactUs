@@ -39,6 +39,8 @@ class SpamGuardChecker implements SpamCheckerInterface
                 'powNonce' => ($context['powNonce'] ?? '') ?: null,
                 'lastSubmitAt' => ((int) ($context['prevSubmitAt'] ?? 0)) ?: null,
                 'lastSubmitIp' => ($context['prevSubmitIp'] ?? '') ?: null,
+                // Name of the module in the journal of the verdicts.
+                'source' => 'contactus',
                 // Options of this module, honoured by the strategies.
                 'powSkip' => !empty($context['powSkip']),
                 'checkDnsMx' => !empty($context['checkDnsMx']),

@@ -69,6 +69,13 @@ class ContactUsForm extends Form
     protected $recaptcha = false;
     protected $powSalt = '';
 
+    /**
+     * Signed token carrying the time of display and the salt.
+     *
+     * @var string
+     */
+    protected $formToken = '';
+
     public function __construct($name = null, $options = [])
     {
         parent::__construct($name, $options);
@@ -84,6 +91,7 @@ class ContactUsForm extends Form
         $this->isContactAuthor = ($options['contact'] ?? null) === 'author';
         $this->recaptcha = $options['recaptcha'] ?? false;
         $this->powSalt = (string) ($options['pow_salt'] ?? '');
+        $this->formToken = (string) ($options['form_token'] ?? '');
     }
 
     public function init(): void
@@ -217,6 +225,17 @@ class ContactUsForm extends Form
         if ($this->recaptcha) {
             $this->add([
                 'type' => \Omeka\Form\Element\Recaptcha::class,
+            ]);
+        }
+
+        if ($this->formToken !== '') {
+            $this->add([
+                'name' => 'contact_token',
+                'type' => Element\Hidden::class,
+                'attributes' => [
+                    'id' => 'contact_token',
+                    'value' => $this->formToken,
+                ],
             ]);
         }
 

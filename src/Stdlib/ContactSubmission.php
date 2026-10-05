@@ -468,6 +468,7 @@ class ContactSubmission
             'form_display_user_name_hidden' => !empty($this->options['form_display_user_name_hidden']),
             'recaptcha' => !empty($this->options['recaptcha']),
             'pow_salt' => $powSalt,
+            'form_token' => $this->issueFormToken($powSalt),
         ];
         $this->form = $this->newsletterOnly
             ? $this->getFormNewsletter($formOptions)
@@ -735,6 +736,7 @@ class ContactSubmission
                 'form_display_user_name_hidden' => !empty($this->options['form_display_user_name_hidden']),
                 'recaptcha' => !empty($this->options['recaptcha']),
                 'pow_salt' => $powSalt,
+                'form_token' => $this->issueFormToken($powSalt),
             ];
             $this->form = $this->newsletterOnly
                 ? $this->getFormNewsletter($formOptions)
@@ -833,6 +835,17 @@ class ContactSubmission
         $loadedAt = (int) ($session->form_loaded_at ?? 0);
         $powSalt = (string) ($session->pow_salt ?? '');
         $powIssuedAt = (int) ($session->pow_issued_at ?? 0);
+
+        // With the module SpamGuard, the signed token of the form prevails over
+        // the session, where a second tab or a second form on the page
+        // overwrites the salt.
+        $formToken = $this->formToken();
+        $token = $formToken ? $formToken->read($params['contact_token'] ?? null, (string) $currentIp) : null;
+        if ($token) {
+            $loadedAt = $token['issuedAt'];
+            $powSalt = $token['salt'];
+            $powIssuedAt = $token['issuedAt'];
+        }
         $prevSubmitAt = (int) ($session->last_submit_at ?? 0);
         $prevSubmitIp = (string) ($session->last_submit_ip ?? '');
 
@@ -1205,6 +1218,27 @@ class ContactSubmission
      * @param array $options
      * @param array $params Post data.
      */
+    /**
+     * The service of the module SpamGuard signing the forms, if available.
+     *
+     * @return \SpamGuard\Stdlib\FormToken|null
+     */
+    protected function formToken()
+    {
+        return $this->services && $this->services->has('SpamGuard\FormToken')
+            ? $this->services->get('SpamGuard\FormToken')
+            : null;
+    }
+
+    /**
+     * Issue the signed token of a form displayed to an anonymous visitor.
+     */
+    protected function issueFormToken(string $powSalt): string
+    {
+        $formToken = empty($this->user) ? $this->formToken() : null;
+        return $formToken ? $formToken->issue($powSalt, (string) $this->clientIp()) : '';
+    }
+
     protected function checkSpam(array $options, array $params): bool
     {
         $session = new Container('ContactUs');

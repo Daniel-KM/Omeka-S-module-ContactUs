@@ -343,6 +343,13 @@ class MessageAdapter extends AbstractEntityAdapter
                 // manual one, done by an admin or a script, so it is stored as
                 // such, and it replaces the reasons of the automatic checks.
                 $entity->setSpamReason('admin');
+                // With the module SpamGuard, report the decision to its
+                // journal, so a spam counts in the reputation of the ip and a
+                // false positive cancels it.
+                $services = $this->getServiceLocator();
+                if ($services->has('SpamGuard\SpamLog')) {
+                    $services->get('SpamGuard\SpamLog')->record($entity->getIp(), 'contactus', ['admin'], $isSpam);
+                }
             }
             $entity->setIsSpam($isSpam);
         }
