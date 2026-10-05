@@ -245,6 +245,32 @@ class SettingsFieldset extends Fieldset
                     'required' => false,
                 ],
             ])
+            ->add([
+                'name' => 'contactus_spam_inform_visitor',
+                'type' => CommonElement\OptionalCheckbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Tell the visitor when his message may be a false positive', // @translate
+                    'info' => 'By default, a spam is classified silently and the visitor is thanked as usual, so a bot does not learn that it was caught. When checked, a message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) shows that it was not transmitted, without the reason, and invites to retry. Warning: a bot learns then that it failed, and these checks are mainly on timing, so it may adapt by posting more slowly.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_spam_inform_visitor',
+                    'required' => false,
+                ],
+            ])
+            ->add([
+                'name' => 'contactus_spam_contact_email',
+                'type' => Element\Email::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Email to suggest to a visitor whose message may be a false positive', // @translate
+                    'info' => 'Used only when the visitor is told that his message was not transmitted.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_spam_contact_email',
+                    'required' => false,
+                ],
+            ])
         ;
     }
 }

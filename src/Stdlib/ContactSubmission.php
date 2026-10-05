@@ -29,6 +29,20 @@ class ContactSubmission
     const PARTIAL_NAME = 'common/contact-us';
 
     /**
+     * Reasons of a spam reliable enough to be certain. With only other reasons,
+     * the message may be a false positive.
+     */
+    const RELIABLE_SPAM_REASONS = [
+        'bannedIp',
+        'dnsbl',
+        'honeypot',
+        'keyword',
+        'linkTld',
+        'url',
+        'urlCount',
+    ];
+
+    /**
      * The partial view script for button.
      */
     const PARTIAL_NAME_BUTTON = 'common/contact-us-button';
@@ -626,6 +640,14 @@ class ContactSubmission
                 if ($sent['message'] !== null) {
                     $this->message = $sent['message'];
                 }
+            } elseif ($setting('contactus_spam_inform_visitor')
+                && $this->isPossibleFalsePositive($this->spamReasons)
+            ) {
+                // A spam is classified silently, so a bot does not learn that
+                // it was caught. Only when the option is set, a message that
+                // may be a false positive is told to the visitor.
+                $this->status = 'error';
+                $this->message = $this->spamMessage((string) $setting('contactus_spam_contact_email'));
             }
         } else {
             error_reporting($errorReporting);
@@ -1237,6 +1259,36 @@ class ContactSubmission
     {
         $formToken = empty($this->user) ? $this->formToken() : null;
         return $formToken ? $formToken->issue($powSalt, (string) $this->clientIp()) : '';
+    }
+
+    /**
+     * Is the spam detected only by checks that may be wrong?
+     *
+     * A spam detected by a reliable check is certain. With only other reasons,
+     * the message may be a real one.
+     */
+    protected function isPossibleFalsePositive(array $reasons): bool
+    {
+        return $reasons && !array_intersect($reasons, self::RELIABLE_SPAM_REASONS);
+    }
+
+    /**
+     * The message to display to a visitor whose message may be a false
+     * positive.
+     *
+     * The reason is never displayed. The message remains stored as spam, so an
+     * admin can find it.
+     */
+    protected function spamMessage(string $email): PsrMessage
+    {
+        return $email
+            ? new PsrMessage(
+                'Your message could not be transmitted automatically. You may retry in a few minutes or write directly to {email}.', // @translate
+                ['email' => $email]
+            )
+            : new PsrMessage(
+                'Your message could not be transmitted automatically. You may retry in a few minutes.' // @translate
+            );
     }
 
     protected function checkSpam(array $options, array $params): bool

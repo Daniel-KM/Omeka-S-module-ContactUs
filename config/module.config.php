@@ -255,6 +255,8 @@ return [
             'contactus_zip_include_private' => false,
             'contactus_check_dns_mx' => false,
             'contactus_pow_skip' => false,
+            'contactus_spam_inform_visitor' => false,
+            'contactus_spam_contact_email' => '',
         ],
         // Site settings.
         'site_settings' => [
