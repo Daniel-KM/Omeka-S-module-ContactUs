@@ -32,6 +32,52 @@ class ContactMessageControllerTest extends AbstractHttpControllerTestCase
         $this->assertResponseStatusCode(200);
     }
 
+    /**
+     * The browse page is reached through the literal parent route, so the batch
+     * forms must post to their own action, not to the browse page.
+     *
+     * @test
+     */
+    public function browseActionBatchFormsPostToTheirAction(): void
+    {
+        $messageId = $this->createContactMessage()->getId();
+
+        $this->dispatch('/admin/contact-message');
+        $this->assertResponseStatusCode(200);
+        $this->assertQuery('form#confirm-resend-selected[action$="/admin/contact-message/batch-resend"]');
+        $this->assertQuery('form#confirm-resend-all[action$="/admin/contact-message/batch-resend-all"]');
+
+        $this->getServiceLocator()->get('Omeka\ApiManager')->delete('contact_messages', $messageId);
+    }
+
+    /**
+     * The spams are hidden by default, and the filter "All" of the quick search
+     * shows them too, so it must not fall back to the default.
+     *
+     * @test
+     */
+    public function browseActionSpamFilter(): void
+    {
+        $spam = $this->createContactMessage(null, 'spam@example.org');
+        $spam->setIsSpam(true);
+        $this->getServiceLocator()->get('Omeka\EntityManager')->flush();
+        $spamId = $spam->getId();
+
+        $this->dispatch('/admin/contact-message');
+        $this->assertResponseStatusCode(200);
+        $this->assertStringNotContainsString('spam@example.org', $this->getResponse()->getContent());
+        $this->assertQuery('#is_spam input[value="0"][checked], input[name="is_spam"][value="0"][checked]');
+
+        $this->reset();
+        $this->loginAdmin();
+        $this->dispatch('/admin/contact-message?is_spam=any');
+        $this->assertResponseStatusCode(200);
+        $this->assertStringContainsString('spam@example.org', $this->getResponse()->getContent());
+        $this->assertQuery('input[name="is_spam"][value="any"][checked]');
+
+        $this->getServiceLocator()->get('Omeka\ApiManager')->delete('contact_messages', $spamId);
+    }
+
     /** @test */
     public function browseActionSortByCreatedAsc(): void
     {

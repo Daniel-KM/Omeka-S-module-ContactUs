@@ -45,6 +45,38 @@ class ContactSubmissionTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider possibleFalsePositiveProvider
+     */
+    public function testIsPossibleFalsePositive(array $reasons, bool $expected): void
+    {
+        $this->assertSame($expected, $this->submission()->proxyIsPossibleFalsePositive($reasons));
+    }
+
+    public function possibleFalsePositiveProvider(): array
+    {
+        return [
+            'not a spam' => [[], false],
+            'reliable reason' => [['keyword'], false],
+            'reliable among fragile' => [['tooFast', 'linkTld'], false],
+            'honeypot' => [['honeypot'], false],
+            'fragile reason' => [['tooFast'], true],
+            'fragile reasons' => [['powChallenge', 'ipReputation'], true],
+        ];
+    }
+
+    public function testSpamMessageNeverGivesTheReason(): void
+    {
+        $this->assertSame(
+            'Your message could not be transmitted automatically. You may retry in a few minutes or write directly to contact@example.org.',
+            (string) $this->submission()->proxySpamMessage('contact@example.org')
+        );
+        $this->assertSame(
+            'Your message could not be transmitted automatically. You may retry in a few minutes.',
+            (string) $this->submission()->proxySpamMessage('')
+        );
+    }
+
     public function testFixEndOfLineNormalizesEveryStyle(): void
     {
         $out = $this->submission()->proxyFixEndOfLine("a\r\nb\n\rc\rd\ne");
@@ -138,6 +170,23 @@ class ContactSubmissionTest extends TestCase
         ];
     }
 
+    private function user(string $role, string $created): \Omeka\Entity\User
+    {
+        $user = $this->createMock(\Omeka\Entity\User::class);
+        $user->method('getRole')->willReturn($role);
+        $user->method('getCreated')->willReturn(new \DateTime($created));
+        return $user;
+    }
+
+    public function testRecentGuestIsStillChecked(): void
+    {
+        $submission = $this->submission();
+        $this->assertTrue($submission->proxyIsRecentGuest($this->user('guest', '-1 hour')));
+        $this->assertFalse($submission->proxyIsRecentGuest($this->user('guest', '-3 days')));
+        $this->assertFalse($submission->proxyIsRecentGuest($this->user('editor', '-1 hour')));
+        $this->assertFalse($submission->proxyIsRecentGuest(null));
+    }
+
     public function testCollectPostedFieldsFromFlatParams(): void
     {
         $out = $this->submission()->proxyCollectPostedFields($this->fieldsForForm(), [
@@ -220,6 +269,62 @@ class ContactSubmissionTest extends TestCase
         $this->assertSame('[]', $out);
     }
 
+    public function testFillMessageFormatsFieldsWithLabels(): void
+    {
+        $out = $this->submission()->proxyFillMessage(
+            '{fields}',
+            ['fields' => [
+                'phone' => '0600',
+                'qui' => 'personne',
+                'couleurs' => ['bleu', 'rouge'],
+                'description' => "Line 1\nLine 2",
+                'empty' => '',
+                'id' => [3],
+            ]],
+            [
+                'phone' => '* Phone',
+                'qui' => ['type' => 'radio', 'options' => ['label' => 'Who?', 'value_options' => ['personne' => 'A person']]],
+                'couleurs' => ['label' => 'Colors', 'value_options' => [['value' => 'bleu', 'label' => 'Blue']]],
+                'description' => ['options' => ['label' => 'Description']],
+                'empty' => 'Empty',
+                'id' => [],
+            ],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class)
+        );
+        $this->assertSame(
+            "* Phone : 0600\n* Who? : A person\n* Colors :\n    * Blue\n    * rouge\n* Description :\nLine 1\nLine 2",
+            $out
+        );
+    }
+
+    public function testFillMessageResourcesComeFromStoredMessage(): void
+    {
+        // The form of a resource page has no field "id": the resource is the
+        // one stored with the message.
+        $contactMessage = $this->createMock(\ContactUs\Api\Representation\MessageRepresentation::class);
+        $contactMessage->method('resource')->willReturn(null);
+        $contactMessage->method('resourceIds')->willReturn([65]);
+        $out = $this->submission()->proxyFillMessage(
+            'ids={resources_ids}',
+            ['fields' => []],
+            [],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class),
+            $contactMessage
+        );
+        $this->assertSame('ids=65', $out);
+    }
+
+    public function testFillMessageResourcesFallBackOnFieldId(): void
+    {
+        $out = $this->submission()->proxyFillMessage(
+            'ids={resources_ids}',
+            ['fields' => ['id' => [3, 4]]],
+            ['id' => []],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class)
+        );
+        $this->assertSame('ids=3,4', $out);
+    }
+
     public function testGetMailSubjectReturnsProvidedSubject(): void
     {
         $this->assertSame(
@@ -234,6 +339,16 @@ class ContactSubmissionTest extends TestCase
  */
 class ContactSubmissionProxy extends ContactSubmission
 {
+    public function proxyIsPossibleFalsePositive(array $reasons): bool
+    {
+        return $this->isPossibleFalsePositive($reasons);
+    }
+
+    public function proxySpamMessage(string $email): \Common\Stdlib\PsrMessage
+    {
+        return $this->spamMessage($email);
+    }
+
     public function proxyFixEndOfLine($string): string
     {
         return $this->fixEndOfLine($string);
@@ -264,6 +379,11 @@ class ContactSubmissionProxy extends ContactSubmission
         return $this->getMailSubject($options);
     }
 
+    public function proxyIsRecentGuest($user): bool
+    {
+        return $this->isRecentGuest($user);
+    }
+
     public function proxyCollectPostedFields(array $fieldsForForm, array $params): array
     {
         $this->fieldsForForm = $fieldsForForm;
@@ -271,12 +391,12 @@ class ContactSubmissionProxy extends ContactSubmission
         return $this->collectPostedFields();
     }
 
-    public function proxyFillMessage(string $message, array $placeholders, array $declaredFields, $site = null): string
+    public function proxyFillMessage(string $message, array $placeholders, array $declaredFields, $site = null, $contactMessage = null): string
     {
         $this->options['fields'] = $declaredFields;
         $this->options['resource'] = null;
         $this->view = new FakeFillMessageView($site);
-        return $this->fillMessage($message, $placeholders);
+        return $this->fillMessage($message, $placeholders, $contactMessage);
     }
 }
 
@@ -306,6 +426,8 @@ class FakeFillMessageView
                         $replace['{' . $key . '}'] = (string) $value;
                     }
                 }
+                // The multiple-resources placeholders are built from the context.
+                $replace['{resources_ids}'] = implode(',', (array) ($context['resource_ids'] ?? []));
                 return strtr($message, $replace);
             }
         };

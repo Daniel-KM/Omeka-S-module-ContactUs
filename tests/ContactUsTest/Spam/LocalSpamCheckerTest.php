@@ -43,7 +43,7 @@ class LocalSpamCheckerTest extends TestCase
         $this->assertContains('honeypot', $reasons);
     }
 
-    public function testTooFastSubmissionIsSpam(): void
+    public function testTooFastAloneIsOnlyAHint(): void
     {
         $reasons = $this->checker()->check([
             'formLoadedAt' => time(),
@@ -53,7 +53,7 @@ class LocalSpamCheckerTest extends TestCase
             'body' => 'Message.',
             'prevSubmitAt' => 0,
         ]);
-        $this->assertContains('tooFast', $reasons);
+        $this->assertSame([], $reasons);
     }
 
     public function testMissingFormLoadedAtIsNotTooFast(): void
@@ -83,11 +83,15 @@ class LocalSpamCheckerTest extends TestCase
             'prevSubmitAt' => 0,
         ];
         // Elapsed 2s: flagged when the required delay is larger, not otherwise.
+        // A second weak reason makes the hint visible in the result.
+        $base['ip'] = '10.0.0.1';
+        $base['prevSubmitAt'] = time() - 1;
+        $base['prevSubmitIp'] = '10.0.0.1';
         $this->assertContains('tooFast', $this->checker()->check(['minDelay' => 5] + $base));
         $this->assertNotContains('tooFast', $this->checker()->check(['minDelay' => 1] + $base));
     }
 
-    public function testRateLimitedWhenSameIpTooSoon(): void
+    public function testRateLimitAloneIsOnlyAHint(): void
     {
         $reasons = $this->checker()->check([
             'ip' => '10.0.0.1',
@@ -99,7 +103,7 @@ class LocalSpamCheckerTest extends TestCase
             'prevSubmitAt' => time() - 2,
             'prevSubmitIp' => '10.0.0.1',
         ]);
-        $this->assertContains('rateLimit', $reasons);
+        $this->assertSame([], $reasons);
     }
 
     public function testNotRateLimitedFromAnotherIp(): void
@@ -129,7 +133,48 @@ class LocalSpamCheckerTest extends TestCase
             'body' => 'Message.',
             'prevSubmitAt' => 0,
         ]);
-        $this->assertContains('powChallenge', $reasons);
+        $this->assertSame(['powChallenge'], $reasons);
+    }
+
+    public function testTwoWeakReasonsAreSpam(): void
+    {
+        $reasons = $this->checker()->check([
+            'ip' => '10.0.0.1',
+            'formLoadedAt' => time(),
+            'honeypot' => '',
+            'powSkip' => false,
+            'powSalt' => '',
+            'powNonce' => '',
+            'subject' => 'Hi',
+            'body' => 'Message.',
+            'prevSubmitAt' => 0,
+        ]);
+        $this->assertSame(['tooFast', 'powChallenge'], $reasons);
+        // Two weak reasons without the proof of work make a spam too.
+        $reasons = $this->checker()->check([
+            'ip' => '10.0.0.1',
+            'formLoadedAt' => time(),
+            'honeypot' => '',
+            'powSkip' => true,
+            'subject' => 'Hi',
+            'body' => 'Message.',
+            'prevSubmitAt' => time() - 1,
+            'prevSubmitIp' => '10.0.0.1',
+        ]);
+        $this->assertSame(['tooFast', 'rateLimit'], $reasons);
+    }
+
+    public function testStrongReasonAloneIsSpam(): void
+    {
+        $reasons = $this->checker()->check([
+            'formLoadedAt' => time() - 10,
+            'honeypot' => '',
+            'powSkip' => true,
+            'subject' => 'Hi',
+            'body' => 'Buy viagra now.',
+            'prevSubmitAt' => 0,
+        ]);
+        $this->assertSame(['keyword'], $reasons);
     }
 
     public function testValidProofOfWorkPasses(): void
