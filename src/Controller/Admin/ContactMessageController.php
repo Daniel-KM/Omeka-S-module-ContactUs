@@ -51,22 +51,24 @@ class ContactMessageController extends AbstractActionController
         $this->paginator($response->getTotalResults());
 
         $formSearch = $this->getForm(QuickSearchForm::class);
-        $formSearch->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'browse'], true));
+        // The browse page may be reached through the literal parent route, that
+        // has no action, so the actions use the child route explicitly.
+        $formSearch->setAttribute('action', $this->url()->fromRoute('admin/contact-message/default', ['action' => 'browse'], true));
         $formSearch->setData($query);
 
         $formDeleteSelected = $this->getForm(ConfirmForm::class);
-        $formDeleteSelected->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-delete'], true));
+        $formDeleteSelected->setAttribute('action', $this->url()->fromRoute('admin/contact-message/default', ['action' => 'batch-delete'], true));
         $formDeleteSelected->setAttribute('id', 'confirm-delete-selected');
         $formDeleteSelected->setButtonLabel('Confirm Delete'); // @translate
 
         $formDeleteAll = $this->getForm(ConfirmForm::class);
-        $formDeleteAll->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-delete-all'], true));
+        $formDeleteAll->setAttribute('action', $this->url()->fromRoute('admin/contact-message/default', ['action' => 'batch-delete-all'], true));
         $formDeleteAll->setAttribute('id', 'confirm-delete-all');
         $formDeleteAll->setButtonLabel('Confirm Delete'); // @translate
         $formDeleteAll->get('submit')->setAttribute('disabled', true);
 
         $formResendSelected = $this->getForm(ConfirmForm::class);
-        $formResendSelected->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-resend'], true));
+        $formResendSelected->setAttribute('action', $this->url()->fromRoute('admin/contact-message/default', ['action' => 'batch-resend'], true));
         $formResendSelected->setAttribute('id', 'confirm-resend-selected');
         $formResendSelected->setButtonLabel('Confirm resend'); // @translate
 
@@ -75,7 +77,7 @@ class ContactMessageController extends AbstractActionController
             ->getTotalResults();
 
         $formResendAll = $this->getForm(ConfirmForm::class);
-        $formResendAll->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-resend-all'], true));
+        $formResendAll->setAttribute('action', $this->url()->fromRoute('admin/contact-message/default', ['action' => 'batch-resend-all'], true));
         $formResendAll->setAttribute('id', 'confirm-resend-all');
         $formResendAll->setButtonLabel('Confirm resend'); // @translate
         $formResendAll->get('submit')->setAttribute('disabled', !$countResendable);
