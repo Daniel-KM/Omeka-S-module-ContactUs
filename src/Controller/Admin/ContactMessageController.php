@@ -39,7 +39,11 @@ class ContactMessageController extends AbstractActionController
             $query['is_spam'] = '0';
         }
         $apiQuery = $query;
-        if ((string) $apiQuery['is_spam'] === 'any') {
+        // A filter on the reason of the spam status defines the status itself,
+        // so it is not cancelled by the default "not spam".
+        if ((string) $apiQuery['is_spam'] === 'any'
+            || strlen((string) ($apiQuery['spam_reason'] ?? ''))
+        ) {
             unset($apiQuery['is_spam']);
         }
 

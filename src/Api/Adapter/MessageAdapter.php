@@ -211,6 +211,32 @@ class MessageAdapter extends AbstractEntityAdapter
             }
         }
 
+        // Filter on the reasons of the spam status: "fragile" lists the spams
+        // detected only by checks that may be wrong, so the possible false
+        // positives to review, "reliable" the others, "admin" the manual
+        // decisions, and any other value the messages with this reason.
+        if (isset($query['spam_reason']) && strlen((string) $query['spam_reason'])) {
+            $reason = (string) $query['spam_reason'];
+            // Built only when used, since each expression binds parameters.
+            $reliable = fn () => array_map(
+                fn ($r) => $this->spamReasonExpr($qb, $r),
+                \ContactUs\Stdlib\ContactSubmission::RELIABLE_SPAM_REASONS
+            );
+            if ($reason === 'fragile') {
+                $qb
+                    ->andWhere($expr->eq('omeka_root.isSpam', 1))
+                    ->andWhere($expr->isNotNull('omeka_root.spamReason'))
+                    ->andWhere($expr->neq('omeka_root.spamReason', $this->createNamedParameter($qb, 'admin')))
+                    ->andWhere($expr->not($expr->orX(...$reliable())));
+            } elseif ($reason === 'reliable') {
+                $qb
+                    ->andWhere($expr->eq('omeka_root.isSpam', 1))
+                    ->andWhere($expr->orX(...$reliable()));
+            } else {
+                $qb->andWhere($this->spamReasonExpr($qb, $reason));
+            }
+        }
+
         if (isset($query['has_file']) && strlen((string) $query['has_file'])) {
             if (empty($query['has_file'])) {
                 $qb
@@ -267,6 +293,22 @@ class MessageAdapter extends AbstractEntityAdapter
                 ));
             }
         }
+    }
+
+    /**
+     * Expression matching a reason in the list of reasons, stored separated by
+     * a comma.
+     */
+    protected function spamReasonExpr(QueryBuilder $qb, string $reason)
+    {
+        $expr = $qb->expr();
+        $column = 'omeka_root.spamReason';
+        return $expr->orX(
+            $expr->eq($column, $this->createNamedParameter($qb, $reason)),
+            $expr->like($column, $this->createNamedParameter($qb, $reason . ',%')),
+            $expr->like($column, $this->createNamedParameter($qb, '%,' . $reason)),
+            $expr->like($column, $this->createNamedParameter($qb, '%,' . $reason . ',%'))
+        );
     }
 
     public function hydrate(

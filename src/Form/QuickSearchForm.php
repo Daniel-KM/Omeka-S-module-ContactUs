@@ -72,6 +72,42 @@ class QuickSearchForm extends Form
                 ],
             ])
             ->add([
+                'name' => 'spam_reason',
+                'type' => CommonElement\OptionalSelect::class,
+                'options' => [
+                    'label' => 'Reason of the spam status', // @translate
+                    'info' => 'This filter replaces the filter "Spam".', // @translate
+                    'value_options' => [
+                        '' => 'Any', // @translate
+                        'fragile' => 'Possible false positives (checks that may be wrong)', // @translate
+                        'reliable' => 'Reliable checks', // @translate
+                        'admin' => 'Manual decision of an admin', // @translate
+                        'checks' => [
+                            'label' => 'Check', // @translate
+                            'options' => [
+                                'bannedIp' => 'Banned ip', // @translate
+                                'captcha' => 'Question', // @translate
+                                'dnsbl' => 'Dnsbl', // @translate
+                                'dnsMx' => 'Email without mx', // @translate
+                                'honeypot' => 'Honeypot', // @translate
+                                'ipReputation' => 'Reputation of the ip', // @translate
+                                'keyword' => 'Keyword', // @translate
+                                'linkTld' => 'Link to an abused domain', // @translate
+                                'powChallenge' => 'Proof-of-work', // @translate
+                                'rateLimit' => 'Rate limit', // @translate
+                                'tooFast' => 'Too fast', // @translate
+                                'tooSlow' => 'Too slow', // @translate
+                                'url' => 'Url', // @translate
+                                'urlCount' => 'Too many urls', // @translate
+                            ],
+                        ],
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'spam_reason',
+                ],
+            ])
+            ->add([
                 'name' => 'is_read',
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
