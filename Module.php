@@ -322,8 +322,7 @@ class Module extends AbstractModule
         $resourceName = $view->resource->resourceName();
         $siteSettings = $services->get('Omeka\Settings\Site');
         $placements = $siteSettings->get('contactus_placement', []);
-        $append = $siteSettings->get('contactus_append_resource_show', []);
-        if (!in_array('after/' . $resourceName, $placements) && !in_array($resourceName, $append)) {
+        if (!in_array('after/' . $resourceName, $placements)) {
             return;
         }
         /** @see \ContactUs\View\Helper\ContactUs */
@@ -343,8 +342,7 @@ class Module extends AbstractModule
         }
         $siteSettings = $services->get('Omeka\Settings\Site');
         $placements = $siteSettings->get('contactus_placement', []);
-        $append = $siteSettings->get('contactus_append_items_browse');
-        if (!in_array('browse/items', $placements) && !$append) {
+        if (!in_array('browse/items', $placements)) {
             return;
         }
         $view = $event->getTarget();
