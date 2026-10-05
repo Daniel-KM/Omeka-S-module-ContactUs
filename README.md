@@ -321,7 +321,7 @@ the digital library of the city of [Saint-Quentin].
 [SpamGuard]: https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard
 [Block Plus]: https://gitlab.com/Daniel-KM/Omeka-S-module-BlockPlus
 [User Profile]: https://gitlab.com/Daniel-KM/Omeka-S-module-UserProfile
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs/-/work_items
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
