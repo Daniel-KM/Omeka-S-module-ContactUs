@@ -60,8 +60,11 @@ class QuickSearchForm extends Form
                     'label_attributes' => [
                         'style' => 'display: inline; margin-right: 1em;',
                     ],
+                    // The spams are hidden by default, so "All" needs a value: an
+                    // empty one is stripped from the query and the default
+                    // applies again.
                     'value_options' => [
-                        '' => 'All', // @translate
+                        'any' => 'All', // @translate
                         '0' => 'No', // @translate
                         '1' => 'Yes', // @translate
                     ],
