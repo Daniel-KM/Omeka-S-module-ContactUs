@@ -13,6 +13,18 @@ use Common\Mvc\Controller\Plugin\SendEmail;
 class LocalSpamChecker implements SpamCheckerInterface
 {
     /**
+     * Reasons that are hints only, like in SpamGuard: they depend on timing, on
+     * the session or on the proof of work, so a false positive is plausible
+     * with one of them alone, and two are needed to make a spam.
+     */
+    const WEAK_REASONS = [
+        'dnsMx',
+        'powChallenge',
+        'rateLimit',
+        'tooFast',
+    ];
+
+    /**
      * @var array|null
      */
     protected static $spamKeywords;
@@ -81,7 +93,21 @@ class LocalSpamChecker implements SpamCheckerInterface
             $reasons[] = 'keyword';
         }
 
-        return $reasons;
+        return $this->weigh($reasons);
+    }
+
+    /**
+     * Keep the reasons when they make a spam: a strong one, or two weak ones.
+     *
+     * @param string[] $reasons
+     * @return string[]
+     */
+    protected function weigh(array $reasons): array
+    {
+        $reasons = array_values(array_unique($reasons));
+        $weak = count(array_intersect($reasons, self::WEAK_REASONS));
+        $strong = count($reasons) - $weak;
+        return $strong > 0 || $weak >= 2 ? $reasons : [];
     }
 
     /**
