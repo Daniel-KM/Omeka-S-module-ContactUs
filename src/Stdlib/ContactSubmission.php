@@ -900,6 +900,8 @@ class ContactSubmission
         $submitted['message'] = $contactMessage->body();
         $submitted['ip'] = $contactMessage->ip();
         $submitted['zip_url'] = $contactMessage->zipUrl();
+        // The custom fields are flat in the form, so get them from the message.
+        $submitted['fields'] = $contactMessage->fields() ?? [];
 
         if ($newsletterLabel) {
             $submitted['newsletter'] = (new PsrMessage(
