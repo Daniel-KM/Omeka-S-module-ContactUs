@@ -19,9 +19,18 @@ class ContactMessageMailer
      */
     protected $sendEmail;
 
-    public function __construct(SendEmail $sendEmail)
+    /**
+     * Check the body against the spam keywords. Disabled when an admin resends
+     * a message, since the decision is explicit.
+     *
+     * @var bool
+     */
+    protected $checkSpam;
+
+    public function __construct(SendEmail $sendEmail, bool $checkSpam = true)
     {
         $this->sendEmail = $sendEmail;
+        $this->checkSpam = $checkSpam;
     }
 
     /**
@@ -46,7 +55,7 @@ class ContactMessageMailer
         $replyTo = $sendWithUserEmail
             ? null
             : [$visitorEmail => $visitorName];
-        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $from, null, $bcc, $replyTo);
+        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $from, null, $bcc, $replyTo, $this->checkSpam);
     }
 
     /**
@@ -64,7 +73,7 @@ class ContactMessageMailer
         ?array $sender
     ): bool {
         $replyTo = [$visitorEmail => $visitorName];
-        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $sender, null, null, $replyTo);
+        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $sender, null, null, $replyTo, $this->checkSpam);
     }
 
     /**
@@ -82,6 +91,6 @@ class ContactMessageMailer
         ?array $replyTo
     ): bool {
         $to = [$visitorEmail => $visitorName];
-        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $sender, null, null, $replyTo);
+        return (bool) $this->sendEmail->__invoke($body, $subject, $to, $sender, null, null, $replyTo, $this->checkSpam);
     }
 }

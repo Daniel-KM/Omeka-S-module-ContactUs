@@ -93,6 +93,9 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                     data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
                     data-property="is_spam"
                     data-status="not-spam"><?= $escape($translate('Set not spam')) ?></a></li>
+                <li><a href="#"
+                    class="batch-actions batch-resend"
+                    data-batch-resend-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-resend'], true)) ?>"><?= $escape($translate('Resend to the author (false positives)')) ?></a></li>
             </ul>
         </div>
     </div>
@@ -161,6 +164,19 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                         data-status="<?= $message->isSpam() ? 'spam' : 'not-spam' ?>"
                         aria-label="<?= $escapeAttr($translate('Toggle spam')) ?>"
                         title="<?= $escapeAttr($translate('Toggle spam')) ?>"></a></li>
+                    <?php if ($message->isToAuthor()): ?>
+                    <?php if ($resent = $message->resent()): ?>
+                    <li><span class="resent fas fa-paper-plane"
+                        aria-label="<?= $v = $escapeAttr(sprintf($translate('Resent to the author: %s'), $i18n->dateFormat($resent, 'medium', 'short'))) ?>"
+                        title="<?= $v ?>"></span></li>
+                    <?php else: ?>
+                    <li><a href="#"
+                        class="resend-message fas fa-paper-plane"
+                        data-resend-url="<?= $escapeAttr($message->url('resend')) ?>"
+                        aria-label="<?= $v = $escapeAttr($translate('Resend to the author (false positive)')) ?>"
+                        title="<?= $v ?>"></a></li>
+                    <?php endif; ?>
+                    <?php endif; ?>
                     <?php if ($message->email()): ?>
                     <li><button type="button"
                         class="button-dialog-common reply-message fas fa-envelope"

@@ -94,6 +94,68 @@ $(document).ready(function() {
             });
     });
 
+    // Resend messages to the author, for example false positives. A message
+    // resent is not a spam anymore and cannot be resent twice.
+    const markResent = function(ids) {
+        ids.forEach(function(id) {
+            const row = $('.batch-edit td input[name="resource_ids[]"][value="' + id + '"]').closest('.contact-message');
+            row.find('a.resend-message').replaceWith(
+                $('<span class="resent fas fa-paper-plane"></span>').attr('title', Omeka.jsTranslate('Resent to the author'))
+            );
+            row.find('.toggle-property.is_spam')
+                .removeClass('o-icon-spam').addClass('o-icon-not-spam').data('status', 'not-spam');
+        });
+    };
+
+    const resend = function(url, ids, button) {
+        if (!window.confirm(Omeka.jsTranslate('Resend to the author, without any check of spam?'))) {
+            return;
+        }
+        $
+            .ajax({
+                url: url,
+                method: 'POST',
+                data: ids ? {resource_ids: ids} : {},
+                beforeSend: function() {
+                    if (button) {
+                        button.removeClass('fa-paper-plane').addClass('fa-sync fa-spin');
+                    }
+                }
+            })
+            .done(function(data) {
+                markResent(data.data && data.data.sent ? data.data.sent : []);
+                if (data.message) {
+                    alert(data.message + (data.data && data.data.errors && data.data.errors.length ? '\n' + data.data.errors.join('\n') : ''));
+                }
+            })
+            .fail(function(jqXHR) {
+                alert(jqXHR.responseJSON && jqXHR.responseJSON.message
+                    ? jqXHR.responseJSON.message
+                    : Omeka.jsTranslate('Something went wrong'));
+            })
+            .always(function() {
+                if (button) {
+                    button.removeClass('fa-sync fa-spin').addClass('fa-paper-plane');
+                }
+            });
+    };
+
+    $('#content').on('click', 'a.resend-message', function(e) {
+        e.preventDefault();
+        resend($(this).data('resend-url'), null, $(this));
+    });
+
+    $('#content').on('click', 'a.batch-resend', function(e) {
+        e.preventDefault();
+        const selected = $('.batch-edit td input[name="resource_ids[]"][type="checkbox"]:checked');
+        if (!selected.length) {
+            return;
+        }
+        resend($(this).data('batch-resend-url'), selected.map(function() { return $(this).val(); }).get(), null);
+        selected.prop('checked', false);
+        $('.select-all').prop('checked', false);
+    });
+
     // Reply to the contact: the dialog is opened by Common
     // (button-dialog-common); just avoid the anchor jumping to the top of the
     // page.

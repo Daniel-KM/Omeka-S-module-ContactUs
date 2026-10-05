@@ -147,6 +147,13 @@ class ContactSubmission
      */
     protected $spamReasons = [];
 
+    /**
+     * Check the mails against the spam keywords, except when an admin resends.
+     *
+     * @var bool
+     */
+    protected $checkSpam = true;
+
     protected $status;
 
     protected $message;
@@ -628,6 +635,58 @@ class ContactSubmission
     }
 
     /**
+     * Resend a stored message to the author of its resource, on the decision of
+     * an admin.
+     *
+     * It is used for a message marked as a false positive: no check of spam is
+     * done, neither the checks of the submission, nor the spam keywords of the
+     * mail. The mail is built from the stored message with the settings of its
+     * site, so this object must be created with the options of this site.
+     *
+     * @return PsrMessage|null The error, or null when the mail is sent.
+     */
+    public function resendToAuthor(\ContactUs\Api\Representation\MessageRepresentation $message): ?PsrMessage
+    {
+        if (!$message->isToAuthor()) {
+            return new PsrMessage('The message #{message_id} is not a message to the author.', ['message_id' => $message->id()]); // @translate
+        }
+        $resource = $message->resource();
+        if (!$resource) {
+            return new PsrMessage('The resource of the message #{message_id} is not available.', ['message_id' => $message->id()]); // @translate
+        }
+
+        $options = $this->defaultOptions;
+        $options['resource'] = $resource;
+        $this->errorMessage = null;
+        $options['author_email'] = $this->authorEmail($options);
+        if (empty($options['author_email'])) {
+            return new PsrMessage(
+                'The author of the message #{message_id} has no email: {error}', // @translate
+                ['message_id' => $message->id(), 'error' => $this->errorMessage ?: '-']
+            );
+        }
+
+        $this->checkSpam = false;
+        try {
+            $sent = $this->dispatchMessages(
+                $message,
+                [],
+                $options,
+                true,
+                (bool) $this->view->setting('contactus_send_with_user_email'),
+                '',
+                false
+            );
+        } finally {
+            $this->checkSpam = true;
+        }
+
+        return $sent['status'] === 'error'
+            ? new PsrMessage('The message #{message_id} could not be sent to the author.', ['message_id' => $message->id()]) // @translate
+            : null;
+    }
+
+    /**
      * Build the form to display. This is the seam for the future fields model
      * evolution (see the note in normalizeOptions()).
      */
@@ -899,8 +958,9 @@ class ContactSubmission
         /** @var \ContactUs\Api\Representation\MessageRepresentation $contactMessage */
         $submitted['from'] = $contactMessage->email();
         $submitted['name'] = $contactMessage->name();
-        $submitted['site_title'] = $contactMessage->site()->title();
-        $submitted['site_url'] = $contactMessage->site()->siteUrl(null, true);
+        $site = $contactMessage->site();
+        $submitted['site_title'] = $site ? $site->title() : $this->mailer->getInstallationTitle();
+        $submitted['site_url'] = $site ? $site->siteUrl(null, true) : '';
         $submitted['subject'] = $contactMessage->subject()
             ?: (new PsrMessage(
                 '[Contact] {main_title}', // @translate
@@ -941,7 +1001,7 @@ class ContactSubmission
             ?: $setting('contactus_notify_recipients')
             ?: [];
 
-        $mailer = new ContactMessageMailer($this->sendEmail);
+        $mailer = new ContactMessageMailer($this->sendEmail, $this->checkSpam);
 
         // Message to author (with copy to administrators if set).
         if ($isContactAuthor) {

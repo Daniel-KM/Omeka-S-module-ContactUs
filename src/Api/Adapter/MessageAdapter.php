@@ -335,6 +335,12 @@ class MessageAdapter extends AbstractEntityAdapter
             }
             $entity->setIsSpam($isSpam);
         }
+        // The date is set by the resend of the message, never by the client.
+        if ($this->shouldHydrate($request, 'o-module-contact:resent')
+            && !empty($data['o-module-contact:resent'])
+        ) {
+            $entity->setResent(new \DateTime('now'));
+        }
         if ($this->shouldHydrate($request, 'o-module-contact:to_author')) {
             $entity->setToAuthor(!empty($data['o-module-contact:to_author']));
         }

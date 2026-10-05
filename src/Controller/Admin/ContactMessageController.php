@@ -332,6 +332,108 @@ class ContactMessageController extends AbstractActionController
         ]);
     }
 
+    public function resendAction()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
+            throw new \Omeka\Mvc\Exception\NotFoundException;
+        }
+        return $this->resendMessages([(int) $this->params('id')]);
+    }
+
+    public function batchResendAction()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
+            throw new \Omeka\Mvc\Exception\NotFoundException;
+        }
+        $resourceIds = array_filter(array_map('intval', (array) $this->params()->fromPost('resource_ids', [])));
+        if (!$resourceIds) {
+            return $this->returnError('No contact messages submitted.', Response::STATUS_CODE_400); // @translate
+        }
+        return $this->resendMessages($resourceIds);
+    }
+
+    /**
+     * Resend messages to the author of their resource, on the decision of an
+     * admin, for example for false positives. A message resent is not a spam,
+     * and the date of the resend is stored, so a message already resent is
+     * skipped.
+     */
+    protected function resendMessages(array $ids)
+    {
+        $services = $this->getEvent()->getApplication()->getServiceManager();
+        $plugins = $services->get('ControllerPluginManager');
+
+        $submissions = [];
+        $sent = [];
+        $skipped = [];
+        $errors = [];
+        foreach ($ids as $id) {
+            try {
+                /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
+                $message = $this->api()->read('contact_messages', $id)->getContent();
+            } catch (\Exception $e) {
+                $errors[] = (new PsrMessage('The message #{message_id} does not exist.', ['message_id' => $id]))->setTranslator($this->translator()); // @translate
+                continue;
+            }
+            if (!$message->userIsAllowed('update') || !$message->isToAuthor() || $message->resent()) {
+                $skipped[] = $id;
+                continue;
+            }
+
+            // The mail uses the settings of the site of the message, else the
+            // ones of the default site.
+            $siteId = $message->site()
+                ? (int) $message->site()->id()
+                : (int) $this->settings()->get('default_site');
+            if (!$siteId) {
+                $errors[] = (new PsrMessage('The message #{message_id} has no site and there is no default site.', ['message_id' => $id]))->setTranslator($this->translator()); // @translate
+                continue;
+            }
+            if (!isset($submissions[$siteId])) {
+                $submissions[$siteId] = new \ContactUs\Stdlib\ContactSubmission(
+                    $plugins->get('api'),
+                    $services->get('Omeka\ApiManager'),
+                    $services->get('Common\EasyMeta'),
+                    $services->get('FormElementManager'),
+                    $services->get('Omeka\Mailer'),
+                    $plugins->get('messenger'),
+                    $plugins->get('sendEmail'),
+                    \ContactUs\Service\ViewHelper\ContactUsFactory::siteOptions($services, $siteId),
+                    $services,
+                    $services->get('ViewRenderer')
+                );
+            }
+
+            $error = $submissions[$siteId]->resendToAuthor($message);
+            if ($error) {
+                $errors[] = $error->setTranslator($this->translator());
+                continue;
+            }
+
+            $this->api()->update('contact_messages', $id, [
+                'o-module-contact:is_spam' => false,
+                'o-module-contact:resent' => true,
+            ], [], ['isPartial' => true]);
+            $sent[] = $id;
+        }
+
+        $message = new PsrMessage(
+            '{count_sent} message(s) resent to the author, {count_skipped} skipped (not to the author or already resent), {count_errors} error(s).', // @translate
+            ['count_sent' => count($sent), 'count_skipped' => count($skipped), 'count_errors' => count($errors)]
+        );
+        $message->setTranslator($this->translator());
+
+        return new JsonModel([
+            'status' => $errors && !$sent ? 'fail' : 'success',
+            'message' => (string) $message,
+            'data' => [
+                'sent' => $sent,
+                'skipped' => $skipped,
+                'errors' => array_map('strval', $errors),
+            ],
+        ]);
+    }
+
     public function toggleReadAction()
     {
         return $this->toggleProperty('o-module-contact:is_read');

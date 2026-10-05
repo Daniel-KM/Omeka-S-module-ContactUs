@@ -19,13 +19,7 @@ class ContactUsFactory implements FactoryInterface
     public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $plugins = $services->get('ControllerPluginManager');
-        $siteSettings = $services->get('Omeka\Settings\Site');
-        $defaultOptions = [];
-        $config = $services->get('Config');
-        $configSiteSettings = $config['contactus']['site_settings'] ?? [];
-        foreach ($configSiteSettings as $key => $value) {
-            $defaultOptions[substr($key, 10)] = $siteSettings->get($key, $value);
-        }
+        $defaultOptions = self::siteOptions($services);
         return new ContactUs(
             $plugins->get('api'),
             $services->get('Omeka\ApiManager'),
@@ -37,5 +31,26 @@ class ContactUsFactory implements FactoryInterface
             $defaultOptions,
             $services
         );
+    }
+
+    /**
+     * The options of the contact form, from the settings of a site.
+     *
+     * Without site id, the current site is used, as on a public page. With a
+     * site id, the settings of this site are used, for example to resend a
+     * message from the admin board, where there is no current site.
+     */
+    public static function siteOptions(ContainerInterface $services, ?int $siteId = null): array
+    {
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        if ($siteId) {
+            $siteSettings->setTargetId($siteId);
+        }
+        $options = [];
+        $config = $services->get('Config');
+        foreach ($config['contactus']['site_settings'] ?? [] as $key => $value) {
+            $options[substr($key, 10)] = $siteSettings->get($key, $value);
+        }
+        return $options;
     }
 }
