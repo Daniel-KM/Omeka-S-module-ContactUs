@@ -458,7 +458,7 @@ class MessageAdapter extends AbstractEntityAdapter
         // Security data are automatically filled, but check is done anyway.
         $requestUrl = $entity->getRequestUrl();
         if ($requestUrl && !filter_var($requestUrl, FILTER_VALIDATE_URL)) {
-            $errorStore->addError('o-module-contact:request_url', 'The request url is not valid.'); // @transalte
+            $errorStore->addError('o-module-contact:request_url', 'The request url is not valid.'); // @translate
         }
         $ip = $entity->getIp();
         if (empty($ip)) {

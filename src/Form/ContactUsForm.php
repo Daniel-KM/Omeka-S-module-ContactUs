@@ -311,6 +311,9 @@ class ContactUsForm extends Form
                         'name' => Validator\Callback::class,
                         'options' => [
                             'callback' => fn ($answer) => $answer === $this->checkAnswer,
+                            'messages' => [
+                                Validator\Callback::INVALID_VALUE => 'The answer to the question is incorrect.', // @translate
+                            ],
                         ],
                     ],
                 ],
