@@ -265,6 +265,19 @@ class Message extends AbstractEntity
     protected $toAuthor = false;
 
     /**
+     * Date of the last successful resend of the message to the author by an
+     * admin, for example after a false positive, so it is not resent twice.
+     *
+     * @var DateTime|null
+     *
+     * @Column(
+     *     type="datetime",
+     *     nullable=true
+     * )
+     */
+    protected $resent;
+
+    /**
      * @var DateTime
      *
      * @Column(
@@ -516,6 +529,17 @@ class Message extends AbstractEntity
     public function isToAuthor(): bool
     {
         return (bool) $this->toAuthor;
+    }
+
+    public function setResent(?DateTime $resent): self
+    {
+        $this->resent = $resent;
+        return $this;
+    }
+
+    public function getResent(): ?DateTime
+    {
+        return $this->resent;
     }
 
     public function setCreated(DateTime $created): self

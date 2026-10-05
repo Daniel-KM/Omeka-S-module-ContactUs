@@ -81,6 +81,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
             'o-module-contact:is_spam' => $this->isSpam(),
             'o-module-contact:spam_reason' => $this->spamReason(),
             'o-module-contact:to_author' => $this->isToAuthor(),
+            'o-module-contact:resent' => $getDateTimeJsonLd($this->resent()),
             'o:created' => $getDateTimeJsonLd($this->resource->getCreated()),
             'o:modified' => $getDateTimeJsonLd($this->resource->getModified()),
         ];
@@ -210,6 +211,14 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function isToAuthor(): bool
     {
         return $this->resource->isToAuthor();
+    }
+
+    /**
+     * Date of the last successful resend to the author by an admin.
+     */
+    public function resent(): ?\DateTime
+    {
+        return $this->resource->getResent();
     }
 
     /**

@@ -106,6 +106,9 @@ $site = $resource->site();
             <div class="spam-reason"><?= $escape(sprintf($translate('Spam status set by: %s'), implode(', ', $spamReasons))) ?></div>
             <?php endif; ?>
             <div class="has-zip"><?= sprintf($translate('Zip available: %s'), $message->hasZip() ? $translate('yes') : $translate('no')) ?></div>
+            <?php if ($resent = $message->resent()): ?>
+            <div class="resent"><?= $escape(sprintf($translate('Resent to the author: %s'), $i18n->dateFormat($resent, 'medium', 'medium'))) ?></div>
+            <?php endif; ?>
         </div>
     </div>
     <div class="meta-group">
