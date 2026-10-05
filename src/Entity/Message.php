@@ -238,6 +238,20 @@ class Message extends AbstractEntity
     protected $isSpam = false;
 
     /**
+     * The reasons of the spam status, separated by a comma, like "tooFast,
+     * keyword", or "admin" when the status was set manually.
+     *
+     * @var string|null
+     *
+     * @Column(
+     *     type="string",
+     *     length=190,
+     *     nullable=true
+     * )
+     */
+    protected $spamReason;
+
+    /**
      * @var bool
      *
      * @Column(
@@ -480,6 +494,17 @@ class Message extends AbstractEntity
     public function isSpam(): bool
     {
         return (bool) $this->isSpam;
+    }
+
+    public function setSpamReason(?string $spamReason): self
+    {
+        $this->spamReason = $spamReason === '' ? null : $spamReason;
+        return $this;
+    }
+
+    public function getSpamReason(): ?string
+    {
+        return $this->spamReason;
     }
 
     public function setToAuthor($toAuthor): self

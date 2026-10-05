@@ -18,6 +18,7 @@ CREATE TABLE `contact_message` (
     `newsletter` TINYINT(1) DEFAULT NULL,
     `is_read` TINYINT(1) DEFAULT 0 NOT NULL,
     `is_spam` TINYINT(1) DEFAULT 0 NOT NULL,
+    `spam_reason` VARCHAR(190) DEFAULT NULL,
     `to_author` TINYINT(1) DEFAULT 0 NOT NULL,
     `created` DATETIME NOT NULL,
     `modified` DATETIME DEFAULT NULL,

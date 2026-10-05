@@ -79,6 +79,7 @@ class MessageRepresentation extends AbstractEntityRepresentation
         + [
             'o-module-contact:is_read' => $this->isRead(),
             'o-module-contact:is_spam' => $this->isSpam(),
+            'o-module-contact:spam_reason' => $this->spamReason(),
             'o-module-contact:to_author' => $this->isToAuthor(),
             'o:created' => $getDateTimeJsonLd($this->resource->getCreated()),
             'o:modified' => $getDateTimeJsonLd($this->resource->getModified()),
@@ -186,6 +187,24 @@ class MessageRepresentation extends AbstractEntityRepresentation
     public function isSpam(): bool
     {
         return $this->resource->isSpam();
+    }
+
+    /**
+     * The reasons of the spam status, like "tooFast,keyword", or "admin" when
+     * the status was set manually.
+     */
+    public function spamReason(): ?string
+    {
+        return $this->resource->getSpamReason();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function spamReasons(): array
+    {
+        $reason = (string) $this->resource->getSpamReason();
+        return $reason === '' ? [] : array_values(array_filter(array_map('trim', explode(',', $reason))));
     }
 
     public function isToAuthor(): bool

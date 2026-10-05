@@ -323,7 +323,17 @@ class MessageAdapter extends AbstractEntityAdapter
             $entity->setIsRead(!empty($data['o-module-contact:is_read']));
         }
         if ($this->shouldHydrate($request, 'o-module-contact:is_spam')) {
-            $entity->setIsSpam(!empty($data['o-module-contact:is_spam']));
+            $isSpam = !empty($data['o-module-contact:is_spam']);
+            $hasReason = array_key_exists('o-module-contact:spam_reason', $data);
+            if ($hasReason) {
+                $entity->setSpamReason($data['o-module-contact:spam_reason'] ?: null);
+            } elseif ($isSpam !== $entity->isSpam() || ($isSpam && !$entity->getId())) {
+                // A change of the spam status without explicit reason is a
+                // manual one, done by an admin or a script, so it is stored as
+                // such, and it replaces the reasons of the automatic checks.
+                $entity->setSpamReason('admin');
+            }
+            $entity->setIsSpam($isSpam);
         }
         if ($this->shouldHydrate($request, 'o-module-contact:to_author')) {
             $entity->setToAuthor(!empty($data['o-module-contact:to_author']));

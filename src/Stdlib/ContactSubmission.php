@@ -142,6 +142,11 @@ class ContactSubmission
 
     protected $isSpam = false;
 
+    /**
+     * @var string[]
+     */
+    protected $spamReasons = [];
+
     protected $status;
 
     protected $message;
@@ -384,6 +389,7 @@ class ContactSubmission
             && !empty($this->options['antispam'])
             && !empty($this->options['questions']);
         $this->isSpam = false;
+        $this->spamReasons = [];
         $this->message = null;
         $this->status = null;
         $this->defaultForm = true;
@@ -415,6 +421,7 @@ class ContactSubmission
 
         $spam = $this->evaluateSpam($this->params, $this->options, $this->user, $this->antispam);
         $this->isSpam = $spam['isSpam'];
+        $this->spamReasons = $spam['reasons'];
         $blockSubmission = $spam['blockSubmission'];
         $this->question = $spam['question'];
         $this->answer = $spam['answer'];
@@ -569,6 +576,7 @@ class ContactSubmission
                     ? empty($formOptions['unsubscribe'])
                     : ($this->newsletterLabel ? $submitted['newsletter'] === 'yes' : null),
                 'o-module-contact:is_spam' => $this->isSpam,
+                'o-module-contact:spam_reason' => $this->isSpam ? implode(',', $this->spamReasons) : null,
                 'o-module-contact:to_author' => $this->isContactAuthor,
             ];
             $response = null;
@@ -855,6 +863,7 @@ class ContactSubmission
 
         return [
             'isSpam' => $isSpam,
+            'reasons' => $spamReasons,
             'blockSubmission' => $blockSubmission,
             'question' => $question,
             'answer' => $answer,

@@ -102,6 +102,9 @@ $site = $resource->site();
             <div class="to-author"><?= $message->isToAuthor() ? $translate('Message to author') : $translate('Message to us') ?></div>
             <div class="is-read"><?= sprintf($translate('Is read: %s'), $message->isRead() ? $translate('yes') : $translate('no')) ?></div>
             <div class="is-spam"><?= sprintf($translate('Is spam: %s'), $message->isSpam() ? $translate('yes') : $translate('no')) ?></div>
+            <?php if ($spamReasons = $message->spamReasons()): ?>
+            <div class="spam-reason"><?= $escape(sprintf($translate('Spam status set by: %s'), implode(', ', $spamReasons))) ?></div>
+            <?php endif; ?>
             <div class="has-zip"><?= sprintf($translate('Zip available: %s'), $message->hasZip() ? $translate('yes') : $translate('no')) ?></div>
         </div>
     </div>
