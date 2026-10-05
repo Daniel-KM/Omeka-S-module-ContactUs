@@ -1065,8 +1065,8 @@ class ContactSubmission
                 ))->translate());
             $body = $siteSetting('contactus_notify_body')
                 ?: $translate($this->defaultOptions['notify_body']);
-            $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted)
+            $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage);
+            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage)
                 . "\n\n" . (new PsrMessage(
                     'This message was marked as spam by checks that may be wrong ({reasons}). It is stored as spam: change its status if it is a real message.', // @translate
                     ['reasons' => implode(', ', $possibleSpamReasons)]
@@ -1094,8 +1094,8 @@ class ContactSubmission
             if (strpos($body, '{message}') === false) {
                 $body .= "\n\n{message}";
             }
-            $subject = $this->fillMessage($translate($subject), $submitted);
-            $body = $this->fillMessage($translate($body), $submitted);
+            $subject = $this->fillMessage($translate($subject), $submitted, $contactMessage);
+            $body = $this->fillMessage($translate($body), $submitted, $contactMessage);
 
             $to = $options['author_email'] ? [$options['author_email'] => ''] : null;
             $bcc = $setting('contactus_author_only')
@@ -1120,8 +1120,8 @@ class ContactSubmission
                 ))->translate();
             $body = $siteSetting('contactus_notify_body')
                 ?: $translate($this->defaultOptions['notify_body']);
-            $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
+            $subject= $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage);
+            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage);
 
             $to = $notifyRecipients ?: null;
 
@@ -1161,8 +1161,8 @@ class ContactSubmission
                     $subject = $options['confirmation_subject'] ?: $this->defaultOptions['confirmation_subject'];
                     $body = $options['confirmation_body'] ?: $this->defaultOptions['confirmation_body'];
                 }
-                $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
-                $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted);
+                $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage);
+                $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted, $contactMessage);
 
                 // Reply-to is the configured support address, else
                 // the administrator, so the visitor can answer a
@@ -1369,7 +1369,11 @@ class ContactSubmission
             );
     }
 
-    protected function fillMessage(?string $message, array $placeholders): string
+    protected function fillMessage(
+        ?string $message,
+        array $placeholders,
+        ?\ContactUs\Api\Representation\MessageRepresentation $contactMessage = null
+    ): string
     {
         if (empty($message)) {
             return (string) $message;
@@ -1426,11 +1430,16 @@ class ContactSubmission
         }
 
         // The resource ids for the multiple-resources placeholders come from
-        // the "id" key of the submitted fields, not from a top-level "id".
+        // the stored message (main resource and field "id"), else from the
+        // "id" key of the submitted fields, not from a top-level "id".
         $context = [
             'site' => $this->currentSite(),
-            'resource' => $this->currentOptions['resource'] ?? null,
-            'resource_ids' => $fields['id'] ?? null,
+            'resource' => ($contactMessage ? $contactMessage->resource() : null)
+                ?? $this->currentOptions['resource']
+                ?? null,
+            'resource_ids' => ($contactMessage ? $contactMessage->resourceIds() : null)
+                ?: $fields['id']
+                ?? null,
         ];
 
         return $this->view->plugin('prepareMessage')->fillMessage($message, $placeholders, $context);

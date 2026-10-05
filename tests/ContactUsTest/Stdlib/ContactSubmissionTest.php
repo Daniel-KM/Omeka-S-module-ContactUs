@@ -220,6 +220,34 @@ class ContactSubmissionTest extends TestCase
         $this->assertSame('[]', $out);
     }
 
+    public function testFillMessageResourcesComeFromStoredMessage(): void
+    {
+        // The form of a resource page has no field "id": the resource is the
+        // one stored with the message.
+        $contactMessage = $this->createMock(\ContactUs\Api\Representation\MessageRepresentation::class);
+        $contactMessage->method('resource')->willReturn(null);
+        $contactMessage->method('resourceIds')->willReturn([65]);
+        $out = $this->submission()->proxyFillMessage(
+            'ids={resources_ids}',
+            ['fields' => []],
+            [],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class),
+            $contactMessage
+        );
+        $this->assertSame('ids=65', $out);
+    }
+
+    public function testFillMessageResourcesFallBackOnFieldId(): void
+    {
+        $out = $this->submission()->proxyFillMessage(
+            'ids={resources_ids}',
+            ['fields' => ['id' => [3, 4]]],
+            ['id' => []],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class)
+        );
+        $this->assertSame('ids=3,4', $out);
+    }
+
     public function testGetMailSubjectReturnsProvidedSubject(): void
     {
         $this->assertSame(
@@ -271,12 +299,12 @@ class ContactSubmissionProxy extends ContactSubmission
         return $this->collectPostedFields();
     }
 
-    public function proxyFillMessage(string $message, array $placeholders, array $declaredFields, $site = null): string
+    public function proxyFillMessage(string $message, array $placeholders, array $declaredFields, $site = null, $contactMessage = null): string
     {
         $this->options['fields'] = $declaredFields;
         $this->options['resource'] = null;
         $this->view = new FakeFillMessageView($site);
-        return $this->fillMessage($message, $placeholders);
+        return $this->fillMessage($message, $placeholders, $contactMessage);
     }
 }
 
@@ -306,6 +334,8 @@ class FakeFillMessageView
                         $replace['{' . $key . '}'] = (string) $value;
                     }
                 }
+                // The multiple-resources placeholders are built from the context.
+                $replace['{resources_ids}'] = implode(',', (array) ($context['resource_ids'] ?? []));
                 return strtr($message, $replace);
             }
         };
