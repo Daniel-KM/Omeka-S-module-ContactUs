@@ -271,6 +271,19 @@ class SettingsFieldset extends Fieldset
                     'required' => false,
                 ],
             ])
+            ->add([
+                'name' => 'contactus_spam_notify_fragile',
+                'type' => CommonElement\OptionalCheckbox::class,
+                'options' => [
+                    'element_group' => 'contact',
+                    'label' => 'Notify the admins of the messages that may be false positives', // @translate
+                    'info' => 'A message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) remains marked as spam, but the admins receive it, with "[Possible spam]" and the reasons, and the visitor is thanked as usual, so a bot learns nothing. It is never sent to the author of a resource nor confirmed to the visitor. The spams detected by a reliable check are never sent.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'contactus_spam_notify_fragile',
+                    'required' => false,
+                ],
+            ])
         ;
     }
 }

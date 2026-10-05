@@ -257,6 +257,7 @@ return [
             'contactus_pow_skip' => false,
             'contactus_spam_inform_visitor' => false,
             'contactus_spam_contact_email' => '',
+            'contactus_spam_notify_fragile' => false,
         ],
         // Site settings.
         'site_settings' => [

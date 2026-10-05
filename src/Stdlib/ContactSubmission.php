@@ -640,14 +640,29 @@ class ContactSubmission
                 if ($sent['message'] !== null) {
                     $this->message = $sent['message'];
                 }
-            } elseif ($setting('contactus_spam_inform_visitor')
-                && $this->isPossibleFalsePositive($this->spamReasons)
-            ) {
+            } elseif ($this->isPossibleFalsePositive($this->spamReasons)) {
                 // A spam is classified silently, so a bot does not learn that
-                // it was caught. Only when the option is set, a message that
-                // may be a false positive is told to the visitor.
-                $this->status = 'error';
-                $this->message = $this->spamMessage((string) $setting('contactus_spam_contact_email'));
+                // it was caught. A message that may be a false positive may be
+                // sent to the admins only, flagged as possible spam, and, only
+                // when the option is set and the notification was not sent,
+                // told to the visitor.
+                $sent = $setting('contactus_spam_notify_fragile')
+                    ? $this->dispatchMessages(
+                        $response->getContent(),
+                        $submitted,
+                        $this->options,
+                        $this->isContactAuthor,
+                        $this->sendWithUserEmail,
+                        $this->newsletterLabel,
+                        $this->newsletterOnly,
+                        $this->spamReasons
+                    )
+                    : null;
+                $isNotified = $sent && $sent['status'] !== 'error';
+                if (!$isNotified && $setting('contactus_spam_inform_visitor')) {
+                    $this->status = 'error';
+                    $this->message = $this->spamMessage((string) $setting('contactus_spam_contact_email'));
+                }
             }
         } else {
             error_reporting($errorReporting);
@@ -978,7 +993,8 @@ class ContactSubmission
         bool $isContactAuthor,
         bool $sendWithUserEmail,
         string $newsletterLabel,
-        bool $newsletterOnly
+        bool $newsletterOnly,
+        array $possibleSpamReasons = []
     ): array {
         $view = $this->view;
         $setting = $view->plugin('setting');
@@ -1037,6 +1053,28 @@ class ContactSubmission
             ?: [];
 
         $mailer = new ContactMessageMailer($this->sendEmail, $this->checkSpam);
+
+        // A possible spam is sent only to the admins, flagged and with its
+        // reasons, never to the author of a resource nor confirmed to the
+        // visitor, so a spam is not relayed to third parties.
+        if ($possibleSpamReasons) {
+            $subject = '[Possible spam] ' . ($this->getMailSubject($options)
+                ?: (new PsrMessage(
+                    '[Contact] {main_title}', // @translate
+                    ['main_title' => $this->mailer->getInstallationTitle()]
+                ))->translate());
+            $body = $siteSetting('contactus_notify_body')
+                ?: $translate($this->defaultOptions['notify_body']);
+            $subject = $this->fillMessage($translate(strtr($subject, ['%7B' => '{', '%7D' => '}'])), $submitted);
+            $body = $this->fillMessage($translate(strtr($body, ['%7B' => '{', '%7D' => '}'])), $submitted)
+                . "\n\n" . (new PsrMessage(
+                    'This message was marked as spam by checks that may be wrong ({reasons}). It is stored as spam: change its status if it is a real message.', // @translate
+                    ['reasons' => implode(', ', $possibleSpamReasons)]
+                ))->translate();
+            $to = $notifyRecipients ?: ($setting('administrator_email') ? [$setting('administrator_email') => ''] : null);
+            $result = $mailer->notifyAdmins($subject, $body, (string) $submitted['from'], (string) $submitted['name'], $to, $sender);
+            return ['status' => $result ? null : 'error', 'message' => null];
+        }
 
         // Message to author (with copy to administrators if set).
         if ($isContactAuthor) {
