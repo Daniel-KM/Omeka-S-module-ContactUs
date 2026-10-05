@@ -10,6 +10,8 @@ use Laminas\View\Model\ViewModel;
 use Common\Stdlib\PsrMessage;
 use ContactUs\Form\QuickSearchForm;
 use ContactUs\Form\SendMessageForm;
+use ContactUs\Job\ResendToAuthor;
+use ContactUs\Stdlib\MessageResender;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\ErrorStore;
 
@@ -59,6 +61,28 @@ class ContactMessageController extends AbstractActionController
         $formDeleteAll->setButtonLabel('Confirm Delete'); // @translate
         $formDeleteAll->get('submit')->setAttribute('disabled', true);
 
+        $formResendSelected = $this->getForm(ConfirmForm::class);
+        $formResendSelected->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-resend'], true));
+        $formResendSelected->setAttribute('id', 'confirm-resend-selected');
+        $formResendSelected->setButtonLabel('Confirm resend'); // @translate
+
+        $countResendable = $this->api()
+            ->search('contact_messages', ['resendable' => '1', 'page' => 1, 'per_page' => 1] + $apiQuery)
+            ->getTotalResults();
+
+        $formResendAll = $this->getForm(ConfirmForm::class);
+        $formResendAll->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'batch-resend-all'], true));
+        $formResendAll->setAttribute('id', 'confirm-resend-all');
+        $formResendAll->setButtonLabel('Confirm resend'); // @translate
+        $formResendAll->get('submit')->setAttribute('disabled', !$countResendable);
+        $formResendAll->add([
+            'name' => 'query',
+            'type' => \Laminas\Form\Element\Hidden::class,
+            'attributes' => [
+                'value' => json_encode($apiQuery, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            ],
+        ]);
+
         $contactMessages = $response->getContent();
 
         $settings = $this->settings();
@@ -76,6 +100,9 @@ class ContactMessageController extends AbstractActionController
             'formSearch' => $formSearch,
             'formDeleteSelected' => $formDeleteSelected,
             'formDeleteAll' => $formDeleteAll,
+            'formResendSelected' => $formResendSelected,
+            'formResendAll' => $formResendAll,
+            'countResendable' => $countResendable,
             'formSendMessage' => $formSendMessage,
         ]);
     }
@@ -337,101 +364,76 @@ class ContactMessageController extends AbstractActionController
         if (!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
             throw new \Omeka\Mvc\Exception\NotFoundException;
         }
-        return $this->resendMessages([(int) $this->params('id')]);
-    }
 
-    public function batchResendAction()
-    {
-        if (!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->isPost()) {
-            throw new \Omeka\Mvc\Exception\NotFoundException;
-        }
-        $resourceIds = array_filter(array_map('intval', (array) $this->params()->fromPost('resource_ids', [])));
-        if (!$resourceIds) {
-            return $this->returnError('No contact messages submitted.', Response::STATUS_CODE_400); // @translate
-        }
-        return $this->resendMessages($resourceIds);
+        $services = $this->getEvent()->getApplication()->getServiceManager();
+        $result = (new MessageResender($services))([(int) $this->params('id')]);
+
+        $message = new PsrMessage(
+            '{count_sent} message(s) resent to the author, {count_skipped} skipped (already sent, already resent or to us), {count_errors} error(s).', // @translate
+            ['count_sent' => count($result['sent']), 'count_skipped' => count($result['skipped']), 'count_errors' => count($result['errors'])]
+        );
+        $translator = $this->translator();
+        return new JsonModel([
+            'status' => $result['errors'] && !$result['sent'] ? 'fail' : 'success',
+            'message' => $message->setTranslator($translator)->translate(),
+            'data' => [
+                'sent' => $result['sent'],
+                'skipped' => $result['skipped'],
+                'errors' => array_map(fn (PsrMessage $error) => $error->setTranslator($translator)->translate(), $result['errors']),
+            ],
+        ]);
     }
 
     /**
-     * Resend messages to the author of their resource, on the decision of an
-     * admin, for example for false positives. A message resent is not a spam,
-     * and the date of the resend is stored, so a message already resent is
-     * skipped.
+     * Resend the selected messages to the author in a background job.
      */
-    protected function resendMessages(array $ids)
+    public function batchResendAction()
     {
-        $services = $this->getEvent()->getApplication()->getServiceManager();
-        $plugins = $services->get('ControllerPluginManager');
+        $resourceIds = array_filter(array_map('intval', (array) $this->params()->fromPost('resource_ids', [])));
+        if (!$resourceIds) {
+            $this->messenger()->addError('You must select at least one contact message to resend.'); // @translate
+            return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
+        }
+        return $this->dispatchResend(['ids' => $resourceIds]);
+    }
 
-        $submissions = [];
-        $sent = [];
-        $skipped = [];
-        $errors = [];
-        foreach ($ids as $id) {
-            try {
-                /** @var \ContactUs\Api\Representation\MessageRepresentation $message */
-                $message = $this->api()->read('contact_messages', $id)->getContent();
-            } catch (\Exception $e) {
-                $errors[] = (new PsrMessage('The message #{message_id} does not exist.', ['message_id' => $id]))->setTranslator($this->translator()); // @translate
-                continue;
-            }
-            if (!$message->userIsAllowed('update') || !$message->isToAuthor() || $message->resent()) {
-                $skipped[] = $id;
-                continue;
-            }
+    /**
+     * Resend all the messages of the current query to the author in a job.
+     */
+    public function batchResendAllAction()
+    {
+        $query = json_decode((string) $this->params()->fromPost('query'), true);
+        return $this->dispatchResend(['query' => is_array($query) ? $query : []]);
+    }
 
-            // The mail uses the settings of the site of the message, else the
-            // ones of the default site.
-            $siteId = $message->site()
-                ? (int) $message->site()->id()
-                : (int) $this->settings()->get('default_site');
-            if (!$siteId) {
-                $errors[] = (new PsrMessage('The message #{message_id} has no site and there is no default site.', ['message_id' => $id]))->setTranslator($this->translator()); // @translate
-                continue;
-            }
-            if (!isset($submissions[$siteId])) {
-                $submissions[$siteId] = new \ContactUs\Stdlib\ContactSubmission(
-                    $plugins->get('api'),
-                    $services->get('Omeka\ApiManager'),
-                    $services->get('Common\EasyMeta'),
-                    $services->get('FormElementManager'),
-                    $services->get('Omeka\Mailer'),
-                    $plugins->get('messenger'),
-                    $plugins->get('sendEmail'),
-                    \ContactUs\Service\ViewHelper\ContactUsFactory::siteOptions($services, $siteId),
-                    $services,
-                    $services->get('ViewRenderer')
-                );
-            }
-
-            $error = $submissions[$siteId]->resendToAuthor($message);
-            if ($error) {
-                $errors[] = $error->setTranslator($this->translator());
-                continue;
-            }
-
-            $this->api()->update('contact_messages', $id, [
-                'o-module-contact:is_spam' => false,
-                'o-module-contact:resent' => true,
-            ], [], ['isPartial' => true]);
-            $sent[] = $id;
+    protected function dispatchResend(array $args)
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
         }
 
-        $message = new PsrMessage(
-            '{count_sent} message(s) resent to the author, {count_skipped} skipped (not to the author or already resent), {count_errors} error(s).', // @translate
-            ['count_sent' => count($sent), 'count_skipped' => count($skipped), 'count_errors' => count($errors)]
-        );
-        $message->setTranslator($this->translator());
+        $form = $this->getForm(ConfirmForm::class);
+        $form->setData($this->getRequest()->getPost());
+        if (!$form->isValid()) {
+            $this->messenger()->addFormErrors($form);
+            return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
+        }
 
-        return new JsonModel([
-            'status' => $errors && !$sent ? 'fail' : 'success',
-            'message' => (string) $message,
-            'data' => [
-                'sent' => $sent,
-                'skipped' => $skipped,
-                'errors' => array_map('strval', $errors),
-            ],
-        ]);
+        $job = $this->jobDispatcher()->dispatch(ResendToAuthor::class, $args);
+        $message = new PsrMessage(
+            'Resending messages to the author in background ({link}job #{job_id}{link_end}, {link_log}logs{link_end}).', // @translate
+            [
+                'link' => sprintf('<a href="%s">', htmlspecialchars($this->url()->fromRoute('admin/id', ['controller' => 'job', 'id' => $job->getId()]))),
+                'job_id' => $job->getId(),
+                'link_end' => '</a>',
+                'link_log' => class_exists('Log\Module', false)
+                    ? sprintf('<a href="%1$s">', htmlspecialchars($this->url()->fromRoute('admin/default', ['controller' => 'log'], ['query' => ['job_id' => $job->getId()]])))
+                    : sprintf('<a href="%1$s" target="_blank" rel="noopener noreferrer">', htmlspecialchars($this->url()->fromRoute('admin/id', ['controller' => 'job', 'action' => 'log', 'id' => $job->getId()]))),
+            ]
+        );
+        $message->setEscapeHtml(false);
+        $this->messenger()->addSuccess($message);
+        return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
     }
 
     public function toggleReadAction()

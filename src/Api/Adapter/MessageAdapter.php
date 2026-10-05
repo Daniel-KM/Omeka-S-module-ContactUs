@@ -151,6 +151,17 @@ class MessageAdapter extends AbstractEntityAdapter
             }
         }
 
+        // Messages to the author blocked at submission and not yet resent.
+        if (!empty($query['resendable'])) {
+            $qb
+                ->andWhere($expr->eq('omeka_root.toAuthor', 1))
+                ->andWhere($expr->isNull('omeka_root.resent'))
+                ->andWhere($expr->orX(
+                    $expr->eq('omeka_root.isSpam', 1),
+                    $expr->isNotNull('omeka_root.spamReason')
+                ));
+        }
+
         if (isset($query['resource_type']) && strlen((string) $query['resource_type'])) {
             $mapResourceTypes = [
                 'resources' => Resource::class,

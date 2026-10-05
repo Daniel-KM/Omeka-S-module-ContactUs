@@ -107,7 +107,7 @@ $(document).ready(function() {
         });
     };
 
-    const resend = function(url, ids, button) {
+    const resend = function(url, button) {
         if (!window.confirm(Omeka.jsTranslate('Resend to the author, without any check of spam?'))) {
             return;
         }
@@ -115,11 +115,8 @@ $(document).ready(function() {
             .ajax({
                 url: url,
                 method: 'POST',
-                data: ids ? {resource_ids: ids} : {},
                 beforeSend: function() {
-                    if (button) {
-                        button.removeClass('fa-paper-plane').addClass('fa-sync fa-spin');
-                    }
+                    button.removeClass('fa-paper-plane').addClass('fa-sync fa-spin');
                 }
             })
             .done(function(data) {
@@ -134,26 +131,29 @@ $(document).ready(function() {
                     : Omeka.jsTranslate('Something went wrong'));
             })
             .always(function() {
-                if (button) {
-                    button.removeClass('fa-sync fa-spin').addClass('fa-paper-plane');
-                }
+                button.removeClass('fa-sync fa-spin').addClass('fa-paper-plane');
             });
     };
 
     $('#content').on('click', 'a.resend-message', function(e) {
         e.preventDefault();
-        resend($(this).data('resend-url'), null, $(this));
+        resend($(this).data('resend-url'), $(this));
     });
 
-    $('#content').on('click', 'a.batch-resend', function(e) {
-        e.preventDefault();
-        const selected = $('.batch-edit td input[name="resource_ids[]"][type="checkbox"]:checked');
-        if (!selected.length) {
-            return;
-        }
-        resend($(this).data('batch-resend-url'), selected.map(function() { return $(this).val(); }).get(), null);
-        selected.prop('checked', false);
-        $('.select-all').prop('checked', false);
+    // The batch resend runs in a job after a confirmation in the sidebar, that
+    // displays the number of selected messages and gets them on submit.
+    $('#content').on('click', 'a.resend-selected', function() {
+        const count = $('.batch-edit td input[name="resource_ids[]"][type="checkbox"]:checked').length;
+        $('#sidebar-resend-selected .resend-count').text(count);
+        $('#confirm-resend-selected [type="submit"]').prop('disabled', !count);
+    });
+
+    $('#confirm-resend-selected').on('submit', function() {
+        const confirmForm = $(this);
+        confirmForm.find('input[name="resource_ids[]"]').remove();
+        $('#batch-form').find('.batch-edit td input[name="resource_ids[]"]:checked').each(function() {
+            confirmForm.append($(this).clone().attr('type', 'hidden'));
+        });
     });
 
     // Reply to the contact: the dialog is opened by Common

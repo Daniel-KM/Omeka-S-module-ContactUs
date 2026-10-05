@@ -208,6 +208,17 @@ class MessageRepresentation extends AbstractEntityRepresentation
         return $reason === '' ? [] : array_values(array_filter(array_map('trim', explode(',', $reason))));
     }
 
+    /**
+     * Whether the message was blocked at submission, so not sent to recipients.
+     *
+     * A message without spam status and reason was sent. A false positive set
+     * as not spam by an admin keeps the reason "admin".
+     */
+    public function isBlocked(): bool
+    {
+        return $this->resource->isSpam() || (string) $this->resource->getSpamReason() !== '';
+    }
+
     public function isToAuthor(): bool
     {
         return $this->resource->isToAuthor();

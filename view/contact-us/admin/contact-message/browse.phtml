@@ -6,6 +6,9 @@
  * @var \ContactUs\Form\QuickSearchForm $formSearch
  * @var \Omeka\Form\ConfirmForm $formDeleteSelected
  * @var \Omeka\Form\ConfirmForm $formDeleteAll
+ * @var \Omeka\Form\ConfirmForm $formResendSelected
+ * @var \Omeka\Form\ConfirmForm $formResendAll
+ * @var int $countResendable
  */
 
 use ContactUs\Api\Adapter\MessageAdapter;
@@ -28,6 +31,7 @@ $this->headLink()
 $this->headScript()
     ->appendFile($assetUrl('js/common-quick-search.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
     ->appendFile($assetUrl('js/common-dialog.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
+    ->appendFile($assetUrl('js/common-page-action-menu.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
     ->appendFile($assetUrl('js/contact-us-admin.js', 'ContactUs'), 'text/javascript', ['defer' => 'defer']);
 
 $this->htmlElement('body')->appendAttribute('class', 'contact-message contact-messages browse');
@@ -93,9 +97,17 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                     data-batch-property-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-set-not-spam'], true)) ?>"
                     data-property="is_spam"
                     data-status="not-spam"><?= $escape($translate('Set not spam')) ?></a></li>
-                <li><a href="#"
-                    class="batch-actions batch-resend"
-                    data-batch-resend-url="<?= $escapeAttr($url('admin/contact-message/default', ['action' => 'batch-resend'], true)) ?>"><?= $escape($translate('Resend to the author (false positives)')) ?></a></li>
+                <li class="menu-group">
+                    <span class="menu-group-label" id="contact-message-menu-maintenance"><?= $escape($translate('Maintenance')) ?></span>
+                    <ul aria-labelledby="contact-message-menu-maintenance">
+                        <li><a href="#"
+                            class="sidebar-content resend-selected"
+                            data-sidebar-selector="#sidebar-resend-selected"><?= $escape($translate('Resend selected messages to the author…')) ?></a></li>
+                        <li><a href="#"
+                            class="sidebar-content resend-all"
+                            data-sidebar-selector="#sidebar-resend-all"><?= $escape($translate('Resend all messages to the author…')) ?></a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -169,7 +181,7 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
                     <li><span class="resent fas fa-paper-plane"
                         aria-label="<?= $v = $escapeAttr(sprintf($translate('Resent to the author: %s'), $i18n->dateFormat($resent, 'medium', 'short'))) ?>"
                         title="<?= $v ?>"></span></li>
-                    <?php else: ?>
+                    <?php elseif ($message->isBlocked()): ?>
                     <li><a href="#"
                         class="resend-message fas fa-paper-plane"
                         data-resend-url="<?= $escapeAttr($message->url('resend')) ?>"
@@ -237,6 +249,38 @@ $editRight = $userIsAllowed(MessageAdapter::class, 'update')
         title="<?= $escapeAttr($translate('Close')) ?>"></a>
     <div class="sidebar-content"></div>
 </div>
+
+<?php if ($userIsAllowed(MessageAdapter::class, 'batch-update')): ?>
+<div id="sidebar-resend-selected" class="sidebar">
+    <a href="#"
+        class="sidebar-close o-icon-close"
+        aria-label="<?= $escapeAttr($translate('Close')) ?>"
+        title="<?= $escapeAttr($translate('Close')) ?>"></a>
+    <div class="sidebar-content">
+        <div class="sidebar-resend">
+            <h3><?= $escape($translate('Resend to the author')) ?></h3>
+            <p><?= sprintf($escape($translate('Resend the %s selected messages to the author of their resource, without any check of spam?')), '<strong class="resend-count">0</strong>') ?></p>
+            <p><?= $escape($translate('Only the messages blocked as spam are resent and set as not spam: messages already sent, already resent or to us are skipped. The process runs in background.')) ?></p>
+            <?= $this->form($formResendSelected) ?>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar-resend-all" class="sidebar">
+    <a href="#"
+        class="sidebar-close o-icon-close"
+        aria-label="<?= $escapeAttr($translate('Close')) ?>"
+        title="<?= $escapeAttr($translate('Close')) ?>"></a>
+    <div class="sidebar-content">
+        <div class="sidebar-resend">
+            <h3><?= $escape($translate('Resend to the author')) ?></h3>
+            <p><?= sprintf($escape($translate('Resend to the author the %s messages blocked as spam of the current results, on all pages, without any check of spam?')), '<strong>' . (int) $countResendable . '</strong>') ?></p>
+            <p><?= $escape($translate('The messages will be set as not spam. Messages already sent, already resent or to us are skipped. The process runs in background.')) ?></p>
+            <?= $this->form($formResendAll) ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <script>
 // Complete the batch delete form after confirmation.
