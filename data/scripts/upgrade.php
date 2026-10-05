@@ -20,7 +20,8 @@ use Common\Stdlib\PsrMessage;
  * @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger
  */
 $plugins = $services->get('ControllerPluginManager');
-$url = $services->get('ViewHelperManager')->get('url');
+$helpers = $services->get('ViewHelperManager');
+$url = $helpers->get('url');
 $api = $plugins->get('api');
 $logger = $services->get('Omeka\Logger');
 $settings = $services->get('Omeka\Settings');
@@ -572,17 +573,27 @@ if (version_compare($oldVersion, '3.4.29', '<')) {
     $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
     foreach ($siteIds as $siteId) {
         $siteSettings->setTargetId($siteId);
-        $append = $siteSettings->get('contactus_append_resource_show', []);
+        $sentinel = "\0none";
+        $append = $siteSettings->get('contactus_append_resource_show', $sentinel);
+        $browse = $siteSettings->get('contactus_append_items_browse', $sentinel);
+        // Skip a site already migrated, so a replay does not reset the new
+        // setting.
+        if ($append === $sentinel && $browse === $sentinel) {
+            continue;
+        }
         $placements = [];
-        foreach ($append as $resource) {
+        foreach ($append === $sentinel ? [] : $append as $resource) {
             if (isset($resourceToPlacement[$resource])) {
                 $placements[] = $resourceToPlacement[$resource];
             }
         }
-        if ($siteSettings->get('contactus_append_items_browse', false)) {
+        if ($browse !== $sentinel && $browse) {
             $placements[] = 'browse/items';
         }
         $siteSettings->set('contactus_placement', $placements);
+        $siteSettings->delete('contactus_append_resource_show');
+        $siteSettings->delete('contactus_append_items_browse');
+        $siteSettings->delete('contactus_append_items_browse_individual');
     }
 }
 
@@ -824,3 +835,53 @@ if (version_compare($oldVersion, '3.4.32', '<')) {
 }
 
 $this->checkSpamGuardPresence($services);
+
+if (version_compare($oldVersion, '3.4.33', '<')) {
+    // The settings "contactus_append_resource_show", "contactus_append_items_browse"
+    // and "contactus_append_items_browse_individual" were replaced by
+    // "contactus_placement" in version 3.4.29, but were not removed, so they
+    // were still able to display the form when the placement was unchecked.
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $siteSettings->delete('contactus_append_resource_show');
+        $siteSettings->delete('contactus_append_items_browse');
+        $siteSettings->delete('contactus_append_items_browse_individual');
+    }
+
+    $message = new PsrMessage(
+        'Old settings for placements of the block on old themes were removed. Check your themes if you customized it.' // @translate
+    );
+    $messenger->addWarning($message);
+
+    // Store the reasons of the spam status, displayed in the details of the
+    // message.
+    $hasColumn = $connection->executeQuery(
+        'SHOW COLUMNS FROM `contact_message` LIKE "spam_reason"'
+    )->fetchOne();
+    if (!$hasColumn) {
+        $connection->executeStatement(
+            'ALTER TABLE `contact_message` ADD `spam_reason` VARCHAR(190) DEFAULT NULL AFTER `is_spam`'
+        );
+    }
+
+    // Date of the last resend of a message to the author by an admin.
+    $hasColumn = $connection->executeQuery(
+        'SHOW COLUMNS FROM `contact_message` LIKE "resent"'
+    )->fetchOne();
+    if (!$hasColumn) {
+        $connection->executeStatement(
+            'ALTER TABLE `contact_message` ADD `resent` DATETIME DEFAULT NULL AFTER `to_author`'
+        );
+    }
+
+    // A spam is still classified silently by default: telling the visitor is
+    // an option, since it informs the bots too.
+    $settings->set('contactus_spam_inform_visitor', false);
+    $settings->set('contactus_spam_contact_email', '');
+    $settings->set('contactus_spam_notify_fragile', false);
+    $message = new PsrMessage(
+        'The reasons of the spam status are now displayed in the details of a message. Two new options, disabled by default, allow to notify the admins of the messages that may be false positives, and to tell the visitor, but the last one informs the bots too.' // @translate
+    );
+    $messenger->addNotice($message);
+}
