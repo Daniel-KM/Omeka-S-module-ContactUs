@@ -362,9 +362,6 @@ return [
                     => '6',
             ],
             'contactus_placement' => [],
-            'contactus_append_resource_show' => [],
-            'contactus_append_items_browse' => false,
-            'contactus_append_items_browse_individual' => false,
             'contactus_selection_guest_disable' => false,
             'contactus_selection_max' => 25,
             'contactus_selection_label' => 'Selection for contact', // @translate
