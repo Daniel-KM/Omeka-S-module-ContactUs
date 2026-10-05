@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 00:00+0000\n"
+"POT-Creation-Date: 2026-10-05 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,25 +39,25 @@ msgstr ""
 msgid "Remove Contact Us files"
 msgstr ""
 
-#: Module.php:372
+#: Module.php:370
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:96
+#: src/Controller/Admin/ContactMessageController.php:127
 msgid "No email defined for this contact message."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:111
+#: src/Controller/Admin/ContactMessageController.php:142
 msgid "Re: {subject}"
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:148
+#: src/Controller/Admin/ContactMessageController.php:179
 msgid "Sorry, the message cannot be sent. Contact the administrator."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:442
+#: src/Controller/Admin/ContactMessageController.php:550
 msgid "An error occurred."
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Append a form to allow visitors to subscribe to a newsletter."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:561 src/Stdlib/ContactSubmission.php:565
+#: src/Stdlib/ContactSubmission.php:590 src/Stdlib/ContactSubmission.php:594
 msgid "Unsubscribe newsletter"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgid "No resource selected."
 msgstr ""
 
 #: view/common/dialog/contact-us-send-message.phtml:22
-#: view/contact-us/admin/contact-message/browse.phtml:169
+#: view/contact-us/admin/contact-message/browse.phtml:197
 msgid "Reply to the contact"
 msgstr ""
 
@@ -128,84 +128,138 @@ msgstr ""
 msgid "Are you sure you would like to delete the selected messages?"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:37
+#: view/contact-us/admin/contact-message/browse.phtml:41
 msgid "Sender name"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:41
+#: view/contact-us/admin/contact-message/browse.phtml:45
 msgid "Sender email"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:45
-#: view/contact-us/admin/contact-message/browse.phtml:129
+#: view/contact-us/admin/contact-message/browse.phtml:49
+#: view/contact-us/admin/contact-message/browse.phtml:144
 msgid "Date sent"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:56
+#: view/contact-us/admin/contact-message/browse.phtml:60
 msgid "Contact messages"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:62
+#: view/contact-us/admin/contact-message/browse.phtml:66
 msgid "Quick filter"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:74
+#: view/contact-us/admin/contact-message/browse.phtml:78
 msgid "Actions"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:80
+#: view/contact-us/admin/contact-message/browse.phtml:84
 msgid "Set read"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:85
+#: view/contact-us/admin/contact-message/browse.phtml:89
 msgid "Set not read"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:90
+#: view/contact-us/admin/contact-message/browse.phtml:94
 msgid "Set spam"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:95
+#: view/contact-us/admin/contact-message/browse.phtml:99
 msgid "Set not spam"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:114
+#: view/contact-us/admin/contact-message/browse.phtml:101
+msgid "Maintenance"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:105
+msgid "Resend selected messages to the author…"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:108
+msgid "Resend all messages to the author…"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:129
 msgid "There are no messages."
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:126
+#: view/contact-us/admin/contact-message/browse.phtml:141
 msgid "Message"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:128
+#: view/contact-us/admin/contact-message/browse.phtml:143
 #: view/contact-us/admin/contact-message/show-details.phtml:25
 msgid "Sender"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:140
+#: view/contact-us/admin/contact-message/browse.phtml:155
 msgid "Select message"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:145
+#: view/contact-us/admin/contact-message/browse.phtml:160
 #: view/contact-us/admin/contact-message/show-details.phtml:102
 msgid "Message to author"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:155
-#: view/contact-us/admin/contact-message/browse.phtml:156
+#: view/contact-us/admin/contact-message/browse.phtml:170
+#: view/contact-us/admin/contact-message/browse.phtml:171
 msgid "Toggle read"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:162
-#: view/contact-us/admin/contact-message/browse.phtml:163
+#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:178
 msgid "Toggle spam"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:182
+#: view/contact-us/admin/contact-message/show-details.phtml:110
+#, php-format
+msgid "Resent to the author: %s"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:188
+msgid "Resend to the author (false positive)"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:205
 msgid "Download files as zip"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/browse.phtml:242
+#: view/contact-us/admin/contact-message/browse.phtml:261
+#: view/contact-us/admin/contact-message/browse.phtml:276
+msgid "Resend to the author"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:262
+#, php-format
+msgid ""
+"Resend the %s selected messages to the author of their resource, without any "
+"check of spam?"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:263
+msgid ""
+"Only the messages blocked as spam are resent and set as not spam: messages "
+"already sent, already resent or to us are skipped. The process runs in "
+"background."
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:277
+#, php-format
+msgid ""
+"Resend to the author the %s messages blocked as spam of the current results, "
+"on all pages, without any check of spam?"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:278
+msgid ""
+"The messages will be set as not spam. Messages already sent, already resent "
+"or to us are skipped. The process runs in background."
+msgstr ""
+
+#: view/contact-us/admin/contact-message/browse.phtml:302
 msgid "Filter contact messages"
 msgstr ""
 
@@ -266,33 +320,38 @@ msgstr ""
 msgid "Is spam: %s"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:105
+#: view/contact-us/admin/contact-message/show-details.phtml:106
+#, php-format
+msgid "Spam status set by: %s"
+msgstr ""
+
+#: view/contact-us/admin/contact-message/show-details.phtml:108
 #, php-format
 msgid "Zip available: %s"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:110
+#: view/contact-us/admin/contact-message/show-details.phtml:116
 msgid "[No subject]"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:127
+#: view/contact-us/admin/contact-message/show-details.phtml:133
 msgid "Attached file"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:129
+#: view/contact-us/admin/contact-message/show-details.phtml:135
 #, php-format
 msgid "Media type: %s"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:134
+#: view/contact-us/admin/contact-message/show-details.phtml:140
 msgid "Warning: content from an anonymous user"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:136
+#: view/contact-us/admin/contact-message/show-details.phtml:142
 msgid "Warning: content from a guest user"
 msgstr ""
 
-#: view/contact-us/admin/contact-message/show-details.phtml:144
+#: view/contact-us/admin/contact-message/show-details.phtml:150
 msgid "Newsletter"
 msgstr ""
 
@@ -450,50 +509,64 @@ msgstr ""
 msgid "A new site option allows to hide the guest page for selection."
 msgstr ""
 
-#: data/scripts/upgrade.php:592
+#: data/scripts/upgrade.php:602
 msgid ""
 "Some new anti-spam checks were added in main settings. Check them if needed."
 msgstr ""
 
-#: data/scripts/upgrade.php:651
+#: data/scripts/upgrade.php:661
 msgid ""
 "The zip filenames were re-signed. Previously sent emails pointing to these "
 "zip files are now broken. Contact messages concerned: {ids}."
 msgstr ""
 
-#: data/scripts/upgrade.php:659
+#: data/scripts/upgrade.php:669
 msgid "Removed {count} orphan zip files (message deleted): {ids}."
 msgstr ""
 
-#: data/scripts/upgrade.php:692
+#: data/scripts/upgrade.php:702
 msgid ""
 "Removed {count} stored zip files: zips are now streamed on demand, so no "
 "file is kept and existing links still work."
 msgstr ""
 
-#: data/scripts/upgrade.php:751
+#: data/scripts/upgrade.php:761
 msgid "Removed the \"id\" system field from {count} contact form blocks."
 msgstr ""
 
-#: data/scripts/upgrade.php:783
+#: data/scripts/upgrade.php:793
 msgid ""
 "Restored {count} site labels for the selection, lost by an issue in the "
 "upgrade to version 3.4.26."
 msgstr ""
 
-#: data/scripts/upgrade.php:794
+#: data/scripts/upgrade.php:804
 msgid ""
 "The option \"Email of the sender\" is empty: the no-reply or the "
 "administrator email is used. Set it in the settings if a specific sender is "
 "needed."
 msgstr ""
 
-#: data/scripts/upgrade.php:818
+#: data/scripts/upgrade.php:828
 msgid ""
 "The fields of the contact form are now flat: use the name of the field "
 "(\"phone\") instead of the nested name (\"fields[phone]\"), and \"id[]\" "
 "instead of \"fields[id][]\". The old names still work for now. Check the "
 "following files: {json}"
+msgstr ""
+
+#: data/scripts/upgrade.php:852
+msgid ""
+"Old settings for placements of the block on old themes were removed. Check "
+"your themes if you customized it."
+msgstr ""
+
+#: data/scripts/upgrade.php:883
+msgid ""
+"The reasons of the spam status are now displayed in the details of a "
+"message. Two new options, disabled by default, allow to notify the admins of "
+"the messages that may be false positives, and to tell the visitor, but the "
+"last one informs the bots too."
 msgstr ""
 
 #: Module.php:146
@@ -508,6 +581,21 @@ msgstr ""
 
 #: Module.php:250
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
+msgstr ""
+
+#: src/Job/ResendToAuthor.php:34
+msgid "No message to resend to the author."
+msgstr ""
+
+#: src/Job/ResendToAuthor.php:42
+msgid "The job was stopped."
+msgstr ""
+
+#: src/Job/ResendToAuthor.php:55
+#: src/Controller/Admin/ContactMessageController.php:376
+msgid ""
+"{count_sent} message(s) resent to the author, {count_skipped} skipped "
+"(already sent, already resent or to us), {count_errors} error(s)."
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:16 src/Form/SiteSettingsFieldset.php:314
@@ -634,7 +722,7 @@ msgstr ""
 msgid "Subject of the email to author"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:314
+#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:317
 msgid "Message to the author"
 msgstr ""
 
@@ -859,6 +947,43 @@ msgstr ""
 msgid "Check mx records of the email domain"
 msgstr ""
 
+#: src/Form/SettingsFieldset.php:253
+msgid "Tell the visitor when his message may be a false positive"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:254
+msgid ""
+"By default, a spam is classified silently and the visitor is thanked as "
+"usual, so a bot does not learn that it was caught. When checked, a message "
+"marked as spam only by a check that may be wrong (too fast, proof-of-work, "
+"reputation of the ip…) shows that it was not transmitted, without the "
+"reason, and invites to retry. Warning: a bot learns then that it failed, and "
+"these checks are mainly on timing, so it may adapt by posting more slowly."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:266
+msgid "Email to suggest to a visitor whose message may be a false positive"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:267
+msgid ""
+"Used only when the visitor is told that his message was not transmitted."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:279
+msgid "Notify the admins of the messages that may be false positives"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:280
+msgid ""
+"A message marked as spam only by a check that may be wrong (too fast, proof-"
+"of-work, reputation of the ip…) remains marked as spam, but the admins "
+"receive it, with \"[Possible spam]\" and the reasons, and the visitor is "
+"thanked as usual, so a bot learns nothing. It is never sent to the author of "
+"a resource nor confirmed to the visitor. The spams detected by a reliable "
+"check are never sent."
+msgstr ""
+
 #: src/Form/QuickSearchForm.php:48
 msgid "IP"
 msgstr ""
@@ -868,27 +993,111 @@ msgid "Spam"
 msgstr ""
 
 #: src/Form/QuickSearchForm.php:78
-msgid "Read"
+msgid "Reason of the spam status"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:79
+msgid "This filter replaces the filter \"Spam\"."
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:81
+msgid "Any"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:82
+msgid "Possible false positives (checks that may be wrong)"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:83
+msgid "Reliable checks"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:84
+msgid "Manual decision of an admin"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:86
+msgid "Check"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:88
+msgid "Banned ip"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:89
+msgid "Question"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:90
+msgid "Dnsbl"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:91
+msgid "Email without mx"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:92
+msgid "Honeypot"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:93
+msgid "Reputation of the ip"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:94
+msgid "Keyword"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:95
+msgid "Link to an abused domain"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:96
+msgid "Proof-of-work"
 msgstr ""
 
 #: src/Form/QuickSearchForm.php:97
+msgid "Rate limit"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:98
+msgid "Too fast"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:99
+msgid "Too slow"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:100
+msgid "Url"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:101
+msgid "Too many urls"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:114
+msgid "Read"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:133
 msgid "Has file"
 msgstr ""
 
-#: src/Form/QuickSearchForm.php:116
+#: src/Form/QuickSearchForm.php:152
 msgid "Has resource"
 msgstr ""
 
-#: src/Form/QuickSearchForm.php:154
+#: src/Form/QuickSearchForm.php:190
 msgid "To author"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:137
+#: src/Form/ContactUsForm.php:145
 msgid "Attach a file"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:243 src/Form/SendMessageForm.php:62
-#: src/Form/NewsletterForm.php:189
+#: src/Form/ContactUsForm.php:262 src/Form/SendMessageForm.php:62
+#: src/Form/NewsletterForm.php:208
 msgid "Send message"
 msgstr ""
 
@@ -952,48 +1161,63 @@ msgid ""
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:426
+#: src/Api/Adapter/MessageAdapter.php:502
 msgid "Error loading or saving base64 file."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:455
+#: src/Api/Adapter/MessageAdapter.php:531
 msgid "The body cannot be empty."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:465
+#: src/Api/Adapter/MessageAdapter.php:541
 msgid "The ip cannot be empty."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:158
+#: src/Controller/Admin/ContactMessageController.php:71
+#: src/Controller/Admin/ContactMessageController.php:80
+msgid "Confirm resend"
+msgstr ""
+
+#: src/Controller/Admin/ContactMessageController.php:189
 msgid "Message successfully sent to {email}."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:220
+#: src/Controller/Admin/ContactMessageController.php:251
 msgid "Contact message successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:254
+#: src/Controller/Admin/ContactMessageController.php:285
 msgid "You must select at least one contact message to batch delete."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:263
+#: src/Controller/Admin/ContactMessageController.php:294
 msgid "Contact messages successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:273
+#: src/Controller/Admin/ContactMessageController.php:304
 msgid "Delete of all contact messages is not supported currently."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:306
+#: src/Controller/Admin/ContactMessageController.php:337
 msgid "No contact messages submitted."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:312
-#: src/Controller/Admin/ContactMessageController.php:371
+#: src/Controller/Admin/ContactMessageController.php:343
+#: src/Controller/Admin/ContactMessageController.php:479
 msgid "An internal error occurred."
 msgstr ""
 
-#: src/Controller/Admin/ContactMessageController.php:363
+#: src/Controller/Admin/ContactMessageController.php:398
+msgid "You must select at least one contact message to resend."
+msgstr ""
+
+#: src/Controller/Admin/ContactMessageController.php:428
+msgid ""
+"Resending messages to the author in background ({link}job #{job_id}"
+"{link_end}, {link_log}logs{link_end})."
+msgstr ""
+
+#: src/Controller/Admin/ContactMessageController.php:471
 msgid "Unknown key."
 msgstr ""
 
@@ -1061,92 +1285,120 @@ msgid ""
 "the types and, for select/radio/multicheckbox, the list of values."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:480
+#: src/Stdlib/ContactSubmission.php:509
 msgid ""
 "Links (URLs) are not allowed in messages. Please remove any link and "
 "resubmit."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:513
+#: src/Stdlib/ContactSubmission.php:542
 msgid "The unsubscription for {email} is confirmed."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:518
+#: src/Stdlib/ContactSubmission.php:547
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:525
+#: src/Stdlib/ContactSubmission.php:554
 msgid ""
 "Thank you for your message, {name}. It will be sent to the author as soon as "
 "possible."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:530
+#: src/Stdlib/ContactSubmission.php:559
 msgid ""
 "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:562
+#: src/Stdlib/ContactSubmission.php:591
 msgid "Subscribe newsletter"
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:689
+#: src/Stdlib/ContactSubmission.php:689 src/Stdlib/ContactSubmission.php:693
+#: src/Stdlib/ContactSubmission.php:723 src/Stdlib/MessageResender.php:53
+#: src/Stdlib/MessageResender.php:70
+msgid "message_id"
+msgstr ""
+
+#: src/Stdlib/ContactSubmission.php:702
+msgid "The author of the message #{message_id} has no email: {error}"
+msgstr ""
+
+#: src/Stdlib/ContactSubmission.php:795
 #, php-format
 msgid "About resource %s (%s)."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:847
+#: src/Stdlib/ContactSubmission.php:964
 msgid "[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}"
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:897 src/Stdlib/ContactSubmission.php:974
-#: src/Stdlib/ContactSubmission.php:1299
+#: src/Stdlib/ContactSubmission.php:1017 src/Stdlib/ContactSubmission.php:1061
+#: src/Stdlib/ContactSubmission.php:1116 src/Stdlib/ContactSubmission.php:1492
 msgid "[Contact] {main_title}"
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:906
+#: src/Stdlib/ContactSubmission.php:1026
 msgid "newsletter: {answer}"
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:938
+#: src/Stdlib/ContactSubmission.php:1069
+msgid ""
+"This message was marked as spam by checks that may be wrong ({reasons}). It "
+"is stored as spam: change its status if it is a real message."
+msgstr ""
+
+#: src/Stdlib/ContactSubmission.php:1080
 msgid ""
 "Thank you for your message {name}. Check your confirmation mail. The author "
 "will receive it soon."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:965
+#: src/Stdlib/ContactSubmission.php:1107
 msgid "Sorry, we are not able to send the email to the author."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:989
+#: src/Stdlib/ContactSubmission.php:1131
 msgid ""
 "Sorry, the message is recorded, but we are not able to notify the admin at "
 "once. You may come back later if you don’t receive answer."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1033
+#: src/Stdlib/ContactSubmission.php:1175
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1083
+#: src/Stdlib/ContactSubmission.php:1225
 msgid "You must select a resource to contact the author."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1098 src/Stdlib/ContactSubmission.php:1124
+#: src/Stdlib/ContactSubmission.php:1240 src/Stdlib/ContactSubmission.php:1266
 msgid ""
 "This resource has no author to contact. Contact administor for more "
 "information."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1119
+#: src/Stdlib/ContactSubmission.php:1261
 msgid "Contact administor for more information."
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1169
+#: src/Stdlib/ContactSubmission.php:1322
+msgid ""
+"Your message could not be transmitted automatically. You may retry in a few "
+"minutes or write directly to {email}."
+msgstr ""
+
+#: src/Stdlib/ContactSubmission.php:1326
+msgid ""
+"Your message could not be transmitted automatically. You may retry in a few "
+"minutes."
+msgstr ""
+
+#: src/Stdlib/ContactSubmission.php:1362
 msgid "There is an error: {errors}"
 msgstr ""
 
-#: src/Stdlib/ContactSubmission.php:1173
+#: src/Stdlib/ContactSubmission.php:1366
 msgid "There is an error."
 msgstr ""
 
@@ -1173,7 +1425,7 @@ msgid ""
 "{message}"
 msgstr ""
 
-#: config/module.config.php:267
+#: config/module.config.php:270
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1190,11 +1442,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:283
+#: config/module.config.php:286
 msgid "Confirmation contact"
 msgstr ""
 
-#: config/module.config.php:284
+#: config/module.config.php:287
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1218,11 +1470,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:306
+#: config/module.config.php:309
 msgid "Subscription to newsletter of {main_title}"
 msgstr ""
 
-#: config/module.config.php:307
+#: config/module.config.php:310
 msgid ""
 "Hi,\n"
 "\n"
@@ -1231,7 +1483,7 @@ msgid ""
 "Sincerely,"
 msgstr ""
 
-#: config/module.config.php:315
+#: config/module.config.php:318
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -1252,66 +1504,66 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:333
+#: config/module.config.php:336
 msgid ""
 "Thank you for your message. Check your confirmation email sent to {email}. "
 "We will answer you soon."
 msgstr ""
 
-#: config/module.config.php:334
+#: config/module.config.php:337
 msgid ""
 "Thank you for subscribing to our newsletter. Check the confirmation email "
 "sent to {email}."
 msgstr ""
 
-#: config/module.config.php:335 config/module.config.php:382
+#: config/module.config.php:338 config/module.config.php:382
 #: config/module.config.php:395
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
 msgstr ""
 
-#: config/module.config.php:336
+#: config/module.config.php:339
 msgid "It is not possible to select more than {total} resources."
 msgstr ""
 
-#: config/module.config.php:340
+#: config/module.config.php:343
 msgid "How many are zero plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:342
+#: config/module.config.php:345
 msgid "How many are one plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:344
+#: config/module.config.php:347
 msgid "How many are one plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:346
+#: config/module.config.php:349
 msgid "How many are one plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:348
+#: config/module.config.php:351
 msgid "How many are two plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:350
+#: config/module.config.php:353
 msgid "How many are two plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:352
+#: config/module.config.php:355
 msgid "How many are two plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:354
+#: config/module.config.php:357
 msgid "How many are three plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:356
+#: config/module.config.php:359
 msgid "How many are three plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:358
+#: config/module.config.php:361
 msgid "How many are three plus 3 (in number)?"
 msgstr ""
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 00:00+0000\n"
-"PO-Revision-Date: 2026-08-03 00:00+0000\n"
+"POT-Creation-Date: 2026-10-05 00:00+0000\n"
+"PO-Revision-Date: 2026-10-05 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -35,26 +35,25 @@ msgstr "ATTENTION :"
 msgid "Remove Contact Us files"
 msgstr "Supprimer les fichiers du module"
 
-#: Module.php:372
+#: Module.php:370
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
 msgstr "Contactez-nous"
 
-#: src/Controller/Admin/ContactMessageController.php:96
+#: src/Controller/Admin/ContactMessageController.php:127
 msgid "No email defined for this contact message."
 msgstr "Pas de mail défini pour ce message de contact."
 
-#: src/Controller/Admin/ContactMessageController.php:111
+#: src/Controller/Admin/ContactMessageController.php:142
 msgid "Re: {subject}"
 msgstr "Re: {subject}"
 
-#: src/Controller/Admin/ContactMessageController.php:148
+#: src/Controller/Admin/ContactMessageController.php:179
 msgid "Sorry, the message cannot be sent. Contact the administrator."
-msgstr ""
-"Désolé, le message ne peut pas être envoyé. Contactez l’administrateur."
+msgstr "Désolé, le message ne peut pas être envoyé. Contactez l’administrateur."
 
-#: src/Controller/Admin/ContactMessageController.php:442
+#: src/Controller/Admin/ContactMessageController.php:550
 msgid "An error occurred."
 msgstr "Une erreur est survenue."
 
@@ -64,20 +63,14 @@ msgid "Not an ajax request"
 msgstr "Requête non ajax"
 
 #: src/Site/BlockLayout/ContactUs.php:96
-msgid ""
-"Append a form to allow visitors to contact us. Site settings are used when "
-"following fields are empty."
-msgstr ""
-"Ajouter un formulaire de contact pour les visiteurs. Les paramètres du site "
-"sont utilisés quand les chaînes sont vides."
+msgid "Append a form to allow visitors to contact us. Site settings are used when following fields are empty."
+msgstr "Ajouter un formulaire de contact pour les visiteurs. Les paramètres du site sont utilisés quand les chaînes sont vides."
 
 #: src/Site/BlockLayout/Newsletter.php:58
 msgid "Append a form to allow visitors to subscribe to a newsletter."
-msgstr ""
-"Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une "
-"infolettre."
+msgstr "Ajouter un formulaire pour permettre aux visiteurs de s’abonner à une infolettre."
 
-#: src/Stdlib/ContactSubmission.php:561 src/Stdlib/ContactSubmission.php:565
+#: src/Stdlib/ContactSubmission.php:590 src/Stdlib/ContactSubmission.php:594
 msgid "Unsubscribe newsletter"
 msgstr "Se désabonner de l’infolettre"
 
@@ -117,7 +110,7 @@ msgid "No resource selected."
 msgstr "Aucune ressource sélectionnée."
 
 #: view/common/dialog/contact-us-send-message.phtml:22
-#: view/contact-us/admin/contact-message/browse.phtml:169
+#: view/contact-us/admin/contact-message/browse.phtml:197
 msgid "Reply to the contact"
 msgstr "Répondre au contact"
 
@@ -129,84 +122,129 @@ msgstr "Supprimer les messages de contact"
 msgid "Are you sure you would like to delete the selected messages?"
 msgstr "Êtes-vous sûr de vouloir supprimer les messages sélectionnés ?"
 
-#: view/contact-us/admin/contact-message/browse.phtml:37
+#: view/contact-us/admin/contact-message/browse.phtml:41
 msgid "Sender name"
 msgstr "Nom de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:41
+#: view/contact-us/admin/contact-message/browse.phtml:45
 msgid "Sender email"
 msgstr "Mail de l’expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:45
-#: view/contact-us/admin/contact-message/browse.phtml:129
+#: view/contact-us/admin/contact-message/browse.phtml:49
+#: view/contact-us/admin/contact-message/browse.phtml:144
 msgid "Date sent"
 msgstr "Date d’envoi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:56
+#: view/contact-us/admin/contact-message/browse.phtml:60
 msgid "Contact messages"
 msgstr "Messages de contact"
 
-#: view/contact-us/admin/contact-message/browse.phtml:62
+#: view/contact-us/admin/contact-message/browse.phtml:66
 msgid "Quick filter"
 msgstr "Filtre rapide"
 
-#: view/contact-us/admin/contact-message/browse.phtml:74
+#: view/contact-us/admin/contact-message/browse.phtml:78
 msgid "Actions"
 msgstr "Actions"
 
-#: view/contact-us/admin/contact-message/browse.phtml:80
+#: view/contact-us/admin/contact-message/browse.phtml:84
 msgid "Set read"
 msgstr "Marquer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:85
+#: view/contact-us/admin/contact-message/browse.phtml:89
 msgid "Set not read"
 msgstr "Marquer non lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:90
+#: view/contact-us/admin/contact-message/browse.phtml:94
 msgid "Set spam"
 msgstr "Marquer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:95
+#: view/contact-us/admin/contact-message/browse.phtml:99
 msgid "Set not spam"
 msgstr "Marquer non-spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:114
+#: view/contact-us/admin/contact-message/browse.phtml:101
+msgid "Maintenance"
+msgstr "Maintenance"
+
+#: view/contact-us/admin/contact-message/browse.phtml:105
+msgid "Resend selected messages to the author…"
+msgstr "Renvoyer les messages choisis à l’auteur…"
+
+#: view/contact-us/admin/contact-message/browse.phtml:108
+msgid "Resend all messages to the author…"
+msgstr "Renvoyer tous les messages à l’auteur…"
+
+#: view/contact-us/admin/contact-message/browse.phtml:129
 msgid "There are no messages."
 msgstr "Il n’y a pas de message."
 
-#: view/contact-us/admin/contact-message/browse.phtml:126
+#: view/contact-us/admin/contact-message/browse.phtml:141
 msgid "Message"
 msgstr "Message"
 
-#: view/contact-us/admin/contact-message/browse.phtml:128
+#: view/contact-us/admin/contact-message/browse.phtml:143
 #: view/contact-us/admin/contact-message/show-details.phtml:25
 msgid "Sender"
 msgstr "Expéditeur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:140
+#: view/contact-us/admin/contact-message/browse.phtml:155
 msgid "Select message"
 msgstr "Choisir un message"
 
-#: view/contact-us/admin/contact-message/browse.phtml:145
+#: view/contact-us/admin/contact-message/browse.phtml:160
 #: view/contact-us/admin/contact-message/show-details.phtml:102
 msgid "Message to author"
 msgstr "Message à l’auteur"
 
-#: view/contact-us/admin/contact-message/browse.phtml:155
-#: view/contact-us/admin/contact-message/browse.phtml:156
+#: view/contact-us/admin/contact-message/browse.phtml:170
+#: view/contact-us/admin/contact-message/browse.phtml:171
 msgid "Toggle read"
 msgstr "Basculer lu"
 
-#: view/contact-us/admin/contact-message/browse.phtml:162
-#: view/contact-us/admin/contact-message/browse.phtml:163
+#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:178
 msgid "Toggle spam"
 msgstr "Basculer spam"
 
-#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:182
+#: view/contact-us/admin/contact-message/show-details.phtml:110
+#, php-format
+msgid "Resent to the author: %s"
+msgstr "Message renvoyé à l’auteur : %s"
+
+#: view/contact-us/admin/contact-message/browse.phtml:188
+msgid "Resend to the author (false positive)"
+msgstr "Renvoyer à l'auteur (faux positif)"
+
+#: view/contact-us/admin/contact-message/browse.phtml:205
 msgid "Download files as zip"
 msgstr "Télécharger les fichiers en zip"
 
-#: view/contact-us/admin/contact-message/browse.phtml:242
+#: view/contact-us/admin/contact-message/browse.phtml:261
+#: view/contact-us/admin/contact-message/browse.phtml:276
+msgid "Resend to the author"
+msgstr "Renvoyer à l’auteur"
+
+#: view/contact-us/admin/contact-message/browse.phtml:262
+#, php-format
+msgid "Resend the %s selected messages to the author of their resource, without any check of spam?"
+msgstr "Renvoyer les %s messages sélectionnés à l'auteur de la ressource correspondante, sans vérification anti-spam ?"
+
+#: view/contact-us/admin/contact-message/browse.phtml:263
+msgid "Only the messages blocked as spam are resent and set as not spam: messages already sent, already resent or to us are skipped. The process runs in background."
+msgstr "Seuls les messages bloqués comme spam sont renvoyés et marqués comme « non spam » : les messages déjà envoyés, déjà renvoyés ou qui nous sont destinés sont ignorés. Le processus s'exécute en arrière-plan."
+
+#: view/contact-us/admin/contact-message/browse.phtml:277
+#, php-format
+msgid "Resend to the author the %s messages blocked as spam of the current results, on all pages, without any check of spam?"
+msgstr "Renvoyer à l'auteur les %s messages bloqués comme spam dans les résultats actuels, sur toutes les pages, sans aucun filtrage anti-spam ?"
+
+#: view/contact-us/admin/contact-message/browse.phtml:278
+msgid "The messages will be set as not spam. Messages already sent, already resent or to us are skipped. The process runs in background."
+msgstr "Les messages seront marqués comme « non spam ». Les messages déjà envoyés, déjà renvoyés ou qui nous sont destinés sont ignorés. Le processus s'exécute en arrière-plan."
+
+#: view/contact-us/admin/contact-message/browse.phtml:302
 msgid "Filter contact messages"
 msgstr "Filtrer les messages de contact"
 
@@ -267,33 +305,38 @@ msgstr "Est lu : %s"
 msgid "Is spam: %s"
 msgstr "Est spam : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:105
+#: view/contact-us/admin/contact-message/show-details.phtml:106
+#, php-format
+msgid "Spam status set by: %s"
+msgstr "Statut spam défini par : %s"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:108
 #, php-format
 msgid "Zip available: %s"
 msgstr "Zip disponible : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:110
+#: view/contact-us/admin/contact-message/show-details.phtml:116
 msgid "[No subject]"
 msgstr "[Pas de sujet]"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:127
+#: view/contact-us/admin/contact-message/show-details.phtml:133
 msgid "Attached file"
 msgstr "Fichier attaché"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:129
+#: view/contact-us/admin/contact-message/show-details.phtml:135
 #, php-format
 msgid "Media type: %s"
 msgstr "Type de média : %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:134
+#: view/contact-us/admin/contact-message/show-details.phtml:140
 msgid "Warning: content from an anonymous user"
 msgstr "Attention : contenu d’un visiteur anonyme"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:136
+#: view/contact-us/admin/contact-message/show-details.phtml:142
 msgid "Warning: content from a guest user"
 msgstr "Attention : contenu de l’utilisateur invité"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:144
+#: view/contact-us/admin/contact-message/show-details.phtml:150
 msgid "Newsletter"
 msgstr "Infolettre"
 
@@ -319,257 +362,165 @@ msgid "My selection for contact"
 msgstr "Ma sélection pour le contact"
 
 #: data/scripts/upgrade.php:119
-msgid ""
-"A checkbox for consent has been added to the user form. You may update the "
-"default label in site settings"
-msgstr ""
-"Une case à cocher a été ajoutée au formulaire de contact. Vous pouvez "
-"modifier le libellé par défaut dans les paramètres du site"
+msgid "A checkbox for consent has been added to the user form. You may update the default label in site settings"
+msgstr "Une case à cocher a été ajoutée au formulaire de contact. Vous pouvez modifier le libellé par défaut dans les paramètres du site"
 
 #: data/scripts/upgrade.php:195
 msgid "It’s now possible to set a specific message when contacting author."
-msgstr ""
-"Il est désormais possible de définir un message pour contacter l’auteur."
+msgstr "Il est désormais possible de définir un message pour contacter l’auteur."
 
 #: data/scripts/upgrade.php:199
-msgid ""
-"It’s now possible to contact authors of a resource via the view helper "
-"contactUs()."
-msgstr ""
-"Il est désormais possible de contacter les auteurs d’une ressource via le "
-"\"helper\" de vue contactUs()."
+msgid "It’s now possible to contact authors of a resource via the view helper contactUs()."
+msgstr "Il est désormais possible de contacter les auteurs d’une ressource via le \"helper\" de vue contactUs()."
 
 #: data/scripts/upgrade.php:225
 msgid "It’s now possible to append specific fields to the form."
-msgstr ""
-"Il est désormais possible d’ajouter des champs spécifiques au formulaire."
+msgstr "Il est désormais possible d’ajouter des champs spécifiques au formulaire."
 
 #: data/scripts/upgrade.php:230
-msgid ""
-"It’s now possible to add a contact form in item/show for themes supporting "
-"resource blocks."
-msgstr ""
-"Il est désormais possible d’'ajouter un formulaire de contact dans la page "
-"du contenu pour les thèmes gérant les blocs de ressources."
+msgid "It’s now possible to add a contact form in item/show for themes supporting resource blocks."
+msgstr "Il est désormais possible d’'ajouter un formulaire de contact dans la page du contenu pour les thèmes gérant les blocs de ressources."
 
 #: data/scripts/upgrade.php:237
-msgid ""
-"It’s now possible to add a contact form in item/browse and to send a list of "
-"resource ids (need a line in theme)."
-msgstr ""
-"Il est désormais possible de contacter les auteurs d’une ressource et "
-"d’envoyer une liste de ressources (nécessite une ligne dans le thème)."
+msgid "It’s now possible to add a contact form in item/browse and to send a list of resource ids (need a line in theme)."
+msgstr "Il est désormais possible de contacter les auteurs d’une ressource et d’envoyer une liste de ressources (nécessite une ligne dans le thème)."
 
 #: data/scripts/upgrade.php:265
-msgid ""
-"It’s now possible to prepare a zip file of asked files to send to a visitor "
-"via a link. See {link}settings{link_end}."
-msgstr ""
-"Il est désormais possible de préparer un fichier zip en réponse à une "
-"demande d’un visiteur via un lien. Voir les {link}paramètres{link_end}."
+msgid "It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See {link}settings{link_end}."
+msgstr "Il est désormais possible de préparer un fichier zip en réponse à une demande d’un visiteur via un lien. Voir les {link}paramètres{link_end}."
 
 #: data/scripts/upgrade.php:278
 msgid "A new button allows to create a zip for any contact."
 msgstr "Un nouveau bouton permet de créer un zip pour tout contact."
 
 #: data/scripts/upgrade.php:291
-msgid ""
-"Two new options allow to append the contact form to resource pages. They are "
-"disabled by default, so check them if you need them."
-msgstr ""
-"Deux nouvelles options permettent d’ajouter le formulaire de contact aux "
-"pages de ressources. Elles sont désactivées par défaut et vous devez donc "
-"les activer si vous en avez besoin."
+msgid "Two new options allow to append the contact form to resource pages. They are disabled by default, so check them if you need them."
+msgstr "Deux nouvelles options permettent d’ajouter le formulaire de contact aux pages de ressources. Elles sont désactivées par défaut et vous devez donc les activer si vous en avez besoin."
 
 #: data/scripts/upgrade.php:296
-msgid ""
-"A new option allows to use the user email to send message. It is not "
-"recommended because many emails providers reject them as spam. Use it only "
-"if you manage your own domain."
-msgstr ""
-"Une nouvelle option permet d’utiliser le mail de l’utilisateur pour envoyer "
-"un message. Elle n’est pas recommandée, parce que de nombreux fournisseurs "
-"de mails les rejettent comme spam. Utilisez le seulement si vous gérez votre "
-"propre domaine."
+msgid "A new option allows to use the user email to send message. It is not recommended because many emails providers reject them as spam. Use it only if you manage your own domain."
+msgstr "Une nouvelle option permet d’utiliser le mail de l’utilisateur pour envoyer un message. Elle n’est pas recommandée, parce que de nombreux fournisseurs de mails les rejettent comme spam. Utilisez le seulement si vous gérez votre propre domaine."
 
 #: data/scripts/upgrade.php:310
 msgid "A new block allows to display a form to subscribe to a newsletter."
-msgstr ""
-"Un nouveau bloc permet d’afficher un formulaire d’abonnement à une "
-"infolettre."
+msgstr "Un nouveau bloc permet d’afficher un formulaire d’abonnement à une infolettre."
 
 #: data/scripts/upgrade.php:353
-msgid ""
-"The option \"heading\" was removed from blocks Contact Us and Newsletter and "
-"replaced by a block Heading (if module Block Plus is present) or Html. "
-"Remove it in the following files before upgrade and automatic conversion: "
-"{json}"
-msgstr ""
-"L’option « titre » (heading) a été supprimée des blocs de Contact et "
-"Infolettre et remplacé par un bloc Titre (si le module Block Plus est "
-"présent) ou Html. Supprimer le dans les fichiers suivants avant mise à jour "
-"et conversion automatique : {json}"
+msgid "The option \"heading\" was removed from blocks Contact Us and Newsletter and replaced by a block Heading (if module Block Plus is present) or Html. Remove it in the following files before upgrade and automatic conversion: {json}"
+msgstr "L’option « titre » (heading) a été supprimée des blocs de Contact et Infolettre et remplacé par un bloc Titre (si le module Block Plus est présent) ou Html. Supprimer le dans les fichiers suivants avant mise à jour et conversion automatique : {json}"
 
 #: data/scripts/upgrade.php:431
-msgid ""
-"The setting \"template\" was moved to the new block layout settings "
-"available since Omeka S v4.1. You may check pages for styles: {json}"
-msgstr ""
-"Le paramètre « template » a été déplacé dans les nouveaux paramètres de bloc "
-"depuis Omeka S v4.1. Vous pouvez vérifier les pages pour les styles : {json}"
+msgid "The setting \"template\" was moved to the new block layout settings available since Omeka S v4.1. You may check pages for styles: {json}"
+msgstr "Le paramètre « template » a été déplacé dans les nouveaux paramètres de bloc depuis Omeka S v4.1. Vous pouvez vérifier les pages pour les styles : {json}"
 
 #: data/scripts/upgrade.php:441
-msgid ""
-"The option \"heading\" was removed from blocks Contact Us and Newsletter. "
-"New block \"Heading\" (if module Block Plus is present) or \"Html\" was "
-"prepended to all blocks that had a filled heading. You may check pages for "
-"styles: {json}"
-msgstr ""
-"L’option « titre » (heading) a été supprimée des blocs de Contact et "
-"Infolettre. Un nouveau bloc « Titre » (Heading) (si le module Block Plus est "
-"présent) ou « Html » a été ajouté lorsque nécessaire.Vous pouvez vérifier "
-"les styles dans les pages : {json}"
+msgid "The option \"heading\" was removed from blocks Contact Us and Newsletter. New block \"Heading\" (if module Block Plus is present) or \"Html\" was prepended to all blocks that had a filled heading. You may check pages for styles: {json}"
+msgstr "L’option « titre » (heading) a été supprimée des blocs de Contact et Infolettre. Un nouveau bloc « Titre » (Heading) (si le module Block Plus est présent) ou « Html » a été ajouté lorsque nécessaire.Vous pouvez vérifier les styles dans les pages : {json}"
 
 #: data/scripts/upgrade.php:463
 msgid "New options were added to set message after posting mail."
-msgstr ""
-"De nouvelles options ont été ajoutées pour définir le message après envoi du "
-"mail."
+msgstr "De nouvelles options ont été ajoutées pour définir le message après envoi du mail."
 
 #: data/scripts/upgrade.php:468
 msgid "It is now possible to unsubscribe to a newsletter."
 msgstr "Il est désormais possible de se désabonner à l’infolettre."
 
 #: data/scripts/upgrade.php:473
-msgid ""
-"A new page allows the user or the visitor to see all the selected resources."
-msgstr ""
-"Une nouvelle page permet à l’utilisateur ou au visiteur de voir toutes les "
-"ressources sélectionnées."
+msgid "A new page allows the user or the visitor to see all the selected resources."
+msgstr "Une nouvelle page permet à l’utilisateur ou au visiteur de voir toutes les ressources sélectionnées."
 
 #: data/scripts/upgrade.php:478
-msgid ""
-"The number of selected items can be set in site settings. It is limited to "
-"25 by default."
-msgstr ""
-"Le nombre contenus sélectionnés peut être défini dans les paramètres de "
-"site. Il est limité à 25 par défaut."
+msgid "The number of selected items can be set in site settings. It is limited to 25 by default."
+msgstr "Le nombre contenus sélectionnés peut être défini dans les paramètres de site. Il est limité à 25 par défaut."
 
 #: data/scripts/upgrade.php:491
-msgid ""
-"It is now possible to define specific fields for the contact us form via the "
-"main or site settings."
-msgstr ""
-"Il est désormais possible d’ajouter des champs spécifiques au formulaire via "
-"les paramètres généraux ou les paramètres du site."
+msgid "It is now possible to define specific fields for the contact us form via the main or site settings."
+msgstr "Il est désormais possible d’ajouter des champs spécifiques au formulaire via les paramètres généraux ou les paramètres du site."
 
 #: data/scripts/upgrade.php:498
 msgid "New fields were added for messages."
 msgstr "De nouveaux champs ont été ajoutés pour les messages."
 
 #: data/scripts/upgrade.php:503
-msgid ""
-"Existing fields for messages were clarified. You may need to check your "
-"config."
-msgstr ""
-"Les champs existants pour les messages ont été clarifiés. Vous pouvez "
-"vérifier votre configuration."
+msgid "Existing fields for messages were clarified. You may need to check your config."
+msgstr "Les champs existants pour les messages ont été clarifiés. Vous pouvez vérifier votre configuration."
 
 #: data/scripts/upgrade.php:526
-msgid ""
-"A new field allows to set the sender email. The first email of the list of "
-"emails for notification is no more used as sender. Check it if needed."
-msgstr ""
-"Un nouveau champ permet de définir le mail de l’expéditeur. La première "
-"adresse de la liste pour les notification n’est plus utilisée. Merci de "
-"vérifier si besoin."
+msgid "A new field allows to set the sender email. The first email of the list of emails for notification is no more used as sender. Check it if needed."
+msgstr "Un nouveau champ permet de définir le mail de l’expéditeur. La première adresse de la liste pour les notification n’est plus utilisée. Merci de vérifier si besoin."
 
 #: data/scripts/upgrade.php:531
-msgid ""
-"Warning: there might be an issue with the option \"Send with user email\". "
-"So check it and try to send a message. Note that to send with user email is "
-"not recommended, unless you have a good smtp server."
-msgstr ""
-"Attention : il pouvait y avoir un problème avec l’option « Envoyer avec le "
-"mail utilisateur ». De ce fait, vérifiez et essayez d’envoyer un message. "
-"Notez qu’envoyer un message avec le mail de l’utilisateur n’est pas "
-"recommandé, sauf si vous avez un serveur de mail bien configuré."
+msgid "Warning: there might be an issue with the option \"Send with user email\". So check it and try to send a message. Note that to send with user email is not recommended, unless you have a good smtp server."
+msgstr "Attention : il pouvait y avoir un problème avec l’option « Envoyer avec le mail utilisateur ». De ce fait, vérifiez et essayez d’envoyer un message. Notez qu’envoyer un message avec le mail de l’utilisateur n’est pas recommandé, sauf si vous avez un serveur de mail bien configuré."
 
 #: data/scripts/upgrade.php:559
 msgid "A new site option allows to hide the guest page for selection."
 msgstr "Un nouveau bouton permet de cacher la page invité pour la sélection."
 
-#: data/scripts/upgrade.php:592
-msgid ""
-"Some new anti-spam checks were added in main settings. Check them if needed."
-msgstr ""
-"De nouveaux test anti-spams ont été ajoutés dans les paramètres généraux. "
-"Vérifiez les si besoin."
+#: data/scripts/upgrade.php:602
+msgid "Some new anti-spam checks were added in main settings. Check them if needed."
+msgstr "De nouveaux test anti-spams ont été ajoutés dans les paramètres généraux. Vérifiez les si besoin."
 
-#: data/scripts/upgrade.php:651
-msgid ""
-"The zip filenames were re-signed. Previously sent emails pointing to these "
-"zip files are now broken. Contact messages concerned: {ids}."
-msgstr ""
-"Le noms de fichier zip ont été renommés. Les liens des anciens mails déjà "
-"envoyés sont désormais cassés. Les messages concernés sont : {ids}."
+#: data/scripts/upgrade.php:661
+msgid "The zip filenames were re-signed. Previously sent emails pointing to these zip files are now broken. Contact messages concerned: {ids}."
+msgstr "Le noms de fichier zip ont été renommés. Les liens des anciens mails déjà envoyés sont désormais cassés. Les messages concernés sont : {ids}."
 
-#: data/scripts/upgrade.php:659
+#: data/scripts/upgrade.php:669
 msgid "Removed {count} orphan zip files (message deleted): {ids}."
 msgstr "Suppression de {count} fichiers zip orphelins (sans messages) : {ids}"
 
-#: data/scripts/upgrade.php:692
-msgid ""
-"Removed {count} stored zip files: zips are now streamed on demand, so no "
-"file is kept and existing links still work."
-msgstr ""
-"Suppression de {count} fichiers ZIP stockés : les zips sont désormais "
-"diffusés à la demande sans création de fichier."
+#: data/scripts/upgrade.php:702
+msgid "Removed {count} stored zip files: zips are now streamed on demand, so no file is kept and existing links still work."
+msgstr "Suppression de {count} fichiers ZIP stockés : les zips sont désormais diffusés à la demande sans création de fichier."
 
-#: data/scripts/upgrade.php:751
+#: data/scripts/upgrade.php:761
 msgid "Removed the \"id\" system field from {count} contact form blocks."
-msgstr ""
-"Suppression du champ système « id » de {count} blocs de formulaire de "
-"contact."
+msgstr "Suppression du champ système « id » de {count} blocs de formulaire de contact."
 
-#: data/scripts/upgrade.php:783
-msgid ""
-"Restored {count} site labels for the selection, lost by an issue in the "
-"upgrade to version 3.4.26."
-msgstr ""
+#: data/scripts/upgrade.php:793
+msgid "Restored {count} site labels for the selection, lost by an issue in the upgrade to version 3.4.26."
+msgstr "Restauration de {count} noms de sites pour la sélection, qui avaient été perdus en raison d'un problème survenu lors de la mise à jour vers la version 3.4.26."
 
-#: data/scripts/upgrade.php:794
-msgid ""
-"The option \"Email of the sender\" is empty: the no-reply or the "
-"administrator email is used. Set it in the settings if a specific sender is "
-"needed."
-msgstr ""
+#: data/scripts/upgrade.php:804
+msgid "The option \"Email of the sender\" is empty: the no-reply or the administrator email is used. Set it in the settings if a specific sender is needed."
+msgstr "Le champ « Mail de l'expéditeur » est vide : c'est l'adresse « no-reply » ou celle de l'administrateur qui est utilisée. Configurez-le dans les paramètres si vous souhaitez utiliser un expéditeur spécifique."
 
-#: data/scripts/upgrade.php:818
-msgid ""
-"The fields of the contact form are now flat: use the name of the field "
-"(\"phone\") instead of the nested name (\"fields[phone]\"), and \"id[]\" "
-"instead of \"fields[id][]\". The old names still work for now. Check the "
-"following files: {json}"
-msgstr ""
+#: data/scripts/upgrade.php:828
+msgid "The fields of the contact form are now flat: use the name of the field (\"phone\") instead of the nested name (\"fields[phone]\"), and \"id[]\" instead of \"fields[id][]\". The old names still work for now. Check the following files: {json}"
+msgstr "Les champs du formulaire de contact sont désormais « plats » : utilisez le nom du champ (« phone ») à la place du nom imbriqué (« fields[phone] »), et « id[] » à la place de « fields[id][] ». Les anciens noms fonctionnent toujours pour l'instant. Consultez les fichiers suivants : {json}"
+
+#: data/scripts/upgrade.php:852
+msgid "Old settings for placements of the block on old themes were removed. Check your themes if you customized it."
+msgstr "Les paramètres de positionnement du bloc dans les anciens thèmes ont été supprimés. Vérifiez vos thèmes si vous les avez personnalisés."
+
+#: data/scripts/upgrade.php:883
+msgid "The reasons of the spam status are now displayed in the details of a message. Two new options, disabled by default, allow to notify the admins of the messages that may be false positives, and to tell the visitor, but the last one informs the bots too."
+msgstr "Les raisons du classement d'un message comme spam s'affichent désormais dans les détails du message. Deux nouvelles options, désactivées par défaut, permettent de signaler aux administrateurs les messages susceptibles d'être des faux positifs et d'en informer le visiteur ; toutefois, la seconde option informe également les robots."
 
 #: Module.php:146
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Le dossier « {directory} » n’est pas accessible en écriture."
 
 #: Module.php:183
-msgid ""
-"Module ContactUs : SpamGuard is missing, so only simple anti-spam "
-"countermeasures are available."
-msgstr ""
-"Module Contact Us : le module SpamGuard est absent et seules les contre-"
-"mesures simples sont disponibles."
+msgid "Module ContactUs : SpamGuard is missing, so only simple anti-spam countermeasures are available."
+msgstr "Module Contact Us : le module SpamGuard est absent et seules les contre-mesures simples sont disponibles."
 
 #: Module.php:250
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
-msgstr ""
-"Tous les messages de contact et tous les fichiers seront supprimés (dossier "
-"\"{folder}\")."
+msgstr "Tous les messages de contact et tous les fichiers seront supprimés (dossier \"{folder}\")."
+
+#: src/Job/ResendToAuthor.php:34
+msgid "No message to resend to the author."
+msgstr "Pas de message à renvoyer à l’auteur."
+
+#: src/Job/ResendToAuthor.php:42
+msgid "The job was stopped."
+msgstr "La tâche a été arrêtée."
+
+#: src/Job/ResendToAuthor.php:55
+#: src/Controller/Admin/ContactMessageController.php:376
+msgid "{count_sent} message(s) resent to the author, {count_skipped} skipped (already sent, already resent or to us), {count_errors} error(s)."
+msgstr "{count_sent} message(s) renvoyé(s) à l'auteur, {count_skipped} ignoré(s) (déjà envoyé(s), déjà renvoyé(s) ou destinés à nous), {count_errors} erreurs."
 
 #: src/Form/SiteSettingsFieldset.php:16 src/Form/SiteSettingsFieldset.php:314
 #: src/Form/SettingsFieldset.php:16
@@ -587,13 +538,8 @@ msgstr "Protection anti-spam avancé"
 
 #: src/Form/SiteSettingsFieldset.php:36 src/Form/ContactUsFieldset.php:29
 #: src/Form/NewsletterFieldset.php:28
-msgid ""
-"For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned "
-"IP lists, structured logging), install the SpamGuard module."
-msgstr ""
-"Pour une protection anti-spam plus complète (preuve de travail, limite "
-"d’envoi, contrôle dns, listes de bans ip, journaux), installer le module "
-"SpamGuard."
+msgid "For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the SpamGuard module."
+msgstr "Pour une protection anti-spam plus complète (preuve de travail, limite d’envoi, contrôle dns, listes de bans ip, journaux), installer le module SpamGuard."
 
 #: src/Form/SiteSettingsFieldset.php:47 src/Form/SettingsFieldset.php:46
 #: src/Form/ContactUsFieldset.php:111
@@ -601,28 +547,8 @@ msgid "Contact form fields"
 msgstr "Champs du formulaire de contact"
 
 #: src/Form/SiteSettingsFieldset.php:50
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. If empty, the main settings will be used."
-msgstr ""
-"Un structure yaml, un champ par nom : une valeur scalaire correspond à "
-"l'étiquette (par exemple « phone : Téléphone »), une valeur nulle conserve "
-"le champ par défaut (par exemple « name : »), un objet accepte les clés "
-"label, type (text, textarea, email, tel, number, url, date, select, radio, "
-"checkbox, multicheckbox), required, values (les choix d’un select/radio/"
-"multicheckbox), options (autres options des éléments Laminas comme "
-"empty_option ou info) et attributes (placeholder, class…). Indiquez le nom "
-"d’un champ par défaut (name, from, subject, message) pour le déplacer ou le "
-"renommer ; les champs par défaut non mentionnés sont ajoutés à la fin. Les "
-"éléments peuvent être adaptés via le thème. Si ce champ est vide, les "
-"paramètres généraux seront utilisés."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. If empty, the main settings will be used."
+msgstr "Un structure yaml, un champ par nom : une valeur scalaire correspond à l'étiquette (par exemple « phone : Téléphone »), une valeur nulle conserve le champ par défaut (par exemple « name : »), un objet accepte les clés label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (les choix d’un select/radio/multicheckbox), options (autres options des éléments Laminas comme empty_option ou info) et attributes (placeholder, class…). Indiquez le nom d’un champ par défaut (name, from, subject, message) pour le déplacer ou le renommer ; les champs par défaut non mentionnés sont ajoutés à la fin. Les éléments peuvent être adaptés via le thème. Si ce champ est vide, les paramètres généraux seront utilisés."
 
 #: src/Form/SiteSettingsFieldset.php:55 src/Form/SettingsFieldset.php:54
 #: src/Form/ContactUsFieldset.php:119
@@ -631,16 +557,11 @@ msgstr "phone: Téléphone"
 
 #: src/Form/SiteSettingsFieldset.php:64 src/Form/SettingsFieldset.php:63
 msgid "Email of the sender (else no-reply user or administrator)"
-msgstr ""
-"Mail de l’expéditeur (sinon le mail « ne pas répondre » ou l’administrateur)"
+msgstr "Mail de l’expéditeur (sinon le mail « ne pas répondre » ou l’administrateur)"
 
 #: src/Form/SiteSettingsFieldset.php:65 src/Form/SettingsFieldset.php:64
-msgid ""
-"The no-reply email can be set via module EasyAdmin. The administrator email "
-"can set above."
-msgstr ""
-"Le mail ne-pas-répondre est défini via le module EasyAdmin. L’administrateur "
-"est défini plus haut."
+msgid "The no-reply email can be set via module EasyAdmin. The administrator email can set above."
+msgstr "Le mail ne-pas-répondre est défini via le module EasyAdmin. L’administrateur est défini plus haut."
 
 #: src/Form/SiteSettingsFieldset.php:77 src/Form/SettingsFieldset.php:76
 msgid "Name of the sender when email above is set"
@@ -672,20 +593,8 @@ msgstr "Message de notification pour l’administrateur"
 
 #: src/Form/SiteSettingsFieldset.php:123 src/Form/SiteSettingsFieldset.php:159
 #: src/Form/ContactUsFieldset.php:60
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{fields}, {each specific field}, {resource}, {resource_id}, "
-"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
-"{property term}, {resources}, {resources_ids}, {resources_url}, "
-"{resources_url_admin}, {resources_links}, {resources::property term}."
-msgstr ""
-"Jokers possibles : {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{fields}, {each specific field}, {resource}, {resource_id}, "
-"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
-"{property term}, {resources}, {resources_ids}, {resources_url}, "
-"{resources_url_admin}, {resources_links}, {resources::property term}."
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {fields}, {each specific field}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}."
+msgstr "Jokers possibles : {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {fields}, {each specific field}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}."
 
 #: src/Form/SiteSettingsFieldset.php:136 src/Form/ContactUsFieldset.php:39
 #: src/Form/NewsletterFieldset.php:48
@@ -711,29 +620,20 @@ msgid "Confirmation message for subscription to newsletter"
 msgstr "Message de confirmation pour l’abonnement à l’infolettre"
 
 #: src/Form/SiteSettingsFieldset.php:184
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {object}, {subject}, {ip}."
-msgstr ""
-"Les jokers possibles sont : {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {object}, {subject}, {ip}."
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {object}, {subject}, {ip}."
+msgstr "Les jokers possibles sont : {main_title}, {main_url}, {site_title}, {site_url}, {email}, {object}, {subject}, {ip}."
 
 #: src/Form/SiteSettingsFieldset.php:197
 msgid "Subject of the email to author"
 msgstr "Sujet du message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:314
+#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:317
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
 #: src/Form/SiteSettingsFieldset.php:209 src/Form/NewsletterFieldset.php:69
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
-msgstr ""
-"Les jokers possibles sont : {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
-"{ip}."
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
+msgstr "Les jokers possibles sont : {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
 
 #: src/Form/SiteSettingsFieldset.php:222
 msgid "Message displayed on site after post"
@@ -762,12 +662,8 @@ msgid "Reject messages containing URLs"
 msgstr "Rejeter les messages contenant des urls"
 
 #: src/Form/SiteSettingsFieldset.php:284
-msgid ""
-"When enabled, any message containing http://, https:// or www. is rejected "
-"with an explicit error and not stored."
-msgstr ""
-"Si actif, tout message contenant http://, https:// ou www. est rejeté avec "
-"une erreur explicite et non enregistré."
+msgid "When enabled, any message containing http://, https:// or www. is rejected with an explicit error and not stored."
+msgstr "Si actif, tout message contenant http://, https:// ou www. est rejeté avec une erreur explicite et non enregistré."
 
 #: src/Form/SiteSettingsFieldset.php:295 src/Form/ContactUsFieldset.php:136
 #: src/Form/NewsletterFieldset.php:110
@@ -775,12 +671,8 @@ msgid "List of antispam questions/answers"
 msgstr "Liste de questions/réponses anti-spam"
 
 #: src/Form/SiteSettingsFieldset.php:296 src/Form/ContactUsFieldset.php:137
-msgid ""
-"See the block \"Contact us\" for a simple list. Separate questions and "
-"answer with a \"=\". Questions may be translated."
-msgstr ""
-"Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et "
-"les réponses avec un signe \"=\". Les questions peuvent être traduites."
+msgid "See the block \"Contact us\" for a simple list. Separate questions and answer with a \"=\". Questions may be translated."
+msgstr "Voir le bloc \"Contact us\" pour une simple liste. Séparer les questions et les réponses avec un signe \"=\". Les questions peuvent être traduites."
 
 #: src/Form/SiteSettingsFieldset.php:301 src/Form/ContactUsFieldset.php:142
 #: src/Form/NewsletterFieldset.php:116
@@ -828,14 +720,8 @@ msgid "Include resources in response"
 msgstr "Inclure les ressources dans la réponse"
 
 #: src/Form/SiteSettingsFieldset.php:380
-msgid ""
-"Some themes may require resources to be included in response when selecting "
-"a resource. This option avoids an api request via js on public side, but "
-"slow response."
-msgstr ""
-"Certains thèmes ont besoin des notices complètes dans la réponse lorsqu’une "
-"ressource est mis dans le panier. Cette option évite une requête api via js "
-"dans le thème, mais ralentit la réponse."
+msgid "Some themes may require resources to be included in response when selecting a resource. This option avoids an api request via js on public side, but slow response."
+msgstr "Certains thèmes ont besoin des notices complètes dans la réponse lorsqu’une ressource est mis dans le panier. Cette option évite une requête api via js dans le thème, mais ralentit la réponse."
 
 #: src/Form/SiteSettingsFieldset.php:391
 msgid "Include matching resource ids from module Selection in response"
@@ -843,59 +729,27 @@ msgstr "Inclure les ids des ressources du module Sélection dans la réponse"
 
 #: src/Form/SettingsFieldset.php:35
 msgid "For richer anti-spam protection, install the module SpamGuard."
-msgstr ""
-"Pour bénéficier d'une protection anti-spam plus efficace, installer le "
-"module SpamGuard."
+msgstr "Pour bénéficier d'une protection anti-spam plus efficace, installer le module SpamGuard."
 
 #: src/Form/SettingsFieldset.php:49
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. This setting may be overridden by site or block "
-"settings."
-msgstr ""
-"Un structure YAML, un champ par nom : une valeur scalaire correspond à "
-"l'étiquette (par ex. « phone : Téléphone »), une valeur nulle conserve le "
-"champ par défaut (par ex. « name : »), un objet accepte les clés « label », "
-"« type » (text, textarea, email, tel, number, url, date, select, radio, "
-"checkbox, multicheckbox), required, values (les choix d’un select/radio/"
-"multicheckbox), options (autres options des éléments Laminas telles que "
-"empty_option ou info) et attributes (placeholder, class…). Indiquez le nom "
-"d’un champ par défaut (name, from, subject, message) pour le déplacer ou le "
-"renommer ; les champs par défaut non mentionnés sont ajoutés à la fin. Les "
-"éléments peuvent être adaptés via le thème. Ce paramètre peut être remplacé "
-"par les paramètres du site ou du bloc."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. This setting may be overridden by site or block settings."
+msgstr "Un structure YAML, un champ par nom : une valeur scalaire correspond à l'étiquette (par ex. « phone : Téléphone »), une valeur nulle conserve le champ par défaut (par ex. « name : »), un objet accepte les clés « label », « type » (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (les choix d’un select/radio/multicheckbox), options (autres options des éléments Laminas telles que empty_option ou info) et attributes (placeholder, class…). Indiquez le nom d’un champ par défaut (name, from, subject, message) pour le déplacer ou le renommer ; les champs par défaut non mentionnés sont ajoutés à la fin. Les éléments peuvent être adaptés via le thème. Ce paramètre peut être remplacé par les paramètres du site ou du bloc."
 
 #: src/Form/SettingsFieldset.php:109
 msgid "Reply-to address when answering a contact"
 msgstr "Adresse de réponse (reply-to) lors d’une réponse à un contact"
 
 #: src/Form/SettingsFieldset.php:110
-msgid ""
-"Address set as reply-to when an admin answers a message. If empty, the reply-"
-"to is the email of the connected admin. The sender (from) remains the unique "
-"installation address."
-msgstr ""
-"Adresse définie comme reply-to quand un administrateur répond à un message. "
-"Si vide, le reply-to est l’email de l’administrateur connecté. L’expéditeur "
-"(from) reste l’adresse unique de l’installation."
+msgid "Address set as reply-to when an admin answers a message. If empty, the reply-to is the email of the connected admin. The sender (from) remains the unique installation address."
+msgstr "Adresse définie comme reply-to quand un administrateur répond à un message. Si vide, le reply-to est l’email de l’administrateur connecté. L’expéditeur (from) reste l’adresse unique de l’installation."
 
 #: src/Form/SettingsFieldset.php:122
 msgid "Default subject when answering a contact"
 msgstr "Sujet par défaut lors d’une réponse à un contact"
 
 #: src/Form/SettingsFieldset.php:123 src/Form/SettingsFieldset.php:136
-msgid ""
-"Placeholders: {name}, {email}, {subject}, {message}, {main_title}, "
-"{main_url}."
-msgstr ""
-"Jokers : {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
+msgid "Placeholders: {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
+msgstr "Jokers : {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
 
 #: src/Form/SettingsFieldset.php:135
 msgid "Default message when answering a contact"
@@ -926,20 +780,12 @@ msgid "Send email to author only, not admins (hidden)"
 msgstr "Envoyer le mail à l’auteur seulement, pas aux administrateurs."
 
 #: src/Form/SettingsFieldset.php:183
-msgid ""
-"Use the user email to send message to author (warning: many email providers "
-"reject them as spam)"
-msgstr ""
-"Utiliser le mail utilisateur pour envoyer le message à l’auteur (attention : "
-"de nombreux fournisseurs de mails les rejettent comme spam)"
+msgid "Use the user email to send message to author (warning: many email providers reject them as spam)"
+msgstr "Utiliser le mail utilisateur pour envoyer le message à l’auteur (attention : de nombreux fournisseurs de mails les rejettent comme spam)"
 
 #: src/Form/SettingsFieldset.php:184
-msgid ""
-"This option is not recommended, unless you have a good smtp server. If not "
-"set, the user email will be set as reply-to."
-msgstr ""
-"Cette option n’est pas recommandée, sauf si vous avez serveur de mail bien "
-"configuré. Sinon, le mail de l’utilisateur sera mis en « répondre à »."
+msgid "This option is not recommended, unless you have a good smtp server. If not set, the user email will be set as reply-to."
+msgstr "Cette option n’est pas recommandée, sauf si vous avez serveur de mail bien configuré. Sinon, le mail de l’utilisateur sera mis en « répondre à »."
 
 #: src/Form/SettingsFieldset.php:196
 msgid "Zipped files to send"
@@ -958,35 +804,44 @@ msgid "Include private resources and files in the zip"
 msgstr "Inclure les ressources et les fichiers privés dans le zip"
 
 #: src/Form/SettingsFieldset.php:216
-msgid ""
-"The download link is authorized by a single-use token, so it is opened "
-"without checking the visitor rights. By default only publicly visible "
-"resources and media are included. Check to also include the private ones "
-"(private resources and private media of public resources)."
-msgstr ""
-"Le lien de téléchargement est authentifié par un jeton à usage unique ; il "
-"s'ouvre donc sans vérification des droits du visiteur. Par défaut, seules "
-"les ressources et les médias accessibles au public sont inclus. Cochez cette "
-"case pour inclure également les éléments privés (ressources privées et "
-"médias privés associés à des ressources publiques)."
+msgid "The download link is authorized by a single-use token, so it is opened without checking the visitor rights. By default only publicly visible resources and media are included. Check to also include the private ones (private resources and private media of public resources)."
+msgstr "Le lien de téléchargement est authentifié par un jeton à usage unique ; il s'ouvre donc sans vérification des droits du visiteur. Par défaut, seules les ressources et les médias accessibles au public sont inclus. Cochez cette case pour inclure également les éléments privés (ressources privées et médias privés associés à des ressources publiques)."
 
 #: src/Form/SettingsFieldset.php:228
 msgid "Skip the client-side proof-of-work"
 msgstr "Ignorer la preuve de travail navigateur"
 
 #: src/Form/SettingsFieldset.php:229
-msgid ""
-"By default, the browser must compute a small SHA-256 hashcash challenge "
-"before the form can be submitted. This blocks bots that do not run "
-"JavaScript. Invisible for real users (about one second). Check to disable."
-msgstr ""
-"Par défaut, le navigateur doit calculer une somme sha-256 avant de soumettre "
-"le formulaire. Cela bloque les robots qui n’utilise pas javascript et est "
-"invisible pour les utilisateurs (une seconde). Cocher pour désactiver."
+msgid "By default, the browser must compute a small SHA-256 hashcash challenge before the form can be submitted. This blocks bots that do not run JavaScript. Invisible for real users (about one second). Check to disable."
+msgstr "Par défaut, le navigateur doit calculer une somme sha-256 avant de soumettre le formulaire. Cela bloque les robots qui n’utilise pas javascript et est invisible pour les utilisateurs (une seconde). Cocher pour désactiver."
 
 #: src/Form/SettingsFieldset.php:241
 msgid "Check mx records of the email domain"
 msgstr "Vérifier les valeurs mx du domaine mail"
+
+#: src/Form/SettingsFieldset.php:253
+msgid "Tell the visitor when his message may be a false positive"
+msgstr "Indiquez au visiteur dans quels cas son message pourrait être un faux positif"
+
+#: src/Form/SettingsFieldset.php:254
+msgid "By default, a spam is classified silently and the visitor is thanked as usual, so a bot does not learn that it was caught. When checked, a message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) shows that it was not transmitted, without the reason, and invites to retry. Warning: a bot learns then that it failed, and these checks are mainly on timing, so it may adapt by posting more slowly."
+msgstr "Par défaut, un spam est classé silencieusement et le visiteur reçoit un message de remerciement comme d'habitude ; ainsi, le bot ne se rend pas compte qu'il a été détecté. Si cochée, un message marqué comme spam uniquement par une vérification qui peut être erronée (vitesse trop élevée, preuve de travail, réputation de l'adresse IP…) indique qu'il n'a pas été transmis, sans préciser la raison, et invite à réessayer. Attention : un bot apprend alors qu’il a échoué, et comme ces vérifications portent principalement sur le délai, il peut s’adapter en publiant plus lentement."
+
+#: src/Form/SettingsFieldset.php:266
+msgid "Email to suggest to a visitor whose message may be a false positive"
+msgstr "Mail destiné à signaler à un visiteur que son message pourrait être un faux positif"
+
+#: src/Form/SettingsFieldset.php:267
+msgid "Used only when the visitor is told that his message was not transmitted."
+msgstr "À n'utiliser que lorsque le visiteur est informé que son message n'a pas été transmis."
+
+#: src/Form/SettingsFieldset.php:279
+msgid "Notify the admins of the messages that may be false positives"
+msgstr "Signaler aux administrateurs les messages susceptibles d'être des faux positifs"
+
+#: src/Form/SettingsFieldset.php:280
+msgid "A message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) remains marked as spam, but the admins receive it, with \"[Possible spam]\" and the reasons, and the visitor is thanked as usual, so a bot learns nothing. It is never sent to the author of a resource nor confirmed to the visitor. The spams detected by a reliable check are never sent."
+msgstr "Un message marqué spam uniquement à la suite d'une vérification susceptible d'être erronée (trop rapide, preuve de travail, réputation de l'ip…) reste marqué comme spam, mais les administrateurs le reçoivent, accompagné de la mention « [Spam possible] » et des motifs, et le visiteur est remercié comme d'habitude ; ainsi, un bot n'en tire aucun enseignement. Il n’est jamais envoyé à l’auteur d’une ressource ni confirmé au visiteur. Les spams détectés par un contrôle fiable ne sont jamais envoyés."
 
 #: src/Form/QuickSearchForm.php:48
 msgid "IP"
@@ -997,27 +852,111 @@ msgid "Spam"
 msgstr "Spam"
 
 #: src/Form/QuickSearchForm.php:78
+msgid "Reason of the spam status"
+msgstr "Motif du statut spam"
+
+#: src/Form/QuickSearchForm.php:79
+msgid "This filter replaces the filter \"Spam\"."
+msgstr "Ce filtre remplace le filtre \"Spam\"."
+
+#: src/Form/QuickSearchForm.php:81
+msgid "Any"
+msgstr "Tous"
+
+#: src/Form/QuickSearchForm.php:82
+msgid "Possible false positives (checks that may be wrong)"
+msgstr "Faux positifs possibles (vérifications pouvant être erronées)"
+
+#: src/Form/QuickSearchForm.php:83
+msgid "Reliable checks"
+msgstr "Contrôles fiables"
+
+#: src/Form/QuickSearchForm.php:84
+msgid "Manual decision of an admin"
+msgstr "Décision manuelle d'un administrateur"
+
+#: src/Form/QuickSearchForm.php:86
+msgid "Check"
+msgstr "Vérifier"
+
+#: src/Form/QuickSearchForm.php:88
+msgid "Banned ip"
+msgstr "Ip bannie"
+
+#: src/Form/QuickSearchForm.php:89
+msgid "Question"
+msgstr "Question"
+
+#: src/Form/QuickSearchForm.php:90
+msgid "Dnsbl"
+msgstr "Dnsbl"
+
+#: src/Form/QuickSearchForm.php:91
+msgid "Email without mx"
+msgstr "Mail sans enregistrement MX"
+
+#: src/Form/QuickSearchForm.php:92
+msgid "Honeypot"
+msgstr "Piège à miel"
+
+#: src/Form/QuickSearchForm.php:93
+msgid "Reputation of the ip"
+msgstr "Réputation de l'ip"
+
+#: src/Form/QuickSearchForm.php:94
+msgid "Keyword"
+msgstr "Mot-clé"
+
+#: src/Form/QuickSearchForm.php:95
+msgid "Link to an abused domain"
+msgstr "Lien vers un domaine utilisé à des fins abusives"
+
+#: src/Form/QuickSearchForm.php:96
+msgid "Proof-of-work"
+msgstr "Preuve de travail"
+
+#: src/Form/QuickSearchForm.php:97
+msgid "Rate limit"
+msgstr "Limite du taux"
+
+#: src/Form/QuickSearchForm.php:98
+msgid "Too fast"
+msgstr "Trop rapide"
+
+#: src/Form/QuickSearchForm.php:99
+msgid "Too slow"
+msgstr "Trop lent"
+
+#: src/Form/QuickSearchForm.php:100
+msgid "Url"
+msgstr "Url"
+
+#: src/Form/QuickSearchForm.php:101
+msgid "Too many urls"
+msgstr "Trop d'urls"
+
+#: src/Form/QuickSearchForm.php:114
 msgid "Read"
 msgstr "Lu"
 
-#: src/Form/QuickSearchForm.php:97
+#: src/Form/QuickSearchForm.php:133
 msgid "Has file"
 msgstr "A un fichier"
 
-#: src/Form/QuickSearchForm.php:116
+#: src/Form/QuickSearchForm.php:152
 msgid "Has resource"
 msgstr "A une ressource"
 
-#: src/Form/QuickSearchForm.php:154
+#: src/Form/QuickSearchForm.php:190
 msgid "To author"
 msgstr "À l’auteur"
 
-#: src/Form/ContactUsForm.php:137
+#: src/Form/ContactUsForm.php:145
 msgid "Attach a file"
 msgstr "Joindre un fichier"
 
-#: src/Form/ContactUsForm.php:243 src/Form/SendMessageForm.php:62
-#: src/Form/NewsletterForm.php:189
+#: src/Form/ContactUsForm.php:262 src/Form/SendMessageForm.php:62
+#: src/Form/NewsletterForm.php:208
 msgid "Send message"
 msgstr "Envoyer le message"
 
@@ -1034,29 +973,8 @@ msgid "Label for the newsletter"
 msgstr "Libellé pour l’infolettre"
 
 #: src/Form/ContactUsFieldset.php:114
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. If empty, the site settings or the main settings "
-"will be used."
-msgstr ""
-"Une structure yaml, un champ par nom : une valeur scalaire correspond à "
-"l'étiquette (par exemple « phone : Téléphone »), une valeur nulle conserve "
-"le champ par défaut (par exemple « name : »), un objet accepte les clés "
-"« label », « type » (text, textarea, email, tel, number, url, date, select, "
-"radio, checkbox, multicheckbox), required, values (les choix d’un select/"
-"radio/multicheckbox), options (autres options des éléments Laminas comme "
-"empty_option ou info) et attributes (placeholder, class…). Indiquez le nom "
-"d’un champ par défaut (name, from, subject, message) pour le déplacer ou le "
-"renommer ; les champs par défaut non répertoriés sont ajoutés à la fin. Les "
-"éléments peuvent être adaptés via le thème. S’ils sont vides, les paramètres "
-"du site ou les paramètres généraux seront utilisés."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. If empty, the site settings or the main settings will be used."
+msgstr "Une structure yaml, un champ par nom : une valeur scalaire correspond à l'étiquette (par exemple « phone : Téléphone »), une valeur nulle conserve le champ par défaut (par exemple « name : »), un objet accepte les clés « label », « type » (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (les choix d’un select/radio/multicheckbox), options (autres options des éléments Laminas comme empty_option ou info) et attributes (placeholder, class…). Indiquez le nom d’un champ par défaut (name, from, subject, message) pour le déplacer ou le renommer ; les champs par défaut non répertoriés sont ajoutés à la fin. Les éléments peuvent être adaptés via le thème. S’ils sont vides, les paramètres du site ou les paramètres généraux seront utilisés."
 
 #: src/Form/ContactUsFieldset.php:153 src/Form/NewsletterFieldset.php:127
 msgid "Enable Google Recaptcha antispam for visitors"
@@ -1087,57 +1005,64 @@ msgid "Label for the unsubscribe checkbox"
 msgstr "Libellé pour la case à cocher du désabonnement"
 
 #: src/Form/NewsletterFieldset.php:111
-msgid ""
-"See the block \"Newsletter\" for a simple list. Separate questions and "
-"answer with a \"=\". Questions may be translated."
-msgstr ""
-"Voir le bloc « Contactez-nous » pour une simple liste. Séparer les questions "
-"et les réponses avec un signe « = ». Les questions peuvent être traduites."
+msgid "See the block \"Newsletter\" for a simple list. Separate questions and answer with a \"=\". Questions may be translated."
+msgstr "Voir le bloc « Contactez-nous » pour une simple liste. Séparer les questions et les réponses avec un signe « = ». Les questions peuvent être traduites."
 
-#: src/Api/Adapter/MessageAdapter.php:426
+#: src/Api/Adapter/MessageAdapter.php:502
 msgid "Error loading or saving base64 file."
 msgstr "Erreur lors du chargement ou de la sauvegarde d’un fichier en base64."
 
-#: src/Api/Adapter/MessageAdapter.php:455
+#: src/Api/Adapter/MessageAdapter.php:531
 msgid "The body cannot be empty."
 msgstr "Le corps ne peut pas être vide."
 
-#: src/Api/Adapter/MessageAdapter.php:465
+#: src/Api/Adapter/MessageAdapter.php:541
 msgid "The ip cannot be empty."
 msgstr "L’ip ne peut pas être vide."
 
-#: src/Controller/Admin/ContactMessageController.php:158
+#: src/Controller/Admin/ContactMessageController.php:71
+#: src/Controller/Admin/ContactMessageController.php:80
+msgid "Confirm resend"
+msgstr "Confirmer le renvoi"
+
+#: src/Controller/Admin/ContactMessageController.php:189
 msgid "Message successfully sent to {email}."
 msgstr "Message envoyé avec succès à {email}."
 
-#: src/Controller/Admin/ContactMessageController.php:220
+#: src/Controller/Admin/ContactMessageController.php:251
 msgid "Contact message successfully deleted."
 msgstr "Le message de contact a été supprimé avec succès."
 
-#: src/Controller/Admin/ContactMessageController.php:254
+#: src/Controller/Admin/ContactMessageController.php:285
 msgid "You must select at least one contact message to batch delete."
 msgstr "Vous devez sélectionner au moins un message de contact à supprimer."
 
-#: src/Controller/Admin/ContactMessageController.php:263
+#: src/Controller/Admin/ContactMessageController.php:294
 msgid "Contact messages successfully deleted."
 msgstr "Les messages de contact ont été supprimés avec succès."
 
-#: src/Controller/Admin/ContactMessageController.php:273
+#: src/Controller/Admin/ContactMessageController.php:304
 msgid "Delete of all contact messages is not supported currently."
-msgstr ""
-"La suppression de tous les messages de contact n’est pas supportée "
-"actuellement."
+msgstr "La suppression de tous les messages de contact n’est pas supportée actuellement."
 
-#: src/Controller/Admin/ContactMessageController.php:306
+#: src/Controller/Admin/ContactMessageController.php:337
 msgid "No contact messages submitted."
 msgstr "Aucun message de contact envoyé."
 
-#: src/Controller/Admin/ContactMessageController.php:312
-#: src/Controller/Admin/ContactMessageController.php:371
+#: src/Controller/Admin/ContactMessageController.php:343
+#: src/Controller/Admin/ContactMessageController.php:479
 msgid "An internal error occurred."
 msgstr "Une erreur interne s'est produite."
 
-#: src/Controller/Admin/ContactMessageController.php:363
+#: src/Controller/Admin/ContactMessageController.php:398
+msgid "You must select at least one contact message to resend."
+msgstr "Vous devez sélectionner au moins un message à renvoyer."
+
+#: src/Controller/Admin/ContactMessageController.php:428
+msgid "Resending messages to the author in background ({link}job #{job_id}{link_end}, {link_log}logs{link_end})."
+msgstr "Renvoi des messages à l'auteur en arrière-plan ({link}tâche n° {job_id}{link_end}, {link_log}journaux{link_end})."
+
+#: src/Controller/Admin/ContactMessageController.php:471
 msgid "Unknown key."
 msgstr "Clé inconnue."
 
@@ -1194,119 +1119,110 @@ msgid "Contact Us: Form"
 msgstr "Contactez-nous : formulaire"
 
 #: src/Site/BlockLayout/ContactUs.php:45
-msgid ""
-"To create antispam, each question must be separated from the answer by a "
-"\"=\"."
-msgstr ""
-"Pour créer un anti-spam, chaque question doit être séparée de la réponse "
-"avec un signe \"=\"."
+msgid "To create antispam, each question must be separated from the answer by a \"=\"."
+msgstr "Pour créer un anti-spam, chaque question doit être séparée de la réponse avec un signe \"=\"."
 
 #: src/Site/BlockLayout/ContactUs.php:61
-msgid ""
-"Invalid fields: check the YAML syntax, the field names (ascii, no space), "
-"the types and, for select/radio/multicheckbox, the list of values."
-msgstr ""
-"Champs incorrects : vérifier la syntaxe yaml, les noms de champ (ascii sans "
-"espace), les types et, pour select/radio/multichecbox, la liste des valeurs."
+msgid "Invalid fields: check the YAML syntax, the field names (ascii, no space), the types and, for select/radio/multicheckbox, the list of values."
+msgstr "Champs incorrects : vérifier la syntaxe yaml, les noms de champ (ascii sans espace), les types et, pour select/radio/multichecbox, la liste des valeurs."
 
-#: src/Stdlib/ContactSubmission.php:480
-msgid ""
-"Links (URLs) are not allowed in messages. Please remove any link and "
-"resubmit."
-msgstr ""
-"Les liens (URLs) ne sont pas autorisés dans les messages. Merci de les "
-"supprimer et de soumettre à nouveau."
+#: src/Stdlib/ContactSubmission.php:509
+msgid "Links (URLs) are not allowed in messages. Please remove any link and resubmit."
+msgstr "Les liens (URLs) ne sont pas autorisés dans les messages. Merci de les supprimer et de soumettre à nouveau."
 
-#: src/Stdlib/ContactSubmission.php:513
+#: src/Stdlib/ContactSubmission.php:542
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Le désabonnement pour le mail {email} a été confirmé."
 
-#: src/Stdlib/ContactSubmission.php:518
+#: src/Stdlib/ContactSubmission.php:547
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Merci pour votre abonnement à l’infolettre, {name}."
 
-#: src/Stdlib/ContactSubmission.php:525
-msgid ""
-"Thank you for your message, {name}. It will be sent to the author as soon as "
-"possible."
-msgstr ""
-"Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
+#: src/Stdlib/ContactSubmission.php:554
+msgid "Thank you for your message, {name}. It will be sent to the author as soon as possible."
+msgstr "Merci pour votre message, {name}. Il sera envoyé à l’auteur dès que possible."
 
-#: src/Stdlib/ContactSubmission.php:530
-msgid ""
-"Thank you for your message, {name}. We will answer you as soon as possible."
-msgstr ""
-"Merci pour votre message, {name}. Nous vous répondrons dès que possible."
+#: src/Stdlib/ContactSubmission.php:559
+msgid "Thank you for your message, {name}. We will answer you as soon as possible."
+msgstr "Merci pour votre message, {name}. Nous vous répondrons dès que possible."
 
-#: src/Stdlib/ContactSubmission.php:562
+#: src/Stdlib/ContactSubmission.php:591
 msgid "Subscribe newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: src/Stdlib/ContactSubmission.php:689
+#: src/Stdlib/ContactSubmission.php:689 src/Stdlib/ContactSubmission.php:693
+#: src/Stdlib/ContactSubmission.php:723 src/Stdlib/MessageResender.php:53
+#: src/Stdlib/MessageResender.php:70
+msgid "message_id"
+msgstr "message_id"
+
+#: src/Stdlib/ContactSubmission.php:702
+msgid "The author of the message #{message_id} has no email: {error}"
+msgstr "L'auteur du message #{message_id} n'a pas d'adresse mail : {error}"
+
+#: src/Stdlib/ContactSubmission.php:795
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "À propos de la ressource %s (%s)."
 
-#: src/Stdlib/ContactSubmission.php:847
+#: src/Stdlib/ContactSubmission.php:964
 msgid "[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}"
 msgstr "[ContactUs] Spam détecté : raisons={reasons}; ip={ip}; mail={email}"
 
-#: src/Stdlib/ContactSubmission.php:897 src/Stdlib/ContactSubmission.php:974
-#: src/Stdlib/ContactSubmission.php:1299
+#: src/Stdlib/ContactSubmission.php:1017 src/Stdlib/ContactSubmission.php:1061
+#: src/Stdlib/ContactSubmission.php:1116 src/Stdlib/ContactSubmission.php:1492
 msgid "[Contact] {main_title}"
 msgstr "[Contact] {main_title}"
 
-#: src/Stdlib/ContactSubmission.php:906
+#: src/Stdlib/ContactSubmission.php:1026
 msgid "newsletter: {answer}"
 msgstr "infolettre : {answer}"
 
-#: src/Stdlib/ContactSubmission.php:938
-msgid ""
-"Thank you for your message {name}. Check your confirmation mail. The author "
-"will receive it soon."
-msgstr ""
-"Merci pour votre message {name}. Vérifiez le message de confirmation. "
-"L’auteur le recevra bientôt."
+#: src/Stdlib/ContactSubmission.php:1069
+msgid "This message was marked as spam by checks that may be wrong ({reasons}). It is stored as spam: change its status if it is a real message."
+msgstr "Ce message a été signalé comme spam suite à des contrôles qui pourraient être erronés ({reasons}). Il est classé comme spam : modifiez son statut si c'est un vrai message."
 
-#: src/Stdlib/ContactSubmission.php:965
+#: src/Stdlib/ContactSubmission.php:1080
+msgid "Thank you for your message {name}. Check your confirmation mail. The author will receive it soon."
+msgstr "Merci pour votre message {name}. Vérifiez le message de confirmation. L’auteur le recevra bientôt."
+
+#: src/Stdlib/ContactSubmission.php:1107
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message à l’auteur."
 
-#: src/Stdlib/ContactSubmission.php:989
-msgid ""
-"Sorry, the message is recorded, but we are not able to notify the admin at "
-"once. You may come back later if you don’t receive answer."
-msgstr ""
-"Désolé, le message est enregistré, mais il n’est pas possible d’en informer "
-"le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne "
-"recevez pas de réponse."
+#: src/Stdlib/ContactSubmission.php:1131
+msgid "Sorry, the message is recorded, but we are not able to notify the admin at once. You may come back later if you don’t receive answer."
+msgstr "Désolé, le message est enregistré, mais il n’est pas possible d’en informer le webmaster pour le moment. Vous pouvez revenir plus tard si vous ne recevez pas de réponse."
 
-#: src/Stdlib/ContactSubmission.php:1033
+#: src/Stdlib/ContactSubmission.php:1175
 msgid "Sorry, we are not able to send the confirmation email."
-msgstr ""
-"Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
+msgstr "Désolé, nous ne sommes pas en mesure d’envoyer le message de confirmation."
 
-#: src/Stdlib/ContactSubmission.php:1083
+#: src/Stdlib/ContactSubmission.php:1225
 msgid "You must select a resource to contact the author."
 msgstr "Vous devez choisir une ressource pour contacter l’auteur."
 
-#: src/Stdlib/ContactSubmission.php:1098 src/Stdlib/ContactSubmission.php:1124
-msgid ""
-"This resource has no author to contact. Contact administor for more "
-"information."
-msgstr ""
-"La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus "
-"d’informations."
+#: src/Stdlib/ContactSubmission.php:1240 src/Stdlib/ContactSubmission.php:1266
+msgid "This resource has no author to contact. Contact administor for more information."
+msgstr "La ressource ne dispose pas d’auteur. Contactez l’administrateur pour plus d’informations."
 
-#: src/Stdlib/ContactSubmission.php:1119
+#: src/Stdlib/ContactSubmission.php:1261
 msgid "Contact administor for more information."
 msgstr "Contacter l’administrateur pour plus d’information."
 
-#: src/Stdlib/ContactSubmission.php:1169
+#: src/Stdlib/ContactSubmission.php:1322
+msgid "Your message could not be transmitted automatically. You may retry in a few minutes or write directly to {email}."
+msgstr "Votre message n'a pas pu être envoyé automatiquement. Vous pouvez réessayer dans quelques minutes ou écrire directement à {email}."
+
+#: src/Stdlib/ContactSubmission.php:1326
+msgid "Your message could not be transmitted automatically. You may retry in a few minutes."
+msgstr "Votre message n'a pas pu être envoyé automatiquement. Vous pouvez réessayer dans quelques minutes."
+
+#: src/Stdlib/ContactSubmission.php:1362
 msgid "There is an error: {errors}"
 msgstr "Il y a une erreur : {errors}"
 
-#: src/Stdlib/ContactSubmission.php:1173
+#: src/Stdlib/ContactSubmission.php:1366
 msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
@@ -1348,7 +1264,7 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:267
+#: config/module.config.php:270
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1378,11 +1294,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:283
+#: config/module.config.php:286
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
-#: config/module.config.php:284
+#: config/module.config.php:287
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1426,11 +1342,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:306
+#: config/module.config.php:309
 msgid "Subscription to newsletter of {main_title}"
 msgstr "S’abonner à l’infolettre de {main_title}"
 
-#: config/module.config.php:307
+#: config/module.config.php:310
 msgid ""
 "Hi,\n"
 "\n"
@@ -1444,12 +1360,11 @@ msgstr ""
 "\n"
 "Bien cordialement,"
 
-#: config/module.config.php:315
+#: config/module.config.php:318
 msgid ""
 "Hi {user_name},\n"
 "\n"
-"The visitor {name} ({email} made the following request about a resource on "
-"{main_title}:\n"
+"The visitor {name} ({email} made the following request about a resource on {main_title}:\n"
 "\n"
 "Thanks to reply directly to the email above and do not use \"reply\".\n"
 "\n"
@@ -1466,11 +1381,9 @@ msgid ""
 msgstr ""
 "Bonjour {user_name},\n"
 "\n"
-"Le visiteur {name} ({email}) a formulé une demande à propos de la ressource "
-"{main_title} :\n"
+"Le visiteur {name} ({email}) a formulé une demande à propos de la ressource {main_title} :\n"
 "\n"
-"Merci de répondre directement au mail ci-dessus et de ne pas utiliser "
-"\"répondre\".\n"
+"Merci de répondre directement au mail ci-dessus et de ne pas utiliser \"répondre\".\n"
 "\n"
 "Bien cordialement,\n"
 "\n"
@@ -1483,72 +1396,60 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:333
-msgid ""
-"Thank you for your message. Check your confirmation email sent to {email}. "
-"We will answer you soon."
-msgstr ""
-"Merci pour votre message. Vérifiez le message de confirmation envoyé à "
-"{email}. Nous répondrons très bientôt."
-
-#: config/module.config.php:334
-msgid ""
-"Thank you for subscribing to our newsletter. Check the confirmation email "
-"sent to {email}."
-msgstr ""
-"Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
-"confirmation envoyé à {email}."
-
-#: config/module.config.php:335 config/module.config.php:382
-#: config/module.config.php:395
-msgid ""
-"I allow the site owner to store my name and my email to answer to this "
-"message."
-msgstr ""
-"J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour "
-"répondre à ce message."
-
 #: config/module.config.php:336
+msgid "Thank you for your message. Check your confirmation email sent to {email}. We will answer you soon."
+msgstr "Merci pour votre message. Vérifiez le message de confirmation envoyé à {email}. Nous répondrons très bientôt."
+
+#: config/module.config.php:337
+msgid "Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}."
+msgstr "Merci pour votre abonnement à notre infolettre. Vérifiez le message de confirmation envoyé à {email}."
+
+#: config/module.config.php:338 config/module.config.php:382
+#: config/module.config.php:395
+msgid "I allow the site owner to store my name and my email to answer to this message."
+msgstr "J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour répondre à ce message."
+
+#: config/module.config.php:339
 msgid "It is not possible to select more than {total} resources."
 msgstr "Il n’est pas possible de choisir plus de {total} ressources."
 
-#: config/module.config.php:340
+#: config/module.config.php:343
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:342
+#: config/module.config.php:345
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:344
+#: config/module.config.php:347
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:346
+#: config/module.config.php:349
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:348
+#: config/module.config.php:351
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:350
+#: config/module.config.php:353
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:352
+#: config/module.config.php:355
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:354
+#: config/module.config.php:357
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:356
+#: config/module.config.php:359
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:358
+#: config/module.config.php:361
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
@@ -1572,15 +1473,8 @@ msgstr "Se désabonner"
 #~ msgid "There is no resources or files."
 #~ msgstr "Il n’y a aucune ressource ou fichier."
 
-#~ msgid ""
-#~ "The base uri is not set (key [file_store][local][base_uri]) in the config "
-#~ "file of Omeka \"config/local.config.php\". It must be set for now (key "
-#~ "[file_store][local][base_uri]) in order to process background jobs."
-#~ msgstr ""
-#~ "L’uri de base n’est pas définie (clé [file_store][local][base_uri]) dans "
-#~ "le fichier de configuration Omeka « config/local.config.php ». Il doit "
-#~ "être indiqué pour l’instant (clé [file_store][local][base_uri]) de façon "
-#~ "à gérer les tâches en arrière-plan."
+#~ msgid "The base uri is not set (key [file_store][local][base_uri]) in the config file of Omeka \"config/local.config.php\". It must be set for now (key [file_store][local][base_uri]) in order to process background jobs."
+#~ msgstr "L’uri de base n’est pas définie (clé [file_store][local][base_uri]) dans le fichier de configuration Omeka « config/local.config.php ». Il doit être indiqué pour l’instant (clé [file_store][local][base_uri]) de façon à gérer les tâches en arrière-plan."
 
 #, php-format
 #~ msgid "[Contact] %s"
@@ -1627,12 +1521,10 @@ msgstr "Se désabonner"
 #~ msgstr "Aucun fichier attaché aux contenus choisis."
 
 #~ msgid "No derivative file of type {type} attached to selected items."
-#~ msgstr ""
-#~ "Aucun fichier dérivé du type {type} n’est attaché aux contenus choisis."
+#~ msgstr "Aucun fichier dérivé du type {type} n’est attaché aux contenus choisis."
 
 #~ msgid "Zip created successfully and available directly at {url}."
-#~ msgstr ""
-#~ "Le zip a été créé avec succès et est disponible directement à {url}."
+#~ msgstr "Le zip a été créé avec succès et est disponible directement à {url}."
 
 #~ msgid "Unable to create directory in \"/files/\"."
 #~ msgstr "Impossible de créer un dossier dans « /files »."
@@ -1644,35 +1536,16 @@ msgstr "Se désabonner"
 #~ msgstr "Une erreur est survenue pendant la création du zip : {error}."
 
 #~ msgid "An issue occurred and the zip file was not created: {error}."
-#~ msgstr ""
-#~ "Un problème est apparu et le fichier zip n’a pas été créé : {error}."
+#~ msgstr "Un problème est apparu et le fichier zip n’a pas été créé : {error}."
 
 #~ msgid "Specific fields to append to form"
 #~ msgstr "Autres champs à ajouter au formulaire"
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. If empty, the main settings will be used."
-#~ msgstr ""
-#~ "Indiquer le nom (ascii et sans espace) et le libellé séparés par un "
-#~ "« = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ "
-#~ "obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent "
-#~ "être adaptés via le thème. Si vide, les paramètres généraux seront "
-#~ "utilisés."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. If empty, the main settings will be used."
+#~ msgstr "Indiquer le nom (ascii et sans espace) et le libellé séparés par un « = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent être adaptés via le thème. Si vide, les paramètres généraux seront utilisés."
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. This setting may be overridden by site or block settings."
-#~ msgstr ""
-#~ "Indiquer le nom (ascii et sans espace) et le libellé séparés par un "
-#~ "« = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ "
-#~ "obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent "
-#~ "être adaptés via le thème. Cette option est ignorée si elle est définie "
-#~ "par le site ou le bloc."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. This setting may be overridden by site or block settings."
+#~ msgstr "Indiquer le nom (ascii et sans espace) et le libellé séparés par un « = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent être adaptés via le thème. Cette option est ignorée si elle est définie par le site ou le bloc."
 
 #~ msgid "Remove zip files after some days"
 #~ msgstr "Supprimer les fichiers zip après quelques jours"
@@ -1680,17 +1553,8 @@ msgstr "Se désabonner"
 #~ msgid "Other fields to append to form"
 #~ msgstr "Autres champs à ajouter au formulaire"
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. If empty, the site settings or the main settings will be used."
-#~ msgstr ""
-#~ "Indiquer le nom (ascii et sans espace) et le libellé séparés par un "
-#~ "« = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ "
-#~ "obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent "
-#~ "être adaptés via le thème. Si vide, les paramètres du site ou les "
-#~ "paramètres généraux seront utilisés."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. If empty, the site settings or the main settings will be used."
+#~ msgstr "Indiquer le nom (ascii et sans espace) et le libellé séparés par un « = », un par ligne. Préfixer le libellé avec « * » pour rendre le champ obligatoire (exemple : \"phone = * Téléphone\"). Les éléments peuvent être adaptés via le thème. Si vide, les paramètres du site ou les paramètres généraux seront utilisés."
 
 #~ msgid "success"
 #~ msgstr "succès"
@@ -1701,12 +1565,8 @@ msgstr "Se désabonner"
 #~ msgid "No zip found."
 #~ msgstr "Aucun zip trouvé."
 
-#~ msgid ""
-#~ "To append fields, each row must contain a name and a label separated by a "
-#~ "\"=\"."
-#~ msgstr ""
-#~ "Pour ajouter des champs, chaque ligne doit contenir un nom et un libellé "
-#~ "séparés par un « = »."
+#~ msgid "To append fields, each row must contain a name and a label separated by a \"=\"."
+#~ msgstr "Pour ajouter des champs, chaque ligne doit contenir un nom et un libellé séparés par un « = »."
 
 #~ msgid "Contact Us (old themes)"
 #~ msgstr "Contactez-nous (anciens thèmes)"
@@ -1714,49 +1574,30 @@ msgstr "Se désabonner"
 #~ msgid "DNSBL zones to check the client IP"
 #~ msgstr "Zones DNSBL pour vérifier l’ip client"
 
-#~ msgid ""
-#~ "One DNSBL zone per line (for example zen.spamhaus.org). If the client IP "
-#~ "is listed in any of them, the message is stored but treated as spam. "
-#~ "Leave empty to disable."
-#~ msgstr ""
-#~ "Une zone DNSBL par ligne (par exemple zen.spamhaus.org). Si l’ip du "
-#~ "client est listée, le message est enregistré et traité comme spam. "
-#~ "Laisser vide pour désactiver."
+#~ msgid "One DNSBL zone per line (for example zen.spamhaus.org). If the client IP is listed in any of them, the message is stored but treated as spam. Leave empty to disable."
+#~ msgstr "Une zone DNSBL par ligne (par exemple zen.spamhaus.org). Si l’ip du client est listée, le message est enregistré et traité comme spam. Laisser vide pour désactiver."
 
 #~ msgid "not-read"
 #~ msgstr "non lu"
 
-#~ msgid ""
-#~ "Append to resource page (deprecated, for themes without resource block)"
-#~ msgstr ""
-#~ "Ajouter à la page de ressource (obsolète, pour les thèmes sans bloc de "
-#~ "ressource)"
+#~ msgid "Append to resource page (deprecated, for themes without resource block)"
+#~ msgstr "Ajouter à la page de ressource (obsolète, pour les thèmes sans bloc de ressource)"
 
 #~ msgid "Append to items browse page"
 #~ msgstr "Ajouter à la page de la liste des items"
 
-#~ msgid ""
-#~ "Add a checkbox to select resources individually in lists (browse and "
-#~ "search)"
-#~ msgstr ""
-#~ "Ajouter une case à cocher pour choisir les ressources individuellement "
-#~ "dans les listes (parcourir et rechercher)"
+#~ msgid "Add a checkbox to select resources individually in lists (browse and search)"
+#~ msgstr "Ajouter une case à cocher pour choisir les ressources individuellement dans les listes (parcourir et rechercher)"
 
 #~ msgid "This option is used only with the module Advanced Search for now."
-#~ msgstr ""
-#~ "Cette option est utilisée seulement dans le module Advanced Search "
-#~ "actuellement."
+#~ msgstr "Cette option est utilisée seulement dans le module Advanced Search actuellement."
 
 #, php-format
 #~ msgid "Invalid navigation: link without label (%s)"
 #~ msgstr "Navigation invalide : lien sans libellé (%s)"
 
-#~ msgid ""
-#~ "The list of recipients to notify, one by row. The format \"name <email>\" "
-#~ "can be used."
-#~ msgstr ""
-#~ "La liste des destinataires par défaut, un par ligne. Le format « name "
-#~ "<email> » peut être utilisé."
+#~ msgid "The list of recipients to notify, one by row. The format \"name <email>\" can be used."
+#~ msgstr "La liste des destinataires par défaut, un par ligne. Le format « name <email> » peut être utilisé."
 
 #~ msgid "Contact Us: Some notification emails for module are invalid."
 #~ msgstr "Contact Us : Certains mails de notification ne sont pas valides."
@@ -1770,12 +1611,8 @@ msgstr "Se désabonner"
 #~ msgid "Default emails to notify"
 #~ msgstr "Emails à notifier par défaut"
 
-#~ msgid ""
-#~ "The default list of recipients to notify, one by row. First email is used "
-#~ "for confirmation."
-#~ msgstr ""
-#~ "La liste des destinataires par défaut, une par ligne. Le premier email "
-#~ "est utilisé pour le message de confirmation."
+#~ msgid "The default list of recipients to notify, one by row. First email is used for confirmation."
+#~ msgstr "La liste des destinataires par défaut, une par ligne. Le premier email est utilisé pour le message de confirmation."
 
 #~ msgid "placeholder"
 #~ msgstr "joker"
@@ -1811,30 +1648,14 @@ msgstr "Se désabonner"
 #~ msgid "Template to display"
 #~ msgstr "Gabarit à afficher"
 
-#~ msgid ""
-#~ "Templates are in folder \"common/block-layout\" of the theme and should "
-#~ "start with \"contact-us\"."
-#~ msgstr ""
-#~ "Les gabarits sont dans le dossier \"common/block-layout\" du thème et "
-#~ "doivent commencer avec \"contact-us\"."
+#~ msgid "Templates are in folder \"common/block-layout\" of the theme and should start with \"contact-us\"."
+#~ msgstr "Les gabarits sont dans le dossier \"common/block-layout\" du thème et doivent commencer avec \"contact-us\"."
 
-#~ msgid ""
-#~ "Templates are in folder \"common/block-layout\" of the theme and should "
-#~ "start with \"newsletter\"."
-#~ msgstr ""
-#~ "Les gabarits sont dans le dossier « common/block-layout » du thème et "
-#~ "doivent commencer avec « newsletter »."
+#~ msgid "Templates are in folder \"common/block-layout\" of the theme and should start with \"newsletter\"."
+#~ msgstr "Les gabarits sont dans le dossier « common/block-layout » du thème et doivent commencer avec « newsletter »."
 
-#~ msgid ""
-#~ "The zip is created when the message is set \"read\" and removed when set "
-#~ "\"unread\"."
-#~ msgstr ""
-#~ "Le zip est créé quand le message est défini à « lu » et supprimé quand il "
-#~ "est mis à « non lu »."
-
-#, php-format
-#~ msgid "This module requires the module \"%s\"."
-#~ msgstr "Ce module requiert le module \"%s\"."
+#~ msgid "The zip is created when the message is set \"read\" and removed when set \"unread\"."
+#~ msgstr "Le zip est créé quand le message est défini à « lu » et supprimé quand il est mis à « non lu »."
 
 #, php-format
 #~ msgid "This module requires modules \"%s\"."
@@ -1843,34 +1664,22 @@ msgstr "Se désabonner"
 #~ msgid "This module has resources that cannot be installed."
 #~ msgstr "Ce module a des ressources qui ne peuvent pas être installées."
 
-#~ msgid ""
-#~ "This module cannot install its tables, because they exist already. Try to "
-#~ "remove them first."
-#~ msgstr ""
-#~ "Ce module ne peut pas installer ses tables car elles existent déjà. "
-#~ "Essayez de les supprimer manuellement."
+#~ msgid "This module cannot install its tables, because they exist already. Try to remove them first."
+#~ msgstr "Ce module ne peut pas installer ses tables car elles existent déjà. Essayez de les supprimer manuellement."
 
 #, php-format
 #~ msgid "The module removed tables \"%s\" from a previous broken install."
-#~ msgstr ""
-#~ "Le module a supprimé les tables « %s » depuis une installation échouée."
+#~ msgstr "Le module a supprimé les tables « %s » depuis une installation échouée."
 
 #, php-format
-#~ msgid ""
-#~ "The module \"%s\" was automatically deactivated because the dependencies "
-#~ "are unavailable."
-#~ msgstr ""
-#~ "Le module \"%s\" a été automatiquement désactivé car ses dépendances ne "
-#~ "sont plus disponibles."
+#~ msgid "The module \"%s\" was automatically deactivated because the dependencies are unavailable."
+#~ msgstr "Le module \"%s\" a été automatiquement désactivé car ses dépendances ne sont plus disponibles."
 
 #~ msgid "The directory \"{path}\" is not writeable: {error}."
 #~ msgstr "Le dossier \"{path}\" n’est pas inscriptible : {error}."
 
-#~ msgid ""
-#~ "Separate questions and answer with a \"=\". Questions may be translated."
-#~ msgstr ""
-#~ "Séparer les questions et les réponses avec un signe \"=\". Les questions "
-#~ "peuvent être traduites."
+#~ msgid "Separate questions and answer with a \"=\". Questions may be translated."
+#~ msgstr "Séparer les questions et les réponses avec un signe \"=\". Les questions peuvent être traduites."
 
 #~ msgid "Heading for the block, if any."
 #~ msgstr "Entête du bloc."
@@ -1894,15 +1703,10 @@ msgstr "Se désabonner"
 #~ msgstr "Laisser vide pour utiliser le paramètre par défaut"
 
 #~ msgid "Check emails for notifications or remove them to use default ones."
-#~ msgstr ""
-#~ "Vérifiez les emails destinés aux notifications, ou supprimez les pour "
-#~ "utiliser les adresses par défaut."
+#~ msgstr "Vérifiez les emails destinés aux notifications, ou supprimez les pour utiliser les adresses par défaut."
 
-#~ msgid ""
-#~ "Sorry, we are not able to send email to notify the admin. Come back later."
-#~ msgstr ""
-#~ "Désolé, nous ne pouvons pas envoyer un mail pour informer "
-#~ "l’administrateur. Merci de revenir ultérieurement."
+#~ msgid "Sorry, we are not able to send email to notify the admin. Come back later."
+#~ msgstr "Désolé, nous ne pouvons pas envoyer un mail pour informer l’administrateur. Merci de revenir ultérieurement."
 
 #~ msgid "Text to use to explain the aim of the form."
 #~ msgstr "Texte à utiliser pour expliquer le but du formulaire."
