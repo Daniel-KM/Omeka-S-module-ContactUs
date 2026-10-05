@@ -220,6 +220,34 @@ class ContactSubmissionTest extends TestCase
         $this->assertSame('[]', $out);
     }
 
+    public function testFillMessageFormatsFieldsWithLabels(): void
+    {
+        $out = $this->submission()->proxyFillMessage(
+            '{fields}',
+            ['fields' => [
+                'phone' => '0600',
+                'qui' => 'personne',
+                'couleurs' => ['bleu', 'rouge'],
+                'description' => "Line 1\nLine 2",
+                'empty' => '',
+                'id' => [3],
+            ]],
+            [
+                'phone' => '* Phone',
+                'qui' => ['type' => 'radio', 'options' => ['label' => 'Who?', 'value_options' => ['personne' => 'A person']]],
+                'couleurs' => ['label' => 'Colors', 'value_options' => [['value' => 'bleu', 'label' => 'Blue']]],
+                'description' => ['options' => ['label' => 'Description']],
+                'empty' => 'Empty',
+                'id' => [],
+            ],
+            $this->createMock(\Omeka\Api\Representation\SiteRepresentation::class)
+        );
+        $this->assertSame(
+            "* Phone : 0600\n* Who? : A person\n* Colors :\n    * Blue\n    * rouge\n* Description :\nLine 1\nLine 2",
+            $out
+        );
+    }
+
     public function testFillMessageResourcesComeFromStoredMessage(): void
     {
         // The form of a resource page has no field "id": the resource is the

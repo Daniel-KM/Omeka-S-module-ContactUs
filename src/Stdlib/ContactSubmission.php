@@ -1019,7 +1019,8 @@ class ContactSubmission
             ))->translate();
         $submitted['message'] = $contactMessage->body();
         $submitted['ip'] = $contactMessage->ip();
-        $submitted['zip_url'] = $contactMessage->zipUrl();
+        // The zip contains the files of the resources.
+        $submitted['zip_url'] = $contactMessage->resourceIds() ? $contactMessage->zipUrl() : '';
         // The custom fields are flat in the form, so get them from the message.
         $submitted['fields'] = $contactMessage->fields() ?? [];
 
@@ -1386,25 +1387,34 @@ class ContactSubmission
         $placeholders['email'] ??= $placeholders['from'] ?? null;
         $placeholders['zip_url'] ??= '';
 
-        // {fields}: formatted list of the submitted custom fields.
+        // {fields}: formatted list of the submitted custom fields, with the
+        // labels of the fields and of the values.
         if ($fields && strpos($message, '{fields}') !== false) {
+            $labels = ContactUsForm::fieldLabels($this->options['fields'] ?? []);
             $fieldsArray = [];
             foreach ($fields as $field => $value) {
                 if ($value === '' || $value === null || $value === [] || $field === 'id') {
                     continue;
                 }
-                if (is_array($value)) {
+                $label = ($labels[$field]['label'] ?? '') ?: $field;
+                $valueLabels = $labels[$field]['values'] ?? [];
+                if (is_array($value) && array_filter($value, 'is_array')) {
                     // TODO Recursive multiple value for sub-fieldset with multiple values? The use case will be very rare.
-                    if (is_array(reset($value))) {
-                        $fieldsArray[] = "* $field :\n" . json_encode($value, 2496);
-                    } else {
-                        $fieldsArray[] = "* $field :\n    *" . implode("\n    *", $value);
+                    $fieldsArray[] = "* $label :\n" . json_encode($value, 2496);
+                } elseif (is_array($value)) {
+                    $list = [];
+                    foreach ($value as $val) {
+                        $list[] = '    * ' . ($valueLabels[(string) $val] ?? $val);
                     }
+                    $fieldsArray[] = "* $label :\n" . implode("\n", $list);
                 } else {
-                    $fieldsArray[] = "* $field :\n$value";
+                    $value = $valueLabels[(string) $value] ?? (string) $value;
+                    $fieldsArray[] = strpos($value, "\n") === false
+                        ? "* $label : $value"
+                        : "* $label :\n$value";
                 }
             }
-            $placeholders['fields'] = implode("\n\n", $fieldsArray);
+            $placeholders['fields'] = implode("\n", $fieldsArray);
         } else {
             $placeholders['fields'] = '';
         }
@@ -1433,6 +1443,9 @@ class ContactSubmission
         // the stored message (main resource and field "id"), else from the
         // "id" key of the submitted fields, not from a top-level "id".
         $context = [
+            // Remove the lines of the template without value, for example the
+            // resources when there is none.
+            'remove_empty_lines' => true,
             'site' => $this->currentSite(),
             'resource' => ($contactMessage ? $contactMessage->resource() : null)
                 ?? $this->currentOptions['resource']

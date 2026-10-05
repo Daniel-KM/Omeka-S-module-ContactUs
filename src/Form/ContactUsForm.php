@@ -344,6 +344,41 @@ class ContactUsForm extends Form
     }
 
     /**
+     * Get the labels of the fields and of their values, keyed by field name.
+     *
+     * @param array $fields Fields specifications keyed by name.
+     * @return array<string, array{label: string, values: array}>
+     */
+    public static function fieldLabels(array $fields): array
+    {
+        $result = [];
+        foreach ($fields as $name => $spec) {
+            $name = substr((string) $name, -2) === '[]' ? substr((string) $name, 0, -2) : (string) $name;
+            $label = is_array($spec)
+                ? (string) ($spec['label'] ?? $spec['options']['label'] ?? '')
+                : (string) $spec;
+            if (strpos($label, '* ') === 0) {
+                $label = substr($label, 2);
+            }
+            $values = [];
+            $valueOptions = is_array($spec)
+                ? ($spec['value_options'] ?? $spec['options']['value_options'] ?? [])
+                : [];
+            foreach ($valueOptions as $key => $valueOption) {
+                if (is_array($valueOption)) {
+                    if (isset($valueOption['value'])) {
+                        $values[(string) $valueOption['value']] = (string) ($valueOption['label'] ?? $valueOption['value']);
+                    }
+                } else {
+                    $values[(string) $key] = (string) $valueOption;
+                }
+            }
+            $result[$name] = ['label' => trim($label), 'values' => $values];
+        }
+        return $result;
+    }
+
+    /**
      * Split the fields definition into the core fields to reposition/relabel
      * and the custom fields to add, keeping the render order.
      *
