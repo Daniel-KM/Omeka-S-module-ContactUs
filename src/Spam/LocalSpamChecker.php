@@ -14,12 +14,12 @@ class LocalSpamChecker implements SpamCheckerInterface
 {
     /**
      * Reasons that are hints only, like in SpamGuard: they depend on timing, on
-     * the session or on the proof of work, so a false positive is plausible
-     * with one of them alone, and two are needed to make a spam.
+     * the session or on the dns, so a false positive is plausible with one of
+     * them alone, and two are needed to make a spam. The proof of work is not
+     * one of them: it is the only barrier against the bots without javascript.
      */
     const WEAK_REASONS = [
         'dnsMx',
-        'powChallenge',
         'rateLimit',
         'tooFast',
     ];
