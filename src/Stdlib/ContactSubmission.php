@@ -32,6 +32,11 @@ class ContactSubmission
      * Reasons of a spam reliable enough to be certain. With only other reasons,
      * the message may be a false positive.
      */
+    /**
+     * Hours after its creation during which a guest account is still checked.
+     */
+    const GUEST_TRUST_HOURS = 48;
+
     const RELIABLE_SPAM_REASONS = [
         'bannedIp',
         'dnsbl',
@@ -844,6 +849,19 @@ class ContactSubmission
     }
 
     /**
+     * A guest account created recently is not trusted yet: a bot may register
+     * one, so the checks on the content and on the ip still apply to it.
+     *
+     * @param \Omeka\Entity\User|null $user
+     */
+    protected function isRecentGuest($user): bool
+    {
+        return $user
+            && $user->getRole() === 'guest'
+            && $user->getCreated() >= new \DateTime('-' . self::GUEST_TRUST_HOURS . ' hours');
+    }
+
+    /**
      * Run the spam checks on a submission and return the outcome.
      *
      * Also consumes the single-use proof-of-work salt and stamps the rate-limit
@@ -889,7 +907,8 @@ class ContactSubmission
         // Resolve the spam checker (SpamGuard adapter when the module is
         // active, else the local fallback) and collect the matched reasons.
         // A single interface avoids the earlier double, conflicting run.
-        if (empty($user)) {
+        $isRecentGuest = $this->isRecentGuest($user);
+        if (empty($user) || $isRecentGuest) {
             $spamContext = [
                 'ip' => $currentIp,
                 'userAgent' => (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
@@ -910,6 +929,12 @@ class ContactSubmission
                 'minDelay' => (int) ($setting('spamguard_min_delay') ?? 1),
                 'rateLimitSeconds' => (int) ($setting('spamguard_rate_limit_seconds') ?? 10),
             ];
+            // The form of a logged-in user carries no trap, no load time and no
+            // proof of work, so only the checks on the content and on the ip
+            // apply to a recent guest.
+            if ($isRecentGuest) {
+                $spamContext = ['formLoadedAt' => 0, 'honeypot' => '', 'powSkip' => true, 'prevSubmitAt' => 0] + $spamContext;
+            }
             $spamChecker = $this->services
                 ? $this->services->get('ContactUs\SpamChecker')
                 : new \ContactUs\Spam\LocalSpamChecker();
