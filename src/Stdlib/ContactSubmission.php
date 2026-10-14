@@ -425,7 +425,7 @@ class ContactSubmission
         $this->checkAnswer = '';
 
         // Sometime, questions/answers are not converted into array in form.
-        // Fix https://gitlab.com/Daniel-KM/Omeka-S-module-CleanUrl/-/issues/10.
+        // Fix https://gitlab.com/Daniel-KM/Omeka-S-module-CleanUrl/-/work_items/10.
         // This is probably related to an old config that wasn't updated. So,
         // waiting the admin to check an issue in the page and to resave it.
         // TODO Remove this check and associated code during upgrade.

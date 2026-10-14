@@ -260,7 +260,7 @@ class SettingsFieldset extends Fieldset
             ])
             ->add([
                 'name' => 'contactus_spam_contact_email',
-                'type' => Element\Email::class,
+                'type' => CommonElement\OptionalEmail::class,
                 'options' => [
                     'element_group' => 'contact',
                     'label' => 'Email to suggest to a visitor whose message may be a false positive', // @translate
