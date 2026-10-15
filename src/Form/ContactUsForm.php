@@ -271,6 +271,29 @@ class ContactUsForm extends Form
             ->add([
                 'name' => 'from',
                 'required' => empty($this->user),
+                'validators' => [
+                    [
+                        'name' => Validator\StringLength::class,
+                        'options' => [
+                            'max' => 190,
+                        ],
+                    ],
+                ],
+            ])
+            ->add([
+                'name' => 'name',
+                'required' => false,
+                'filters' => [
+                    ['name' => Filter\StringTrim::class],
+                ],
+                'validators' => [
+                    [
+                        'name' => Validator\StringLength::class,
+                        'options' => [
+                            'max' => 190,
+                        ],
+                    ],
+                ],
             ])
             ->add([
                 'name' => 'message',
@@ -499,6 +522,7 @@ class ContactUsForm extends Form
             'attributes' => [
                 'id' => 'from',
                 'required' => true,
+                'maxlength' => 190,
                 'pattern' => '[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,}',
             ],
         ];
@@ -527,6 +551,7 @@ class ContactUsForm extends Form
                 'id' => 'name',
                 'value' => $this->user ? $this->user->getName() : null,
                 'required' => false,
+                'maxlength' => 190,
             ],
         ];
     }

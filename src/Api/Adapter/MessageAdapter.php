@@ -328,13 +328,15 @@ class MessageAdapter extends AbstractEntityAdapter
                 $entity->setEmail($owner->getEmail());
                 $entity->setName($owner->getName());
             } else {
-                $entity->setEmail(empty($data['o:email']) ? null : trim(strip_tags((string) $data['o:email'])));
-                $entity->setName(empty($data['o:name']) ? null : trim(strip_tags((string) $data['o:name'])));
+                // The api may be used without the form, so limit the length
+                // of the strings to the size of the columns.
+                $entity->setEmail(empty($data['o:email']) ? null : mb_substr(trim(strip_tags((string) $data['o:email'])), 0, 190));
+                $entity->setName(empty($data['o:name']) ? null : mb_substr(trim(strip_tags((string) $data['o:name'])), 0, 190));
             }
 
             $subject = $data['o-module-contact:subject'] ?? null;
             if ($subject = trim(strip_tags((string) $subject))) {
-                $entity->setSubject($subject);
+                $entity->setSubject(mb_substr($subject, 0, 190));
             }
 
             $body = $data['o-module-contact:body'] ?? null;
@@ -360,9 +362,9 @@ class MessageAdapter extends AbstractEntityAdapter
             $entity->setSite($site);
 
             // Security data are freshed.
-            $entity->setRequestUrl($this->getRequestUrl());
-            $entity->setIp($this->getClientIp());
-            $entity->setUserAgent($this->getUserAgent());
+            $entity->setRequestUrl(mb_substr($this->getRequestUrl(), 0, 1024));
+            $entity->setIp(mb_substr($this->getClientIp(), 0, 45));
+            $entity->setUserAgent($this->getUserAgent() === null ? null : mb_substr($this->getUserAgent(), 0, 1024));
 
             if ($this->shouldHydrate($request, 'o-module-contact:newsletter')) {
                 $entity->setNewsletter(isset($data['o-module-contact:newsletter'])
