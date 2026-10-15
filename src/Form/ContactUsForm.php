@@ -635,7 +635,12 @@ class ContactUsForm extends Form
                 ]);
             } else {
                 $multiFieldOptions = [
-                    'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                    // An empty label is skipped as a null one: the partial of
+                    // the core until Omeka S 4.1 passes an empty label to the
+                    // helper formLabel, that throws.
+                    'label' => (string) ($data['label'] ?? $data['options']['label'] ?? '') === ''
+                        ? null
+                        : ($data['label'] ?? $data['options']['label']),
                     'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
                 ] + $data['options'];
                 if ($isRequired) {
@@ -661,7 +666,12 @@ class ContactUsForm extends Form
                 : '';
             $fieldType = $data['type'] ?? Element\Text::class;
             $fieldOptions = [
-                'label' => $data['label'] ?? $data['options']['label'] ?? null,
+                // An empty label is skipped as a null one: the partial of the
+                // core until Omeka S 4.1 passes an empty label to the helper
+                // formLabel, that throws.
+                'label' => (string) ($data['label'] ?? $data['options']['label'] ?? '') === ''
+                    ? null
+                    : ($data['label'] ?? $data['options']['label']),
                 'value_options' => $data['value_options'] ?? $data['options']['value_options'] ?? [],
             ] + $data['options'];
             if ($isRequired) {
