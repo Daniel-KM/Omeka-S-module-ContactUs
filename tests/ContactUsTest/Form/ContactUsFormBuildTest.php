@@ -85,4 +85,28 @@ class ContactUsFormBuildTest extends AbstractHttpControllerTestCase
         $this->assertInstanceOf(Element\Select::class, $form->get('topic'));
         $this->assertFalse($form->has('fields'), 'The legacy "fields" fieldset must not exist anymore.');
     }
+
+    public function testCoreFieldsAreLimitedToColumnLength(): void
+    {
+        $form = $this->build([]);
+        $form->setData([
+            'from' => 'a@example.org',
+            'name' => str_repeat('n', 191),
+            'subject' => 'Subject',
+            'message' => 'Message',
+        ]);
+        $this->assertFalse($form->isValid());
+        $this->assertArrayHasKey('name', $form->getMessages());
+
+        $form = $this->build([]);
+        $form->setData([
+            'from' => str_repeat('a', 180) . '@example.org',
+            'name' => str_repeat('n', 190),
+            'subject' => 'Subject',
+            'message' => 'Message',
+        ]);
+        $this->assertFalse($form->isValid());
+        $this->assertArrayHasKey('from', $form->getMessages());
+        $this->assertArrayNotHasKey('name', $form->getMessages());
+    }
 }
