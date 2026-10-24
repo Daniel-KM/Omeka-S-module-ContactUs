@@ -263,7 +263,7 @@ msgstr "Titouroù"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:102
 msgid "Message to us"
-msgstr "Kelaouenn deomp"
+msgstr "Kemennadenn deomp"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:103
 #, php-format
@@ -303,7 +303,7 @@ msgstr "Diwallit : danvez a-berzh un implijer pedet"
 
 #: view/contact-us/admin/contact-message/show-details.phtml:144
 msgid "Newsletter"
-msgstr "Kelaouenn"
+msgstr "Lizher-kelaouiñ"
 
 #: view/contact-us/site/index/browse.phtml:72
 msgid "Selection for contact"
@@ -434,7 +434,7 @@ msgid ""
 "prepended to all blocks that had a filled heading. You may check pages for "
 "styles: {json}"
 msgstr ""
-"Tennet eo bet an dibab \"titl\" eus ar bloc'hoù Darempred ha Kelaouenn. Ur "
+"Tennet eo bet an dibab \"titl\" eus ar bloc'hoù Darempred ha Lizher-kelaouiñ. Ur "
 "bloc'h nevez \"Titl\" (ma'z eus ar modul Block Plus) pe \"Html\" a zo bet "
 "lakaet e penn an holl vloc'hoù o doa un titl leuniet. Gallout a rit gwiriañ "
 "ar pajennoù evit ar stiloù : {json}"
@@ -910,7 +910,7 @@ msgstr "Kemenadenn dre ziouer pa respontit d'ur c'hekont"
 
 #: src/Form/SettingsFieldset.php:150
 msgid "Property where email of the author is stored"
-msgstr "Perc'henniezh ma'z eo stoket postel an aozer"
+msgstr "Perzh ma'z eo stoket postel an aozer"
 
 #: src/Form/SettingsFieldset.php:151
 msgid "Allows visitors to contact authors via an email."
@@ -927,7 +927,7 @@ msgstr "Perc'henn ar vammenn"
 
 #: src/Form/SettingsFieldset.php:164
 msgid "Select a property…"
-msgstr "Diuzit ur perc'henniezh…"
+msgstr "Diuzit ur perzh…"
 
 #: src/Form/SettingsFieldset.php:172
 msgid "Send email to author only, not admins (hidden)"
@@ -1100,7 +1100,7 @@ msgid ""
 "See the block \"Newsletter\" for a simple list. Separate questions and "
 "answer with a \"=\". Questions may be translated."
 msgstr ""
-"Gwelet ar bloc'had \"Kelaouenn\" evit ur roll eeun. Dispartiañ ar goulennoù "
+"Gwelet ar bloc'had \"Lizher-kelaouiñ\" evit ur roll eeun. Dispartiañ ar goulennoù "
 "hag ar respontoù gant un \"=\". Gallout a ra ar goulennoù bezañ troet."
 
 #: src/Api/Adapter/MessageAdapter.php:426
@@ -1117,7 +1117,7 @@ msgstr "Ne c'hall ket an IP bezañ goullo."
 
 #: src/Controller/Admin/ContactMessageController.php:158
 msgid "Message successfully sent to {email}."
-msgstr "Kelaouenn kaset gant berzh da {email}."
+msgstr "Kemennadenn kaset gant berzh da {email}."
 
 #: src/Controller/Admin/ContactMessageController.php:220
 msgid "Contact message successfully deleted."
@@ -1271,7 +1271,7 @@ msgstr "[Darempred] {titl_pennañ}"
 
 #: src/Stdlib/ContactSubmission.php:906
 msgid "newsletter: {answer}"
-msgstr "kelaouenn: {answer}"
+msgstr "lizher-kelaouiñ: {answer}"
 
 #: src/Stdlib/ContactSubmission.php:938
 msgid ""
