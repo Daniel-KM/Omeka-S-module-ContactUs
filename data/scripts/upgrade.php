@@ -285,8 +285,8 @@ if (version_compare($oldVersion, '3.4.14', '<')) {
     $ids = $api->search('sites', [], ['initialize' => false, 'returnScalar' => 'id'])->getContent();
     foreach ($ids as $id) {
         $siteSettings->setTargetId($id);
-        $siteSettings->set('contactus_append_resource_show', $localConfig['contactus']['site_settings']['contactus_append_resource_show']);
-        $siteSettings->set('contactus_append_items_browse', $localConfig['contactus']['site_settings']['contactus_append_items_browse']);
+        $siteSettings->set('contactus_append_resource_show', $localConfig['contactus']['site_settings']['contactus_append_resource_show'] ?? []);
+        $siteSettings->set('contactus_append_items_browse', $localConfig['contactus']['site_settings']['contactus_append_items_browse'] ?? false);
     }
     $message = new PsrMessage(
         'Two new options allow to append the contact form to resource pages. They are disabled by default, so check them if you need them.' // @translate
