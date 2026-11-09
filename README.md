@@ -101,10 +101,12 @@ department:
   field required: `phone: "* Phone"`.
 * A null value keeps a default field in place: `name:`.
 * An object accepts the keys `label`, `type` (text, textarea, email, tel,
-  number, url, date, select, radio, checkbox, multicheckbox), `required`,
-  `values` (the choices of a select, radio or multicheckbox), `options` (other
-  Laminas element options, like `empty_option` or `info`) and `attributes`
-  (`placeholder`, `class`…).
+  number, url, date, select, radio, checkbox, multicheckbox, itemset, site,
+  resourcetemplate, resourceclass, property, and, with the matching module,
+  customvocab, thesaurus and table, that require the option `custom_vocab_id`,
+  `thesaurus` or `table`), `required`, `values` (the choices of a select, radio
+  or multicheckbox), `options` (other Laminas element options, like
+  `empty_option` or `info`) and `attributes` (`placeholder`, `class`…).
 
 The default fields are `name`, `from`, `subject` and `message`. List one of them
 to move or relabel it: the unlisted ones are appended at the end. The email and
@@ -131,6 +133,10 @@ settings. A simple list of questions and answers can be set in the block too.
 
 For a richer protection (dnsbl, banned ips, structured logging), install the
 module [SpamGuard]: it is used automatically as soon as it is active.
+
+The ip of the visitor, used for the rate limit and stored with the message, is
+provided by the module [Common]. Behind a reverse proxy, set the trusted proxies
+in the main settings, section Security, if they are not detected automatically.
 
 ### Static pages
 
@@ -326,7 +332,6 @@ the digital library of the city of [Saint-Quentin].
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
-[MIT]: http://opensource.org/licenses/MIT
 [Saint-Quentin]: https://www.saintquentinartethistoire.fr
 [GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
