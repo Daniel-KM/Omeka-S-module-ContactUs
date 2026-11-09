@@ -7,167 +7,185 @@
     #contact-messages .property {
         display: inherit;
     }
-    #resource-contact-messages .actions {
-        float: right;
-    }
-    #resource-contact-messages.empty,
-    #resource-contact-messages+.no-resources {
-        display:none;
-    }
-    #resource-contact-messages.empty+.no-resources {
-        display:block;
-        padding:0 24px;
-    }
-    #resource-contact-messages.empty+.no-resources::before {
-        content:""; /* far fa-envelope */
-    }
-    #resource-contact-messages tr.delete {
-        background-color:#fcc;
+    #resource-contact-messages {
+        & .actions {
+            float: right;
+        }
+        &.empty,
+        & +.no-resources {
+            display:none;
+        }
+        &.empty+.no-resources {
+            display:block;
+            padding:0 24px;
+        }
+        &.empty+.no-resources::before {
+            content:"";
+            /* far fa-envelope */;
+        }
+        & tr.delete {
+            background-color:#fcc;
+        }
     }
     .contact-messages .resource-details .contact-message-internal-id {
         font-size: 0.7em;
     }
 
-    .contact-message table .resource-name {
-        display: inline-block;
-        vertical-align: bottom;
-        margin-left: .5em;
-        opacity: .5;
-    }
-    .contact-message table .resource-link .resource-name {
-        margin-left: 0;
-        opacity: 1;
-    }
-
-    .contact-messages .contact-message-public {
-        font-style: italic;
-    }
-
-    .contact-messages .message-email + .o-icon-users {
-        margin-left: 6px;
+    .contact-message {
+        & table {
+            & .resource-name {
+                display: inline-block;
+                vertical-align: bottom;
+                margin-left: .5em;
+                opacity: .5;
+            }
+            & .resource-link .resource-name {
+                margin-left: 0;
+                opacity: 1;
+            }
+        }
     }
 
-    .contact-message .single.actions {
-        float: right;
-    }
-    .contact-message .single.actions a::before {
-        text-align: inherit;
-    }
-    .contact-message .o-icon-users,
-    .contact-message .no-action::before {
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        vertical-align: top;
-        border: 0;
-        box-shadow: none;
-        opacity: .5;
-        text-align: inherit;
-    }
-    .contact-message.meta-group .single.actions,
-    .contact-message.meta-group .no-action::before {
-        float: right;
+    .contact-messages {
+        & .contact-message-public {
+            font-style: italic;
+        }
+
+        & .message-email + .o-icon-users {
+            margin-left: 6px;
+        }
     }
 
-    .contact-message.meta-group span,
-    .contact-message .meta-group span {
-        display: inline;
-        hyphens: auto;
-        word-wrap: break-word;
-    }
+    .contact-message {
+        & .single.actions {
+            float: right;
+            & a::before {
+                text-align: inherit;
+            }
+        }
+        & .o-icon-users,
+        & .no-action::before {
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: top;
+            border: 0;
+            box-shadow: none;
+            opacity: .5;
+            text-align: inherit;
+        }
+        &.meta-group .single.actions,
+        &.meta-group .no-action::before {
+            float: right;
+        }
 
-    .contact-message.meta-group::before,
-    .contact-message .status-toggle::before,
-    .contact-message .resource-name::before {
-        display: inline-block;
-        font-family: "Font Awesome 5 Free";
-        padding-left: 3px;
-        padding-right: 3px;
-        width: 24px;
-    }
-    .contact-message .resource-name.resource::before {
-        content: "";
-    }
-    .contact-message .resource-name.no-resource::before {
-        content: "❌";
-    }
-    .contact-message .resource-name.item-set::before {
-        content: ""; /* item set */
-    }
-    .contact-message .resource-name.item::before {
-        content: ""; /* item */
-    }
-    .contact-message .resource-name.media::before {
-        content: ""; /* media */
-    }
-    .contact-message .o-icon-read::before {
-        color: #2A7D2A;
-        content: "\f01c"; /* fas fa-inbox (taken in charge, like Contribute) */
-    }
-    .contact-message .o-icon-not-read::before {
-        color: #A91919;
-        content: "\f059"; /* fas fa-question-circle (like Contribute) */
-    }
-    .contact-message .o-icon-spam::before {
-        color: #A91919;
-        content: ""; /* far fa-thumbs-down */
-    }
-    .contact-message .o-icon-not-spam::before {
-        color: #2A7D2A;
-        content: ""; /* far fa-thumbs-up */
-    }
-    .contact-message .o-icon-zip::before {
-        color: #2A7D2A;
-        content:""; /* far fa-file-archive */
-    }
-    .contact-message .o-icon-no-zip::before {
-        color: #A91919;
-        content:""; /* far fa-file-archive */
-    }
-    .contact-message .o-icon-undefined::before {
-        color: #A91919;
-        content: ""; /* fas fa-exclamation-circle */
-    }
-    .contact-message .o-icon-none::before {
-        color: #FFFFFF;
-        content: "";
-    }
+        &.meta-group span,
+        & .meta-group span {
+            display: inline;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
 
-    .contact-message .fa-spin {
-        color: #A0A0A0;
-        width: 32px;
-        margin-right: -8px;
+        &.meta-group::before,
+        & .status-toggle::before,
+        & .resource-name::before {
+            display: inline-block;
+            font-family: "Font Awesome 5 Free";
+            padding-left: 3px;
+            padding-right: 3px;
+            width: 24px;
+        }
+        & .resource-name.resource::before {
+            content: "";
+        }
+        & .resource-name.no-resource::before {
+            content: "❌";
+        }
+        & .resource-name.item-set::before {
+            content: "";
+            /* item set */;
+        }
+        & .resource-name.item::before {
+            content: "";
+            /* item */;
+        }
+        & .resource-name.media::before {
+            content: "";
+            /* media */;
+        }
+        & .o-icon-read::before {
+            color: #2A7D2A;
+            content: "\f01c"; /* fas fa-inbox (taken in charge, like Contribute) */
+        }
+        & .o-icon-not-read::before {
+            color: #A91919;
+            content: "\f059"; /* fas fa-question-circle (like Contribute) */
+        }
+        & .o-icon-spam::before {
+            color: #A91919;
+            content: ""; /* far fa-thumbs-down */
+        }
+        & .o-icon-not-spam::before {
+            color: #2A7D2A;
+            content: ""; /* far fa-thumbs-up */
+        }
+        & .o-icon-zip::before {
+            color: #2A7D2A;
+            content:""; /* far fa-file-archive */
+        }
+        & .o-icon-no-zip::before {
+            color: #A91919;
+            content:""; /* far fa-file-archive */
+        }
+        & .o-icon-undefined::before {
+            color: #A91919;
+            content: ""; /* fas fa-exclamation-circle */
+        }
+        & .o-icon-none::before {
+            color: #FFFFFF;
+            content: "";
+        }
+
+        & .fa-spin {
+            color: #A0A0A0;
+            width: 32px;
+            margin-right: -8px;
+        }
     }
 }
 
 @media screen and (max-width: 640px) {
-    fieldset.section>#resource-contact-messages.empty+.no-resources {
-        display:none;
-    }
-    fieldset.section.mobile-active>#resource-contact-messages.empty+.no-resources {
-        display:block;
-        margin-top:48px;
+    fieldset.section {
+        & >#resource-contact-messages.empty+.no-resources {
+            display:none;
+        }
+        &.mobile-active>#resource-contact-messages.empty+.no-resources {
+            display:block;
+            margin-top:48px;
+        }
     }
 
     /* Quick-filter sidebar layers above details/delete sidebars. */
-    .contact-messages .sidebar.search {
-        z-index: 4;
-    }
-    .contact-messages .sidebar.search .field-meta {
-        width: auto;
-        max-width: 100%;
-    }
-    .contact-messages .sidebar.search label,
-    .contact-messages .sidebar.search .label,
-    .contact-messages .sidebar.search .inputs {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 0 0 6px;
-        padding: 0;
-        position: inherit;
-    }
-    .contact-messages .sidebar.search label::after,
-    .contact-messages .sidebar.search .label::after {
-        position: inherit;
+    .contact-messages {
+        & .sidebar.search {
+            z-index: 4;
+            & .field-meta {
+                width: auto;
+                max-width: 100%;
+            }
+            & label,
+            & .label,
+            & .inputs {
+                width: 100%;
+                max-width: 100%;
+                margin: 0 0 0 6px;
+                padding: 0;
+                position: inherit;
+            }
+            & label::after,
+            & .label::after {
+                position: inherit;
+            }
+        }
     }
 }
