@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 00:00+0000\n"
-"PO-Revision-Date: 2026-10-05 00:00+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
+"PO-Revision-Date: 2026-11-09 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -729,7 +729,7 @@ msgid ""
 "relabel it; unlisted default fields are added at the end. The elements may "
 "be adapted via the theme. If empty, the main settings will be used."
 msgstr ""
-"Un structure yaml, un champ par nom : une valeur scalaire correspond à "
+"Une structure yaml, un champ par nom : une valeur scalaire correspond à "
 "l'étiquette (par exemple « phone : Téléphone »), une valeur nulle conserve "
 "le champ par défaut (par exemple « name : »), un objet accepte les clés "
 "label, type (text, textarea, email, tel, number, url, date, select, radio, "
@@ -839,7 +839,7 @@ msgstr ""
 msgid "Subject of the email to author"
 msgstr "Sujet du message à l’auteur"
 
-#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:317
+#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:320
 msgid "Message to the author"
 msgstr "Message à l’auteur"
 
@@ -977,7 +977,7 @@ msgid ""
 "be adapted via the theme. This setting may be overridden by site or block "
 "settings."
 msgstr ""
-"Un structure YAML, un champ par nom : une valeur scalaire correspond à "
+"Une structure YAML, un champ par nom : une valeur scalaire correspond à "
 "l'étiquette (par ex. « phone : Téléphone »), une valeur nulle conserve le "
 "champ par défaut (par ex. « name : »), un objet accepte les clés « label », "
 "« type » (text, textarea, email, tel, number, url, date, select, radio, "
@@ -1281,7 +1281,7 @@ msgstr "Joindre un fichier"
 msgid "Send message"
 msgstr "Envoyer le message"
 
-#: src/Form/ContactUsForm.php:334 src/Form/NewsletterForm.php:235
+#: src/Form/ContactUsForm.php:357 src/Form/NewsletterForm.php:235
 msgid "The answer to the question is incorrect."
 msgstr "La réponse à la question est incorrecte."
 
@@ -1358,19 +1358,19 @@ msgstr ""
 "Voir le bloc « Contactez-nous » pour une simple liste. Séparer les questions "
 "et les réponses avec un signe « = ». Les questions peuvent être traduites."
 
-#: src/Api/Adapter/MessageAdapter.php:502
+#: src/Api/Adapter/MessageAdapter.php:504
 msgid "Error loading or saving base64 file."
 msgstr "Erreur lors du chargement ou de la sauvegarde d’un fichier en base64."
 
-#: src/Api/Adapter/MessageAdapter.php:531
+#: src/Api/Adapter/MessageAdapter.php:533
 msgid "The body cannot be empty."
 msgstr "Le corps ne peut pas être vide."
 
-#: src/Api/Adapter/MessageAdapter.php:537
+#: src/Api/Adapter/MessageAdapter.php:539
 msgid "The request url is not valid."
 msgstr "La requête est incorrecte."
 
-#: src/Api/Adapter/MessageAdapter.php:541
+#: src/Api/Adapter/MessageAdapter.php:543
 msgid "The ip cannot be empty."
 msgstr "L’ip ne peut pas être vide."
 
@@ -1631,10 +1631,22 @@ msgid "There is an error."
 msgstr "Une erreur s’est produite."
 
 #: config/module.config.php:206
+msgid "Contact"
+msgstr "Contact"
+
+#: config/module.config.php:207
+msgid "Resend to the author, without any check of spam?"
+msgstr "Renvoyer à l’auteur, sans vérification anti-spam ?"
+
+#: config/module.config.php:208
+msgid "Resent to the author"
+msgstr "Renvoyé à l’auteur"
+
+#: config/module.config.php:209
 msgid "The contact message doesn’t exist."
 msgstr "Le message de contact n’existe pas."
 
-#: config/module.config.php:234
+#: config/module.config.php:237
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1668,7 +1680,7 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:270
+#: config/module.config.php:273
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1698,11 +1710,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:286
+#: config/module.config.php:289
 msgid "Confirmation contact"
 msgstr "Confirmation contact"
 
-#: config/module.config.php:287
+#: config/module.config.php:290
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1746,11 +1758,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:309
+#: config/module.config.php:312
 msgid "Subscription to newsletter of {main_title}"
 msgstr "S’abonner à l’infolettre de {main_title}"
 
-#: config/module.config.php:310
+#: config/module.config.php:313
 msgid ""
 "Hi,\n"
 "\n"
@@ -1764,7 +1776,7 @@ msgstr ""
 "\n"
 "Bien cordialement,"
 
-#: config/module.config.php:318
+#: config/module.config.php:321
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -1803,7 +1815,7 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:336
+#: config/module.config.php:339
 msgid ""
 "Thank you for your message. Check your confirmation email sent to {email}. "
 "We will answer you soon."
@@ -1811,7 +1823,7 @@ msgstr ""
 "Merci pour votre message. Vérifiez le message de confirmation envoyé à "
 "{email}. Nous répondrons très bientôt."
 
-#: config/module.config.php:337
+#: config/module.config.php:340
 msgid ""
 "Thank you for subscribing to our newsletter. Check the confirmation email "
 "sent to {email}."
@@ -1819,8 +1831,8 @@ msgstr ""
 "Merci pour votre abonnement à notre infolettre. Vérifiez le message de "
 "confirmation envoyé à {email}."
 
-#: config/module.config.php:338 config/module.config.php:382
-#: config/module.config.php:395
+#: config/module.config.php:341 config/module.config.php:385
+#: config/module.config.php:398
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
@@ -1828,55 +1840,55 @@ msgstr ""
 "J'autorise le propriétaire du site à enregistrer mon nom et mon mail pour "
 "répondre à ce message."
 
-#: config/module.config.php:339
+#: config/module.config.php:342
 msgid "It is not possible to select more than {total} resources."
 msgstr "Il n’est pas possible de choisir plus de {total} ressources."
 
-#: config/module.config.php:343
+#: config/module.config.php:346
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Combien font zéro et 1 (en chiffres) ?"
 
-#: config/module.config.php:345
+#: config/module.config.php:348
 msgid "How many are one plus 1 (in number)?"
 msgstr "Combien font un et 1 (en chiffres) ?"
 
-#: config/module.config.php:347
+#: config/module.config.php:350
 msgid "How many are one plus 2 (in number)?"
 msgstr "Combien font un et 2 (en chiffres) ?"
 
-#: config/module.config.php:349
+#: config/module.config.php:352
 msgid "How many are one plus 3 (in number)?"
 msgstr "Combien font un et 3 (en chiffres) ?"
 
-#: config/module.config.php:351
+#: config/module.config.php:354
 msgid "How many are two plus 1 (in number)?"
 msgstr "Combien font deux et 1 (en chiffres) ?"
 
-#: config/module.config.php:353
+#: config/module.config.php:356
 msgid "How many are two plus 2 (in number)?"
 msgstr "Combien font deux et 2 (en chiffres) ?"
 
-#: config/module.config.php:355
+#: config/module.config.php:358
 msgid "How many are two plus 3 (in number)?"
 msgstr "Combien font deux et 3 (en chiffres) ?"
 
-#: config/module.config.php:357
+#: config/module.config.php:360
 msgid "How many are three plus 1 (in number)?"
 msgstr "Combien font trois et 1 (en chiffres) ?"
 
-#: config/module.config.php:359
+#: config/module.config.php:362
 msgid "How many are three plus 2 (in number)?"
 msgstr "Combien font trois et 2 (en chiffres) ?"
 
-#: config/module.config.php:361
+#: config/module.config.php:364
 msgid "How many are three plus 3 (in number)?"
 msgstr "Combien font trois et 3 (en chiffres) ?"
 
-#: config/module.config.php:384
+#: config/module.config.php:387
 msgid "Subscribe to the newsletter"
 msgstr "S’abonner à l’infolettre"
 
-#: config/module.config.php:397
+#: config/module.config.php:400
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
@@ -2083,9 +2095,6 @@ msgstr "Se désabonner"
 
 #~ msgid "The message has no content to send."
 #~ msgstr "Le message n’a pas de contenu à envoyer."
-
-#~ msgid "Contact"
-#~ msgstr "Contact"
 
 #~ msgid "Default emails to notify"
 #~ msgstr "Emails à notifier par défaut"

@@ -1,25 +1,24 @@
-#, fuzzy
 msgid ""
 msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fi_FI\n"
+"Language-Team: Finnish (Finland) (https://app.transifex.com/omeka/teams/14184/fi_FI/)\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"MIME-Version: 1.0\n"
+"PO-Revision-Date: 2026-11-09 00:00+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 00:00+0000\n"
-"PO-Revision-Date: 2026-10-05 00:00+0000\n"
-"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
-"Language-Team: Finnish (Finland) (https://app.transifex.com/omeka/teams/"
-"14184/fi_FI/)\n"
-"Language: fi_FI\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.6\n"
 
-#: data/scripts/upgrade.php:38 Module.php:131
+#: data/scripts/upgrade.php:39
+#: Module.php:131
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Lisäosa %1$s tulisi päivittää versioon %2$s tai uudempaan."
 
-#: data/scripts/upgrade.php:42
+#: data/scripts/upgrade.php:43
 msgid "Missing requirement. Unable to upgrade."
 msgstr "Vaatimus puuttuu. Päivitystä ei voida tehdä."
 
@@ -36,25 +35,25 @@ msgstr "VAROITUS:"
 msgid "Remove Contact Us files"
 msgstr "Poista Yhteydenotto-lisäosan tiedostot"
 
-#: Module.php:372
+#: Module.php:370
 #: view/common/resource-page-block-layout/contact-us-button.phtml:13
 #: view/common/resource-page-block-layout/contact-us.phtml:11
 msgid "Contact us"
 msgstr "Yhteydenotto"
 
-#: src/Controller/Admin/ContactMessageController.php:96
+#: src/Controller/Admin/ContactMessageController.php:129
 msgid "No email defined for this contact message."
 msgstr "Tälle yhteydenottoviestille ei ole määritetty sähköpostiosoitetta."
 
-#: src/Controller/Admin/ContactMessageController.php:111
+#: src/Controller/Admin/ContactMessageController.php:144
 msgid "Re: {subject}"
 msgstr "VS: {subject}"
 
-#: src/Controller/Admin/ContactMessageController.php:148
+#: src/Controller/Admin/ContactMessageController.php:181
 msgid "Sorry, the message cannot be sent. Contact the administrator."
 msgstr "Valitettavasti viestiä ei voida lähettää. Ota yhteyttä ylläpitäjään."
 
-#: src/Controller/Admin/ContactMessageController.php:442
+#: src/Controller/Admin/ContactMessageController.php:552
 msgid "An error occurred."
 msgstr "Tapahtui virhe."
 
@@ -64,18 +63,15 @@ msgid "Not an ajax request"
 msgstr "Pyyntö ei ole Ajax-pyyntö."
 
 #: src/Site/BlockLayout/ContactUs.php:96
-msgid ""
-"Append a form to allow visitors to contact us. Site settings are used when "
-"following fields are empty."
-msgstr ""
-"Lisää lomake, jolla kävijät voivat ottaa yhteyttä. Sivuston asetuksia "
-"käytetään, kun seuraavat kentät ovat tyhjiä."
+msgid "Append a form to allow visitors to contact us. Site settings are used when following fields are empty."
+msgstr "Lisää lomake, jolla kävijät voivat ottaa yhteyttä. Sivuston asetuksia käytetään, kun seuraavat kentät ovat tyhjiä."
 
 #: src/Site/BlockLayout/Newsletter.php:58
 msgid "Append a form to allow visitors to subscribe to a newsletter."
 msgstr "Lisää lomake, jolla kävijät voivat tilata uutiskirjeen."
 
-#: src/Stdlib/ContactSubmission.php:561 src/Stdlib/ContactSubmission.php:565
+#: src/Stdlib/ContactSubmission.php:595
+#: src/Stdlib/ContactSubmission.php:599
 msgid "Unsubscribe newsletter"
 msgstr "Peru uutiskirjeen tilaus"
 
@@ -90,7 +86,7 @@ msgstr "Lähetä viesti"
 #: view/common/contact-us-selection-list.phtml:36
 #: view/contact-us/site/index/browse.phtml:42
 msgid "No media"
-msgstr "Ei mediaa"
+msgstr "Ei tallenteita"
 
 #: view/common/contact-us-selection-list.phtml:77
 #: view/contact-us/site/index/browse.phtml:112
@@ -115,7 +111,7 @@ msgid "No resource selected."
 msgstr "Ei valittua resurssia."
 
 #: view/common/dialog/contact-us-send-message.phtml:22
-#: view/contact-us/admin/contact-message/browse.phtml:169
+#: view/contact-us/admin/contact-message/browse.phtml:197
 msgid "Reply to the contact"
 msgstr "Vastaa yhteydenottajalle"
 
@@ -127,84 +123,129 @@ msgstr "Poista yhteydenottoviestit"
 msgid "Are you sure you would like to delete the selected messages?"
 msgstr "Haluatko varmasti poistaa valitut viestit?"
 
-#: view/contact-us/admin/contact-message/browse.phtml:37
+#: view/contact-us/admin/contact-message/browse.phtml:41
 msgid "Sender name"
 msgstr "Lähettäjän nimi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:41
+#: view/contact-us/admin/contact-message/browse.phtml:45
 msgid "Sender email"
 msgstr "Lähettäjän sähköpostiosoite"
 
-#: view/contact-us/admin/contact-message/browse.phtml:45
-#: view/contact-us/admin/contact-message/browse.phtml:129
+#: view/contact-us/admin/contact-message/browse.phtml:49
+#: view/contact-us/admin/contact-message/browse.phtml:144
 msgid "Date sent"
 msgstr "Lähetyspäivä"
 
-#: view/contact-us/admin/contact-message/browse.phtml:56
+#: view/contact-us/admin/contact-message/browse.phtml:60
 msgid "Contact messages"
 msgstr "Yhteydenottoviestit"
 
-#: view/contact-us/admin/contact-message/browse.phtml:62
+#: view/contact-us/admin/contact-message/browse.phtml:66
 msgid "Quick filter"
 msgstr "Pikasuodatin"
 
-#: view/contact-us/admin/contact-message/browse.phtml:74
+#: view/contact-us/admin/contact-message/browse.phtml:78
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: view/contact-us/admin/contact-message/browse.phtml:80
+#: view/contact-us/admin/contact-message/browse.phtml:84
 msgid "Set read"
 msgstr "Merkitse luetuksi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:85
+#: view/contact-us/admin/contact-message/browse.phtml:89
 msgid "Set not read"
 msgstr "Merkitse lukemattomaksi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:90
+#: view/contact-us/admin/contact-message/browse.phtml:94
 msgid "Set spam"
 msgstr "Merkitse roskapostiksi"
 
-#: view/contact-us/admin/contact-message/browse.phtml:95
+#: view/contact-us/admin/contact-message/browse.phtml:99
 msgid "Set not spam"
 msgstr "Poista roskapostimerkintä"
 
-#: view/contact-us/admin/contact-message/browse.phtml:114
+#: view/contact-us/admin/contact-message/browse.phtml:101
+msgid "Maintenance"
+msgstr "Huolto"
+
+#: view/contact-us/admin/contact-message/browse.phtml:105
+msgid "Resend selected messages to the author…"
+msgstr "Viesti tekijälle"
+
+#: view/contact-us/admin/contact-message/browse.phtml:108
+msgid "Resend all messages to the author…"
+msgstr "Viesti tekijälle"
+
+#: view/contact-us/admin/contact-message/browse.phtml:129
 msgid "There are no messages."
 msgstr "Viestejä ei ole."
 
-#: view/contact-us/admin/contact-message/browse.phtml:126
+#: view/contact-us/admin/contact-message/browse.phtml:141
 msgid "Message"
 msgstr "Viesti"
 
-#: view/contact-us/admin/contact-message/browse.phtml:128
+#: view/contact-us/admin/contact-message/browse.phtml:143
 #: view/contact-us/admin/contact-message/show-details.phtml:25
 msgid "Sender"
 msgstr "Lähettäjä"
 
-#: view/contact-us/admin/contact-message/browse.phtml:140
+#: view/contact-us/admin/contact-message/browse.phtml:155
 msgid "Select message"
 msgstr "Valitse viesti"
 
-#: view/contact-us/admin/contact-message/browse.phtml:145
+#: view/contact-us/admin/contact-message/browse.phtml:160
 #: view/contact-us/admin/contact-message/show-details.phtml:102
 msgid "Message to author"
 msgstr "Viesti tekijälle"
 
-#: view/contact-us/admin/contact-message/browse.phtml:155
-#: view/contact-us/admin/contact-message/browse.phtml:156
+#: view/contact-us/admin/contact-message/browse.phtml:170
+#: view/contact-us/admin/contact-message/browse.phtml:171
 msgid "Toggle read"
 msgstr "Vaihda luettu-tila"
 
-#: view/contact-us/admin/contact-message/browse.phtml:162
-#: view/contact-us/admin/contact-message/browse.phtml:163
+#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:178
 msgid "Toggle spam"
 msgstr "Vaihda roskapostitila"
 
-#: view/contact-us/admin/contact-message/browse.phtml:177
+#: view/contact-us/admin/contact-message/browse.phtml:182
+#: view/contact-us/admin/contact-message/show-details.phtml:110
+#, php-format
+msgid "Resent to the author: %s"
+msgstr "Lähetetty uudelleen tekijälle: %s"
+
+#: view/contact-us/admin/contact-message/browse.phtml:188
+msgid "Resend to the author (false positive)"
+msgstr "Lähetä uudelleen tekijälle (väärä positiivinen)"
+
+#: view/contact-us/admin/contact-message/browse.phtml:205
 msgid "Download files as zip"
 msgstr "Lataa tiedostot zip-tiedostona"
 
-#: view/contact-us/admin/contact-message/browse.phtml:242
+#: view/contact-us/admin/contact-message/browse.phtml:261
+#: view/contact-us/admin/contact-message/browse.phtml:276
+msgid "Resend to the author"
+msgstr "Viesti tekijälle"
+
+#: view/contact-us/admin/contact-message/browse.phtml:262
+#, php-format
+msgid "Resend the %s selected messages to the author of their resource, without any check of spam?"
+msgstr "Lähetetäänkö %s valittua viestiä uudelleen niiden aineiston tekijälle ilman roskapostitarkistusta?"
+
+#: view/contact-us/admin/contact-message/browse.phtml:263
+msgid "Only the messages blocked as spam are resent and set as not spam: messages already sent, already resent or to us are skipped. The process runs in background."
+msgstr "Vain roskapostina estetyt viestit lähetetään uudelleen ja merkitään ei-roskapostiksi: jo lähetetyt, jo uudelleenlähetetyt tai meille osoitetut viestit ohitetaan. Prosessi suoritetaan taustalla."
+
+#: view/contact-us/admin/contact-message/browse.phtml:277
+#, php-format
+msgid "Resend to the author the %s messages blocked as spam of the current results, on all pages, without any check of spam?"
+msgstr "Lähetetäänkö tekijälle uudelleen nykyisten tulosten joukosta roskapostina estetyt %s viestiä kaikilta sivuilta ilman roskapostitarkistusta?"
+
+#: view/contact-us/admin/contact-message/browse.phtml:278
+msgid "The messages will be set as not spam. Messages already sent, already resent or to us are skipped. The process runs in background."
+msgstr "Viestit merkitään ei-roskapostiksi. Jo lähetetyt, uudelleenlähetetyt tai meille osoitetut viestit ohitetaan. Prosessi toimii taustalla."
+
+#: view/contact-us/admin/contact-message/browse.phtml:302
 msgid "Filter contact messages"
 msgstr "Suodata yhteydenottoviestejä"
 
@@ -265,33 +306,38 @@ msgstr "Luettu: %s"
 msgid "Is spam: %s"
 msgstr "Roskapostia: %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:105
+#: view/contact-us/admin/contact-message/show-details.phtml:106
+#, php-format
+msgid "Spam status set by: %s"
+msgstr "Roskapostitilan asettanut: %s"
+
+#: view/contact-us/admin/contact-message/show-details.phtml:108
 #, php-format
 msgid "Zip available: %s"
 msgstr "Saatavilla oleva zip-tiedosto: %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:110
+#: view/contact-us/admin/contact-message/show-details.phtml:116
 msgid "[No subject]"
 msgstr "[Ei aihetta]"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:127
+#: view/contact-us/admin/contact-message/show-details.phtml:133
 msgid "Attached file"
 msgstr "Liitetiedosto"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:129
+#: view/contact-us/admin/contact-message/show-details.phtml:135
 #, php-format
 msgid "Media type: %s"
 msgstr "Mediatyyppi: %s"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:134
+#: view/contact-us/admin/contact-message/show-details.phtml:140
 msgid "Warning: content from an anonymous user"
 msgstr "Varoitus: anonyymin käyttäjän sisältöä"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:136
+#: view/contact-us/admin/contact-message/show-details.phtml:142
 msgid "Warning: content from a guest user"
 msgstr "Varoitus: vieraskäyttäjän sisältöä"
 
-#: view/contact-us/admin/contact-message/show-details.phtml:144
+#: view/contact-us/admin/contact-message/show-details.phtml:150
 msgid "Newsletter"
 msgstr "Uutiskirje"
 
@@ -302,7 +348,7 @@ msgstr "Yhteydenoton valinta"
 #: view/contact-us/site/index/browse.phtml:76
 #, php-format
 msgid "There is a limit of %d resources by request"
-msgstr "Yhtä pyyntöä kohden voi valita enintään %d resurssia"
+msgstr "Yhtä pyyntöä kohden voi valita enintään %d aineistoa"
 
 #: view/contact-us/site/index/browse.phtml:145
 msgid "Fill the form"
@@ -316,257 +362,169 @@ msgstr "Viimeistele pyyntö"
 msgid "My selection for contact"
 msgstr "Oma yhteydenottovalintani"
 
-#: data/scripts/upgrade.php:119
-msgid ""
-"A checkbox for consent has been added to the user form. You may update the "
-"default label in site settings"
-msgstr ""
-"Käyttäjälomakkeeseen on lisätty suostumusvalintaruutu. Voit päivittää "
-"oletustekstin sivuston asetuksissa"
+#: data/scripts/upgrade.php:120
+msgid "A checkbox for consent has been added to the user form. You may update the default label in site settings"
+msgstr "Käyttäjälomakkeeseen on lisätty suostumusvalintaruutu. Voit päivittää oletustekstin sivuston asetuksissa"
 
-#: data/scripts/upgrade.php:195
+#: data/scripts/upgrade.php:196
 msgid "It’s now possible to set a specific message when contacting author."
 msgstr "Tekijälle lähetettävään yhteydenottoon voi nyt määrittää oman viestin."
 
-#: data/scripts/upgrade.php:199
-msgid ""
-"It’s now possible to contact authors of a resource via the view helper "
-"contactUs()."
-msgstr ""
-"Resurssien tekijöihin voi nyt ottaa yhteyttä contactUs()-näkymäavustimen "
-"kautta."
+#: data/scripts/upgrade.php:200
+msgid "It’s now possible to contact authors of a resource via the view helper contactUs()."
+msgstr "Resurssien tekijöihin voi nyt ottaa yhteyttä contactUs()-näkymäavustimen kautta."
 
-#: data/scripts/upgrade.php:225
+#: data/scripts/upgrade.php:226
 msgid "It’s now possible to append specific fields to the form."
 msgstr "Lomakkeeseen voi nyt lisätä omia kenttiä."
 
-#: data/scripts/upgrade.php:230
-msgid ""
-"It’s now possible to add a contact form in item/show for themes supporting "
-"resource blocks."
-msgstr ""
-"Yhteydenottolomakkeen voi nyt lisätä item/show-näkymään teemoissa, jotka "
-"tukevat resurssilohkoja."
+#: data/scripts/upgrade.php:231
+msgid "It’s now possible to add a contact form in item/show for themes supporting resource blocks."
+msgstr "Yhteydenottolomakkeen voi nyt lisätä item/show-näkymään teemoissa, jotka tukevat resurssilohkoja."
 
-#: data/scripts/upgrade.php:237
-msgid ""
-"It’s now possible to add a contact form in item/browse and to send a list of "
-"resource ids (need a line in theme)."
-msgstr ""
-"Yhteydenottolomakkeen voi nyt lisätä item/browse-näkymään ja lähettää "
-"resurssitunnusten luettelon (vaatii rivin teemaan)."
+#: data/scripts/upgrade.php:238
+msgid "It’s now possible to add a contact form in item/browse and to send a list of resource ids (need a line in theme)."
+msgstr "Yhteydenottolomakkeen voi nyt lisätä item/browse-näkymään ja lähettää resurssitunnusten luettelon (vaatii rivin teemaan)."
 
-#: data/scripts/upgrade.php:265
-msgid ""
-"It’s now possible to prepare a zip file of asked files to send to a visitor "
-"via a link. See {link}settings{link_end}."
-msgstr ""
-"Pyydetyistä tiedostoista voi nyt valmistella ZIP-tiedoston, joka lähetetään "
-"kävijälle linkkinä. Katso {link}asetukset{link_end}."
+#: data/scripts/upgrade.php:266
+msgid "It’s now possible to prepare a zip file of asked files to send to a visitor via a link. See {link}settings{link_end}."
+msgstr "Pyydetyistä tiedostoista voi nyt valmistella ZIP-tiedoston, joka lähetetään kävijälle linkkinä. Katso {link}asetukset{link_end}."
 
-#: data/scripts/upgrade.php:278
+#: data/scripts/upgrade.php:279
 msgid "A new button allows to create a zip for any contact."
-msgstr ""
-"Uudella painikkeella voi luoda ZIP-tiedoston mille tahansa yhteydenotolle."
+msgstr "Uudella painikkeella voi luoda ZIP-tiedoston mille tahansa yhteydenotolle."
 
-#: data/scripts/upgrade.php:291
-msgid ""
-"Two new options allow to append the contact form to resource pages. They are "
-"disabled by default, so check them if you need them."
-msgstr ""
-"Kahdella uudella asetuksella yhteydenottolomakkeen voi lisätä "
-"resurssisivuille. Ne ovat oletusarvoisesti poissa käytöstä, joten ota ne "
-"tarvittaessa käyttöön."
+#: data/scripts/upgrade.php:292
+msgid "Two new options allow to append the contact form to resource pages. They are disabled by default, so check them if you need them."
+msgstr "Kahdella uudella asetuksella yhteydenottolomakkeen voi lisätä resurssisivuille. Ne ovat oletusarvoisesti poissa käytöstä, joten ota ne tarvittaessa käyttöön."
 
-#: data/scripts/upgrade.php:296
-msgid ""
-"A new option allows to use the user email to send message. It is not "
-"recommended because many emails providers reject them as spam. Use it only "
-"if you manage your own domain."
-msgstr ""
-"Uudella asetuksella viestin voi lähettää käyttäjän sähköpostiosoitteesta. "
-"Tätä ei suositella, koska monet sähköpostipalveluntarjoajat hylkäävät "
-"tällaiset viestit roskapostina. Käytä asetusta vain, jos hallinnoit omaa "
-"verkkotunnustasi."
+#: data/scripts/upgrade.php:297
+msgid "A new option allows to use the user email to send message. It is not recommended because many emails providers reject them as spam. Use it only if you manage your own domain."
+msgstr "Uudella asetuksella viestin voi lähettää käyttäjän sähköpostiosoitteesta. Tätä ei suositella, koska monet sähköpostipalveluntarjoajat hylkäävät tällaiset viestit roskapostina. Käytä asetusta vain, jos hallinnoit omaa verkkotunnustasi."
 
-#: data/scripts/upgrade.php:310
+#: data/scripts/upgrade.php:311
 msgid "A new block allows to display a form to subscribe to a newsletter."
 msgstr "Uudella lohkolla voi näyttää uutiskirjeen tilauslomakkeen."
 
-#: data/scripts/upgrade.php:353
-msgid ""
-"The option \"heading\" was removed from blocks Contact Us and Newsletter and "
-"replaced by a block Heading (if module Block Plus is present) or Html. "
-"Remove it in the following files before upgrade and automatic conversion: "
-"{json}"
-msgstr ""
-"Asetus \"heading\" poistettiin Yhteydenotto- ja Uutiskirje-lohkoista ja "
-"korvattiin Otsikko-lohkolla (jos Block Plus -lisäosa on käytössä) tai HTML-"
-"lohkolla. Poista se seuraavista tiedostoista ennen päivitystä ja "
-"automaattista muunnosta: {json}"
+#: data/scripts/upgrade.php:354
+msgid "The option \"heading\" was removed from blocks Contact Us and Newsletter and replaced by a block Heading (if module Block Plus is present) or Html. Remove it in the following files before upgrade and automatic conversion: {json}"
+msgstr "Asetus \"heading\" poistettiin Yhteydenotto- ja Uutiskirje-lohkoista ja korvattiin Otsikko-lohkolla (jos Block Plus -lisäosa on käytössä) tai HTML-lohkolla. Poista se seuraavista tiedostoista ennen päivitystä ja automaattista muunnosta: {json}"
 
-#: data/scripts/upgrade.php:431
-msgid ""
-"The setting \"template\" was moved to the new block layout settings "
-"available since Omeka S v4.1. You may check pages for styles: {json}"
-msgstr ""
-"Asetus \"template\" siirrettiin uusiin lohkoasettelun asetuksiin, jotka ovat "
-"käytettävissä Omeka S:n versiosta 4.1 alkaen. Voit tarkistaa sivujen tyylit: "
-"{json}"
+#: data/scripts/upgrade.php:432
+msgid "The setting \"template\" was moved to the new block layout settings available since Omeka S v4.1. You may check pages for styles: {json}"
+msgstr "Asetus \"template\" siirrettiin uusiin lohkoasettelun asetuksiin, jotka ovat käytettävissä Omeka S:n versiosta 4.1 alkaen. Voit tarkistaa sivujen tyylit: {json}"
 
-#: data/scripts/upgrade.php:441
-msgid ""
-"The option \"heading\" was removed from blocks Contact Us and Newsletter. "
-"New block \"Heading\" (if module Block Plus is present) or \"Html\" was "
-"prepended to all blocks that had a filled heading. You may check pages for "
-"styles: {json}"
-msgstr ""
-"Asetus \"heading\" poistettiin Yhteydenotto- ja Uutiskirje-lohkoista. Uusi "
-"Otsikko-lohko (jos Block Plus -lisäosa on käytössä) tai HTML-lohko lisättiin "
-"kaikkien niiden lohkojen alkuun, joissa oli täytetty otsikko. Voit tarkistaa "
-"sivujen tyylit: {json}"
+#: data/scripts/upgrade.php:442
+msgid "The option \"heading\" was removed from blocks Contact Us and Newsletter. New block \"Heading\" (if module Block Plus is present) or \"Html\" was prepended to all blocks that had a filled heading. You may check pages for styles: {json}"
+msgstr "Asetus \"heading\" poistettiin Yhteydenotto- ja Uutiskirje-lohkoista. Uusi Otsikko-lohko (jos Block Plus -lisäosa on käytössä) tai HTML-lohko lisättiin kaikkien niiden lohkojen alkuun, joissa oli täytetty otsikko. Voit tarkistaa sivujen tyylit: {json}"
 
-#: data/scripts/upgrade.php:463
+#: data/scripts/upgrade.php:464
 msgid "New options were added to set message after posting mail."
-msgstr ""
-"Uusia asetuksia lisättiin viestin määrittämiseksi sähköpostin lähettämisen "
-"jälkeen."
+msgstr "Uusia asetuksia lisättiin viestin määrittämiseksi sähköpostin lähettämisen jälkeen."
 
-#: data/scripts/upgrade.php:468
+#: data/scripts/upgrade.php:469
 msgid "It is now possible to unsubscribe to a newsletter."
 msgstr "Uutiskirjeen tilauksen voi nyt perua."
 
-#: data/scripts/upgrade.php:473
-msgid ""
-"A new page allows the user or the visitor to see all the selected resources."
-msgstr ""
-"Uudella sivulla käyttäjä tai kävijä voi nähdä kaikki valitut resurssit."
+#: data/scripts/upgrade.php:474
+msgid "A new page allows the user or the visitor to see all the selected resources."
+msgstr "Uudella sivulla käyttäjä tai kävijä voi nähdä kaikki valitut resurssit."
 
-#: data/scripts/upgrade.php:478
-msgid ""
-"The number of selected items can be set in site settings. It is limited to "
-"25 by default."
-msgstr ""
-"Valittujen kohteiden enimmäismäärän voi määrittää sivuston asetuksissa. "
-"Oletusraja on 25."
+#: data/scripts/upgrade.php:479
+msgid "The number of selected items can be set in site settings. It is limited to 25 by default."
+msgstr "Valittujen aineistojen enimmäismäärän voi määrittää sivuston asetuksissa. Oletusraja on 25."
 
-#: data/scripts/upgrade.php:491
-msgid ""
-"It is now possible to define specific fields for the contact us form via the "
-"main or site settings."
-msgstr ""
-"Yhteydenottolomakkeelle voi nyt määrittää omia kenttiä yleisissä tai "
-"sivuston asetuksissa."
+#: data/scripts/upgrade.php:492
+msgid "It is now possible to define specific fields for the contact us form via the main or site settings."
+msgstr "Yhteydenottolomakkeelle voi nyt määrittää omia kenttiä yleisissä tai sivuston asetuksissa."
 
-#: data/scripts/upgrade.php:498
+#: data/scripts/upgrade.php:499
 msgid "New fields were added for messages."
 msgstr "Viesteihin lisättiin uusia kenttiä."
 
-#: data/scripts/upgrade.php:503
-msgid ""
-"Existing fields for messages were clarified. You may need to check your "
-"config."
-msgstr ""
-"Viestien nykyisiä kenttiä selvennettiin. Asetukset on ehkä tarkistettava."
+#: data/scripts/upgrade.php:504
+msgid "Existing fields for messages were clarified. You may need to check your config."
+msgstr "Viestien nykyisiä kenttiä selvennettiin. Asetukset on ehkä tarkistettava."
 
-#: data/scripts/upgrade.php:526
-msgid ""
-"A new field allows to set the sender email. The first email of the list of "
-"emails for notification is no more used as sender. Check it if needed."
-msgstr ""
-"Uudessa kentässä voi määrittää lähettäjän sähköpostiosoitteen. "
-"Ilmoitusosoitteiden luettelon ensimmäistä osoitetta ei enää käytetä "
-"lähettäjänä. Tarkista asetus tarvittaessa."
+#: data/scripts/upgrade.php:527
+msgid "A new field allows to set the sender email. The first email of the list of emails for notification is no more used as sender. Check it if needed."
+msgstr "Uudessa kentässä voi määrittää lähettäjän sähköpostiosoitteen. Ilmoitusosoitteiden luettelon ensimmäistä osoitetta ei enää käytetä lähettäjänä. Tarkista asetus tarvittaessa."
 
-#: data/scripts/upgrade.php:531
-msgid ""
-"Warning: there might be an issue with the option \"Send with user email\". "
-"So check it and try to send a message. Note that to send with user email is "
-"not recommended, unless you have a good smtp server."
-msgstr ""
-"Varoitus: \"Send with user email\" -asetuksessa saattaa olla ongelma. "
-"Tarkista asetus ja kokeile viestin lähettämistä. Huomaa, että käyttäjän "
-"sähköpostiosoitteesta lähettämistä ei suositella, ellei käytössä ole "
-"luotettavaa SMTP-palvelinta."
+#: data/scripts/upgrade.php:532
+msgid "Warning: there might be an issue with the option \"Send with user email\". So check it and try to send a message. Note that to send with user email is not recommended, unless you have a good smtp server."
+msgstr "Varoitus: \"Send with user email\" -asetuksessa saattaa olla ongelma. Tarkista asetus ja kokeile viestin lähettämistä. Huomaa, että käyttäjän sähköpostiosoitteesta lähettämistä ei suositella, ellei käytössä ole luotettavaa SMTP-palvelinta."
 
-#: data/scripts/upgrade.php:559
+#: data/scripts/upgrade.php:560
 msgid "A new site option allows to hide the guest page for selection."
 msgstr "Uudella sivustoasetuksella valinnan vierassivun voi piilottaa."
 
-#: data/scripts/upgrade.php:592
-msgid ""
-"Some new anti-spam checks were added in main settings. Check them if needed."
-msgstr ""
-"Yleisiin asetuksiin lisättiin uusia roskapostintorjuntatarkistuksia. "
-"Tarkista ne tarvittaessa."
+#: data/scripts/upgrade.php:603
+msgid "Some new anti-spam checks were added in main settings. Check them if needed."
+msgstr "Yleisiin asetuksiin lisättiin uusia roskapostintorjuntatarkistuksia. Tarkista ne tarvittaessa."
 
-#: data/scripts/upgrade.php:651
-msgid ""
-"The zip filenames were re-signed. Previously sent emails pointing to these "
-"zip files are now broken. Contact messages concerned: {ids}."
-msgstr ""
-"ZIP-tiedostojen nimet allekirjoitettiin uudelleen. Näihin ZIP-tiedostoihin "
-"viittaavat aiemmin lähetetyt sähköpostit eivät enää toimi. Asiaan liittyvät "
-"yhteydenottoviestit: {ids}."
+#: data/scripts/upgrade.php:662
+msgid "The zip filenames were re-signed. Previously sent emails pointing to these zip files are now broken. Contact messages concerned: {ids}."
+msgstr "ZIP-tiedostojen nimet allekirjoitettiin uudelleen. Näihin ZIP-tiedostoihin viittaavat aiemmin lähetetyt sähköpostit eivät enää toimi. Asiaan liittyvät yhteydenottoviestit: {ids}."
 
-#: data/scripts/upgrade.php:659
+#: data/scripts/upgrade.php:670
 msgid "Removed {count} orphan zip files (message deleted): {ids}."
-msgstr ""
-"Poistettiin {count} irrallista ZIP-tiedostoa (viesti poistettu): {ids}."
+msgstr "Poistettiin {count} irrallista ZIP-tiedostoa (viesti poistettu): {ids}."
 
-#: data/scripts/upgrade.php:692
-msgid ""
-"Removed {count} stored zip files: zips are now streamed on demand, so no "
-"file is kept and existing links still work."
-msgstr ""
-"Poistettu {count} tallennettua zip-tiedostoa: zip-tiedostot ladataan nyt "
-"pyynnöstä, joten tiedostoja ei säilytetä, ja olemassa olevat linkit toimivat "
-"edelleen."
+#: data/scripts/upgrade.php:703
+msgid "Removed {count} stored zip files: zips are now streamed on demand, so no file is kept and existing links still work."
+msgstr "Poistettu {count} tallennettua zip-tiedostoa: zip-tiedostot ladataan nyt pyynnöstä, joten tiedostoja ei säilytetä, ja olemassa olevat linkit toimivat edelleen."
 
-#: data/scripts/upgrade.php:751
+#: data/scripts/upgrade.php:762
 msgid "Removed the \"id\" system field from {count} contact form blocks."
-msgstr ""
-"”id”-järjestelmäkenttä on poistettu {count} yhteydenottolomakkeen lohkosta."
-
-#: data/scripts/upgrade.php:783
-msgid ""
-"Restored {count} site labels for the selection, lost by an issue in the "
-"upgrade to version 3.4.26."
-msgstr ""
+msgstr "”id”-järjestelmäkenttä on poistettu {count} yhteydenottolomakkeen lohkosta."
 
 #: data/scripts/upgrade.php:794
-msgid ""
-"The option \"Email of the sender\" is empty: the no-reply or the "
-"administrator email is used. Set it in the settings if a specific sender is "
-"needed."
-msgstr ""
+msgid "Restored {count} site labels for the selection, lost by an issue in the upgrade to version 3.4.26."
+msgstr "Palautettiin valintaan {count} sivustonimikettä, jotka olivat kadonneet version 3.4.26:een tehdyn päivityksen yhteydessä ilmenneen ongelman vuoksi."
 
-#: data/scripts/upgrade.php:818
-msgid ""
-"The fields of the contact form are now flat: use the name of the field "
-"(\"phone\") instead of the nested name (\"fields[phone]\"), and \"id[]\" "
-"instead of \"fields[id][]\". The old names still work for now. Check the "
-"following files: {json}"
-msgstr ""
+#: data/scripts/upgrade.php:805
+msgid "The option \"Email of the sender\" is empty: the no-reply or the administrator email is used. Set it in the settings if a specific sender is needed."
+msgstr "”Lähettäjän sähköpostiosoite” -kenttä on tyhjä: käytetään no-reply-osoitetta tai järjestelmänvalvojan sähköpostiosoitetta. Määritä se asetuksissa, jos tarvitaan tietty lähettäjä."
+
+#: data/scripts/upgrade.php:829
+msgid "The fields of the contact form are now flat: use the name of the field (\"phone\") instead of the nested name (\"fields[phone]\"), and \"id[]\" instead of \"fields[id][]\". The old names still work for now. Check the following files: {json}"
+msgstr "Yhteydenottolomakkeen kentät ovat nyt tasoisia: käytä kentän nimeä (\"phone\") sisäkkäisen nimen (\"fields[phone]\") sijaan ja \"id[]\" sijaan \"fields[id][]\". Vanhat nimet toimivat toistaiseksi edelleen. Tarkista seuraavat tiedostot: {json}"
+
+#: data/scripts/upgrade.php:853
+msgid "Old settings for placements of the block on old themes were removed. Check your themes if you customized it."
+msgstr "Vanhojen teemojen lohkojen sijoittelua koskevat vanhat asetukset on poistettu. Tarkista teemasi, jos olet muokannut niitä."
+
+#: data/scripts/upgrade.php:884
+msgid "The reasons of the spam status are now displayed in the details of a message. Two new options, disabled by default, allow to notify the admins of the messages that may be false positives, and to tell the visitor, but the last one informs the bots too."
+msgstr "Roskapostimerkinnän syyt näkyvät nyt viestin tiedoissa. Kahden uuden, oletusarvoisesti pois käytöstä olevan vaihtoehdon avulla voidaan ilmoittaa ylläpitäjille viesteistä, jotka saattavat olla vääriä positiivisia, sekä kertoa asiasta kävijälle, mutta jälkimmäinen vaihtoehto ilmoittaa asiasta myös boteille."
 
 #: Module.php:146
 msgid "The directory \"{directory}\" is not writeable."
 msgstr "Hakemistoon \"{directory}\" ei voi kirjoittaa."
 
 #: Module.php:183
-msgid ""
-"Module ContactUs : SpamGuard is missing, so only simple anti-spam "
-"countermeasures are available."
-msgstr ""
-"ContactUs-lisäosa: SpamGuard puuttuu, joten käytettävissä ovat vain "
-"yksinkertaiset roskapostintorjuntatoimet."
+msgid "Module ContactUs : SpamGuard is missing, so only simple anti-spam countermeasures are available."
+msgstr "ContactUs-lisäosa: SpamGuard puuttuu, joten käytettävissä ovat vain yksinkertaiset roskapostintorjuntatoimet."
 
 #: Module.php:250
 msgid "All contact messages and files will be removed (folder \"{folder}\")."
-msgstr ""
-"Kaikki yhteydenottoviestit ja tiedostot poistetaan (kansio \"{folder}\")."
+msgstr "Kaikki yhteydenottoviestit ja tiedostot poistetaan (kansio \"{folder}\")."
 
-#: src/Form/SiteSettingsFieldset.php:16 src/Form/SiteSettingsFieldset.php:314
+#: src/Job/ResendToAuthor.php:34
+msgid "No message to resend to the author."
+msgstr "Viesti tekijälle"
+
+#: src/Job/ResendToAuthor.php:42
+msgid "The job was stopped."
+msgstr "Työ keskeytettiin."
+
+#: src/Job/ResendToAuthor.php:55
+#: src/Controller/Admin/ContactMessageController.php:378
+msgid "{count_sent} message(s) resent to the author, {count_skipped} skipped (already sent, already resent or to us), {count_errors} error(s)."
+msgstr "{count_sent} viestiä lähetettiin uudelleen lähettäjälle, {count_skipped} ohitettiin (jo lähetetty, jo lähetetty uudelleen tai meille), {count_errors} virhettä."
+
+#: src/Form/SiteSettingsFieldset.php:16
+#: src/Form/SiteSettingsFieldset.php:314
 #: src/Form/SettingsFieldset.php:16
 msgid "Contact Us"
 msgstr "Yhteydenotto"
@@ -575,82 +533,62 @@ msgstr "Yhteydenotto"
 msgid "Old themes"
 msgstr "Vanhat teemat"
 
-#: src/Form/SiteSettingsFieldset.php:35 src/Form/SettingsFieldset.php:34
-#: src/Form/ContactUsFieldset.php:28 src/Form/NewsletterFieldset.php:27
+#: src/Form/SiteSettingsFieldset.php:35
+#: src/Form/SettingsFieldset.php:34
+#: src/Form/ContactUsFieldset.php:28
+#: src/Form/NewsletterFieldset.php:27
 msgid "Advanced anti-spam protection"
 msgstr "Edistynyt roskapostintorjunta"
 
-#: src/Form/SiteSettingsFieldset.php:36 src/Form/ContactUsFieldset.php:29
+#: src/Form/SiteSettingsFieldset.php:36
+#: src/Form/ContactUsFieldset.php:29
 #: src/Form/NewsletterFieldset.php:28
-msgid ""
-"For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned "
-"IP lists, structured logging), install the SpamGuard module."
-msgstr ""
-"Asenna SpamGuard-lisäosa kattavampaa roskapostintorjuntaa varten (Proof-of-"
-"Work, nopeusrajoitus, DNSBL, estettyjen IP-osoitteiden luettelot ja "
-"rakenteinen lokitus)."
+msgid "For richer anti-spam protection (Proof-of-Work, rate-limiting, DNSBL, banned IP lists, structured logging), install the SpamGuard module."
+msgstr "Asenna SpamGuard-lisäosa kattavampaa roskapostintorjuntaa varten (Proof-of-Work, nopeusrajoitus, DNSBL, estettyjen IP-osoitteiden luettelot ja rakenteinen lokitus)."
 
-#: src/Form/SiteSettingsFieldset.php:47 src/Form/SettingsFieldset.php:46
+#: src/Form/SiteSettingsFieldset.php:47
+#: src/Form/SettingsFieldset.php:46
 #: src/Form/ContactUsFieldset.php:111
 msgid "Contact form fields"
 msgstr "Yhteydenottolomakkeen kentät"
 
 #: src/Form/SiteSettingsFieldset.php:50
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. If empty, the main settings will be used."
-msgstr ""
-"YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän "
-"nimikkeenä (esim. \"phone: Phone\"), nolla-arvo säilyttää oletusarvon (esim. "
-"\"name:\"), ja objekti hyväksyy avaimet label, type (text, textarea, email, "
-"tel, number, url, date, select, radio, checkbox, multicheckbox), required, "
-"values (select-, radio- tai multicheckbox-valintojen vaihtoehdot), options "
-"(muut Laminas-elementtien asetukset, kuten empty_option tai info) ja "
-"attributes (placeholder, class…). Luettele oletuskentän nimi (name, from, "
-"subject, message), jotta se voidaan siirtää tai nimetä uudelleen; luetteloon "
-"kuulumattomat oletuskentät lisätään luettelon loppuun. Elementtejä voidaan "
-"mukauttaa teeman kautta. Jos kenttä jätetään tyhjäksi, käytetään "
-"pääasetuksia."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. If empty, the main settings will be used."
+msgstr "YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän nimikkeenä (esim. \"phone: Phone\"), nolla-arvo säilyttää oletusarvon (esim. \"name:\"), ja objekti hyväksyy avaimet label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (select-, radio- tai multicheckbox-valintojen vaihtoehdot), options (muut Laminas-elementtien asetukset, kuten empty_option tai info) ja attributes (placeholder, class…). Luettele oletuskentän nimi (name, from, subject, message), jotta se voidaan siirtää tai nimetä uudelleen; luetteloon kuulumattomat oletuskentät lisätään luettelon loppuun. Elementtejä voidaan mukauttaa teeman kautta. Jos kenttä jätetään tyhjäksi, käytetään pääasetuksia."
 
-#: src/Form/SiteSettingsFieldset.php:55 src/Form/SettingsFieldset.php:54
+#: src/Form/SiteSettingsFieldset.php:55
+#: src/Form/SettingsFieldset.php:54
 #: src/Form/ContactUsFieldset.php:119
 msgid "phone: Phone"
 msgstr "phone = Puhelin"
 
-#: src/Form/SiteSettingsFieldset.php:64 src/Form/SettingsFieldset.php:63
+#: src/Form/SiteSettingsFieldset.php:64
+#: src/Form/SettingsFieldset.php:63
 msgid "Email of the sender (else no-reply user or administrator)"
-msgstr ""
-"Lähettäjän sähköpostiosoite (muussa tapauksessa no-reply-käyttäjä tai "
-"ylläpitäjä)"
+msgstr "Lähettäjän sähköpostiosoite (muussa tapauksessa no-reply-käyttäjä tai ylläpitäjä)"
 
-#: src/Form/SiteSettingsFieldset.php:65 src/Form/SettingsFieldset.php:64
-msgid ""
-"The no-reply email can be set via module EasyAdmin. The administrator email "
-"can set above."
-msgstr ""
-"No-reply-sähköpostiosoitteen voi määrittää EasyAdmin-lisäosalla. Ylläpitäjän "
-"sähköpostiosoitteen voi määrittää yllä."
+#: src/Form/SiteSettingsFieldset.php:65
+#: src/Form/SettingsFieldset.php:64
+msgid "The no-reply email can be set via module EasyAdmin. The administrator email can set above."
+msgstr "No-reply-sähköpostiosoitteen voi määrittää EasyAdmin-lisäosalla. Ylläpitäjän sähköpostiosoitteen voi määrittää yllä."
 
-#: src/Form/SiteSettingsFieldset.php:77 src/Form/SettingsFieldset.php:76
+#: src/Form/SiteSettingsFieldset.php:77
+#: src/Form/SettingsFieldset.php:76
 msgid "Name of the sender when email above is set"
 msgstr "Lähettäjän nimi, kun yllä oleva sähköpostiosoite on määritetty"
 
-#: src/Form/SiteSettingsFieldset.php:90 src/Form/SettingsFieldset.php:89
+#: src/Form/SiteSettingsFieldset.php:90
+#: src/Form/SettingsFieldset.php:89
 msgid "Emails to notify"
 msgstr "Ilmoitettavat sähköpostiosoitteet"
 
-#: src/Form/SiteSettingsFieldset.php:91 src/Form/SettingsFieldset.php:90
+#: src/Form/SiteSettingsFieldset.php:91
+#: src/Form/SettingsFieldset.php:90
 msgid "The list of recipients to notify, one by row."
 msgstr "Ilmoituksen vastaanottajat, yksi osoite riviä kohden."
 
-#: src/Form/SiteSettingsFieldset.php:97 src/Form/SettingsFieldset.php:96
+#: src/Form/SiteSettingsFieldset.php:97
+#: src/Form/SettingsFieldset.php:96
 msgid ""
 "contact@example.org\n"
 "info@example2.org"
@@ -666,34 +604,26 @@ msgstr "Ylläpitäjän ilmoitussähköpostin aihe"
 msgid "Notification message for admin"
 msgstr "Ylläpitäjän ilmoitusviesti"
 
-#: src/Form/SiteSettingsFieldset.php:123 src/Form/SiteSettingsFieldset.php:159
+#: src/Form/SiteSettingsFieldset.php:123
+#: src/Form/SiteSettingsFieldset.php:159
 #: src/Form/ContactUsFieldset.php:60
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, "
-"{fields}, {each specific field}, {resource}, {resource_id}, "
-"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
-"{property term}, {resources}, {resources_ids}, {resources_url}, "
-"{resources_url_admin}, {resources_links}, {resources::property term}."
-msgstr ""
-"Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
-"{ip}, {fields}, {each specific field}, {resource}, {resource_id}, "
-"{resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, "
-"{property term}, {resources}, {resources_ids}, {resources_url}, "
-"{resources_url_admin}, {resources_links}, {resources::property term}."
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {fields}, {each specific field}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}."
+msgstr "Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}, {fields}, {each specific field}, {resource}, {resource_id}, {resource_title}, {resource_url}, {resource_url_admin}, {resource_link}, {property term}, {resources}, {resources_ids}, {resources_url}, {resources_url_admin}, {resources_links}, {resources::property term}."
 
-#: src/Form/SiteSettingsFieldset.php:136 src/Form/ContactUsFieldset.php:39
+#: src/Form/SiteSettingsFieldset.php:136
+#: src/Form/ContactUsFieldset.php:39
 #: src/Form/NewsletterFieldset.php:48
 msgid "Send a confirmation email"
 msgstr "Lähetä vahvistussähköposti"
 
-#: src/Form/SiteSettingsFieldset.php:147 src/Form/ContactUsFieldset.php:49
+#: src/Form/SiteSettingsFieldset.php:147
+#: src/Form/ContactUsFieldset.php:49
 #: src/Form/NewsletterFieldset.php:58
 msgid "Subject of the confirmation email"
 msgstr "Vahvistussähköpostin aihe"
 
-#: src/Form/SiteSettingsFieldset.php:158 src/Form/ContactUsFieldset.php:59
+#: src/Form/SiteSettingsFieldset.php:158
+#: src/Form/ContactUsFieldset.php:59
 #: src/Form/NewsletterFieldset.php:68
 msgid "Confirmation message"
 msgstr "Vahvistusviesti"
@@ -707,35 +637,29 @@ msgid "Confirmation message for subscription to newsletter"
 msgstr "Uutiskirjetilauksen vahvistusviesti"
 
 #: src/Form/SiteSettingsFieldset.php:184
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {object}, {subject}, {ip}."
-msgstr ""
-"Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {object}, {subject}, {ip}."
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {object}, {subject}, {ip}."
+msgstr "Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {object}, {subject}, {ip}."
 
 #: src/Form/SiteSettingsFieldset.php:197
 msgid "Subject of the email to author"
 msgstr "Tekijälle lähetettävän sähköpostin aihe"
 
-#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:314
+#: src/Form/SiteSettingsFieldset.php:208
+#: config/module.config.php:320
 msgid "Message to the author"
 msgstr "Viesti tekijälle"
 
-#: src/Form/SiteSettingsFieldset.php:209 src/Form/NewsletterFieldset.php:69
-msgid ""
-"Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, "
-"{email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
-msgstr ""
-"Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, "
-"{site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, "
-"{ip}."
+#: src/Form/SiteSettingsFieldset.php:209
+#: src/Form/NewsletterFieldset.php:69
+msgid "Possible placeholders: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
+msgstr "Mahdolliset paikkamerkit: {main_title}, {main_url}, {site_title}, {site_url}, {email}, {name}, {object}, {subject}, {message}, {newsletter}, {ip}."
 
 #: src/Form/SiteSettingsFieldset.php:222
 msgid "Message displayed on site after post"
 msgstr "Sivustolla lähettämisen jälkeen näytettävä viesti"
 
-#: src/Form/SiteSettingsFieldset.php:223 src/Form/SiteSettingsFieldset.php:236
+#: src/Form/SiteSettingsFieldset.php:223
+#: src/Form/SiteSettingsFieldset.php:236
 msgid "Possible placeholders: {name}, {email}."
 msgstr "Mahdolliset paikkamerkit: {name}, {email}."
 
@@ -743,13 +667,16 @@ msgstr "Mahdolliset paikkamerkit: {name}, {email}."
 msgid "Message displayed on site after post for newsletter"
 msgstr "Sivustolla uutiskirjetilauksen lähettämisen jälkeen näytettävä viesti"
 
-#: src/Form/SiteSettingsFieldset.php:249 src/Form/ContactUsFieldset.php:81
+#: src/Form/SiteSettingsFieldset.php:249
+#: src/Form/ContactUsFieldset.php:81
 #: src/Form/NewsletterFieldset.php:90
 msgid "Label for the consent checkbox"
 msgstr "Suostumusvalintaruudun teksti"
 
-#: src/Form/SiteSettingsFieldset.php:261 src/Form/SiteSettingsFieldset.php:272
-#: src/Form/ContactUsFieldset.php:126 src/Form/NewsletterFieldset.php:100
+#: src/Form/SiteSettingsFieldset.php:261
+#: src/Form/SiteSettingsFieldset.php:272
+#: src/Form/ContactUsFieldset.php:126
+#: src/Form/NewsletterFieldset.php:100
 msgid "Enable simple antispam for visitors"
 msgstr "Ota käyttöön yksinkertainen roskapostintorjunta kävijöille"
 
@@ -758,27 +685,22 @@ msgid "Reject messages containing URLs"
 msgstr "Hylkää URL-osoitteita sisältävät viestit"
 
 #: src/Form/SiteSettingsFieldset.php:284
-msgid ""
-"When enabled, any message containing http://, https:// or www. is rejected "
-"with an explicit error and not stored."
-msgstr ""
-"Kun asetus on käytössä, kaikki http://-, https://- tai www -tekstin "
-"sisältävät viestit hylätään eikä niitä tallenneta."
+msgid "When enabled, any message containing http://, https:// or www. is rejected with an explicit error and not stored."
+msgstr "Kun asetus on käytössä, kaikki http://-, https://- tai www -tekstin sisältävät viestit hylätään eikä niitä tallenneta."
 
-#: src/Form/SiteSettingsFieldset.php:295 src/Form/ContactUsFieldset.php:136
+#: src/Form/SiteSettingsFieldset.php:295
+#: src/Form/ContactUsFieldset.php:136
 #: src/Form/NewsletterFieldset.php:110
 msgid "List of antispam questions/answers"
 msgstr "Roskapostintorjunnan kysymysten ja vastausten luettelo"
 
-#: src/Form/SiteSettingsFieldset.php:296 src/Form/ContactUsFieldset.php:137
-msgid ""
-"See the block \"Contact us\" for a simple list. Separate questions and "
-"answer with a \"=\". Questions may be translated."
-msgstr ""
-"Katso yksinkertainen luettelo “Yhteydenotto” -lohkosta. Erota kysymys ja "
-"vastaus \"=\"-merkillä. Kysymykset voidaan kääntää."
+#: src/Form/SiteSettingsFieldset.php:296
+#: src/Form/ContactUsFieldset.php:137
+msgid "See the block \"Contact us\" for a simple list. Separate questions and answer with a \"=\". Questions may be translated."
+msgstr "Katso yksinkertainen luettelo “Yhteydenotto” -lohkosta. Erota kysymys ja vastaus \"=\"-merkillä. Kysymykset voidaan kääntää."
 
-#: src/Form/SiteSettingsFieldset.php:301 src/Form/ContactUsFieldset.php:142
+#: src/Form/SiteSettingsFieldset.php:301
+#: src/Form/ContactUsFieldset.php:142
 #: src/Form/NewsletterFieldset.php:116
 msgid ""
 "How many are zero plus 1 (in number)? = 1\n"
@@ -789,19 +711,19 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:316
 msgid "Item show"
-msgstr "Kohteen näyttösivu"
+msgstr "Aineiston näyttösivu"
 
 #: src/Form/SiteSettingsFieldset.php:317
 msgid "Media show"
-msgstr "Median näyttösivu"
+msgstr "Tallenteen näyttösivu"
 
 #: src/Form/SiteSettingsFieldset.php:318
 msgid "Item set show"
-msgstr "Kohdejoukon näyttösivu"
+msgstr "Kokoelman näyttösivu"
 
 #: src/Form/SiteSettingsFieldset.php:319
 msgid "Item browse"
-msgstr "Kohteiden selaussivu"
+msgstr "Aineistojen selaussivu"
 
 #: src/Form/SiteSettingsFieldset.php:333
 msgid "Disable the selection in guest view"
@@ -809,7 +731,7 @@ msgstr "Poista valinta käytöstä vierasnäkymässä"
 
 #: src/Form/SiteSettingsFieldset.php:344
 msgid "Maximum number of items to store in selection"
-msgstr "Valintaan tallennettavien kohteiden enimmäismäärä"
+msgstr "Valintaan tallennettavien aineistojen enimmäismäärä"
 
 #: src/Form/SiteSettingsFieldset.php:356
 msgid "Label for the page Selection for contact"
@@ -824,14 +746,8 @@ msgid "Include resources in response"
 msgstr "Sisällytä resurssit vastaukseen"
 
 #: src/Form/SiteSettingsFieldset.php:380
-msgid ""
-"Some themes may require resources to be included in response when selecting "
-"a resource. This option avoids an api request via js on public side, but "
-"slow response."
-msgstr ""
-"Joissakin teemoissa resurssit on ehkä sisällytettävä vastaukseen resurssia "
-"valittaessa. Tämä asetus välttää julkisella puolella JavaScriptillä tehtävän "
-"API-pyynnön, mutta hidastaa vastausta."
+msgid "Some themes may require resources to be included in response when selecting a resource. This option avoids an api request via js on public side, but slow response."
+msgstr "Joissakin teemoissa resurssit on ehkä sisällytettävä vastaukseen resurssia valittaessa. Tämä asetus välttää julkisella puolella JavaScriptillä tehtävän API-pyynnön, mutta hidastaa vastausta."
 
 #: src/Form/SiteSettingsFieldset.php:391
 msgid "Include matching resource ids from module Selection in response"
@@ -842,56 +758,25 @@ msgid "For richer anti-spam protection, install the module SpamGuard."
 msgstr "Jotta roskapostisuojaus olisi tehokkaampaa, asenna SpamGuard-moduuli."
 
 #: src/Form/SettingsFieldset.php:49
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. This setting may be overridden by site or block "
-"settings."
-msgstr ""
-"YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän "
-"nimikkeenä (esim. \"phone: Phone\"), nolla-arvo säilyttää oletuskentän "
-"paikallaan (esim. \"name:\"), ja objekti hyväksyy avaimet label, type (text, "
-"textarea, email, tel, number, url, date, select, radio, checkbox, "
-"multicheckbox), required, values (select-/radio-/multicheckbox-valintojen "
-"vaihtoehdot), options (muut Laminas-elementtien asetukset, kuten "
-"empty_option tai info) ja attributes (placeholder, class…). Luettele "
-"oletuskentän nimi (name, from, subject, message), jotta se voidaan siirtää "
-"tai nimetä uudelleen; luetteloon kuulumattomat oletuskentät lisätään "
-"luettelon loppuun. Elementtejä voidaan mukauttaa teeman kautta. Tämä asetus "
-"voidaan ohittaa sivuston tai lohkon asetuksilla."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. This setting may be overridden by site or block settings."
+msgstr "YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän nimikkeenä (esim. \"phone: Phone\"), nolla-arvo säilyttää oletuskentän paikallaan (esim. \"name:\"), ja objekti hyväksyy avaimet label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (select-/radio-/multicheckbox-valintojen vaihtoehdot), options (muut Laminas-elementtien asetukset, kuten empty_option tai info) ja attributes (placeholder, class…). Luettele oletuskentän nimi (name, from, subject, message), jotta se voidaan siirtää tai nimetä uudelleen; luetteloon kuulumattomat oletuskentät lisätään luettelon loppuun. Elementtejä voidaan mukauttaa teeman kautta. Tämä asetus voidaan ohittaa sivuston tai lohkon asetuksilla."
 
 #: src/Form/SettingsFieldset.php:109
 msgid "Reply-to address when answering a contact"
 msgstr "Vastausosoite yhteydenottoon vastattaessa"
 
 #: src/Form/SettingsFieldset.php:110
-msgid ""
-"Address set as reply-to when an admin answers a message. If empty, the reply-"
-"to is the email of the connected admin. The sender (from) remains the unique "
-"installation address."
-msgstr ""
-"Osoite, joka asetetaan Reply-To-osoitteeksi, kun ylläpitäjä vastaa viestiin. "
-"Jos kenttä on tyhjä, Reply-To-osoitteena käytetään kirjautuneen ylläpitäjän "
-"sähköpostiosoitetta. Lähettäjänä (From) säilyy asennuksen yksilöllinen "
-"osoite."
+msgid "Address set as reply-to when an admin answers a message. If empty, the reply-to is the email of the connected admin. The sender (from) remains the unique installation address."
+msgstr "Osoite, joka asetetaan Reply-To-osoitteeksi, kun ylläpitäjä vastaa viestiin. Jos kenttä on tyhjä, Reply-To-osoitteena käytetään kirjautuneen ylläpitäjän sähköpostiosoitetta. Lähettäjänä (From) säilyy asennuksen yksilöllinen osoite."
 
 #: src/Form/SettingsFieldset.php:122
 msgid "Default subject when answering a contact"
 msgstr "Oletusaihe yhteydenottoon vastattaessa"
 
-#: src/Form/SettingsFieldset.php:123 src/Form/SettingsFieldset.php:136
-msgid ""
-"Placeholders: {name}, {email}, {subject}, {message}, {main_title}, "
-"{main_url}."
-msgstr ""
-"Paikkamerkit: {name}, {email}, {subject}, {message}, {main_title}, "
-"{main_url}."
+#: src/Form/SettingsFieldset.php:123
+#: src/Form/SettingsFieldset.php:136
+msgid "Placeholders: {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
+msgstr "Paikkamerkit: {name}, {email}, {subject}, {message}, {main_title}, {main_url}."
 
 #: src/Form/SettingsFieldset.php:135
 msgid "Default message when answering a contact"
@@ -922,21 +807,12 @@ msgid "Send email to author only, not admins (hidden)"
 msgstr "Lähetä sähköposti vain tekijälle, ei ylläpitäjille (piilotettu)"
 
 #: src/Form/SettingsFieldset.php:183
-msgid ""
-"Use the user email to send message to author (warning: many email providers "
-"reject them as spam)"
-msgstr ""
-"Lähetä viesti tekijälle käyttäjän sähköpostiosoitteesta (varoitus: monet "
-"sähköpostipalveluntarjoajat hylkäävät tällaiset viestit roskapostina)"
+msgid "Use the user email to send message to author (warning: many email providers reject them as spam)"
+msgstr "Lähetä viesti tekijälle käyttäjän sähköpostiosoitteesta (varoitus: monet sähköpostipalveluntarjoajat hylkäävät tällaiset viestit roskapostina)"
 
 #: src/Form/SettingsFieldset.php:184
-msgid ""
-"This option is not recommended, unless you have a good smtp server. If not "
-"set, the user email will be set as reply-to."
-msgstr ""
-"Tätä asetusta ei suositella, ellei käytössä ole luotettavaa SMTP-palvelinta. "
-"Jos asetusta ei valita, käyttäjän sähköpostiosoite asetetaan Reply-To-"
-"osoitteeksi."
+msgid "This option is not recommended, unless you have a good smtp server. If not set, the user email will be set as reply-to."
+msgstr "Tätä asetusta ei suositella, ellei käytössä ole luotettavaa SMTP-palvelinta. Jos asetusta ei valita, käyttäjän sähköpostiosoite asetetaan Reply-To-osoitteeksi."
 
 #: src/Form/SettingsFieldset.php:196
 msgid "Zipped files to send"
@@ -955,36 +831,44 @@ msgid "Include private resources and files in the zip"
 msgstr "Lisää yksityiset resurssit ja tiedostot zip-tiedostoon"
 
 #: src/Form/SettingsFieldset.php:216
-msgid ""
-"The download link is authorized by a single-use token, so it is opened "
-"without checking the visitor rights. By default only publicly visible "
-"resources and media are included. Check to also include the private ones "
-"(private resources and private media of public resources)."
-msgstr ""
-"Latauslinkki toimi kertakäyttöisen tunnuksen avulla, joten se avautuu ilman, "
-"että kävijän käyttöoikeuksia tarkistetaan. Oletusarvoisesti mukana ovat vain "
-"julkisesti näkyvät resurssit ja mediatiedostot. Valitse tämä vaihtoehto, jos "
-"haluat sisällyttää myös yksityiset resurssit (yksityiset resurssit sekä "
-"julkisten resurssien yksityiset mediatiedostot)."
+msgid "The download link is authorized by a single-use token, so it is opened without checking the visitor rights. By default only publicly visible resources and media are included. Check to also include the private ones (private resources and private media of public resources)."
+msgstr "Latauslinkki toimi kertakäyttöisen tunnuksen avulla, joten se avautuu ilman, että kävijän käyttöoikeuksia tarkistetaan. Oletusarvoisesti mukana ovat vain julkisesti näkyvät resurssit ja mediatiedostot. Valitse tämä vaihtoehto, jos haluat sisällyttää myös yksityiset resurssit (yksityiset resurssit sekä julkisten resurssien yksityiset mediatiedostot)."
 
 #: src/Form/SettingsFieldset.php:228
 msgid "Skip the client-side proof-of-work"
 msgstr "Ohita asiakaspuolen Proof-of-Work-tarkistus"
 
 #: src/Form/SettingsFieldset.php:229
-msgid ""
-"By default, the browser must compute a small SHA-256 hashcash challenge "
-"before the form can be submitted. This blocks bots that do not run "
-"JavaScript. Invisible for real users (about one second). Check to disable."
-msgstr ""
-"Oletusarvoisesti selaimen on laskettava pieni SHA-256 Hashcash -haaste ennen "
-"lomakkeen lähettämistä. Tämä estää botit, jotka eivät suorita JavaScriptiä. "
-"Toiminto on oikeille käyttäjille näkymätön (noin sekunti). Poista toiminto "
-"käytöstä valitsemalla tämä."
+msgid "By default, the browser must compute a small SHA-256 hashcash challenge before the form can be submitted. This blocks bots that do not run JavaScript. Invisible for real users (about one second). Check to disable."
+msgstr "Oletusarvoisesti selaimen on laskettava pieni SHA-256 Hashcash -haaste ennen lomakkeen lähettämistä. Tämä estää botit, jotka eivät suorita JavaScriptiä. Toiminto on oikeille käyttäjille näkymätön (noin sekunti). Poista toiminto käytöstä valitsemalla tämä."
 
 #: src/Form/SettingsFieldset.php:241
 msgid "Check mx records of the email domain"
 msgstr "Tarkista sähköpostiverkkotunnuksen MX-tietueet"
+
+#: src/Form/SettingsFieldset.php:253
+msgid "Tell the visitor when his message may be a false positive"
+msgstr "Kerro kävijälle, milloin hänen viestinsä saattaa olla vääriä positiivisia"
+
+#: src/Form/SettingsFieldset.php:254
+msgid "By default, a spam is classified silently and the visitor is thanked as usual, so a bot does not learn that it was caught. When checked, a message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) shows that it was not transmitted, without the reason, and invites to retry. Warning: a bot learns then that it failed, and these checks are mainly on timing, so it may adapt by posting more slowly."
+msgstr "Oletusasetuksena roskaposti luokitellaan huomaamatta, ja kävijälle kiitetään tavalliseen tapaan, joten botti ei saa tietää, että se on jäänyt kiinni. Kun tämä valinta on valittuna, viesti, joka on merkitty roskapostiksi pelkästään mahdollisesti virheellisen tarkistuksen perusteella (liian nopea lähetys, työmäärän todistus, IP-osoitteen maine jne.), näyttää, että viestiä ei lähetetty, ilman syytä, ja kehottaa yrittämään uudelleen. Varoitus: botti saa tällöin tietää epäonnistuneensa, ja koska nämä tarkistukset perustuvat pääasiassa ajoitukseen, se saattaa sopeutua lähettämällä viestejä hitaammin."
+
+#: src/Form/SettingsFieldset.php:266
+msgid "Email to suggest to a visitor whose message may be a false positive"
+msgstr "Sähköposti, jolla ilmoitetaan vierailijalle, että hänen viestinsä saattaa olla väärä hälytys"
+
+#: src/Form/SettingsFieldset.php:267
+msgid "Used only when the visitor is told that his message was not transmitted."
+msgstr "Käytetään vain silloin, kun vierailijalle ilmoitetaan, että hänen viestiään ei lähetetty."
+
+#: src/Form/SettingsFieldset.php:279
+msgid "Notify the admins of the messages that may be false positives"
+msgstr "Ilmoita ylläpitäjille viesteistä, jotka saattavat olla vääriä positiivisia tuloksia"
+
+#: src/Form/SettingsFieldset.php:280
+msgid "A message marked as spam only by a check that may be wrong (too fast, proof-of-work, reputation of the ip…) remains marked as spam, but the admins receive it, with \"[Possible spam]\" and the reasons, and the visitor is thanked as usual, so a bot learns nothing. It is never sent to the author of a resource nor confirmed to the visitor. The spams detected by a reliable check are never sent."
+msgstr "Viesti, joka on merkitty roskapostiksi pelkästään mahdollisesti virheellisen tarkistuksen perusteella (liian nopea, proof-of-work, IP-osoitteen maine…), pysyy roskapostimerkittynä, mutta järjestelmänvalvojat saavat sen näkyviin merkinnällä \"[Mahdollinen roskaposti]\" ja perusteluineen, ja kävijälle kiitetään tavalliseen tapaan, joten botti ei opi mitään. Viestejä ei koskaan lähetetä resurssin tekijälle eikä niitä vahvisteta vierailijalle. Luotettavalla tarkistuksella havaitut roskapostit eivät koskaan lähetetä."
 
 #: src/Form/QuickSearchForm.php:48
 msgid "IP"
@@ -994,30 +878,120 @@ msgstr "IP"
 msgid "Spam"
 msgstr "Roskaposti"
 
-#: src/Form/QuickSearchForm.php:78
+#: src/Form/QuickSearchForm.php:81
+msgid "Reason of the spam status"
+msgstr "Syynä roskapostistatukseen"
+
+#: src/Form/QuickSearchForm.php:82
+msgid "This filter replaces the filter \"Spam\"."
+msgstr "Tämä suodatin korvaa suodattimen ”Spam”."
+
+#: src/Form/QuickSearchForm.php:84
+msgid "Any"
+msgstr "Mikä tahansa"
+
+#: src/Form/QuickSearchForm.php:85
+msgid "Possible false positives (checks that may be wrong)"
+msgstr "Mahdolliset vääriä positiivisia tuloksia (tarkastukset, jotka saattavat olla virheellisiä)"
+
+#: src/Form/QuickSearchForm.php:86
+msgid "Reliable checks"
+msgstr "Luotettavat tarkastukset"
+
+#: src/Form/QuickSearchForm.php:87
+msgid "Manual decision of an admin"
+msgstr "Järjestelmänvalvojan manuaalinen päätös"
+
+#: src/Form/QuickSearchForm.php:89
+msgid "Check"
+msgstr "Tarkista"
+
+#: src/Form/QuickSearchForm.php:91
+msgid "Banned ip"
+msgstr "Estetty IP-osoite"
+
+#: src/Form/QuickSearchForm.php:92
+msgid "Question"
+msgstr "Kysymys"
+
+#: src/Form/QuickSearchForm.php:93
+msgid "Dnsbl"
+msgstr "Dnsbl"
+
+#: src/Form/QuickSearchForm.php:94
+msgid "Email without mx"
+msgstr "Sähköposti ilman MX-tietueita"
+
+#: src/Form/QuickSearchForm.php:95
+msgid "Honeypot"
+msgstr "Honeypot"
+
+#: src/Form/QuickSearchForm.php:96
+msgid "Reputation of the ip"
+msgstr "IP-osoitteen maine"
+
+#: src/Form/QuickSearchForm.php:97
+msgid "Keyword"
+msgstr "Avainsana"
+
+#: src/Form/QuickSearchForm.php:98
+msgid "Link to an abused domain"
+msgstr "Linkki väärinkäytettyyn verkkotunnukseen"
+
+#: src/Form/QuickSearchForm.php:99
+msgid "Proof-of-work"
+msgstr "Työn todiste (Proof-of-work)"
+
+#: src/Form/QuickSearchForm.php:100
+msgid "Rate limit"
+msgstr "Käyttörajoitus"
+
+#: src/Form/QuickSearchForm.php:101
+msgid "Too fast"
+msgstr "Liian nopeasti"
+
+#: src/Form/QuickSearchForm.php:102
+msgid "Too slow"
+msgstr "Liian hidas"
+
+#: src/Form/QuickSearchForm.php:103
+msgid "Url"
+msgstr "URL"
+
+#: src/Form/QuickSearchForm.php:104
+msgid "Too many urls"
+msgstr "Liian monta URL-osoitetta"
+
+#: src/Form/QuickSearchForm.php:117
 msgid "Read"
 msgstr "Luettu"
 
-#: src/Form/QuickSearchForm.php:97
+#: src/Form/QuickSearchForm.php:136
 msgid "Has file"
 msgstr "Sisältää tiedoston"
 
-#: src/Form/QuickSearchForm.php:116
+#: src/Form/QuickSearchForm.php:155
 msgid "Has resource"
 msgstr "Sisältää resurssin"
 
-#: src/Form/QuickSearchForm.php:154
+#: src/Form/QuickSearchForm.php:193
 msgid "To author"
 msgstr "Tekijälle"
 
-#: src/Form/ContactUsForm.php:137
+#: src/Form/ContactUsForm.php:145
 msgid "Attach a file"
 msgstr "Liitä tiedosto"
 
-#: src/Form/ContactUsForm.php:243 src/Form/SendMessageForm.php:62
-#: src/Form/NewsletterForm.php:189
+#: src/Form/ContactUsForm.php:262
+#: src/Form/SendMessageForm.php:62
+#: src/Form/NewsletterForm.php:208
 msgid "Send message"
 msgstr "Lähetä viesti"
+
+#: src/Form/ContactUsForm.php:357
+#: src/Form/NewsletterForm.php:235
+msgid "The answer to the question is incorrect."
+msgstr "Vastaus kysymykseen on väärä."
 
 #: src/Form/ContactUsFieldset.php:71
 msgid "Allow to attach a file"
@@ -1032,31 +1006,11 @@ msgid "Label for the newsletter"
 msgstr "Uutiskirjeen teksti"
 
 #: src/Form/ContactUsFieldset.php:114
-msgid ""
-"A YAML mapping, one field by name: a scalar value is the label (e.g. "
-"\"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:"
-"\"), an object accepts the keys label, type (text, textarea, email, tel, "
-"number, url, date, select, radio, checkbox, multicheckbox), required, values "
-"(the choices of a select/radio/multicheckbox), options (other Laminas "
-"element options like empty_option or info) and attributes (placeholder, "
-"class…). List a default field name (name, from, subject, message) to move or "
-"relabel it; unlisted default fields are added at the end. The elements may "
-"be adapted via the theme. If empty, the site settings or the main settings "
-"will be used."
-msgstr ""
-"YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän "
-"nimikkeenä (esim. ”phone: Phone”), nolla-arvo säilyttää oletusarvon (esim. "
-"”name:”), ja objekti hyväksyy avaimet label, type (text, textarea, email, "
-"tel, number, url, date, select, radio, checkbox, multicheckbox), required, "
-"values (select-/radio-/multicheckbox-valintojen vaihtoehdot), options (muut "
-"Laminas-elementtien asetukset, kuten empty_option tai info) ja attributes "
-"(placeholder, class…). Luettele oletuskentän nimi (name, from, subject, "
-"message), jos haluat siirtää tai nimetä sen uudelleen; luetteloon "
-"kuulumattomat oletuskentät lisätään luettelon loppuun. Elementtejä voidaan "
-"mukauttaa teeman kautta. Jos kenttä jätetään tyhjäksi, käytetään sivuston "
-"asetuksia tai pääasetuksia."
+msgid "A YAML mapping, one field by name: a scalar value is the label (e.g. \"phone: Phone\"), a null value keeps a default field in place (e.g. \"name:\"), an object accepts the keys label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (the choices of a select/radio/multicheckbox), options (other Laminas element options like empty_option or info) and attributes (placeholder, class…). List a default field name (name, from, subject, message) to move or relabel it; unlisted default fields are added at the end. The elements may be adapted via the theme. If empty, the site settings or the main settings will be used."
+msgstr "YAML-määritys, yksi kenttä nimen mukaan: skalaariarvo toimii kentän nimikkeenä (esim. ”phone: Phone”), nolla-arvo säilyttää oletusarvon (esim. ”name:”), ja objekti hyväksyy avaimet label, type (text, textarea, email, tel, number, url, date, select, radio, checkbox, multicheckbox), required, values (select-/radio-/multicheckbox-valintojen vaihtoehdot), options (muut Laminas-elementtien asetukset, kuten empty_option tai info) ja attributes (placeholder, class…). Luettele oletuskentän nimi (name, from, subject, message), jos haluat siirtää tai nimetä sen uudelleen; luetteloon kuulumattomat oletuskentät lisätään luettelon loppuun. Elementtejä voidaan mukauttaa teeman kautta. Jos kenttä jätetään tyhjäksi, käytetään sivuston asetuksia tai pääasetuksia."
 
-#: src/Form/ContactUsFieldset.php:153 src/Form/NewsletterFieldset.php:127
+#: src/Form/ContactUsFieldset.php:153
+#: src/Form/NewsletterFieldset.php:127
 msgid "Enable Google Recaptcha antispam for visitors"
 msgstr "Ota Google reCAPTCHA -roskapostintorjunta käyttöön kävijöille"
 
@@ -1085,56 +1039,68 @@ msgid "Label for the unsubscribe checkbox"
 msgstr "Tilauksen perumisen valintaruudun teksti"
 
 #: src/Form/NewsletterFieldset.php:111
-msgid ""
-"See the block \"Newsletter\" for a simple list. Separate questions and "
-"answer with a \"=\". Questions may be translated."
-msgstr ""
-"Katso yksinkertainen luettelo \"Uutiskirje\"-lohkosta. Erota kysymys ja "
-"vastaus \"=\"-merkillä. Kysymykset voidaan kääntää."
+msgid "See the block \"Newsletter\" for a simple list. Separate questions and answer with a \"=\". Questions may be translated."
+msgstr "Katso yksinkertainen luettelo \"Uutiskirje\"-lohkosta. Erota kysymys ja vastaus \"=\"-merkillä. Kysymykset voidaan kääntää."
 
-#: src/Api/Adapter/MessageAdapter.php:426
+#: src/Api/Adapter/MessageAdapter.php:504
 msgid "Error loading or saving base64 file."
-msgstr ""
-"Base64-enkoodattua tiedostoa ladattaessa tai tallennettaessa tapahtui virhe."
+msgstr "Base64-enkoodattua tiedostoa ladattaessa tai tallennettaessa tapahtui virhe."
 
-#: src/Api/Adapter/MessageAdapter.php:455
+#: src/Api/Adapter/MessageAdapter.php:533
 msgid "The body cannot be empty."
 msgstr "Viestin sisältö ei voi olla tyhjä."
 
-#: src/Api/Adapter/MessageAdapter.php:465
+#: src/Api/Adapter/MessageAdapter.php:539
+msgid "The request url is not valid."
+msgstr "Resurssi ei kelpaa."
+
+#: src/Api/Adapter/MessageAdapter.php:543
 msgid "The ip cannot be empty."
 msgstr "IP-osoite ei voi olla tyhjä."
 
-#: src/Controller/Admin/ContactMessageController.php:158
+#: src/Controller/Admin/ContactMessageController.php:73
+#: src/Controller/Admin/ContactMessageController.php:82
+msgid "Confirm resend"
+msgstr "Vahvistusviesti"
+
+#: src/Controller/Admin/ContactMessageController.php:191
 msgid "Message successfully sent to {email}."
 msgstr "Viesti lähetettiin onnistuneesti osoitteeseen {email}."
 
-#: src/Controller/Admin/ContactMessageController.php:220
+#: src/Controller/Admin/ContactMessageController.php:253
 msgid "Contact message successfully deleted."
 msgstr "Yhteydenottoviesti poistettiin onnistuneesti."
 
-#: src/Controller/Admin/ContactMessageController.php:254
+#: src/Controller/Admin/ContactMessageController.php:287
 msgid "You must select at least one contact message to batch delete."
 msgstr "Valitse vähintään yksi yhteydenottoviesti eräpoistoa varten."
 
-#: src/Controller/Admin/ContactMessageController.php:263
+#: src/Controller/Admin/ContactMessageController.php:296
 msgid "Contact messages successfully deleted."
 msgstr "Yhteydenottoviestit poistettiin onnistuneesti."
 
-#: src/Controller/Admin/ContactMessageController.php:273
+#: src/Controller/Admin/ContactMessageController.php:306
 msgid "Delete of all contact messages is not supported currently."
 msgstr "Kaikkien yhteydenottoviestien poistamista ei tällä hetkellä tueta."
 
-#: src/Controller/Admin/ContactMessageController.php:306
+#: src/Controller/Admin/ContactMessageController.php:339
 msgid "No contact messages submitted."
 msgstr "Yhteydenottoviestejä ei ole lähetetty."
 
-#: src/Controller/Admin/ContactMessageController.php:312
-#: src/Controller/Admin/ContactMessageController.php:371
+#: src/Controller/Admin/ContactMessageController.php:345
+#: src/Controller/Admin/ContactMessageController.php:481
 msgid "An internal error occurred."
 msgstr "Tapahtui sisäinen virhe."
 
-#: src/Controller/Admin/ContactMessageController.php:363
+#: src/Controller/Admin/ContactMessageController.php:400
+msgid "You must select at least one contact message to resend."
+msgstr "Valitse vähintään yksi yhteydenottoviesti eräpoistoa varten."
+
+#: src/Controller/Admin/ContactMessageController.php:430
+msgid "Resending messages to the author in background ({link}job #{job_id}{link_end}, {link_log}logs{link_end})."
+msgstr "Viestien uudelleenlähetys lähettäjälle taustalla ({link}tehtävä #{job_id}{link_end}, {link_log}lokit{link_end})."
+
+#: src/Controller/Admin/ContactMessageController.php:473
 msgid "Unknown key."
 msgstr "Tuntematon avain."
 
@@ -1191,126 +1157,135 @@ msgid "Contact Us: Form"
 msgstr "Ota yhteyttä: lomake"
 
 #: src/Site/BlockLayout/ContactUs.php:45
-msgid ""
-"To create antispam, each question must be separated from the answer by a "
-"\"=\"."
-msgstr ""
-"Roskapostintorjunnan luomiseksi jokainen kysymys on erotettava vastauksesta "
-"\"=\"-merkillä."
+msgid "To create antispam, each question must be separated from the answer by a \"=\"."
+msgstr "Roskapostintorjunnan luomiseksi jokainen kysymys on erotettava vastauksesta \"=\"-merkillä."
 
 #: src/Site/BlockLayout/ContactUs.php:61
-msgid ""
-"Invalid fields: check the YAML syntax, the field names (ascii, no space), "
-"the types and, for select/radio/multicheckbox, the list of values."
-msgstr ""
-"Virheelliset kentät: tarkista YAML-syntaksi, kenttien nimet (ASCII-"
-"merkistöä, ei välilyöntejä), tyypit sekä select-, radio- ja multicheckbox-"
-"kenttien arvoluettelot."
+msgid "Invalid fields: check the YAML syntax, the field names (ascii, no space), the types and, for select/radio/multicheckbox, the list of values."
+msgstr "Virheelliset kentät: tarkista YAML-syntaksi, kenttien nimet (ASCII-merkistöä, ei välilyöntejä), tyypit sekä select-, radio- ja multicheckbox-kenttien arvoluettelot."
 
-#: src/Stdlib/ContactSubmission.php:480
-msgid ""
-"Links (URLs) are not allowed in messages. Please remove any link and "
-"resubmit."
-msgstr ""
-"Linkkejä (URL-osoitteita) ei sallita viesteissä. Poista kaikki linkit ja "
-"lähetä viesti uudelleen."
+#: src/Stdlib/ContactSubmission.php:514
+msgid "Links (URLs) are not allowed in messages. Please remove any link and resubmit."
+msgstr "Linkkejä (URL-osoitteita) ei sallita viesteissä. Poista kaikki linkit ja lähetä viesti uudelleen."
 
-#: src/Stdlib/ContactSubmission.php:513
+#: src/Stdlib/ContactSubmission.php:547
 msgid "The unsubscription for {email} is confirmed."
 msgstr "Osoitteen {email} tilauksen peruminen on vahvistettu."
 
-#: src/Stdlib/ContactSubmission.php:518
+#: src/Stdlib/ContactSubmission.php:552
 msgid "Thank you for subscribing to our newsletter, {name}."
 msgstr "Kiitos uutiskirjeemme tilaamisesta, {name}."
 
-#: src/Stdlib/ContactSubmission.php:525
-msgid ""
-"Thank you for your message, {name}. It will be sent to the author as soon as "
-"possible."
-msgstr ""
-"Kiitos viestistäsi, {name}. Se lähetetään tekijälle mahdollisimman pian."
+#: src/Stdlib/ContactSubmission.php:559
+msgid "Thank you for your message, {name}. It will be sent to the author as soon as possible."
+msgstr "Kiitos viestistäsi, {name}. Se lähetetään tekijälle mahdollisimman pian."
 
-#: src/Stdlib/ContactSubmission.php:530
-msgid ""
-"Thank you for your message, {name}. We will answer you as soon as possible."
+#: src/Stdlib/ContactSubmission.php:564
+msgid "Thank you for your message, {name}. We will answer you as soon as possible."
 msgstr "Kiitos viestistäsi, {name}. Vastaamme mahdollisimman pian."
 
-#: src/Stdlib/ContactSubmission.php:562
+#: src/Stdlib/ContactSubmission.php:596
 msgid "Subscribe newsletter"
 msgstr "Tilaa uutiskirje"
 
-#: src/Stdlib/ContactSubmission.php:689
+#: src/Stdlib/ContactSubmission.php:694
+#: src/Stdlib/ContactSubmission.php:698
+#: src/Stdlib/ContactSubmission.php:728
+#: src/Stdlib/MessageResender.php:53
+#: src/Stdlib/MessageResender.php:70
+msgid "message_id"
+msgstr "message_id"
+
+#: src/Stdlib/ContactSubmission.php:707
+msgid "The author of the message #{message_id} has no email: {error}"
+msgstr "Viestin #{message_id} lähettäjällä ei ole sähköpostiosoitetta: {error}"
+
+#: src/Stdlib/ContactSubmission.php:800
 #, php-format
 msgid "About resource %s (%s)."
 msgstr "Tietoja resurssista %s (%s)."
 
-#: src/Stdlib/ContactSubmission.php:847
+#: src/Stdlib/ContactSubmission.php:989
 msgid "[ContactUs] Spam detected: reasons={reasons}; ip={ip}; email={email}"
-msgstr ""
-"[ContactUs] Roskapostia havaittu: syyt={reasons}; ip={ip}; sähköposti={email}"
+msgstr "[ContactUs] Roskapostia havaittu: syyt={reasons}; ip={ip}; sähköposti={email}"
 
-#: src/Stdlib/ContactSubmission.php:897 src/Stdlib/ContactSubmission.php:974
-#: src/Stdlib/ContactSubmission.php:1299
+#: src/Stdlib/ContactSubmission.php:1042
+#: src/Stdlib/ContactSubmission.php:1089
+#: src/Stdlib/ContactSubmission.php:1144
+#: src/Stdlib/ContactSubmission.php:1541
 msgid "[Contact] {main_title}"
 msgstr "[Yhteystiedot] {main_title}"
 
-#: src/Stdlib/ContactSubmission.php:906
+#: src/Stdlib/ContactSubmission.php:1054
 msgid "newsletter: {answer}"
 msgstr "uutiskirje: {answer}"
 
-#: src/Stdlib/ContactSubmission.php:938
-msgid ""
-"Thank you for your message {name}. Check your confirmation mail. The author "
-"will receive it soon."
-msgstr ""
-"Kiitos viestistäsi, {name}. Tarkista vahvistussähköpostisi. Tekijä saa "
-"viestin pian."
+#: src/Stdlib/ContactSubmission.php:1097
+msgid "This message was marked as spam by checks that may be wrong ({reasons}). It is stored as spam: change its status if it is a real message."
+msgstr "Tämä viesti on merkitty roskapostiksi tarkistusten perusteella, jotka saattavat olla virheellisiä ({reasons}). Se on tallennettu roskapostiksi: muuta sen tilaa, jos kyseessä on oikea viesti."
 
-#: src/Stdlib/ContactSubmission.php:965
+#: src/Stdlib/ContactSubmission.php:1108
+msgid "Thank you for your message {name}. Check your confirmation mail. The author will receive it soon."
+msgstr "Kiitos viestistäsi, {name}. Tarkista vahvistussähköpostisi. Tekijä saa viestin pian."
+
+#: src/Stdlib/ContactSubmission.php:1135
 msgid "Sorry, we are not able to send the email to the author."
 msgstr "Valitettavasti sähköpostia ei voida lähettää tekijälle."
 
-#: src/Stdlib/ContactSubmission.php:989
-msgid ""
-"Sorry, the message is recorded, but we are not able to notify the admin at "
-"once. You may come back later if you don’t receive answer."
-msgstr ""
-"Valitettavasti viesti tallennettiin, mutta ylläpitäjälle ei voida ilmoittaa "
-"siitä heti. Voit palata myöhemmin, jos et saa vastausta."
+#: src/Stdlib/ContactSubmission.php:1159
+msgid "Sorry, the message is recorded, but we are not able to notify the admin at once. You may come back later if you don’t receive answer."
+msgstr "Valitettavasti viesti tallennettiin, mutta ylläpitäjälle ei voida ilmoittaa siitä heti. Voit palata myöhemmin, jos et saa vastausta."
 
-#: src/Stdlib/ContactSubmission.php:1033
+#: src/Stdlib/ContactSubmission.php:1203
 msgid "Sorry, we are not able to send the confirmation email."
 msgstr "Valitettavasti vahvistussähköpostia ei voida lähettää."
 
-#: src/Stdlib/ContactSubmission.php:1083
+#: src/Stdlib/ContactSubmission.php:1253
 msgid "You must select a resource to contact the author."
 msgstr "Sinun on valittava resurssi, jotta voit ottaa yhteyttä tekijään."
 
-#: src/Stdlib/ContactSubmission.php:1098 src/Stdlib/ContactSubmission.php:1124
-msgid ""
-"This resource has no author to contact. Contact administor for more "
-"information."
-msgstr ""
-"Tällä resurssilla ei ole tekijää, johon voisi ottaa yhteyttä. Pyydä "
-"lisätietoja ylläpitäjältä."
+#: src/Stdlib/ContactSubmission.php:1268
+#: src/Stdlib/ContactSubmission.php:1294
+msgid "This resource has no author to contact. Contact administor for more information."
+msgstr "Tällä resurssilla ei ole tekijää, johon voisi ottaa yhteyttä. Pyydä lisätietoja ylläpitäjältä."
 
-#: src/Stdlib/ContactSubmission.php:1119
+#: src/Stdlib/ContactSubmission.php:1289
 msgid "Contact administor for more information."
 msgstr "Pyydä lisätietoja ylläpitäjältä."
 
-#: src/Stdlib/ContactSubmission.php:1169
+#: src/Stdlib/ContactSubmission.php:1350
+msgid "Your message could not be transmitted automatically. You may retry in a few minutes or write directly to {email}."
+msgstr "Viestisi ei voitu lähettää automaattisesti. Voit yrittää uudelleen muutaman minuutin kuluttua tai kirjoittaa suoraan osoitteeseen {email}."
+
+#: src/Stdlib/ContactSubmission.php:1354
+msgid "Your message could not be transmitted automatically. You may retry in a few minutes."
+msgstr "Viestisi ei voitu lähettää automaattisesti. Voit yrittää uudelleen muutaman minuutin kuluttua."
+
+#: src/Stdlib/ContactSubmission.php:1390
 msgid "There is an error: {errors}"
 msgstr "Tapahtui virhe: {errors}"
 
-#: src/Stdlib/ContactSubmission.php:1173
+#: src/Stdlib/ContactSubmission.php:1394
 msgid "There is an error."
 msgstr "Tapahtui virhe."
 
 #: config/module.config.php:206
+msgid "Contact"
+msgstr "Yhteydenotto"
+
+#: config/module.config.php:207
+msgid "Resend to the author, without any check of spam?"
+msgstr "Lähetetäänkö se uudelleen kirjoittajalle ilman roskapostitarkistusta?"
+
+#: config/module.config.php:208
+msgid "Resent to the author"
+msgstr "Viesti tekijälle"
+
+#: config/module.config.php:209
 msgid "The contact message doesn’t exist."
 msgstr "Yhteydenottoviestiä ei ole olemassa."
 
-#: config/module.config.php:234
+#: config/module.config.php:237
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1344,7 +1319,7 @@ msgstr ""
 "\n"
 "{message}"
 
-#: config/module.config.php:267
+#: config/module.config.php:273
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1374,11 +1349,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:283
+#: config/module.config.php:289
 msgid "Confirmation contact"
 msgstr "Yhteydenoton vahvistus"
 
-#: config/module.config.php:284
+#: config/module.config.php:290
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1422,11 +1397,11 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:306
+#: config/module.config.php:312
 msgid "Subscription to newsletter of {main_title}"
 msgstr "Sivuston {main_title} uutiskirjetilaus"
 
-#: config/module.config.php:307
+#: config/module.config.php:313
 msgid ""
 "Hi,\n"
 "\n"
@@ -1440,12 +1415,11 @@ msgstr ""
 "\n"
 "Ystävällisin terveisin,"
 
-#: config/module.config.php:315
+#: config/module.config.php:321
 msgid ""
 "Hi {user_name},\n"
 "\n"
-"The visitor {name} ({email} made the following request about a resource on "
-"{main_title}:\n"
+"The visitor {name} ({email} made the following request about a resource on {main_title}:\n"
 "\n"
 "Thanks to reply directly to the email above and do not use \"reply\".\n"
 "\n"
@@ -1462,11 +1436,9 @@ msgid ""
 msgstr ""
 "Hei {user_name},\n"
 "\n"
-"Kävijä {name} ({email}) esitti seuraavan pyynnön, joka koskee resurssia "
-"sivustolla {main_title}:\n"
+"Kävijä {name} ({email}) esitti seuraavan pyynnön, joka koskee resurssia sivustolla {main_title}:\n"
 "\n"
-"Vastaa suoraan yllä olevaan sähköpostiosoitteeseen äläkä käytä \"Vastaa\"-"
-"toimintoa.\n"
+"Vastaa suoraan yllä olevaan sähköpostiosoitteeseen äläkä käytä \"Vastaa\"-toimintoa.\n"
 "\n"
 "Ystävällisin terveisin,\n"
 "\n"
@@ -1479,80 +1451,69 @@ msgstr ""
 "\n"
 "{fields}"
 
-#: config/module.config.php:333
-msgid ""
-"Thank you for your message. Check your confirmation email sent to {email}. "
-"We will answer you soon."
-msgstr ""
-"Kiitos viestistäsi. Tarkista osoitteeseen {email} lähetetty "
-"vahvistussähköposti. Vastaamme pian."
+#: config/module.config.php:339
+msgid "Thank you for your message. Check your confirmation email sent to {email}. We will answer you soon."
+msgstr "Kiitos viestistäsi. Tarkista osoitteeseen {email} lähetetty vahvistussähköposti. Vastaamme pian."
 
-#: config/module.config.php:334
-msgid ""
-"Thank you for subscribing to our newsletter. Check the confirmation email "
-"sent to {email}."
-msgstr ""
-"Kiitos uutiskirjeemme tilaamisesta. Tarkista osoitteeseen {email} lähetetty "
-"vahvistussähköposti."
+#: config/module.config.php:340
+msgid "Thank you for subscribing to our newsletter. Check the confirmation email sent to {email}."
+msgstr "Kiitos uutiskirjeemme tilaamisesta. Tarkista osoitteeseen {email} lähetetty vahvistussähköposti."
 
-#: config/module.config.php:335 config/module.config.php:382
-#: config/module.config.php:395
-msgid ""
-"I allow the site owner to store my name and my email to answer to this "
-"message."
-msgstr ""
-"Annan sivuston omistajalle luvan tallentaa nimeni ja sähköpostiosoitteeni "
-"tähän viestiin vastaamista varten."
+#: config/module.config.php:341
+#: config/module.config.php:385
+#: config/module.config.php:398
+msgid "I allow the site owner to store my name and my email to answer to this message."
+msgstr "Annan sivuston omistajalle luvan tallentaa nimeni ja sähköpostiosoitteeni tähän viestiin vastaamista varten."
 
-#: config/module.config.php:336
+#: config/module.config.php:342
 msgid "It is not possible to select more than {total} resources."
 msgstr "Enempää kuin {total} resurssia ei voi valita."
 
-#: config/module.config.php:340
+#: config/module.config.php:346
 msgid "How many are zero plus 1 (in number)?"
 msgstr "Kuinka paljon on nolla plus 1 (numerona)?"
 
-#: config/module.config.php:342
+#: config/module.config.php:348
 msgid "How many are one plus 1 (in number)?"
 msgstr "Kuinka paljon on yksi plus 1 (numerona)?"
 
-#: config/module.config.php:344
+#: config/module.config.php:350
 msgid "How many are one plus 2 (in number)?"
 msgstr "Kuinka paljon on yksi plus 2 (numerona)?"
 
-#: config/module.config.php:346
+#: config/module.config.php:352
 msgid "How many are one plus 3 (in number)?"
 msgstr "Kuinka paljon on yksi plus 3 (numerona)?"
 
-#: config/module.config.php:348
+#: config/module.config.php:354
 msgid "How many are two plus 1 (in number)?"
 msgstr "Kuinka paljon on kaksi plus 1 (numerona)?"
 
-#: config/module.config.php:350
+#: config/module.config.php:356
 msgid "How many are two plus 2 (in number)?"
 msgstr "Kuinka paljon on kaksi plus 2 (numerona)?"
 
-#: config/module.config.php:352
+#: config/module.config.php:358
 msgid "How many are two plus 3 (in number)?"
 msgstr "Kuinka paljon on kaksi plus 3 (numerona)?"
 
-#: config/module.config.php:354
+#: config/module.config.php:360
 msgid "How many are three plus 1 (in number)?"
 msgstr "Kuinka paljon on kolme plus 1 (numerona)?"
 
-#: config/module.config.php:356
+#: config/module.config.php:362
 msgid "How many are three plus 2 (in number)?"
 msgstr "Kuinka paljon on kolme plus 2 (numerona)?"
 
-#: config/module.config.php:358
+#: config/module.config.php:364
 msgid "How many are three plus 3 (in number)?"
 msgstr "Kuinka paljon on kolme plus 3 (numerona)?"
 
-#: config/module.config.php:384
+#: config/module.config.php:387
 msgid "Subscribe to the newsletter"
 msgstr "Tilaa uutiskirje"
 
-#: config/module.config.php:397
+#: config/module.config.php:400
 msgid "Unsubscribe"
 msgstr "Peru tilaus"
 
@@ -1568,15 +1529,8 @@ msgstr "Peru tilaus"
 #~ msgid "There is no resources or files."
 #~ msgstr "Resursseja tai tiedostoja ei ole."
 
-#~ msgid ""
-#~ "The base uri is not set (key [file_store][local][base_uri]) in the config "
-#~ "file of Omeka \"config/local.config.php\". It must be set for now (key "
-#~ "[file_store][local][base_uri]) in order to process background jobs."
-#~ msgstr ""
-#~ "Perus-URI-osoitetta ei ole määritetty (avain [file_store][local]"
-#~ "[base_uri]) Omekan asetustiedostossa \"config/local.config.php\". Se on "
-#~ "toistaiseksi määritettävä (avain [file_store][local][base_uri]), jotta "
-#~ "taustatyöt voidaan käsitellä."
+#~ msgid "The base uri is not set (key [file_store][local][base_uri]) in the config file of Omeka \"config/local.config.php\". It must be set for now (key [file_store][local][base_uri]) in order to process background jobs."
+#~ msgstr "Perus-URI-osoitetta ei ole määritetty (avain [file_store][local][base_uri]) Omekan asetustiedostossa \"config/local.config.php\". Se on toistaiseksi määritettävä (avain [file_store][local][base_uri]), jotta taustatyöt voidaan käsitellä."
 
 #, php-format
 #~ msgid "[Contact] %s"
@@ -1623,13 +1577,10 @@ msgstr "Peru tilaus"
 #~ msgstr "Valittuihin kohteisiin ei ole liitetty tiedostoa."
 
 #~ msgid "No derivative file of type {type} attached to selected items."
-#~ msgstr ""
-#~ "Valittuihin kohteisiin ei ole liitetty tyypin {type} johdannaistiedostoa."
+#~ msgstr "Valittuihin kohteisiin ei ole liitetty tyypin {type} johdannaistiedostoa."
 
 #~ msgid "Zip created successfully and available directly at {url}."
-#~ msgstr ""
-#~ "ZIP-tiedosto luotiin onnistuneesti, ja se on saatavilla suoraan "
-#~ "osoitteessa {url}."
+#~ msgstr "ZIP-tiedosto luotiin onnistuneesti, ja se on saatavilla suoraan osoitteessa {url}."
 
 #~ msgid "Unable to create directory in \"/files/\"."
 #~ msgstr "Hakemistoa ei voida luoda kansioon \"/files/\"."
@@ -1646,29 +1597,11 @@ msgstr "Peru tilaus"
 #~ msgid "Specific fields to append to form"
 #~ msgstr "Lomakkeeseen lisättävät omat kentät"
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. If empty, the main settings will be used."
-#~ msgstr ""
-#~ "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste "
-#~ "toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. "
-#~ "Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. "
-#~ "\"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Jos asetus "
-#~ "on tyhjä, käytetään yleisiä asetuksia."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. If empty, the main settings will be used."
+#~ msgstr "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. \"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Jos asetus on tyhjä, käytetään yleisiä asetuksia."
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. This setting may be overridden by site or block settings."
-#~ msgstr ""
-#~ "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste "
-#~ "toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. "
-#~ "Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. "
-#~ "\"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Sivuston "
-#~ "tai lohkon asetukset voivat ohittaa tämän asetuksen."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. This setting may be overridden by site or block settings."
+#~ msgstr "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. \"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Sivuston tai lohkon asetukset voivat ohittaa tämän asetuksen."
 
 #~ msgid "Remove zip files after some days"
 #~ msgstr "Poista ZIP-tiedostot tietyn päivän kuluttua"
@@ -1676,17 +1609,8 @@ msgstr "Peru tilaus"
 #~ msgid "Other fields to append to form"
 #~ msgstr "Muut lomakkeeseen lisättävät kentät"
 
-#~ msgid ""
-#~ "Set the name (ascii only and no space) and the label separated by a "
-#~ "\"=\", one by line. Prefix the label with \"* \" to make the field "
-#~ "required (e.g. \"phone = * Phone\"). The elements may be adapted via the "
-#~ "theme. If empty, the site settings or the main settings will be used."
-#~ msgstr ""
-#~ "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste "
-#~ "toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. "
-#~ "Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. "
-#~ "\"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Jos asetus "
-#~ "on tyhjä, käytetään sivuston asetuksia tai yleisiä asetuksia."
+#~ msgid "Set the name (ascii only and no space) and the label separated by a \"=\", one by line. Prefix the label with \"* \" to make the field required (e.g. \"phone = * Phone\"). The elements may be adapted via the theme. If empty, the site settings or the main settings will be used."
+#~ msgstr "Määritä nimi (vain ASCII-merkkejä, ei välilyöntejä) ja tunniste toisistaan \"=\"-merkillä erotettuina, yksi rivi kutakin kenttää kohden. Tee kentästä pakollinen lisäämällä tunnisteen alkuun \"* \" (esim. \"phone = * Phone\"). Elementtejä voidaan mukauttaa teemassa. Jos asetus on tyhjä, käytetään sivuston asetuksia tai yleisiä asetuksia."
 
 #~ msgid "success"
 #~ msgstr "onnistui"
@@ -1697,9 +1621,5 @@ msgstr "Peru tilaus"
 #~ msgid "No zip found."
 #~ msgstr "ZIP-tiedostoa ei löytynyt."
 
-#~ msgid ""
-#~ "To append fields, each row must contain a name and a label separated by a "
-#~ "\"=\"."
-#~ msgstr ""
-#~ "Kenttiä lisättäessä jokaisella rivillä on oltava nimi ja tunniste \"=\"-"
-#~ "merkillä erotettuina."
+#~ msgid "To append fields, each row must contain a name and a label separated by a \"=\"."
+#~ msgstr "Kenttiä lisättäessä jokaisella rivillä on oltava nimi ja tunniste \"=\"-merkillä erotettuina."

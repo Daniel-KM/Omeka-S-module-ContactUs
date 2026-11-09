@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 00:00+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -722,7 +722,7 @@ msgstr ""
 msgid "Subject of the email to author"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:317
+#: src/Form/SiteSettingsFieldset.php:208 config/module.config.php:320
 msgid "Message to the author"
 msgstr ""
 
@@ -1101,7 +1101,7 @@ msgstr ""
 msgid "Send message"
 msgstr ""
 
-#: src/Form/ContactUsForm.php:334 src/Form/NewsletterForm.php:235
+#: src/Form/ContactUsForm.php:357 src/Form/NewsletterForm.php:235
 msgid "The answer to the question is incorrect."
 msgstr ""
 
@@ -1165,19 +1165,19 @@ msgid ""
 "answer with a \"=\". Questions may be translated."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:502
+#: src/Api/Adapter/MessageAdapter.php:504
 msgid "Error loading or saving base64 file."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:531
+#: src/Api/Adapter/MessageAdapter.php:533
 msgid "The body cannot be empty."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:537
+#: src/Api/Adapter/MessageAdapter.php:539
 msgid "The request url is not valid."
 msgstr ""
 
-#: src/Api/Adapter/MessageAdapter.php:541
+#: src/Api/Adapter/MessageAdapter.php:543
 msgid "The ip cannot be empty."
 msgstr ""
 
@@ -1411,10 +1411,22 @@ msgid "There is an error."
 msgstr ""
 
 #: config/module.config.php:206
+msgid "Contact"
+msgstr ""
+
+#: config/module.config.php:207
+msgid "Resend to the author, without any check of spam?"
+msgstr ""
+
+#: config/module.config.php:208
+msgid "Resent to the author"
+msgstr ""
+
+#: config/module.config.php:209
 msgid "The contact message doesn’t exist."
 msgstr ""
 
-#: config/module.config.php:234
+#: config/module.config.php:237
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1433,7 +1445,7 @@ msgid ""
 "{message}"
 msgstr ""
 
-#: config/module.config.php:270
+#: config/module.config.php:273
 msgid ""
 "A user has contacted you.\n"
 "\n"
@@ -1450,11 +1462,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:286
+#: config/module.config.php:289
 msgid "Confirmation contact"
 msgstr ""
 
-#: config/module.config.php:287
+#: config/module.config.php:290
 msgid ""
 "Hi {name},\n"
 "\n"
@@ -1478,11 +1490,11 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:309
+#: config/module.config.php:312
 msgid "Subscription to newsletter of {main_title}"
 msgstr ""
 
-#: config/module.config.php:310
+#: config/module.config.php:313
 msgid ""
 "Hi,\n"
 "\n"
@@ -1491,7 +1503,7 @@ msgid ""
 "Sincerely,"
 msgstr ""
 
-#: config/module.config.php:318
+#: config/module.config.php:321
 msgid ""
 "Hi {user_name},\n"
 "\n"
@@ -1512,73 +1524,73 @@ msgid ""
 "{fields}"
 msgstr ""
 
-#: config/module.config.php:336
+#: config/module.config.php:339
 msgid ""
 "Thank you for your message. Check your confirmation email sent to {email}. "
 "We will answer you soon."
 msgstr ""
 
-#: config/module.config.php:337
+#: config/module.config.php:340
 msgid ""
 "Thank you for subscribing to our newsletter. Check the confirmation email "
 "sent to {email}."
 msgstr ""
 
-#: config/module.config.php:338 config/module.config.php:382
-#: config/module.config.php:395
+#: config/module.config.php:341 config/module.config.php:385
+#: config/module.config.php:398
 msgid ""
 "I allow the site owner to store my name and my email to answer to this "
 "message."
 msgstr ""
 
-#: config/module.config.php:339
+#: config/module.config.php:342
 msgid "It is not possible to select more than {total} resources."
 msgstr ""
 
-#: config/module.config.php:343
+#: config/module.config.php:346
 msgid "How many are zero plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:345
+#: config/module.config.php:348
 msgid "How many are one plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:347
+#: config/module.config.php:350
 msgid "How many are one plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:349
+#: config/module.config.php:352
 msgid "How many are one plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:351
+#: config/module.config.php:354
 msgid "How many are two plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:353
+#: config/module.config.php:356
 msgid "How many are two plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:355
+#: config/module.config.php:358
 msgid "How many are two plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:357
+#: config/module.config.php:360
 msgid "How many are three plus 1 (in number)?"
 msgstr ""
 
-#: config/module.config.php:359
+#: config/module.config.php:362
 msgid "How many are three plus 2 (in number)?"
 msgstr ""
 
-#: config/module.config.php:361
+#: config/module.config.php:364
 msgid "How many are three plus 3 (in number)?"
 msgstr ""
 
-#: config/module.config.php:384
+#: config/module.config.php:387
 msgid "Subscribe to the newsletter"
 msgstr ""
 
-#: config/module.config.php:397
+#: config/module.config.php:400
 msgid "Unsubscribe"
 msgstr ""
