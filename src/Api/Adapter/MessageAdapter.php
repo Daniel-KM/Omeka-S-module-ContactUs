@@ -579,7 +579,11 @@ class MessageAdapter extends AbstractEntityAdapter
      */
     protected function getClientIp(): string
     {
-        return $this->getServiceLocator()->get('Omeka\ClientIp')->getIp();
+        // The service is missing while the module Common is not upgraded.
+        $services = $this->getServiceLocator();
+        return $services->has('Omeka\ClientIp')
+            ? $services->get('Omeka\ClientIp')->getIp()
+            : (string) ($_SERVER['REMOTE_ADDR'] ?? '::');
     }
 
     /**

@@ -1586,7 +1586,8 @@ class ContactSubmission
      */
     protected function clientIp(): string
     {
-        return $this->services
+        // The service is missing while the module Common is not upgraded.
+        return $this->services && $this->services->has('Omeka\ClientIp')
             ? $this->services->get('Omeka\ClientIp')->getIp()
             : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
     }
