@@ -575,13 +575,11 @@ class MessageAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * Get the ip of the client.
-     *
-     * @see \ContactUs\Stdlib\ClientIp
+     * Get the ip of the client, even behind a reverse proxy.
      */
     protected function getClientIp(): string
     {
-        return \ContactUs\Stdlib\ClientIp::fromServer($_SERVER);
+        return $this->getServiceLocator()->get('Omeka\ClientIp')->getIp();
     }
 
     /**

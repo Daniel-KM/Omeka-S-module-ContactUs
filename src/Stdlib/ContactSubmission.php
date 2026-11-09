@@ -1583,12 +1583,12 @@ class ContactSubmission
 
     /**
      * Get the ip of the client, even behind a reverse proxy.
-     *
-     * @see \ContactUs\Stdlib\ClientIp
      */
     protected function clientIp(): string
     {
-        return ClientIp::fromServer($_SERVER);
+        return $this->services
+            ? $this->services->get('Omeka\ClientIp')->getIp()
+            : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
     }
 
     public function postStored()
