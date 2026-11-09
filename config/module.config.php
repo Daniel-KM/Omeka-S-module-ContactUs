@@ -203,6 +203,9 @@ return [
         ],
     ],
     'js_translate_strings' => [
+        'Contact', // @translate
+        'Resend to the author, without any check of spam?', // @translate
+        'Resent to the author', // @translate
         'The contact message doesn’t exist.', // @translate
     ],
     'contactus' => [
