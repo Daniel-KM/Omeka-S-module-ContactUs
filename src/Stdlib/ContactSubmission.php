@@ -1582,27 +1582,13 @@ class ContactSubmission
     }
 
     /**
-     * Resolve the real client IP when the site sits behind a reverse proxy.
+     * Get the ip of the client, even behind a reverse proxy.
      *
-     * Laminas RemoteAddress only reads REMOTE_ADDR, which is the proxy IP.
-     * Mirror the logic of MessageAdapter::getClientIp and prefer the first hop
-     * of X-Forwarded-For, then X-Real-IP, then REMOTE_ADDR. The proxy setup is
-     * assumed to strip spoofed upstream headers.
+     * @see \ContactUs\Stdlib\ClientIp
      */
     protected function clientIp(): string
     {
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $first = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
-            if (filter_var($first, FILTER_VALIDATE_IP)) {
-                return $first;
-            }
-        }
-        if (!empty($_SERVER['HTTP_X_REAL_IP'])
-            && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)
-        ) {
-            return $_SERVER['HTTP_X_REAL_IP'];
-        }
-        return $_SERVER['REMOTE_ADDR'] ?? '';
+        return ClientIp::fromServer($_SERVER);
     }
 
     public function postStored()

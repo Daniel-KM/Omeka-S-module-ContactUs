@@ -577,28 +577,11 @@ class MessageAdapter extends AbstractEntityAdapter
     /**
      * Get the ip of the client.
      *
-     * Prefer the first hop of X-Forwarded-For, then X-Real-IP, then
-     * REMOTE_ADDR. The proxy setup is assumed to strip spoofed upstream
-     * headers.
+     * @see \ContactUs\Stdlib\ClientIp
      */
     protected function getClientIp(): string
     {
-        $candidates = [];
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $candidates[] = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
-        }
-        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-            $candidates[] = $_SERVER['HTTP_X_REAL_IP'];
-        }
-        $candidates[] = $_SERVER['REMOTE_ADDR'] ?? '';
-        foreach ($candidates as $ip) {
-            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
-                || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)
-            ) {
-                return $ip;
-            }
-        }
-        return '::';
+        return \ContactUs\Stdlib\ClientIp::fromServer($_SERVER);
     }
 
     /**
