@@ -41,7 +41,14 @@ class ContactSubmissionTest extends TestCase
             $this->createMock(Mailer::class),
             $messenger ?? $this->createMock(Messenger::class),
             $this->createMock(SendEmail::class),
-            []
+            [],
+            new \Laminas\ServiceManager\ServiceManager([
+                'services' => [
+                    'Omeka\ClientIp' => class_exists(\Omeka\Stdlib\ClientIp::class)
+                        ? new \Omeka\Stdlib\ClientIp()
+                        : new \Common\Stdlib\ClientIp(),
+                ],
+            ])
         );
     }
 
@@ -101,12 +108,31 @@ class ContactSubmissionTest extends TestCase
         $this->assertSame(['How much?' => '2', 'Just a label' => ''], $out);
     }
 
-    public function testClientIpPrefersFirstForwardedFor(): void
+    public function testClientIpSkipsLocalProxies(): void
     {
         $this->serverBackup = $_SERVER;
         $_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.9, 10.0.0.1';
         $_SERVER['REMOTE_ADDR'] = '10.0.0.2';
         $this->assertSame('203.0.113.9', $this->submission()->proxyClientIp());
+    }
+
+    public function testClientIpIgnoresForgedLeftPart(): void
+    {
+        // The proxy appends the real peer to the header sent by the client.
+        $this->serverBackup = $_SERVER;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '198.51.100.1, 203.0.113.50';
+        $_SERVER['REMOTE_ADDR'] = '172.18.0.2';
+        $this->assertSame('203.0.113.50', $this->submission()->proxyClientIp());
+    }
+
+    public function testClientIpIgnoresHeadersFromPublicPeer(): void
+    {
+        // Without proxy, a spammer may write any ip in the headers.
+        $this->serverBackup = $_SERVER;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '198.51.100.1';
+        $_SERVER['HTTP_X_REAL_IP'] = '198.51.100.2';
+        $_SERVER['REMOTE_ADDR'] = '203.0.113.50';
+        $this->assertSame('203.0.113.50', $this->submission()->proxyClientIp());
     }
 
     public function testClientIpFallsBackToRemoteAddr(): void
