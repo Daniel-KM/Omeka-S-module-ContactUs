@@ -5,7 +5,7 @@
  */
 
 (function () {
-    $(document).ready(function() {
+    $(function() {
 
         /**
          * Use common-dialog.js.
