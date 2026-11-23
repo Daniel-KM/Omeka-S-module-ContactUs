@@ -51,6 +51,13 @@ class ResendToAuthor extends AbstractJob
             }
         }
 
+        if ($errors && !$sent) {
+            throw new \Common\Job\Exception\RuntimeException(
+                'No message resent to the author: {count_skipped} skipped (already sent, already resent or to us), {count_errors} error(s).', // @translate
+                ['count_skipped' => $skipped, 'count_errors' => $errors]
+            );
+        }
+
         $logger->notice(
             '{count_sent} message(s) resent to the author, {count_skipped} skipped (already sent, already resent or to us), {count_errors} error(s).', // @translate
             ['count_sent' => $sent, 'count_skipped' => $skipped, 'count_errors' => $errors]
