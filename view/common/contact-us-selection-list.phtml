@@ -81,7 +81,7 @@ $headScript
 <ul class="resource-list contact-us-template hidden" style="display: none;" data-url-api="<?= $url('api/default', ['resource' => 'resources']) ?>" data-url-site-base="<?= $escapeAttr($siteBaseUrl) ?>" data-default-untitled="<?= $untitled ?>" data-default-thumbnail-url="<?= $escapeAttr($defaultThumbnailUrl) ?>" data-default-thumbnail-label="<?= $escapeAttr($defaultThumbnailLabel) ?>">
     <li class="resource">
         <a class="resource-link" href="{resource_url}">
-            <img src="{thumbnail_url}" alt="{thumbnail_label}" title="{thumbnail_label}"/>
+            <img loading="lazy" src="{thumbnail_url}" alt="{thumbnail_label}" title="{thumbnail_label}"/>
             <span class="resource-name">{resource_title}</span>
             <div class="description">{resource_description}</div>
         </a>
