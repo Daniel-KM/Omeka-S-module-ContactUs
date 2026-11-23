@@ -13,15 +13,4 @@
         content: "*";
         color: red;
     }
-    .dialog-header {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .dialog-header-close-button {
-        display: block;
-        margin-left: auto;
-        padding: 0;
-        background-color: transparent;
-    }
 }
